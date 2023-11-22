@@ -488,6 +488,7 @@ const TableFilter = (props: any) => {
   }
 
   const splitArrayByValue = (arr: any) => {
+    // debugger
     let arr1 = arr.filter((x: any) => x.status === 1)
     // 已离职
     let arr2 = arr
@@ -652,14 +653,14 @@ const TableFilter = (props: any) => {
                                   <Select.Option
                                     key={item.id}
                                     value={item.id}
-                                    label={item.name}
+                                    label={item.label}
                                     className={
                                       item.status === 2 && item.isFirst
                                         ? 'removeStyle'
                                         : ''
                                     }
                                   >
-                                    {item.name ?? item.content}
+                                    {item.label ?? item.content}
                                     <span>
                                       {item.status === 1 ? '' : t('removed')}
                                     </span>

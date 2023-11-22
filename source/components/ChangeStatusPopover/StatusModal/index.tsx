@@ -26,6 +26,7 @@ import { getProjectMember } from '@/services/project'
 import { getShapeAffairsRight } from '@/services/affairs'
 import { getShapeFlawRight } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
+import MoreSelect from '@/components/MoreSelect'
 
 interface StatusModalProps {
   // 弹窗显示状态
@@ -325,7 +326,6 @@ const StatusModal = (props: StatusModalProps) => {
       fromId: props.checkStatusItem.fromId,
       toId: props.checkStatusItem.id,
     })
-
     if (
       res.fields?.filter((i: any) =>
         ['expected_start_at', 'expected_end_at'].includes(i.content),
@@ -546,7 +546,7 @@ const StatusModal = (props: StatusModalProps) => {
                         },
                       ]}
                     >
-                      <CustomSelect
+                      {/* <CustomSelect
                         mode="multiple"
                         dropdownRender={(menu: any) => {
                           return (
@@ -584,7 +584,35 @@ const StatusModal = (props: StatusModalProps) => {
                           value: item.id,
                         }))}
                         optionFilterProp="label"
-                      />
+                      ></CustomSelect> */}
+
+                      <CustomSelect
+                        mode="multiple"
+                        placeholder={t('common.pleaseSelect')}
+                        allowClear
+                        optionFilterProp="label"
+                      >
+                        {i.children.map((item: any) => {
+                          return (
+                            <Select.Option
+                              key={item.id}
+                              value={item.id}
+                              label={item.name}
+                              className={
+                                item.status === 2 && item.isFirst
+                                  ? 'removeStyle'
+                                  : ''
+                              }
+                              disabled={item.status === 2}
+                            >
+                              {item.name ?? item.content}
+                              <span>
+                                {item.status === 1 ? '' : t('removed')}
+                              </span>
+                            </Select.Option>
+                          )
+                        })}
+                      </CustomSelect>
                     </Form.Item>
                   )}
                 {['select_checkbox', 'checkbox'].includes(i.type) &&

@@ -163,9 +163,15 @@ export const getShapeRight = async (params: any) => {
   const filterCompanyList = selectData.company_user
 
   // 处理人、抄送人
+  // const filterMemberList = selectData.project_member
+  const selectMember = selectData.project_member.filter(
+    (item: any) => item.status === 1,
+  )
 
-  const filterMemberList = selectData.project_member
-
+  const removeMember = selectData.project_member
+    .filter((item: any) => item.status === 2)
+    .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
+  const filterMemberList = [...selectMember, ...removeMember]
   // 分类
 
   const treeData = [
