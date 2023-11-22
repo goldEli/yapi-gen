@@ -51,6 +51,7 @@ import {
 import { getProjectInfoStore } from '@store/project/project.thunk'
 import CommonButton from '../CommonButton'
 import moment from 'moment'
+import { getMessage } from '../Message'
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
@@ -137,6 +138,18 @@ const CreateAProjectForm = () => {
 
   const confirm = async () => {
     const formData = await form.validateFields()
+    if (
+      formData?.expected_start_at &&
+      formData?.expected_end_at &&
+      moment(formData?.expected_start_at || '').unix() >
+        moment(formData?.expected_end_at || '').unix()
+    ) {
+      getMessage({
+        msg: t('version2.startTimeComputedEndTime'),
+        type: 'warning',
+      })
+      return
+    }
 
     const obj = {
       clone_project_id: multipleSelectionItems[0],
