@@ -191,7 +191,12 @@ const getGraph = () => {
       },
       plugins: [tooltip],
     })
+    // graph.on('wheelzoom', e => {
+    //   let newZoom = graph.getZoom()
+		// 	console.log(e,'99',newZoom)
 
+		// // eslint-disable-next-line no-tabs
+		// })
     graph.on('node:mouseenter', (event: any) => {
       const { item } = event
       const data = item.getModel()

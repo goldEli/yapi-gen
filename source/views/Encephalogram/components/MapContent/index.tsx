@@ -9,7 +9,6 @@ import useMapData from '../../hook/useMapData'
 import init from '@/views/Encephalogram/until/MapFun'
 import { getMapList } from '@/services/map'
 import { useSelector } from '@store/index'
-
 // type MapContentPropsType = {}
 
 const MapContent = (props: any) => {
@@ -259,6 +258,9 @@ const MapContent = (props: any) => {
     graph.render()
   }, [])
 
+  useEffect(() => {
+    mapRef.current.zoomTo(Number(encephalogramParmas.num), { x: 100, y: 100 }, true)
+  }, [encephalogramParmas.num])
   useEffect(() => {
     if (data && mapRef.current) {
       mapRef.current.changeData(data)
