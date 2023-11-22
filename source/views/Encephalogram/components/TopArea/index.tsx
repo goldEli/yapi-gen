@@ -334,6 +334,11 @@ const TopArea = () => {
       })),
     }))
     setPersonData(newChild)
+    dispatch(
+      setEncephalogramParmas({
+        person: []
+      }),
+    )
   }
   const contentPerson = () => {
     return (
