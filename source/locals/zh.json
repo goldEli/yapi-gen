@@ -2180,7 +2180,7 @@
     "isSave": "当前编辑内容还未保存是否保存？",
     "send": "【{{name}}】将于{{time}}发送",
     "send1": "【{{name}}】发送于{{time}}",
-    "pleaseNameOrKey": "输入项目名称或键",
+    "pleaseNameOrKey": "输入项目名称或编号",
     "homeConfig": "首页配置",
     "kanbanConfig": "面板配置",
     "cardMax": "卡片已超过该列最大数",

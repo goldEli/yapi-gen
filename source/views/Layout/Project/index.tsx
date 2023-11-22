@@ -47,7 +47,7 @@ const ProjectIndex = () => {
     // 项目周期
     time: [],
     //其他的类型(迭代，冲刺、我参与的)
-    otherType: [1, 2, 3],
+    otherType: [1, 2],
     pageObj: { page: 1, size: 30 },
     order: { value: '', key: '' },
     isGrid: false,
@@ -86,7 +86,7 @@ const ProjectIndex = () => {
       paramsObj.page = params.pageObj.page
       paramsObj.pageSize = params.pageObj.size
     }
-
+    console.log(paramsObj, '=paramsObjparamsObj')
     const result = await getProjectList(paramsObj)
     setDataList(result)
     setIsSpinning(false)

@@ -2180,7 +2180,7 @@
     "isSave": "The current editing content has not been saved. Do you want to save?",
     "send": "{{name}} will be sent at {{time}}",
     "send1": "{{name}} sent at {{time}}",
-    "pleaseNameOrKey": "Enter project name or key",
+    "pleaseNameOrKey": "Enter project name or number",
     "homeConfig": "Home configuration",
     "kanbanConfig": "Panel configuration",
     "cardMax": "The maximum number of cards in this column has been exceeded",

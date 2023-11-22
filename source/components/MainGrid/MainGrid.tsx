@@ -38,7 +38,6 @@ const MainGrid = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({
         id: row.id,
-        type: row.projectType === 2 ? 'sprint' : 'iteration',
       }),
     )
 

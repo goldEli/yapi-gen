@@ -237,11 +237,8 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           routerPath?.pathname?.includes(i.url),
         )
       }
-
       setActiveKey(
-        currentHavePath?.length > 0
-          ? String(currentHavePath[0]?.id)
-          : String(resultItems[0]?.id),
+        currentHavePath?.length > 0 ? String(currentHavePath[0]?.id) : '0',
       )
     }
   }, [currentMenu, routerPath, userInfo, projectInfo])

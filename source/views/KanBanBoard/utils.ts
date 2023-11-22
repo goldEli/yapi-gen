@@ -27,13 +27,7 @@ export const jumpToKanbanConfig = (navigate: NavigateFunction) => {
   const params = encryptPhp(
     JSON.stringify({
       id: getProjectIdByUrl(),
-      pageIdx: 'ProjectKanBan',
-      type: projectType === 2 || !projectType ? 'ProjectKanBan' : 5,
     }),
   )
-  if (projectType === 2 || !projectType) {
-    navigate(`/ProjectDetail/Setting/KanBanSettings?data=${params}`)
-  } else {
-    navigate(`/ProjectDetail/Setting/KanBanSettings?data=${params}`)
-  }
+  navigate(`/ProjectDetail/Setting/KanBanSettings?data=${params}`)
 }

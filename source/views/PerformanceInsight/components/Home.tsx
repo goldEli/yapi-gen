@@ -147,10 +147,9 @@ const Home = () => {
   const { save, headerParmas, viewType } = useSelector(
     store => store.performanceInsight,
   )
-  const { currentMenu } = useSelector(store => store.user)
   const [t] = useTranslation()
   const [projectId, setProjectId] = useState(
-    paramsData?.projectId ? paramsData?.projectId : '',
+    paramsData?.id ? paramsData?.id : '',
   )
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>({
@@ -196,22 +195,12 @@ const Home = () => {
     })
   const [optionVal, setOptionVal] = useState<number>(0)
   const { isRefresh } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
   const [defalutConfig, setDefalutConfig] =
     useState<Models.Efficiency.ViewItem>()
   const [valueId, setValueId] = useState(paramsData?.valueId || 0)
   const [viewValue, setViewValue] = useState(paramsData?.view?.value || 0)
 
-  useEffect(() => {
-    if (paramsData?.type && paramsData?.projectId) {
-      setHomeType(paramsData.type)
-      setProjectId(paramsData.projectId)
-      getViewList({ project_id: paramsData.projectId, use_type: 3 })
-    } else {
-      setHomeType('all')
-      setProjectId('')
-      getViewList({ project_id: '', use_type: 3 })
-    }
-  }, [])
   useEffect(() => {
     isRefresh && init()
   }, [isRefresh])
@@ -660,10 +649,10 @@ const Home = () => {
   useEffect(() => {
     setValueId(paramsData?.valueId)
     setViewValue(paramsData?.view?.value)
-    if (paramsData?.type && paramsData?.projectId) {
-      setHomeType(paramsData.type)
-      setProjectId(paramsData.projectId)
-      getViewList({ project_id: paramsData.projectId, use_type: 3 })
+    if (paramsData?.id && projectInfo?.id) {
+      setHomeType(projectInfo?.projectType === 1 ? 'iteration' : 'sprint')
+      setProjectId(paramsData.id)
+      getViewList({ project_id: paramsData.id, use_type: 3 })
     } else {
       setHomeType('all')
       setProjectId('')
