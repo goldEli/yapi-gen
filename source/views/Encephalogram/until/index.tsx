@@ -1,15 +1,19 @@
 import moment from 'moment'
 
-export const flattenObjectToArray = (obj: any, array: any[] = []) => {
+export const flattenObjectToArray = (
+  obj: any,
+  group_by: string,
+  array: any[] = [],
+) => {
   if (Array.isArray(obj.children)) {
-    const temp = { ...obj, id: String(obj.id) }
+    const temp = { ...obj, id: String(obj.id), group_by }
     delete temp.children
     array.push(temp)
     obj.children.forEach((item: any) => {
-      flattenObjectToArray(item, array)
+      flattenObjectToArray(item, group_by, array)
     })
   } else {
-    array.push({ ...obj, id: String(obj.id) })
+    array.push({ ...obj, id: String(obj.id), group_by })
   }
   return array
 }
@@ -88,7 +92,8 @@ export const buildIntactTree = (tempArr: any[]) => {
   if (!tempArr) {
     return []
   }
-  const topObj = tempArr.find((s: any) => s.node_pid === 0)
+  const topObj = tempArr.find((s: any) => s.node_pid === 0) ?? {}
+
   // 格式化数据
   const arr = tempArr.map((item: any) => {
     return formatObjectForRender(item, topObj)

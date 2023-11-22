@@ -12,7 +12,7 @@ type SliceState = {
     // 项目人员
     person: Array<number | string>
     // 按人员/按任务
-    group_by: string | undefined
+    group_by: string
   }
 }
 

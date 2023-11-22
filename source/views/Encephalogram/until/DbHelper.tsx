@@ -1,50 +1,47 @@
 import db from './MyIndexDb'
 
-export const haveProjectData = async (id: number) => {
+export const haveHistoryData = async (id: number, group_by: string) => {
   if (!db.isOpen()) {
     await db.open()
   }
-  const projectTable = (db as any).project
+  const table = (db as any).item
   let pm
-  if (projectTable) {
+  if (table) {
     pm = new Promise(resolve => {
-      projectTable
-        .where('projectId')
-        .equals(id)
-        .count((count: any) => {
-          if (count <= 0) {
-            resolve(false)
-          } else {
-            resolve(true)
-          }
-        })
+      table.where({ project_id: id, group_by }).count((count: any) => {
+        if (count <= 0) {
+          resolve(false)
+        } else {
+          resolve(true)
+        }
+      })
     })
   }
   return pm
 }
 
-export const addTaskForTable = async (id: number, tasks: any) => {
+export const addTaskForTable = async (
+  id: number,
+  tasks: any,
+  group_by: string,
+) => {
   if (!db.isOpen()) {
     await db.open()
   }
-  const hasId: any = await haveProjectData(id)
-  const projectTable = (db as any).project
-  if (projectTable && !hasId) {
-    projectTable.add({ projectId: id })
-  }
+  const hasId: any = await haveHistoryData(id, group_by)
   const table = (db as any).item
-  if (table) {
+  if (table && !hasId) {
     table.bulkPut(tasks)
   }
 }
 
-export const delTaskForTable = async (id: number) => {
+export const delTaskForTable = async (id: number, group_by: string) => {
   if (!db.isOpen()) {
     await db.open()
   }
   const table = (db as any).item
   if (table) {
-    await table.where({ project_id: id }).delete()
+    await table.where({ project_id: id, group_by }).delete()
   }
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { MapContentBox } from '@/views/Encephalogram/styles'
 import {
   delTaskForTable,
-  haveProjectData,
+  haveHistoryData,
 } from '@/views/Encephalogram/until/DbHelper'
 import useProjectId from '@/views/Encephalogram/hook/useProjectId'
 import useMapData from '../../hook/useMapData'
@@ -20,7 +20,10 @@ const MapContent = (props: any) => {
   const { data } = useMapData()
 
   const addTask = async () => {
-    const hasId: any = await haveProjectData(projectId)
+    const hasId: any = await haveHistoryData(
+      projectId,
+      encephalogramParmas.group_by,
+    )
     if (!hasId) {
       await getMapList({
         project_id: projectId,
@@ -30,7 +33,7 @@ const MapContent = (props: any) => {
   }
 
   const refreshData = async () => {
-    await delTaskForTable(projectId)
+    await delTaskForTable(projectId, encephalogramParmas.group_by)
     await getMapList({
       project_id: projectId,
       group_by: encephalogramParmas.group_by,

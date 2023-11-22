@@ -3,8 +3,7 @@ import Dexie from 'dexie'
 const getIndexDb = () => {
   const db = new Dexie('encephalogram')
   db.version(1).stores({
-    project: '++id,projectId',
-    item: '++id,project_id',
+    item: '++id,project_id,group_by',
   })
   return db
 }
