@@ -12,7 +12,8 @@ const Trends = () => {
   const routerPath = useLocation()
   const [activeKey, setActiveKey] = useState('')
   const [isVisible, setIsVisible] = useState(false)
-  const [resultTabList, setResultTabList] = useState<any>([
+
+  const list = [
     {
       label: t('allNotifications'),
       key: '1',
@@ -29,7 +30,7 @@ const Trends = () => {
       label: t('mentionMine'),
       key: '4',
     },
-  ])
+  ]
 
   //   跳转路由
   const onChangeRouter = (key: any) => {
@@ -38,17 +39,21 @@ const Trends = () => {
     navigate(`/Trends/AllNote/${key}`)
   }
 
-  useEffect(() => {
+  const onUpdateList = () => {
     //   获取当前路由的key
     const currentRouterKey = routerPath?.pathname?.split('/Trends/AllNote/')[1]
     onChangeRouter(currentRouterKey)
+  }
+
+  useEffect(() => {
+    onUpdateList()
   }, [])
 
   return (
     <HaveTabsContentWrap>
       <TabsContent
         onChangeRouter={onChangeRouter}
-        tabItems={resultTabList}
+        tabItems={list}
         activeKey={activeKey}
         tabBarExtraContent={
           <CommonButton

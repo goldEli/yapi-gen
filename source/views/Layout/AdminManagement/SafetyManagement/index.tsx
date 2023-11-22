@@ -17,40 +17,42 @@ const SafetyManagement = () => {
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [activeKey, setActiveKey] = useState('')
-  const [resultTabList, setResultTabList] = useState<any>([
-    {
-      label: t('secure_watermark'),
-      key: '/AdminManagement/WaterMarkManagement',
-      url: '/AdminManagement/SafetyManagement/WaterMarkManagement',
-      isPermission: false,
-    },
-    {
-      label: t('operation_log'),
-      key: '/AdminManagement/OperationManagement',
-      url: '/AdminManagement/SafetyManagement/OperationManagement',
-      isPermission: false,
-    },
-    {
-      label: t('log_in_log'),
-      key: '/AdminManagement/LoginManagement',
-      url: '/AdminManagement/SafetyManagement/LoginManagement',
-      isPermission: false,
-    },
-  ])
-  const { currentMenu } = useSelector(store => store.user)
+  const [resultTabList, setResultTabList] = useState<any>([])
+  const { currentMenu, isRefresh } = useSelector(store => store.user)
 
   //   跳转路由
-  const onChangeRouter = (key: any) => {
-    const url = resultTabList?.filter((i: any) => i.key === key)[0]?.url
+  const onChangeRouter = (key: any, arr?: any) => {
+    const url = (arr ?? resultTabList)?.filter((i: any) => i.key === key)[0]
+      ?.url
     setActiveKey(key)
     //   拼接三级菜单路由
     navigate(url)
   }
 
   useEffect(() => {
-    if (currentMenu?.id) {
+    if (currentMenu?.id || isRefresh) {
+      const list = [
+        {
+          label: t('secure_watermark'),
+          key: '/AdminManagement/WaterMarkManagement',
+          url: '/AdminManagement/SafetyManagement/WaterMarkManagement',
+          isPermission: false,
+        },
+        {
+          label: t('operation_log'),
+          key: '/AdminManagement/OperationManagement',
+          url: '/AdminManagement/SafetyManagement/OperationManagement',
+          isPermission: false,
+        },
+        {
+          label: t('log_in_log'),
+          key: '/AdminManagement/LoginManagement',
+          url: '/AdminManagement/SafetyManagement/LoginManagement',
+          isPermission: false,
+        },
+      ]
       const urls = currentMenu?.children?.map((k: any) => k.url)
-      const resultList = resultTabList?.map((i: any) => ({
+      const resultList = list?.map((i: any) => ({
         ...i,
         isPermission: urls?.includes(String(i.key)),
       }))
@@ -61,9 +63,10 @@ const SafetyManagement = () => {
       )
       onChangeRouter(
         currentRouter?.length > 0 ? currentRouter[0]?.key : resultList[0].key,
+        resultList,
       )
     }
-  }, [currentMenu?.id])
+  }, [currentMenu?.id, isRefresh])
 
   return (
     <HaveTabsContentWrap>

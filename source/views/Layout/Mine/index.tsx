@@ -16,7 +16,8 @@ const Mine = () => {
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [activeKey, setActiveKey] = useState('')
-  const [resultTabList, setResultTabList] = useState<any>([
+
+  const list = [
     {
       key: '1',
       label: t('mine.mineSurvey'),
@@ -47,31 +48,35 @@ const Mine = () => {
       label: t('newlyAdd.mineExamine'),
       url: '/Mine/Examine',
     },
-  ])
+  ]
 
   //   跳转路由
   const onChangeRouter = (key: any) => {
-    const url = resultTabList?.filter((i: any) => i.key === key)[0]?.url
+    const url = list?.filter((i: any) => i.key === key)[0]?.url
     setActiveKey(String(key))
     //   拼接三级菜单路由
     navigate(url)
   }
 
-  useEffect(() => {
+  const onUpdateList = () => {
     //   获取当前路由的key
-    const currentRouter = resultTabList?.filter(
+    const currentRouter = list?.filter(
       (i: any) => i.url === routerPath?.pathname,
     )
     onChangeRouter(
-      currentRouter?.length > 0 ? currentRouter[0]?.key : resultTabList[0].key,
+      currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key,
     )
+  }
+
+  useEffect(() => {
+    onUpdateList()
   }, [])
 
   return (
     <HaveTabsContentWrap>
       <TabsContent
         onChangeRouter={onChangeRouter}
-        tabItems={resultTabList}
+        tabItems={list}
         activeKey={activeKey}
       />
       <Content>

@@ -73,15 +73,6 @@ const Setting = () => {
           content: <ProjectInfo />,
           url: '/ProjectDetail/Setting/ProjectInfo',
         },
-        // {
-        //   name: t('project.projectMember'),
-        //   icon: 'team',
-        //   content: <ProjectMember searchValue={searchValue} />,
-        //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        //     String(i.identity).includes('b/project/member'),
-        //   ).length,
-        // key: 'member',
-        // },
         {
           label: t('project.projectPermissionGroup'),
           icon: 'lock',
