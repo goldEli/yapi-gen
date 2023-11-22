@@ -28,9 +28,37 @@ const useMapData = () => {
     const filterItems = allItems.filter((item: any) => {
       console.log(item, 'itemitemitemitemitemitem')
       if (item.node_type === 'story') {
-        if (iterationVal.includes(item.iterate_id)) {
-          return true
+        let isNeed = true
+        if (iterationVal.length) {
+          if (iterationVal.includes(item.iterate_id)) {
+            isNeed = true
+          } else {
+            return false
+          }
         }
+        if (person.length) {
+          const handlers = item?.handlers?.map?.((k: any) => k.id)
+          if (handlers.some((t: any) => person.includes(t))) {
+            isNeed = true
+          } else {
+            return false
+          }
+        }
+        if (state.length) {
+          if (state.includes(item.category_status_id)) {
+            isNeed = true
+          } else {
+            return false
+          }
+        }
+        if (time.length) {
+          if (state.includes(item.category_status_id)) {
+            isNeed = true
+          } else {
+            return false
+          }
+        }
+        return isNeed
       }
       return false
     })
