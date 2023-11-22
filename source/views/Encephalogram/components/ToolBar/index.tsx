@@ -6,10 +6,12 @@ import html2canvas from 'html2canvas'
 import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
+import _ from 'lodash'
+
 const Btn = styled.div`
   height: 32px;
   border-radius: 0px 0px 0px 0px;
@@ -35,6 +37,7 @@ const ToolBar = () => {
   const [value, setValue] = useState('50')
   const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
+  const debounceRef = useRef<any>()
 
   const onChange = (id: number) => {
     dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
@@ -74,11 +77,11 @@ const ToolBar = () => {
     },
   ]
   const handleChange = (val: string) => {
-    console.log(val)
     dispatch(setEncephalogramParmas({ num: val }))
     setValue(val)
   }
-  const downloadImage = () => {
+
+  const downloadImage = _.debounce(() => {
     const div: any = document.querySelector('#MapContentMountNode')
     html2canvas(div, {
       allowTaint: true,
@@ -105,7 +108,16 @@ const ToolBar = () => {
           type: 'error',
         })
       })
-  }
+  }, 500)
+
+  const onRefresh = _.debounce(() => {
+    dispatch(
+      setEncephalogramParmas({
+        refresh: encephalogramParams.refresh + 1,
+      }),
+    )
+  }, 500)
+
   return (
     <ToolBarBox className="toolBar">
       <RightWrap type="1">
@@ -147,13 +159,7 @@ const ToolBar = () => {
               color: 'var(--neutral-n2)',
               margin: '0 4px',
             }}
-            onClick={() => {
-              dispatch(
-                setEncephalogramParmas({
-                  refresh: encephalogramParams.refresh + 1,
-                }),
-              )
-            }}
+            onClick={onRefresh}
           />
           <span className="line" />
         </Space>
