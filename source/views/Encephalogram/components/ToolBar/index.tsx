@@ -6,10 +6,12 @@ import html2canvas from 'html2canvas'
 import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { setEncephalogramParmas } from '@store/encephalogram'
 import styled from '@emotion/styled'
 import { CommonIconFont } from '@/components/CommonIconFont'
+import _ from 'lodash'
+
 const Btn = styled.div`
   height: 32px;
   border-radius: 0px 0px 0px 0px;
@@ -35,7 +37,7 @@ const ToolBar = () => {
   const [value, setValue] = useState<any>(1)
   const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
-  const [addReduceVal,setAddReduceVal]= useState(1)
+  const [addReduceVal, setAddReduceVal] = useState(1)
   const onChange = (id: number) => {
     dispatch(setEncephalogramParmas({ group_by: id === 0 ? 'user' : 'task' }))
   }
@@ -70,7 +72,7 @@ const ToolBar = () => {
     },
     {
       label: '200%',
-      value: 2
+      value: 2,
     },
   ]
   const handleChange = (val: number) => {
@@ -78,7 +80,8 @@ const ToolBar = () => {
     setValue(val)
     setAddReduceVal(val)
   }
-  const downloadImage = () => {
+
+  const downloadImage = _.debounce(() => {
     const div: any = document.querySelector('#MapContentMountNode')
     html2canvas(div, {
       allowTaint: true,
@@ -105,25 +108,32 @@ const ToolBar = () => {
           type: 'error',
         })
       })
-  }
-  const handleChangeAdd=()=>{
+  })
+  const handleChangeAdd = () => {
     const val = Number((addReduceVal + 0.05).toFixed(2))
-    if(addReduceVal + 0.05 > 2){
+    if (addReduceVal + 0.05 > 2) {
       return
     }
     setAddReduceVal(val)
-    setValue(`${Math.trunc(val*100)}%`)
-   dispatch(setEncephalogramParmas({ num: val }))
-  }
-  const handleChangeReduce=()=>{
-    const val = Number((addReduceVal - 0.05).toFixed(2))
-    if(val < 0.2){
-      return
-    }
-    setAddReduceVal(val)
-    setValue(`${Math.trunc(val*100)}%`)
+    setValue(`${Math.trunc(val * 100)}%`)
     dispatch(setEncephalogramParmas({ num: val }))
   }
+  const handleChangeReduce = () => {
+    const val = Number((addReduceVal - 0.05).toFixed(2))
+    if (val < 0.2) {
+      return
+    }
+    setAddReduceVal(val)
+    setValue(`${Math.trunc(val * 100)}%`)
+    dispatch(setEncephalogramParmas({ num: val }))
+  }
+  const onRefresh = _.debounce(() => {
+    dispatch(
+      setEncephalogramParmas({
+        refresh: encephalogramParams.refresh + 1,
+      }),
+    )
+  }, 500)
   return (
     <ToolBarBox className="toolBar">
       <RightWrap type="1">
@@ -165,19 +175,13 @@ const ToolBar = () => {
               color: 'var(--neutral-n2)',
               margin: '0 4px',
             }}
-            onClick={() => {
-              dispatch(
-                setEncephalogramParmas({
-                  refresh: encephalogramParams.refresh + 1,
-                }),
-              )
-            }}
+            onClick={onRefresh}
           />
           <span className="line" />
         </Space>
         <Space size={10}>
           <IconFont
-          onClick={handleChangeAdd}
+            onClick={handleChangeAdd}
             type="zoomin"
             style={{
               fontSize: 24,
@@ -213,7 +217,7 @@ const ToolBar = () => {
             )}
           />
           <IconFont
-           onClick={handleChangeReduce}
+            onClick={handleChangeReduce}
             type="reduce"
             style={{
               fontSize: 24,
