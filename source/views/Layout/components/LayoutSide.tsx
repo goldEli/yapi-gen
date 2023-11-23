@@ -72,7 +72,7 @@ const MorePopoverComponent = (props: MorePopoverComponentProps) => {
             />
             <div>
               {/* 单独处理后台得翻译 */}
-              {currentMenu?.url === '/AdminManagement'
+              {i?.url === '/AdminManagement'
                 ? t('managementBackend')
                 : i.isRegular
                 ? t(i.name)
