@@ -43,7 +43,7 @@ const ToolBar = () => {
   const items = [
     {
       label: '25%',
-      value: 0.2,
+      value: 0.25,
     },
     {
       label: '50%',
@@ -110,16 +110,14 @@ const ToolBar = () => {
   const handleChangeAdd = () => {
     const val = encephalogramParams.num + 0.05
 
-    dispatch(setEncephalogramParams({ num: val }))
-    dispatch(setEncephalogramParams({ numType: 'click' }))
+    dispatch(setEncephalogramParams({ num: val, numType: 'click' }))
   }
   const handleChangeReduce = () => {
     const val = encephalogramParams.num - 0.05
     if (val < 0.2) {
       return
     }
-    dispatch(setEncephalogramParams({ num: val }))
-    dispatch(setEncephalogramParams({ numType: 'click' }))
+    dispatch(setEncephalogramParams({ numType: 'click', num: val }))
   }
   const onRefresh = _.debounce(() => {
     dispatch(
@@ -207,9 +205,9 @@ const ToolBar = () => {
             onChange={(val: any) => handleChange(val)}
             placement="bottomRight"
             dropdownMatchSelectWidth={160}
-            menuItemSelectedIcon={
-              <CommonIconFont type="check" color="var(--primary-d1)" />
-            }
+            // menuItemSelectedIcon={
+            //   <CommonIconFont type="check" color="var(--primary-d1)" />
+            // }
             dropdownRender={(menu: any) => (
               <>
                 {menu}
