@@ -332,7 +332,7 @@ const GlobalStyle = () => {
     .ant-table-tbody > tr > td {
       position: relative;
       border: none;
-      &::after {
+      /* &::after {
         content: ' ';
         position: absolute;
         left: 0;
@@ -341,7 +341,7 @@ const GlobalStyle = () => {
         height: 1px;
         background: var(--neutral-n5);
         transform: scaleY(0.5);
-      }
+      } */
     }
 
     .ant-table-tbody > tr > td,

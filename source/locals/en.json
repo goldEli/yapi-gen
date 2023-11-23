@@ -2626,5 +2626,7 @@
   "screenshot": "Screenshot",
   "toBeOpened": "Wait open",
   "onlyTheProjectLeaderCanPausestartTheProject": "Only the project leader can start/pause the project",
-  "removed": "(Removed) "
+  "removed": "(Removed) ",
+  "projectTeam": "Project Team",
+  "department1": "Department"
 }
