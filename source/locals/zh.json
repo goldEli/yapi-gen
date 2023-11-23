@@ -372,7 +372,7 @@
   "please_select_your_affiliation": "请选择所属",
   "keyboard": "键",
   "the_key_is_used_to_distinguish_items_and_is_used_as_a_requirement_number_prefix": "编号用以区分项目，作为需求编号前缀使用",
-  "please_enter_the_key": "请输入键",
+  "please_enter_the_key": "请输入编号",
   "project_leader": "项目负责人",
   "please_select_project_leader": "请选择项目负责人",
   "Permission": "权限",
@@ -2626,5 +2626,7 @@
   "screenshot": "截图",
   "toBeOpened": "待开放",
   "onlyTheProjectLeaderCanPausestartTheProject": "项目负责人才能开始/暂停项目",
-  "removed": "（已移除）"
+  "removed": "（已移除）",
+  "editColumn": "编辑列",
+  "deleteColumn": "删除列"
 }

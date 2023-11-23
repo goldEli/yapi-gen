@@ -168,14 +168,18 @@ const QuickMine = (props: QuickMineProps) => {
     })
   }
   // 已办
-  const onGetMineFinishList = async (isInit: boolean, page: number) => {
+  const onGetMineFinishList = async (
+    isInit: boolean,
+    page: number,
+    index?: number,
+  ) => {
     setIsSpinning(true)
     const res = await getMineFinishListHeader({
       page: page,
       pagesize: 15,
     })
     if (isInit) {
-      setDataList(res)
+      index === 2 && setDataList(res)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(res.list)
@@ -189,14 +193,19 @@ const QuickMine = (props: QuickMineProps) => {
   }
 
   // 待办
-  const onGetMineNoFinishList = async (isInit: boolean, page: number) => {
+  const onGetMineNoFinishList = async (
+    isInit: boolean,
+    page: number,
+    index?: number,
+  ) => {
+    console.log(index, '=index1111')
     setIsSpinning(true)
     const res = await getMineNoFinishListHeader({
       page: page,
       pagesize: 15,
     })
     if (isInit) {
-      setDataList(res)
+      index === 0 && setDataList(res)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(res.list)
@@ -210,7 +219,11 @@ const QuickMine = (props: QuickMineProps) => {
   }
 
   // 获取待审核的列表
-  const getVerifyList = async (isInit?: boolean, page?: number) => {
+  const getVerifyList = async (
+    isInit?: boolean,
+    page?: number,
+    index?: number,
+  ) => {
     setIsSpinning(true)
     const params = {
       page: page,
@@ -219,7 +232,7 @@ const QuickMine = (props: QuickMineProps) => {
     const res = await getVerifyUserListHeader(params)
     setIsSpinning(false)
     if (isInit) {
-      setDataList(res)
+      index === 1 && setDataList(res)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(res.list)
@@ -236,15 +249,15 @@ const QuickMine = (props: QuickMineProps) => {
     setDataList({})
     switch (tabActive) {
       case 2:
-        onGetMineFinishList(true, 1)
+        onGetMineFinishList(true, 1, tabActive)
         break
       case 1:
         // 待审核
-        getVerifyList(true, 1)
+        getVerifyList(true, 1, tabActive)
         break
 
       default:
-        onGetMineNoFinishList(true, 1)
+        onGetMineNoFinishList(true, 1, tabActive)
         break
     }
   }
@@ -316,12 +329,10 @@ const QuickMine = (props: QuickMineProps) => {
   const onChangeTabActive = (index: number) => {
     if (index === tabActive) return
     setTabActive(index)
-    setDataList({})
   }
 
   useEffect(() => {
     setPage(1)
-    setDataList({})
     props.isVisible && getData()
   }, [props.isVisible, tabActive])
 

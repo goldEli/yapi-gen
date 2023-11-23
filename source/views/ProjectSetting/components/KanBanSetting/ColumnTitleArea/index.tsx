@@ -125,13 +125,13 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const [popoverVisible, setPopoverVisible] = useState(false)
   const createList2 = [
     {
-      name: '编辑列',
+      name: t('editColumn'),
       key: 'keyboard',
       // icon: 'keyboard',
       isPermission: true,
     },
     {
-      name: '删除列',
+      name: t('deleteColumn'),
       key: 'question',
       // icon: 'question',
       isPermission: true,
