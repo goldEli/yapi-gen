@@ -179,7 +179,7 @@ const LayoutIndex = () => {
                 onChangeReportAssistantModalObj={setReportAssistantModalObj}
               />
             </LayoutHeader>
-            <MainContent>
+            <MainContent isOpen={layoutSideCollapse}>
               <Outlet />
             </MainContent>
           </LayoutContent>
