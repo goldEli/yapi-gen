@@ -178,7 +178,9 @@ const TaskItem = (props: TaskItemProps) => {
         page: newPage,
         user_id: item.id,
         project_ids: filterParams?.user_ids
-          ?.filter((e: any) => e.id === item.id)
+          ?.filter(
+            (e: any) => parseInt(e.user_id, 10) === parseInt(item.id, 10),
+          )
           ?.map((item: any) => item.project_id),
       },
     })
