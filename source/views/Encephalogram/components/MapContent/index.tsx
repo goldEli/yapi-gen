@@ -14,7 +14,6 @@ import { setEncephalogramParams } from '@store/encephalogram'
 
 const MapContent = (props: any) => {
   const { projectId } = useProjectId()
-  // const { fullScreen } = useSelector(store => store.kanBan)
   const { encephalogramParams } = useSelector(store => store.encephalogram)
   const dispatch = useDispatch()
   const mapRef = useRef<any>(null)
@@ -74,7 +73,10 @@ const MapContent = (props: any) => {
     }
   }, [])
   useEffect(() => {
-    if (encephalogramParams.numType === 'wheel') {
+    if (
+      !encephalogramParams.numType ||
+      encephalogramParams.numType === 'wheel'
+    ) {
       return
     }
     mapRef.current.zoomTo(

@@ -5,16 +5,29 @@ export const flattenObjectToArray = (
   obj: any,
   group_by: string,
   array: any[] = [],
+  deep = 1,
 ) => {
   if (Array.isArray(obj.children)) {
-    const temp = { ...obj, id: String(obj.node_key), group_by, ids: obj.id }
+    const temp = {
+      ...obj,
+      id: String(obj.node_key),
+      group_by,
+      ids: obj.id,
+      deep,
+    }
     delete temp.children
     array.push(temp)
     obj.children.forEach((item: any) => {
-      flattenObjectToArray(item, group_by, array)
+      flattenObjectToArray(item, group_by, array, deep + 1)
     })
   } else {
-    array.push({ ...obj, ids: obj.id, id: String(obj.node_key), group_by })
+    array.push({
+      ...obj,
+      ids: obj.id,
+      id: String(obj.node_key),
+      group_by,
+      deep,
+    })
   }
   return array
 }
@@ -80,6 +93,7 @@ export const formatObjectForRender = (obj: any, topObj: any) => {
   if (obj) {
     const temp = {
       ...obj,
+      collapsed: obj.group_by === 'user' ? obj.deep >= 3 : obj.deep >= 2,
       name: generatorUserText(obj),
       style: generatorStyleObject(obj, topObj),
     }
@@ -100,7 +114,7 @@ export const buildIntactTree = (tempArr: any[]) => {
     return formatObjectForRender(item, topObj)
   })
   // 构建 node_key 到对象的映射
-  const idMap = arr.reduce((map, item) => {
+  let idMap = arr.reduce((map, item) => {
     map[item.node_key] = item
     return map
   }, {})
@@ -118,35 +132,40 @@ export const buildIntactTree = (tempArr: any[]) => {
     }
     return tree
   }, [])
-  arr.forEach((k: any) => {
-    if (
-      k.node_type === 'story' &&
-      k.group_by === 'task' &&
-      idMap[k.node_key] &&
-      !idMap[k.node_key]?.children?.length
-    ) {
-      const item = idMap[k.node_key]
-      const tempArr = item?.handlers?.map((i: any) => {
-        return {
-          ...i,
-          id: uuidv4(),
-          node_key: String(uuidv4()),
-          node_pid: k.node_key,
-          name: `${i.department_name} ${i.position_name} ${i.name}`,
-          project_id: k.project_id,
-          node_type: 'user',
-          style: {
-            fontSize: 14,
-            fill: '#FFFFFF',
-          },
+  if (topObj.group_by === 'task') {
+    arr.forEach((k: any) => {
+      if (
+        k.node_type === 'story' &&
+        k.group_by === 'task' &&
+        idMap[k.node_key] &&
+        !idMap[k.node_key]?.children?.length
+      ) {
+        const item = idMap[k.node_key]
+        const tempArr = item?.handlers?.map((i: any) => {
+          return {
+            ...i,
+            id: `${Date.now()}${Math.random().toString(36).slice(2, 8)}`,
+            node_key: String(uuidv4()),
+            node_pid: k.node_key,
+            name: `${i.department_name} ${i.position_name} ${i.name}`,
+            project_id: k.project_id,
+            node_type: 'user',
+            collapsed: true,
+            style: {
+              fontSize: 14,
+              fill: '#FFFFFF',
+            },
+          }
+        })
+        if (tempArr?.length) {
+          item.children = tempArr
         }
-      })
-      if (tempArr?.length) {
-        item.children = tempArr
       }
-    }
-  })
+    })
+  }
+
   if (Array.isArray(tree)) {
+    idMap = null
     return tree.find((k: any) => k.node_pid === 0)
   }
   return tree

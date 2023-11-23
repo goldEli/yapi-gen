@@ -1,6 +1,6 @@
 import G6, { Util } from '@antv/g6'
 import { setEncephalogramParams } from '@store/encephalogram'
-import { store, useDispatch } from '@store/index'
+import { store } from '@store/index'
 
 const getGraph = () => {
   let graph: any = null
@@ -107,7 +107,7 @@ const getGraph = () => {
           } 天</li>
           <li style="margin-bottom: 8px">当前进度：${item.schedule ?? 0} %</li>
           ${
-            item?.handlers
+            item?.handlers?.length
               ? `<li style="display: flex">
           <div style="white-space: nowrap; margin-right: 8px">处理人：</div>
           <div style="display: flex; flex-direction: column">
@@ -132,13 +132,11 @@ const getGraph = () => {
               .join('')}
           </div>
         </li>`
-              : ''
+              : '<span style="color: #ffffff;">处理人：--</span>'
           }
           
-        </ul>
-            `
+        </ul> `
         return outDiv
-        // <li>预计工期: ${e.item.getModel().name || e.item.getModel().id}</li>
       },
     })
     const width = container.scrollWidth
@@ -158,6 +156,7 @@ const getGraph = () => {
                 collapsed,
               })
               data.collapsed = collapsed
+              graph.focusItem(data.id, true)
               return true
             },
           },
@@ -180,9 +179,6 @@ const getGraph = () => {
       layout: {
         type: 'compactBox',
         direction: 'LR',
-        getId: function getId(d: any) {
-          return d.node_key
-        },
         getHeight: function getHeight() {
           return 40
         },
@@ -195,9 +191,11 @@ const getGraph = () => {
       plugins: [tooltip],
     })
     graph.on('wheel', () => {
-      store.dispatch(setEncephalogramParams({ numType: 'wheel' }))
       store.dispatch(
-        setEncephalogramParams({ num: Number(graph.getZoom().toFixed(2)) }),
+        setEncephalogramParams({
+          numType: 'wheel',
+          num: Number(graph.getZoom().toFixed(2)),
+        }),
       )
     })
     graph.on('node:mouseenter', (event: any) => {
