@@ -129,8 +129,6 @@ function getTypeComponent(
   onBlur?: any,
   text?: string,
 ) {
-  console.log(text, 'text')
-
   let child: any = null
   if (params?.attr === 'date') {
     child = (

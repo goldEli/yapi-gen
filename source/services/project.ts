@@ -70,6 +70,7 @@ export const getProjectList: any = async (params: any) => {
         groupIds: i.groups?.map((k: any) => k.id),
         projectType: i.project_type,
         defaultHomeMenu: i.default_home_menu,
+        leader: i.leader,
       })),
     }
   }
@@ -256,6 +257,7 @@ export const getProjectInfo: any = async (params: any) => {
       isDefault: i.is_default_filter,
       contentTxt: i.content_txt,
       content: i.content,
+      is_flaw: i.is_flaw,
     })),
     projectPermissions: response.data.company_permissions,
     groupIds: response.data?.groups?.map((i: any) => i.id),

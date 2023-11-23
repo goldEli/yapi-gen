@@ -8,6 +8,10 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setIterateInfo } from '@store/iterate'
+import {
+  getProjectInfoStore,
+  getProjectInfoValuesStore,
+} from '@store/project/project.thunk'
 
 interface LayoutSecondaryMenuProps {
   width: number
@@ -71,6 +75,8 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
     } else if (paramsData?.id) {
       dispatch(setIterateInfo({}))
       const params = encryptPhp(JSON.stringify(paramsData))
+      dispatch(getProjectInfoStore({ projectId: paramsData?.id }))
+      dispatch(getProjectInfoValuesStore({ projectId: paramsData?.id }))
       resultUrl = `${url}?data=${params}`
     } else {
       resultUrl = url
@@ -92,7 +98,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'iteration',
-            name: t('iteration'),
+            name: t('sprintProject.iteration'),
             url: '/ProjectDetail/Iteration',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -235,22 +241,21 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           routerPath?.pathname?.includes(i.url),
         )
       }
-
       setActiveKey(
-        currentHavePath?.length > 0
-          ? String(currentHavePath[0]?.id)
-          : String(resultItems[0]?.id),
+        currentHavePath?.length > 0 ? String(currentHavePath[0]?.id) : '0',
       )
     }
   }, [currentMenu, routerPath, userInfo, projectInfo])
 
   return (
     <LayoutMenuWrap
+      style={{
+        width: props.width ? `calc(100% - ${props.width + 120}px)` : 'auto',
+      }}
       activeKey={activeKey}
       tabPosition="top"
       getPopupContainer={n => n}
       onChange={handleModeChange}
-      width={props.width + 120}
       moreIcon={
         <MoreMenuWrap>
           <div>{t('more')}</div>

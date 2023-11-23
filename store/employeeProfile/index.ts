@@ -19,6 +19,8 @@ export interface CounterState {
     detailId: number
     state: number
   }
+  // 筛选条件变化
+  currentClickNumber?: any
 }
 
 const initialState: CounterState = {
@@ -34,6 +36,7 @@ const initialState: CounterState = {
     detailId: 0,
     state: 0,
   },
+  currentClickNumber: 0,
 }
 
 export const employeeProfileSlice = createSlice({
@@ -56,6 +59,10 @@ export const employeeProfileSlice = createSlice({
     setTaskDrawerUpdate: (state: any, action) => {
       state.taskDrawerUpdate = action.payload
     },
+    // 修改查询条件
+    setCurrentClickNumber: (state: any, action) => {
+      state.currentClickNumber = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getMemberOverviewList.fulfilled, (state, action) => {
@@ -69,6 +76,7 @@ export const {
   setFilterParamsOverall,
   setContrastDrawer,
   setTaskDrawerUpdate,
+  setCurrentClickNumber,
 } = employeeProfileSlice.actions
 
 export default employeeProfileSlice.reducer

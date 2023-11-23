@@ -80,7 +80,7 @@ const SetShowField = (props: Props) => {
                 active === '3' || userPreferenceConfig.previewModel === 3
               }
             >
-              <span style={{ paddingRight: 10 }}>{t('preview')}</span>
+              <span style={{ paddingRight: 10 }}>{t('popup_preview')}</span>
               {(active === '3' || userPreferenceConfig.previewModel === 3) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}

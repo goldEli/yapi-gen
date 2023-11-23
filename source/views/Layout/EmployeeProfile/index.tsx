@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import EmployeeProfileHeader from './components/EmployeeProfileHeader'
 import {
   ContentWrap,
@@ -16,7 +16,10 @@ import CommonIconFont from '@/components/CommonIconFont'
 import EmployeeProfileReport from './components/EmployeeProfileReport'
 import EmployeeProfileTask from './components/EmployeeProfileTask'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterParamsOverall } from '@store/employeeProfile'
+import {
+  setCurrentClickNumber,
+  setFilterParamsOverall,
+} from '@store/employeeProfile'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 
@@ -34,7 +37,13 @@ const EmployeeProfile = () => {
   const sideMain = useRef<any>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 600
-
+  const { currentKey, currentClickNumber } = useSelector(
+    store => store.employeeProfile,
+  )
+  // filterParams = useMemo(
+  //   () => filterParams,
+  //   [filterParams?.status, filterParams?.time],
+  // )
   // 拖动线条
   const onDragLine = () => {
     let width = sliderRef.current?.clientWidth
@@ -90,6 +99,7 @@ const EmployeeProfile = () => {
         onChangeFilter={value => {
           setFilterParams(value)
           dispatch(setFilterParamsOverall(value))
+          dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}
         filterParams={filterParams}
       />

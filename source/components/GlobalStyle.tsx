@@ -330,7 +330,18 @@ const GlobalStyle = () => {
     }
 
     .ant-table-tbody > tr > td {
-      border-bottom: none;
+      position: relative;
+      border: none;
+      &::after {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 100%;
+        height: 1px;
+        background: var(--neutral-n5);
+        transform: scaleY(0.5);
+      }
     }
 
     .ant-table-tbody > tr > td,
@@ -454,7 +465,11 @@ const GlobalStyle = () => {
     .ant-select-item {
       padding: 5px 16px !important;
     }
-
+    .ant-select-item.removeStyle {
+      border-top: 1px solid var(--neutral-n6-d2);
+      padding: 0px !important;
+      margin: 0px 16px;
+    }
     .ant-select-item-option {
       font-weight: inherit;
       color: var(--neutral-n2);
@@ -1056,7 +1071,7 @@ const GlobalStyle = () => {
       width: 0;
     }
     // 导图
-    #MapContentMountNode{
+    #MapContentMountNode {
       background: #fff;
       width: 100%;
       height: 100%;
@@ -1065,8 +1080,8 @@ const GlobalStyle = () => {
       background-repeat: no-repeat;
       background-image: url('https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mind/dotBg.png');
     }
-    .fullscreen-enabled .encephalogramBox{
-      padding-left:24px !important;
+    .fullscreen-enabled .encephalogramBox {
+      padding-left: 24px !important;
     }
   `
   return <Global styles={globalCss} />

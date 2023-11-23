@@ -48,6 +48,7 @@ const AddWorkItem = () => {
     store => store.project,
   )
   const { params, visible } = addWorkItemModal
+
   const [isCreateWorkItem, setIsCreateWorkItem] = useState<any>({})
   // 项目列表
   const [projectList, setProjectList] = useState<any>([])
@@ -241,6 +242,9 @@ const AddWorkItem = () => {
     }
     if (leftValues && rightValues) {
       await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
+    }
+    if (params?.confirm) {
+      params?.confirm()
     }
   }
 

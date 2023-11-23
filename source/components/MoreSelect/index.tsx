@@ -52,7 +52,6 @@ const index = (props: any) => {
       })
       .filter((i: any) => i !== undefined)
   }
-
   const resove = (arry: any, ids: any) => {
     const data = arry.reduce((acc: any, cur: any) => {
       const ids = cur.children.map((item: any) => item.id)

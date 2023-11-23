@@ -8,7 +8,6 @@ import {
   getProjectInfoValuesStore,
   getWarningConfigInfo,
 } from './project.thunk'
-import { setAffairsActivity } from '@store/affairs'
 
 export interface CounterState {
   projectInfo: any
@@ -243,7 +242,6 @@ export const projectSlice = createSlice({
       state: any,
       action: PayloadAction<CounterState['statistiDepartment']>,
     ) {
-      console.log(11111, action.payload)
       state.statistiDepartment = action.payload
     },
   },

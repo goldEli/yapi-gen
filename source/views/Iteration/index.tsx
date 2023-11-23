@@ -498,7 +498,7 @@ const Iteration = () => {
               <TableFilter
                 onFilter={getSearchKey}
                 onSearch={onFilterSearch}
-                list={searchList}
+                list={searchList?.filter((i: any) => i.is_flaw !== 1)}
                 basicsList={filterBasicsList?.filter(
                   (i: any) => i.is_flaw !== 1,
                 )}

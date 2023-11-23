@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { Droppable } from 'react-beautiful-dnd'
 import IssueCard from '../IssueCard'
@@ -6,9 +6,13 @@ import { handleId } from '../utils'
 import DropCardList from '../DropCardList'
 import useDropData from '../hooks/useDropData'
 import DropCard from '../DropCard'
-import { useSelector } from '@store/index'
+import { store, useDispatch, useSelector } from '@store/index'
 import useGroupType from '../hooks/useGroupType'
 import { DropArea } from '../Issues'
+import { getNewkanbanStoriesOfPaginate } from '@/services/kanban'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { setKanbanInfoByGroup } from '@store/kanBan'
+import NoData from '@/components/NoData'
 
 interface IssuesProps {
   issues: Model.KanBan.Column
@@ -23,10 +27,10 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
   }, [groupId, issues.id])
   const { movingStory, kanbanInfoByGroup } = useSelector(store => store.kanBan)
   const { groupType } = useGroupType()
-
+  const { projectInfo } = useSelector(store => store.project)
   const { data } = useDropData(issues.id)
   const columnId = issues?.id
-
+  const dispatch = useDispatch()
   const movingStoryIssuesIndex = useMemo(() => {
     const ret = kanbanInfoByGroup.find(item => item.id === groupId)
     return ret?.columns.findIndex(item => item.id === movingStory?.columnId)
@@ -52,26 +56,152 @@ const IssuesForPriority: React.FC<IssuesProps> = props => {
       columnId={issues.id}
     />
   )
-  const issueCardListContent = issues.stories?.map((story, index) => {
-    const uuid = `${groupId}-${issues.id}-${story.id}`
-    // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
-    const hidden1 =
-      !!movingStory &&
-      (groupType === 'users' || groupType === 'category') &&
-      movingStory?.groupId !== groupId
-    // 如果当前展示状态转换释放区域，需要隐藏卡片
-    const hidden2 = showStateTransitionList
-    return (
-      <IssueCard
-        hidden={hidden1 || hidden2}
-        uuid={uuid}
-        key={uuid}
-        item={story}
-        index={index}
-        stories={issues.stories}
-      />
+
+  const [page, setPage] = useState(1)
+
+  const checkGroup = () => {
+    let obj
+    switch (groupType) {
+      case 'priority':
+        obj = {
+          priority: groupId,
+        }
+        break
+
+      default:
+        // eslint-disable-next-line no-undefined
+        obj = undefined
+        break
+    }
+    return obj
+  }
+
+  function findAndReplace(
+    groupId: any,
+    issuesId: any,
+    newStories: any,
+    data1: any,
+  ) {
+    const cc = JSON.parse(JSON.stringify(newStories))
+    let data: any
+    data = cc.map((item: any) => {
+      if (item.id === groupId) {
+        item.columns = item.columns.map((column: any) => {
+          if (column.id === issuesId) {
+            column.stories = data1
+          }
+          return column
+        })
+      }
+      return item
+    })
+    return data
+  }
+
+  // const issueCardListContent = issues.stories?.map((story, index) => {
+  //   const uuid = `${groupId}-${issues.id}-${story.id}`
+  //   // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
+  //   const hidden1 =
+  //     !!movingStory &&
+  //     (groupType === 'users' || groupType === 'category') &&
+  //     movingStory?.groupId !== groupId
+  //   // 如果当前展示状态转换释放区域，需要隐藏卡片
+  //   const hidden2 = showStateTransitionList
+  //   return (
+  //     <IssueCard
+  //       hidden={hidden1 || hidden2}
+  //       uuid={uuid}
+  //       key={uuid}
+  //       item={story}
+  //       index={index}
+  //       stories={issues.stories}
+  //     />
+  //   )
+  // })
+  function bbh(data: any) {
+    const filteredData: any = {}
+
+    for (const key in data) {
+      if (key.includes('custom')) {
+        filteredData[key] = data[key]
+      }
+    }
+    return filteredData
+  }
+  const fetchMoreData = async () => {
+    const { valueKey, inputKey } = store.getState().view
+    const newPage = page + 1
+    setPage(newPage)
+    const params2 = {
+      search: {
+        ...valueKey,
+        user_id: valueKey.user_name,
+        category_id: valueKey.category,
+        iterate_id: valueKey.iterate_name,
+        custom_field: bbh(valueKey),
+        keyword: inputKey,
+        schedule_start: valueKey?.schedule?.start,
+        schedule_end: valueKey?.schedule?.end,
+        ...{ ...checkGroup() },
+      },
+      kanban_column_id: issues.id,
+      project_id: projectInfo.id,
+      pagesize: 20,
+      page: newPage,
+    }
+
+    const res = await getNewkanbanStoriesOfPaginate({
+      ...params2,
+    })
+    dispatch(
+      setKanbanInfoByGroup(
+        findAndReplace(
+          groupId,
+          issues.id,
+          kanbanInfoByGroup,
+          issues.stories.concat(res.list),
+        ),
+      ),
     )
-  })
+  }
+  const issueCardListContent = (
+    <InfiniteScroll
+      loader={null}
+      style={{
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        height: '700px',
+      }}
+      height="700px"
+      dataLength={issues.stories?.length}
+      next={fetchMoreData}
+      hasMore
+    >
+      {issues.stories?.map((story, index) => {
+        const uuid = `${groupId}-${issues.id}-${story.id}`
+        // 如果是 人员或者类型分组 不能跨组拖动，需要隐藏卡片
+        const hidden1 =
+          !!movingStory &&
+          (groupType === 'users' || groupType === 'category') &&
+          movingStory?.groupId !== groupId
+        // 如果当前展示状态转换释放区域，需要隐藏卡片
+        const hidden2 = showStateTransitionList
+        return (
+          <IssueCard
+            cid={issues.id}
+            groupId={groupId}
+            hidden={hidden1 || hidden2}
+            uuid={uuid}
+            key={uuid}
+            item={story}
+            index={index}
+            stories={issues.stories}
+          />
+        )
+      })}
+      {issues.stories.length < 1 && <NoData />}
+    </InfiniteScroll>
+  )
 
   const minHeight =
     showStateTransitionList && data.length > 0 ? data.length * 156 + 20 : 100

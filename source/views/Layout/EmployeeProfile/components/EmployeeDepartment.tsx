@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+// eslint-disable-next-line no-param-reassign
 import React, {
   useState,
   useEffect,
@@ -5,18 +7,20 @@ import React, {
   forwardRef,
 } from 'react'
 import { getDepartmentUserList } from '@/services/setting'
-import { CheckboxAll, TreeWrap } from '../style'
-import _ from 'lodash'
+import { DepartCheckboxAll, TreeWrap } from '../style'
+import _, { set } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { setStatistiDepartment } from '@store/project'
+import CommonIconFont from '@/components/CommonIconFont'
 const EmployeeDepartment = (props: any, ref: any) => {
   const [list, setList] = useState()
   const [usersData, setUsersData] = useState()
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { statistiDepartment } = useSelector(store => store.project)
-  const { expandedKeys = [] } = statistiDepartment ?? []
+  const { expandedKeys = [], departMentUserKey = [] } = statistiDepartment ?? []
+  const [checked, setChecked] = useState(false)
   const getlist = async () => {
     const res = await getDepartmentUserList({
       search: {
@@ -25,6 +29,7 @@ const EmployeeDepartment = (props: any, ref: any) => {
       },
       is_report: void 0,
     })
+    setUsersData(res)
     const cloneData = _.cloneDeep(res)
     const treeData = diffData(cloneData)
     setList(treeData)
@@ -49,11 +54,9 @@ const EmployeeDepartment = (props: any, ref: any) => {
   const getStaffsFromChildren = (children: any[]) => {
     return children.reduce((result, item) => {
       if (item.staffs) {
-        // eslint-disable-next-line no-param-reassign
         result = result.concat(item.staffs)
       }
       if (item.children) {
-        // eslint-disable-next-line no-param-reassign
         result = result.concat(getStaffsFromChildren(item.children))
       }
       return result
@@ -63,21 +66,54 @@ const EmployeeDepartment = (props: any, ref: any) => {
   const getAllUserData = (data: any[]) => {
     const staffsArray = data.reduce((result, item) => {
       if (item.staffs) {
-        // eslint-disable-next-line no-param-reassign
         result = result.concat(item.staffs)
       }
       if (item.children) {
-        // eslint-disable-next-line no-param-reassign
         result = result.concat(getStaffsFromChildren(item.children))
       }
       return result
     }, [])
     return staffsArray
   }
-  // 选中树节点
-  const onSelect = (selectedKeys: any) => {
-    console.log(selectedKeys)
+  // 获取全部的key包含部门和人员
+  const childrenIds = (data: any) => {
+    return data.reduce((acc: any, current: any) => {
+      acc = acc.concat(current.id)
+      if (current.children) {
+        acc = acc.concat(childrenIds(current.children))
+      }
+      return acc
+    }, [])
   }
+  // 全选
+  const allChecked = (e: any) => {
+    if (!usersData) {
+      return
+    }
+    setChecked(e.target.checked)
+    const newTreeData = _.cloneDeep(diffData(usersData))
+    const newUser = _.cloneDeep(getAllUserData(usersData))
+    const newExpandedKeys = newTreeData.reduce((acc: any, current: any) => {
+      acc = acc.concat(current.id)
+      if (current.children) {
+        acc = acc.concat(childrenIds(current.children))
+      }
+      return acc
+    }, [])
+
+    dispatch(
+      setStatistiDepartment({
+        ...statistiDepartment,
+        expandedKeys: e.target.checked
+          ? [...new Set([...newExpandedKeys])]
+          : [],
+        departMentUserKey: e.target.checked
+          ? [...new Set(newUser.map((item: any) => item.id))]
+          : [],
+      }),
+    )
+  }
+
   const onCheck = (checkedKeys: any) => {
     dispatch(
       setStatistiDepartment({
@@ -90,6 +126,11 @@ const EmployeeDepartment = (props: any, ref: any) => {
   useEffect(() => {
     getlist()
   }, [])
+  useEffect(() => {
+    if (expandedKeys?.length === 0 && departMentUserKey?.length === 0) {
+      setChecked(false)
+    }
+  }, [expandedKeys, departMentUserKey])
   useImperativeHandle(ref, () => {
     return {
       usersData,
@@ -97,16 +138,24 @@ const EmployeeDepartment = (props: any, ref: any) => {
   })
   return (
     <div>
-      <CheckboxAll checked={false} onClick={() => {}}>
+      <DepartCheckboxAll checked={checked} onClick={allChecked}>
         {t('selectAll')}
-      </CheckboxAll>
+      </DepartCheckboxAll>
       <TreeWrap
         checkable
         checkedKeys={expandedKeys}
         autoExpandParent
-        onSelect={onSelect}
         onCheck={onCheck}
         treeData={list}
+        switcherIcon={(e: any) => {
+          return (
+            <CommonIconFont
+              type={e.expanded ? 'down-icon' : 'right-icon'}
+              size={12}
+              color="var(--neutral-n3)"
+            />
+          )
+        }}
         fieldNames={{
           title: 'name',
           key: 'id',

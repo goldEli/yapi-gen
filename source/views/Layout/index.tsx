@@ -179,7 +179,7 @@ const LayoutIndex = () => {
                 onChangeReportAssistantModalObj={setReportAssistantModalObj}
               />
             </LayoutHeader>
-            <MainContent>
+            <MainContent isOpen={layoutSideCollapse}>
               <Outlet />
             </MainContent>
           </LayoutContent>
@@ -200,8 +200,7 @@ const LayoutIndex = () => {
             })
           }}
           projectId={
-            !window.location.href.includes('/Report') ||
-            window.location.href.includes('/Report/Performance')
+            window.location.href.includes('/ProjectDetail/')
               ? projectInfo?.id
               : null
           }

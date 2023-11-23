@@ -397,6 +397,7 @@ const Iteration = (props: Props) => {
     }, data[0].end_at)
     return maxt
   }
+
   return (
     <div>
       {(props.homeType === 'iteration' || props.homeType === 'sprint') && (

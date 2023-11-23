@@ -4,7 +4,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import ProjectInfo from './components/ProjectInfo'
-import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
 import KanBanSettings from './components/KanBanSetting'
 import HomeSettings from './components/HomeSetting'
@@ -75,15 +74,6 @@ const Setting = () => {
           content: <ProjectInfo />,
           url: '/ProjectDetail/Setting/ProjectInfo',
         },
-        // {
-        //   name: t('project.projectMember'),
-        //   icon: 'team',
-        //   content: <ProjectMember searchValue={searchValue} />,
-        //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        //     String(i.identity).includes('b/project/member'),
-        //   ).length,
-        // key: 'member',
-        // },
         {
           label: t('project.projectPermissionGroup'),
           icon: 'lock',
@@ -145,12 +135,14 @@ const Setting = () => {
           url: '/ProjectDetail/Setting/DailyReportRules',
         },
         {
-          name: t('projectPushSettings'),
+          label: t('projectPushSettings'),
           icon: 'settings',
           content: <ProjectWarning />,
           isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
             String(i.identity).includes('b/project/warning_config'),
           ).length,
+          key: 'ProjectWarning',
+          url: '/ProjectDetail/Setting/ProjectWarning',
         },
         {
           label: '工作时间配置',

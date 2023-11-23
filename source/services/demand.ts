@@ -163,9 +163,15 @@ export const getShapeRight = async (params: any) => {
   const filterCompanyList = selectData.company_user
 
   // 处理人、抄送人
+  // const filterMemberList = selectData.project_member
+  const selectMember = selectData.project_member.filter(
+    (item: any) => item.status === 1,
+  )
 
-  const filterMemberList = selectData.project_member
-
+  const removeMember = selectData.project_member
+    .filter((item: any) => item.status === 2)
+    .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
+  const filterMemberList = [...selectMember, ...removeMember]
   // 分类
 
   const treeData = [
@@ -562,7 +568,7 @@ export const getDemandInfo: any = async (params: any) => {
     ],
     project_type: response.data.project_type,
     update_at: response.data.update_at,
-    category_status: response.category_status,
+    category_status: response.data.category_status,
     work_type: response.data.work_type,
     has_verify: response.data.has_verify,
     verify_data: response.data.verify_data

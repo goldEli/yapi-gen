@@ -191,12 +191,17 @@ export const ReportButton = styled.div`
   color: var(--neutral-white-d7);
   font-size: 14px;
   cursor: pointer;
+  z-index: 9;
 `
 
 export const CheckboxAll = styled(Checkbox)`
-  padding-left: 12px;
+  padding-left: 28px;
+  font-family: SiYuanMedium;
 `
-
+export const DepartCheckboxAll = styled(Checkbox)`
+  padding-left: 24px;
+  font-family: SiYuanMedium;
+`
 export const CheckBoxWrap = styled.div`
   height: calc(100% - 118px);
   overflow-y: auto;
@@ -539,10 +544,67 @@ export const TaskContent = styled.div`
 `
 export const TabWrap = styled(Tabs)`
   height: calc(100% - 40px);
-  overflow-y: scroll;
+  margin-left: 16px;
+  .ant-tabs-tab + .ant-tabs-tab {
+    margin: 0px;
+  }
+  .ant-tabs-tab {
+    background: var(--hover-d2);
+    border: 1px solid var(--hover-d2);
+    border-radius: 2px;
+  }
+  .ant-tabs-tab-active {
+    .ant-tabs-tab-btn {
+      background: #fff;
+    }
+  }
+  .ant-tabs-tab-btn {
+    padding: 0px 16px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+  }
+  .ant-tabs-nav::before,
+  .ant-tabs-nav::before {
+    border: none;
+  }
+  .ant-tabs-nav .ant-tabs-ink-bar,
+  .ant-tabs-top > div > .ant-tabs-nav .ant-tabs-ink-bar {
+    display: none;
+  }
+  .ant-tabs-nav .ant-tabs-nav-wrap,
+  .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+    height: 32px;
+  }
+  .ant-tabs-nav,
+  .ant-tabs > div > .ant-tabs-nav {
+    position: sticky;
+    top: 0px;
+    background: #fff;
+  }
+  .ant-tabs-tabpane,
+  .ant-tabs-content,
+  .ant-tabs-tabpane > div {
+    height: 100%;
+  }
 `
 
-export const TreeWrap = styled(Tree)``
+export const TreeWrap = styled(Tree)`
+  height: 100%;
+  overflow-y: scroll;
+  .ant-tree-treenode {
+    height: 40px;
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+  }
+  .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
+    background-color: var(--primary-d1);
+    border-color: var(--primary-d1);
+  }
+  .ant-tree-checkbox-inner {
+    border-radius: 4px;
+  }
+`
 export const MemberItem = styled.div`
   height: 40px;
   padding-left: 28px;

@@ -200,8 +200,6 @@ const ProjectMember = () => {
   }
 
   const onOperationMember = (item: any, type: string) => {
-    console.log(item)
-
     setOperationItem(item)
     if (type === 'del') {
       open({

@@ -25,7 +25,6 @@ import {
   ProjectItem,
   ProjectTypeBox,
   ReportItem,
-  LoadingMore,
 } from '../style'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -36,6 +35,8 @@ import {
 } from '@/services/project'
 import moment from 'moment'
 import _ from 'lodash'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 
 interface GroupItemsProps {
   row: any
@@ -43,7 +44,6 @@ interface GroupItemsProps {
   onClickProject(item: any): void
   onClickReport(item: any): void
   tabActive: number
-  onChangeData(list: any, key: string): void
 }
 
 const GroupItems = (props: GroupItemsProps) => {
@@ -127,9 +127,10 @@ const GroupItems = (props: GroupItemsProps) => {
               <div className="left" onClick={() => onClickReport(i)}>
                 <CommonUserAvatar avatar={i?.user?.avatar} size="large" />
                 <div className="info">
-                  <span className="name">{i?.user?.name}</span>
+                  <span className="name">{i?.user?.name || '--'}</span>
                   <span className="sub">
-                    {i.project ? '项目' : '个人'}日报 {i?.project?.name ?? ''}
+                    {i.project ? t('container.project') : t('personal')}
+                    {t('daily')} 【{i?.project?.name ?? '--'}】
                   </span>
                 </div>
               </div>
@@ -149,11 +150,13 @@ interface RecentlyProps {
 
 const Recently = (props: RecentlyProps) => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [page, setPage] = useState(1)
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive2 = useRef<HTMLDivElement>(null)
   const [dataList, setDataList] = useState<any>({})
-  const { isRefresh, userInfo } = useSelector(store => store.user)
+  const { isRefresh } = useSelector(store => store.user)
   const { language } = useSelector(store => store.global)
 
   //   加载状态
@@ -186,7 +189,11 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取汇报列表
-  const getReportData = async (isInit: boolean, page: number) => {
+  const getReportData = async (
+    isInit: boolean,
+    page: number,
+    index?: number,
+  ) => {
     setIsSpinning(true)
     const result = await getReportViewLogList({
       page,
@@ -195,7 +202,7 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      setDataList(result.data)
+      index === 0 && setDataList(result.data)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(result.data.list)
@@ -208,7 +215,11 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取项目列表
-  const getProjectData = async (isInit: boolean, page: number) => {
+  const getProjectData = async (
+    isInit: boolean,
+    page: number,
+    index?: number,
+  ) => {
     setIsSpinning(true)
     const result = await getRecentProject({
       page,
@@ -217,7 +228,7 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      setDataList(result.data)
+      index === 1 && setDataList(result.data)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(result.data.list)
@@ -230,7 +241,7 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取任务列表
-  const getTaskData = async (isInit: boolean, page: number) => {
+  const getTaskData = async (isInit: boolean, page: number, index?: number) => {
     setIsSpinning(true)
     const result = await getRecentStory({
       page,
@@ -239,7 +250,7 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      setDataList(result.data)
+      index === 2 && setDataList(result.data)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(result.data.list)
@@ -255,13 +266,13 @@ const Recently = (props: RecentlyProps) => {
   const getData = () => {
     switch (tabActive) {
       case 2:
-        getTaskData(true, 1)
+        getTaskData(true, 1, tabActive)
         break
       case 1:
-        getProjectData(true, 1)
+        getProjectData(true, 1, tabActive)
         break
       case 0:
-        getReportData(true, 1)
+        getReportData(true, 1, tabActive)
         break
       default:
         break
@@ -274,9 +285,11 @@ const Recently = (props: RecentlyProps) => {
     switch (tabActive) {
       case 0:
         // 跳转日报
+        navigate('/Mine/Profile')
         break
       default:
         // 跳转项目
+        navigate('/Project')
         break
     }
   }
@@ -298,23 +311,78 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 任务-点击跳转详情
-  const onClickTask = async (item: any) => {
-    //
+  const onClickTask = async (row: any) => {
+    props.onClose()
+    const params = encryptPhp(
+      JSON.stringify({
+        id: row?.actionable.project_id,
+        type: row?.actionable.project_type === 2 ? 'sprint' : 'iteration',
+      }),
+    )
+
+    navigate(
+      `${
+        row.defaultHomeMenu
+          ? row.defaultHomeMenu
+          : `/ProjectDetail/${
+              row.project_type === 2
+                ? 'Affair'
+                : row.is_bug === 2
+                ? 'Demand'
+                : 'Defect'
+            }`
+      }?data=${params}`,
+    )
   }
 
   // 项目-点击跳转详情
-  const onClickProject = async (item: any) => {
-    //
+  const onClickProject = async (row: any) => {
+    props.onClose()
+    const params = encryptPhp(
+      JSON.stringify({
+        id: row?.actionable.id,
+        type: row?.actionable.project_type === 2 ? 'sprint' : 'iteration',
+      }),
+    )
+
+    navigate(
+      `${
+        row.defaultHomeMenu
+          ? row.defaultHomeMenu
+          : `/ProjectDetail/${row.project_type === 2 ? 'Affair' : 'Demand'}`
+      }?data=${params}`,
+    )
   }
 
   // 日报-点击跳转详情
   const onClickReport = async (item: any) => {
-    //
+    props.onClose()
+    navigate('/Report/Review/List/1')
+    dispatch(
+      saveViewReportDetailDrawer({
+        visible: true,
+        id: item.report_user_id,
+        type: 1,
+      }),
+    )
   }
 
-  // 更多数据合并
-  const onChangeData = (list: any, key: string) => {
-    //
+  // 计算时间显示
+  const onComputedTime = (time: string) => {
+    if (moment(time).isSame(moment().startOf('day'), 'day')) {
+      return t('today')
+    } else if (
+      moment(time).isSame(moment().subtract(1, 'days').startOf('day'), 'day')
+    ) {
+      return t('yesterday')
+    }
+    return time
+  }
+
+  // 点击tab切换
+  const onChangeTabActive = (index: number) => {
+    if (index === tabActive) return
+    setTabActive(index)
   }
 
   useEffect(() => {
@@ -389,7 +457,7 @@ const Recently = (props: RecentlyProps) => {
         <TabsWrap ref={tabBox}>
           {tabs.map((i: any, index) => (
             <TabsWrapItem
-              onClick={() => setTabActive(index)}
+              onClick={() => onChangeTabActive(index)}
               active={tabActive === index}
               key={i.label}
             >
@@ -413,23 +481,24 @@ const Recently = (props: RecentlyProps) => {
             {dataList.list &&
               Object.keys(dataList.list)?.map((k: any) => (
                 <ItemWrap key={k}>
-                  <TimeName>{k}</TimeName>
+                  <TimeName>{onComputedTime(k)}</TimeName>
                   <GroupItems
                     row={dataList.list[k]}
                     onClickTask={onClickTask}
                     onClickProject={onClickProject}
                     onClickReport={onClickReport}
                     tabActive={tabActive}
-                    onChangeData={onChangeData}
                   />
                 </ItemWrap>
               ))}
           </InfiniteScroll>
+          {(JSON.stringify(dataList?.list) === '{}' ||
+            dataList?.list?.length <= 0) && <NoData />}
         </ContentWrap>
       </Spin>
       <Border />
       <Footer onClick={onFooterClick}>
-        {tabActive === 0 ? '查看所有日报' : '查看所有项目'}
+        {tabActive === 0 ? t('viewAllReport') : t('viewAllProject')}
       </Footer>
     </QuickPopover>
   )

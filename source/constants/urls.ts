@@ -587,6 +587,12 @@ const urls = {
   delExceptionTime: '/b/project/work_config/del_work_dates',
   // 编辑工作时间
   editWorkTime: '/b/project/work_config/set_work_time_config',
+  // 顶部导航待办接口
+  getMineNoFinishListHeader: '/b/user/abeyance/story_group',
+  // 顶部导航已办接口
+  getMineFinishListHeader: '/b/user/finish/story_group',
+  // 顶部导航待审核接口
+  getVerifyUserListHeader: '/b/user/verify/list/group',
 }
 export default urls
 

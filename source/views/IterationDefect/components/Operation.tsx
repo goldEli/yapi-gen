@@ -245,10 +245,10 @@ const Operation = (props: Props) => {
       }, {})
   }
   useEffect(() => {
-    if (searchChoose && searchChoose.system_view) {
+    if (JSON.stringify(searchChoose) === '{}' || !searchChoose) {
       return
     }
-    if (searchChoose) {
+    if (JSON.stringify(searchChoose) !== '{}' && searchChoose) {
       const targetSubjects = filterObj(searchChoose, (grade: any) => {
         return grade !== null
       })

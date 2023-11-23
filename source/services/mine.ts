@@ -12,8 +12,34 @@ import { getTreeList } from '@/services/demand'
 import { storyConfigCategoryList } from '@/services/project'
 import { getStaffListAll } from './staff'
 
-//获取任务接收处理概况
+// 顶部导航-待办列表
+export const getMineNoFinishListHeader: any = async (params: any) => {
+  const response = await http.get('getMineNoFinishListHeader', {
+    page: params.page,
+    pagesize: params.pagesize,
+  })
+  return response.data
+}
 
+// 顶部导航-已办列表
+export const getMineFinishListHeader: any = async (params: any) => {
+  const response = await http.get('getMineFinishListHeader', {
+    page: params.page,
+    pagesize: params.pagesize,
+  })
+  return response.data
+}
+
+// 顶部导航-待审核列表
+export const getVerifyUserListHeader: any = async (params: any) => {
+  const response: any = await http.get<any>('getVerifyUserListHeader', {
+    pagesize: params.pagesize,
+    page: params.page,
+  })
+  return response.data
+}
+
+//获取任务接收处理概况
 export const getHisProjectCharts: any = async (params: any) => {
   const response = await http.get(
     `/b/efficiency/member/work_handle/statistics`,
@@ -21,8 +47,8 @@ export const getHisProjectCharts: any = async (params: any) => {
   )
   return response
 }
-//获取任务接收处理概况
 
+//获取任务接收处理概况
 export const getProjectCharts: any = async (params: any) => {
   const response = await http.get(
     `/b/efficiency/member/work_handle/${params}/statistics`,
@@ -1052,7 +1078,6 @@ export const getVerifyUserList: any = async (params: any) => {
     orderkey: params.orderKey,
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
   })
-
   return {
     currentPage: params.page,
     total: response.data.pager.total,

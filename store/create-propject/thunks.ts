@@ -5,11 +5,15 @@ import {
   getProjectPermission,
 } from '@/services/project'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { setIsUpdateProject } from '.'
 
 export const postCreate = createAsyncThunk(
   'create/postCreate',
   async (value: any) => {
     const res = await addProject(value)
+    store.dispatch(
+      setIsUpdateProject(store.getState().createProject.isUpdateProject + 1),
+    )
     return res
   },
 )
@@ -18,6 +22,9 @@ export const postEditCreate = createAsyncThunk(
   'create/postEdit',
   async (value: any) => {
     const res = await updateProject(value)
+    store.dispatch(
+      setIsUpdateProject(store.getState().createProject.isUpdateProject + 1),
+    )
     return res
   },
 )

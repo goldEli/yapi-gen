@@ -1,3 +1,5 @@
+/* eslint-disable max-depth */
+/* eslint-disable no-undefined */
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
@@ -14,6 +16,7 @@ import {
   setModifyStatusModalInfo,
   setFullScreen,
   setSpinning,
+  setkanbanConfig,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -25,6 +28,13 @@ import _ from 'lodash'
 import { Options } from '@/components/SelectOptionsNormal'
 import { produce } from 'immer'
 import { ViewItem } from '@/views/ProjectSetting/components/KanBanSetting/SelectOptions'
+import {
+  getNewkanbanConfig,
+  getNewkanbanGroups,
+  getNewkanbanStoriesOfPaginate,
+  getNewstoriesOfGroupFirstPage,
+} from '@/services/kanban'
+import useGroupType from '@/views/KanBanBoard/hooks/useGroupType'
 
 const name = 'kanBan'
 
@@ -38,10 +48,13 @@ export const copyView =
   }
 export const deleteKanbanGroup =
   (params: { id: number }) => async (dispatch: AppDispatch) => {
+    console.log(params, '删除分组这里不用改')
+
     const res = await services.kanban.deleteKanbanGroup({
       ...params,
       project_id: getProjectIdByUrl(),
     })
+    dispatch(setKanbanInfoByGroup([]))
     dispatch(getKanbanByGroup())
     return res
   }
@@ -54,9 +67,31 @@ export const offFullScreenMode = () => async (dispatch: AppDispatch) => {
   dispatch(setFullScreen(false))
 }
 
+function findAndReplace(groupId: any, issuesId: any, array: any, cId: any) {
+  const cc = JSON.parse(JSON.stringify(array))
+  for (let i = 0; i < cc.length; i++) {
+    if (cc[i].id === groupId) {
+      for (let b = 0; b < cc[i].columns.length; b++) {
+        if (cc[i].columns[b].id === cId) {
+          for (let c = 0; c < cc[i].columns[b].stories.length; c++) {
+            if (cc[i].columns[b].stories[c].id === issuesId) {
+              cc[i].columns[b].stories.splice(c, 1)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return cc
+}
+
 // 删除story
 export const deleteStory =
-  (params: Pick<API.Kanban.DeleteStory.Params, 'id'>, type: number) =>
+  (
+    params: Pick<API.Kanban.DeleteStory.Params, 'id' | 'groupId' | 'columnId'>,
+    type: number,
+  ) =>
   async (dispatch: AppDispatch) => {
     // 根据类型判断是删除哪种
     if (type === 2) {
@@ -76,7 +111,18 @@ export const deleteStory =
       })
     }
     getMessage({ msg: i18n.t('common.deleteSuccess'), type: 'success' })
-    dispatch(getKanbanByGroup())
+
+    dispatch(
+      setKanbanInfoByGroup(
+        findAndReplace(
+          params.groupId,
+          params.id,
+          store.getState().kanBan.kanbanInfoByGroup,
+          params.columnId,
+        ),
+      ),
+    )
+    updateKanbanConfigbig()
   }
 
 // 获取流转配置
@@ -112,16 +158,15 @@ export const closeModifyStatusModalInfo =
         visible: false,
       }),
     )
-    dispatch(getKanbanByGroup())
 
     /**
      * 看板数据更新后，卡片的位置没有更新，手动触发滚动条触发
      */
-    const dom = document.querySelector('#kanbanContainer')
-    if (!dom) return
-    // 获取元素滚动条的当前位置
-    var scrollPosition = dom?.scrollTop
-    dom.scrollTop = scrollPosition + 1
+    // const dom = document.querySelector('#kanbanContainer')
+    // if (!dom) return
+    // // 获取元素滚动条的当前位置
+    // var scrollPosition = dom?.scrollTop
+    // dom.scrollTop = scrollPosition + 1
   }
 // 状态改变同步到服务端
 export const saveModifyStatusModalInfo =
@@ -160,7 +205,10 @@ export const saveModifyStatusModalInfo =
 
       if (res && res.code === 0 && res.data) {
         getMessage({ msg: i18n.t('common.operationSuccess'), type: 'success' })
-        dispatch(getKanbanByGroup())
+        setTimeout(() => {
+          dispatch(updateKanbanByGroup())
+        }, 500)
+        return 'finish'
       }
     } catch (error) {
       //
@@ -179,6 +227,7 @@ export const modifyStatus =
   }) =>
   async (dispatch: AppDispatch) => {
     const { kanbanInfoByGroup, sortByGroupOptions } = store.getState().kanBan
+    const groupType = sortByGroupOptions?.find(item => item.check)?.key
     const { source, target, storyId } = options
     const data = produce(kanbanInfoByGroup, draft => {
       const stories =
@@ -194,7 +243,7 @@ export const modifyStatus =
         []
       targetStories.unshift(removed)
     })
-    dispatch(setKanbanInfoByGroup(data))
+    // dispatch(setKanbanInfoByGroup(data))
     const res = await dispatch(
       getFlowConfig({
         story_id: options.storyId,
@@ -204,12 +253,81 @@ export const modifyStatus =
         category_status_to_id: target.flow_status_id,
       }),
     )
+    const checkGroup = (groupId: any) => {
+      let obj
+      switch (groupType) {
+        case 'priority':
+          obj = {
+            priority: groupId,
+          }
+          break
+        case 'users':
+          obj = {
+            kanban_group_id: groupId,
+          }
+          break
+        case 'category':
+          obj = {
+            category_id: groupId,
+          }
+          break
+        default:
+          // eslint-disable-next-line no-undefined
+          obj = undefined
+          break
+      }
+      return obj
+    }
+    function findAndReplace(groupId: any, array: any, cId: any, newData: any) {
+      const cc = JSON.parse(JSON.stringify(array))
+      for (let i = 0; i < cc.length; i++) {
+        if (cc[i].id === groupId) {
+          for (let b = 0; b < cc[i].columns.length; b++) {
+            if (cc[i].columns[b].id === cId) {
+              cc[i].columns[b].stories = newData
+            }
+          }
+        }
+      }
+      return cc
+    }
 
+    const updateColumn = async () => {
+      const cc = JSON.parse(JSON.stringify(kanbanInfoByGroup))
+      const res = await getNewkanbanStoriesOfPaginate({
+        project_id: getProjectIdByUrl(),
+        kanban_column_id: options.columnId,
+        search: { ...checkGroup(options.groupId) },
+        pagesize: 10,
+        page: 1,
+      })
+      const res2 = await getNewkanbanStoriesOfPaginate({
+        project_id: getProjectIdByUrl(),
+        kanban_column_id: options.targetColumnId,
+        search: { ...checkGroup(options.targetGroupId) },
+        pagesize: 10,
+        page: 1,
+      })
+
+      const bb = findAndReplace(options.groupId, cc, options.columnId, res.list)
+      const zx = JSON.parse(JSON.stringify(bb))
+
+      const aa = findAndReplace(
+        options.targetGroupId,
+        zx,
+        options.targetColumnId,
+        res2.list,
+      )
+      dispatch(setKanbanInfoByGroup(aa))
+
+      updateKanbanConfigbig()
+    }
     dispatch(
       openModifyStatusModalInfo({
         storyId,
         groupId: options?.targetGroupId,
         info: {
+          onConfirm: () => updateColumn(),
           // 可流转的状态列表
           content: target.status_name,
           // 来自id状态名称
@@ -334,6 +452,59 @@ export const updateStoryPriority =
     })
   }
 
+// 更新故事列表（分组）
+export const updateKanbanByGroup = createAsyncThunk(
+  `${name}/updateKanbanByGroup`,
+  async () => {
+    const { valueKey, inputKey } = store.getState().view
+    const { sortByGroupOptions, sortByRowAndStatusOptions } =
+      store.getState().kanBan
+    const type = sortByGroupOptions?.find(item => item.check)?.key
+    const columnId = sortByRowAndStatusOptions?.find(item => item.check)?.key
+    if (!columnId) {
+      return []
+    }
+    if (!type) {
+      return []
+    }
+
+    const params = {
+      search: isEmpty(valueKey)
+        ? {
+            all: 1,
+            keyword: inputKey,
+          }
+        : {
+            ...valueKey,
+            user_id: valueKey.user_name,
+            category_id: valueKey.category,
+            iterate_id: valueKey.iterate_name,
+            custom_field: bbh(valueKey),
+            keyword: inputKey,
+            schedule_start: valueKey?.schedule?.start,
+            schedule_end: valueKey?.schedule?.end,
+          },
+      project_id: getProjectIdByUrl(),
+      kanban_config_id: parseInt(columnId, 10),
+    }
+    const myres = await getNewkanbanGroups({
+      ...params,
+      group_by: type,
+    })
+    store.dispatch(setSpinning(false))
+    const newData = store
+      .getState()
+      .kanBan?.kanbanInfoByGroup?.map((k: any) => {
+        const temp = myres.find((s: any) => s.id === k.id)
+        return {
+          ...temp,
+          columns: k.columns,
+        }
+      })
+    return newData
+  },
+)
+
 // 更新排序同步到服务端
 export const sortStoryServer =
   (
@@ -354,10 +525,12 @@ export const sortStoryServer =
       story_ids: ids,
       project_id: getProjectIdByUrl(),
     }
-    await services.kanban.modifyKanbanIssueSort(params)
-    dispatch(getKanbanByGroup())
+    // await services.kanban.modifyKanbanIssueSort(params)
+    // dispatch(setKanbanInfoByGroup([]))
+    // dispatch(getKanbanByGroup())
+    // todo 更新个数
+    dispatch(updateKanbanByGroup())
   }
-
 // 打开分组弹窗
 export const openUserGroupingModel =
   (
@@ -434,11 +607,12 @@ export const modifyKanbanPeopleGrouping =
 export const getKanbanConfig = createAsyncThunk(
   `${name}/getKanbanConfig`,
   async (params: API.KanbanConfig.GetKanbanConfig.Params) => {
-    console.log(params)
-
-    const res = await services.kanbanConfig.getKanbanConfig(params)
-    console.log(res)
-    return res.data
+    const res2 = await getNewkanbanConfig({
+      ...params,
+      id: undefined,
+      kanban_config_id: params.id,
+    })
+    return res2
   },
 )
 
@@ -460,6 +634,35 @@ function bbh(data: any) {
   }
   return filteredData
 }
+
+export const updateKanbanConfigbig = async () => {
+  const { valueKey, inputKey } = store.getState().view
+  const { sortByGroupOptions, sortByRowAndStatusOptions } =
+    store.getState().kanBan
+  const params = {
+    search: isEmpty(valueKey)
+      ? {
+          all: 1,
+          keyword: inputKey,
+        }
+      : {
+          ...valueKey,
+          user_id: valueKey.user_name,
+          category_id: valueKey.category,
+          iterate_id: valueKey.iterate_name,
+          custom_field: bbh(valueKey),
+          keyword: inputKey,
+          schedule_start: valueKey?.schedule?.start,
+          schedule_end: valueKey?.schedule?.end,
+        },
+    project_id: getProjectIdByUrl(),
+    kanban_config_id: sortByRowAndStatusOptions?.find(item => item.check)?.key,
+  }
+  const res_config = await getNewkanbanConfig(params)
+
+  store.dispatch(setkanbanConfig(res_config))
+}
+
 // 获取故事列表（分组）
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,
@@ -494,29 +697,110 @@ export const getKanbanByGroup = createAsyncThunk(
           },
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
+      pagesize: 20,
     }
-
+    const res_config = await getNewkanbanConfig(params)
+    store.dispatch(setkanbanConfig(res_config))
     if (type === 'none') {
-      const res = await services.kanban.getKanban(params)
+      const firstRes = await getNewstoriesOfGroupFirstPage(params)
+      // const res = await services.kanban.getKanban(params)
+      // console.log(res.data, 'res.data老的配置')
       store.dispatch(setSpinning(false))
+
       return [
         {
           // 无分组id
           id: 0,
           name: '',
           content_txt: '',
-          columns: res.data,
+          // columns: res.data,
+          columns: res_config.columns.map((i: any) => {
+            return {
+              ...i,
+              stories: firstRes.filter((k: any) => {
+                return i.id === k.id
+              })[0].stories,
+            }
+          }),
         },
       ]
     }
 
-    const res = await services.kanban.getKanbanByGroup({
+    const myres = await getNewkanbanGroups({
       ...params,
       group_by: type,
     })
     store.dispatch(setSpinning(false))
+    // const res = await services.kanban.getKanbanByGroup({
+    //   ...params,
+    //   group_by: type,
+    // })
+    // console.log(res.data, 'res.data老的分类')
 
-    return res.data
+    const checkGroup = (id: any) => {
+      let obj
+      switch (type) {
+        case 'priority':
+          obj = {
+            priority: id,
+          }
+          break
+        case 'users':
+          obj = {
+            kanban_group_id: id,
+          }
+          break
+        case 'category':
+          obj = {
+            category_id: id,
+          }
+          break
+        default:
+          // eslint-disable-next-line no-undefined
+          obj = undefined
+          break
+      }
+      return obj
+    }
+    const getGropuStories = async (id: any, cid: any) => {
+      const params2 = {
+        search: {
+          ...valueKey,
+          user_id: valueKey.user_name,
+          category_id: valueKey.category,
+          iterate_id: valueKey.iterate_name,
+          custom_field: bbh(valueKey),
+          keyword: inputKey,
+          schedule_start: valueKey?.schedule?.start,
+          schedule_end: valueKey?.schedule?.end,
+          ...{ ...checkGroup(id) },
+        },
+        kanban_column_id: cid,
+        project_id: getProjectIdByUrl(),
+        pagesize: 10,
+        page: 1,
+      }
+      const firstRes22 = await getNewkanbanStoriesOfPaginate({
+        ...params2,
+        // group_by: type,
+      })
+      return firstRes22.list
+    }
+    const cc = myres.map((i: any) => {
+      return {
+        ...i,
+        columns: store
+          .getState()
+          .kanBan?.kanbanConfig?.columns?.map((l: any) => {
+            return {
+              ...l,
+              stories: [],
+              // ck: getGropuStories(i.id, l.id),
+            }
+          }),
+      }
+    })
+    return cc
   },
 )
 
@@ -645,6 +929,7 @@ export const updateView =
   }
 
 export const onFilter = () => async (dispatch: AppDispatch) => {
+  dispatch(setKanbanInfoByGroup([]))
   setTimeout(() => {
     dispatch(getKanbanByGroup())
   })
@@ -690,6 +975,7 @@ export const getKanbanConfigList = createAsyncThunk(
 
 // 刷新看板
 export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
+  dispatch(setKanbanInfoByGroup([]))
   const data = store.getState().kanBan.sortByRowAndStatusOptions
   const checked = data?.find(item => item.check)
   if (!checked) {

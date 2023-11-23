@@ -467,7 +467,6 @@ export const ShapeContent = (props: any) => {
       fromId: props.fromId,
       toId: props.row.id,
     })
-
     setRightList(res)
 
     form.setFieldsValue(setValue(res))

@@ -45,26 +45,6 @@ const MoveTabs = (props: Ptypes) => {
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive = useRef<HTMLDivElement>(null)
 
-  //   useEffect(() => {
-  //     console.log(tabBox.current, tabActive.current, 'tabActive.current')
-
-  //     if (!tabBox.current || !tabActive.current) {
-  //       return
-  //     }
-  //     const index = tabs.findIndex((i: any) => i.id === tabIndex)
-  //     tabActive.current!.style.left = `${
-  //       (tabBox.current?.children[index] as HTMLDivElement).offsetLeft === 0
-  //         ? 2
-  //         : (tabBox.current?.children[index] as HTMLDivElement).offsetLeft
-  //     }px`
-
-  //     tabActive.current!.style.width = `${
-  //       tabBox.current?.children[index].clientWidth === 0
-  //         ? 80
-  //         : tabBox.current?.children[index].clientWidth
-  //     }px`
-  //   }, [tabIndex,tabBox,tabActive])
-
   return (
     <TabsWrap ref={tabBox}>
       {tabs?.map((i: any) => (

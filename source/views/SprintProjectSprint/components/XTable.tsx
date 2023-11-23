@@ -360,10 +360,8 @@ const XTable: React.FC<XTableProps> = props => {
         textRef2.current.offsetWidth + horizontalPadding
       ) {
         setIsOverflowing(true)
-        console.log('存在省略号')
       } else {
         setIsOverflowing(false)
-        console.log('容器宽度足够，没有省略号了')
       }
     }
   }

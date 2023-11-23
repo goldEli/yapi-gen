@@ -304,7 +304,6 @@ const TableQuickEdit = (props: Props) => {
         ?.filter((i: any) => i.key === 'users_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
         .filter((k: any) => k.status === 1)
-      console.log(response)
 
       const arr1 = response
         ?.map((i: any) => ({
@@ -338,13 +337,10 @@ const TableQuickEdit = (props: Props) => {
         .filter((i: any) => i.value !== info)
       resultValue.value = arr1.concat(arr12)
 
-      console.log(props?.defaultText)
-
       open({
         type: 1,
         people: props?.defaultText,
         onConfirm: e => {
-          console.log(e)
           onChange(e.map(l => l.id))
         },
       })
@@ -400,8 +396,6 @@ const TableQuickEdit = (props: Props) => {
 
   // 操作框改变
   const onChange = async (newValue: any, type?: any) => {
-    console.log(newValue, type, 'fffffffffffffffffff')
-
     if (props.item?.categoryConfigList[props.keyText] === 1 && !newValue) {
       getMessage({
         msg: `${props.keyText}${t('is_required')}`,

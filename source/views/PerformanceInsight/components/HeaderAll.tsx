@@ -218,39 +218,25 @@ const HeaderAll = (props: HaderProps) => {
       ?.getBoundingClientRect().width
     setDropdownMatchSelectWidthTime(w)
   }, [props])
+
   const onBack = () => {
-    if (props.homeType === 'all') {
-      const params = encryptPhp(
-        JSON.stringify({
-          view: props.headerParmas.view,
-          valueId: paramsData.valueId,
-          headerParmas: paramsData.headerParmas,
-          // 新加的type
-          newType: paramsData.newType,
-          isOverAll: paramsData?.isOverAll,
-          overPageType: paramsData?.overPageType,
-        }),
-      )
-      navigate(`/ProjectDetail/Performance?data=${params}`)
-    } else {
-      const params = encryptPhp(
-        JSON.stringify({
-          // 项目id
-          projectId: props.projectId,
-          // iteration 迭代还是冲刺
-          type: props.homeType,
-          // 项目id
-          id: props.projectId,
-          //
-          view: props.headerParmas.view,
-          // 分享的id
-          valueId: paramsData.valueId,
-          // 所有的参数
-          headerParmas: paramsData.headerParmas,
-        }),
-      )
-      navigate(`/ProjectDetail/Performance?data=${params}`)
-    }
+    const params = encryptPhp(
+      JSON.stringify({
+        // 项目id
+        projectId: props.projectId,
+        // iteration 迭代还是冲刺
+        type: props.homeType,
+        // 项目id
+        id: props.projectId,
+        //
+        view: props.headerParmas.view,
+        // 分享的id
+        valueId: paramsData.valueId,
+        // 所有的参数
+        headerParmas: paramsData.headerParmas,
+      }),
+    )
+    navigate(`/ProjectDetail/Performance?data=${params}`)
   }
 
   return (

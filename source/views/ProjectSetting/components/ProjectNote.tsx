@@ -477,16 +477,6 @@ const ProjectSet = () => {
               <SetRight>
                 <RightHeader>
                   <Title style={{ padding: '0' }}>{activeDetail.name}</Title>
-                  <BtnHeader>
-                    <CommonButton
-                      hidden={activeDetail?.type === 1}
-                      style={{ width: 'fit-content', marginTop: 16 }}
-                      type="primary"
-                      onClick={onSavePermission}
-                    >
-                      {t('common.save')}
-                    </CommonButton>
-                  </BtnHeader>
                 </RightHeader>
                 <TitleGroup>
                   <span

@@ -1,5 +1,5 @@
 /* eslint-disable no-undefined */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import HeaderFilter from './components/HeaderFilter'
 import { ProjectWrap, ProjectIndexWrap } from './style'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -26,6 +26,7 @@ const ProjectIndex = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { userPreferenceConfig } = useSelector(store => store.user)
+  const { isUpdateProject } = useSelector(store => store.createProject)
   // 缩略图还是列表
   const [isSpinning, setIsSpinning] = useState(false)
   // 开始、关闭、暂停的弹窗状态
@@ -46,7 +47,7 @@ const ProjectIndex = () => {
     // 项目周期
     time: [],
     //其他的类型(迭代，冲刺、我参与的)
-    otherType: [1, 2, 3],
+    otherType: [1, 2],
     pageObj: { page: 1, size: 30 },
     order: { value: '', key: '' },
     isGrid: false,
@@ -57,14 +58,14 @@ const ProjectIndex = () => {
       key: 0,
       title: t('project.stepTitle1'),
       desc: t('project.stepDesc1'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/iteration/guide_1.jpg',
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/guide_1.jpg',
     },
     {
       key: 1,
       title: t('project.stepTitle2'),
       desc: t('project.stepDesc2'),
       extra: t('project.stepExtra'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/iteration/guide_2.jpg',
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/guide_2.jpg',
     },
   ]
 
@@ -85,7 +86,7 @@ const ProjectIndex = () => {
       paramsObj.page = params.pageObj.page
       paramsObj.pageSize = params.pageObj.size
     }
-
+    console.log(paramsObj, '=paramsObjparamsObj')
     const result = await getProjectList(paramsObj)
     setDataList(result)
     setIsSpinning(false)
@@ -192,6 +193,12 @@ const ProjectIndex = () => {
       pageSize: filterParams.pageObj.size,
     })
   }
+
+  useEffect(() => {
+    if (isUpdateProject) {
+      getList(filterParams, false)
+    }
+  }, [isUpdateProject])
 
   return (
     <ProjectIndexWrap>

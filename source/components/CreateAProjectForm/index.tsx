@@ -10,7 +10,11 @@ import {
   getAffiliationUser,
   getProjectInfoOnly,
 } from '@/services/project'
-import { changeCreateVisible, editProject } from '@store/create-propject'
+import {
+  changeCreateVisible,
+  editProject,
+  setIsUpdateProject,
+} from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { DatePicker, Form, Input, Select, Tooltip, Upload } from 'antd'
@@ -47,6 +51,7 @@ import {
 import { getProjectInfoStore } from '@store/project/project.thunk'
 import CommonButton from '../CommonButton'
 import moment from 'moment'
+import { getMessage } from '../Message'
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
@@ -108,7 +113,7 @@ const CreateAProjectForm = () => {
   const [leaderId, setLeaderId] = useState<any>(0)
   const [lock, setLock] = useState(true)
   const [canChooseLeader, setCanChooseLeader] = useState(true)
-  const { createVisible, isEditId, groupId } = useSelector(
+  const { createVisible, isEditId, groupId, isUpdateProject } = useSelector(
     state => state.createProject,
   )
   const [selectLeaders, setSelectLeaders] = useState<any>([])
@@ -133,6 +138,18 @@ const CreateAProjectForm = () => {
 
   const confirm = async () => {
     const formData = await form.validateFields()
+    if (
+      formData?.expected_start_at &&
+      formData?.expected_end_at &&
+      moment(formData?.expected_start_at || '').unix() >
+        moment(formData?.expected_end_at || '').unix()
+    ) {
+      getMessage({
+        msg: t('version2.startTimeComputedEndTime'),
+        type: 'warning',
+      })
+      return
+    }
 
     const obj = {
       clone_project_id: multipleSelectionItems[0],
@@ -401,6 +418,7 @@ const CreateAProjectForm = () => {
       bodyStyle={{
         height: '100vh',
         minWidth: '1400px',
+        paddingLeft: '70px',
       }}
       width="100vw"
       dex={50}

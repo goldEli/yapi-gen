@@ -349,14 +349,13 @@ interface Props {
 ```js
  <Editor
   onBlur={() => {
-    // console.log('失焦')
-    // console.log(text)
+
 
     setMyReadonly(true)
   }}
   onReadonlyClick={() => {
     setMyReadonly(false)
-    // console.log('只读模式点击')
+
   }}
   value={text}
   onChange={setText}
@@ -424,9 +423,7 @@ usePrompt({
 
 ```js
 import useMkeyDown from '@/hooks/useMkeyDown'
-const handleShortcutEvent1 = () => {
-  // console.log('按下M键的操作')
-}
+const handleShortcutEvent1 = () => {}
 
 useMkeyDown(handleShortcutEvent1)
 ```
@@ -435,9 +432,7 @@ useMkeyDown(handleShortcutEvent1)
 
 ```js
 import useShortcutC from '@/hooks/useShortcutC'
-const handleShortcutEvent1 = () => {
-  // console.log('按下c键的操作')
-}
+const handleShortcutEvent1 = () => {}
 
 useShortcutC(handleShortcutEvent1)
 ```

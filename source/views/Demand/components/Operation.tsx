@@ -166,10 +166,10 @@ const Operation = (props: Props) => {
   }
 
   useEffect(() => {
-    if (searchChoose && searchChoose.system_view) {
+    if (JSON.stringify(searchChoose) === '{}' || !searchChoose) {
       return
     }
-    if (searchChoose) {
+    if (JSON.stringify(searchChoose) !== '{}' && searchChoose) {
       const targetSubjects = filterObj(searchChoose, (grade: any) => {
         return grade !== null
       })
@@ -316,6 +316,7 @@ const Operation = (props: Props) => {
   useEffect(() => {
     dispatch(clearValue())
   }, [location])
+
   return (
     <StickyWrap ref={stickyWrapDom}>
       <DeleteConfirm
@@ -474,7 +475,7 @@ const Operation = (props: Props) => {
           onSearch={(e: any, customField: any) =>
             onFilterSearch(e, customField)
           }
-          list={searchList}
+          list={searchList?.filter((i: any) => i.is_flaw !== 1)}
           basicsList={filterBasicsList?.filter((i: any) => i.is_flaw !== 1)}
           specialList={filterSpecialList}
           customList={filterCustomList}

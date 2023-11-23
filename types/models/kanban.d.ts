@@ -52,10 +52,12 @@ declare namespace Model.KanBan {
     identity?: string
     columns: Column[]
     users?: User[]
+    story_count?: number
   }
   // 分组类型，users:用户分组，priority：优先级，category：类别
   type GroupType = 'users' | 'priority' | 'category'
   interface Story {
+    kanban_column_id: any
     is_bug: number
     id: number
     name: string

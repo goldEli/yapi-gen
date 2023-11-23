@@ -11,6 +11,8 @@ type SliceState = {
   typeId: any
   projectType: string
   projectRoleList?: any
+  // 创建或编辑后更新项目列表
+  isUpdateProject: number
 }
 
 const slice = createSlice({
@@ -20,6 +22,7 @@ const slice = createSlice({
     isRest: false,
     typeId: 0,
     projectType: '',
+    isUpdateProject: 0,
   } as SliceState,
   reducers: {
     changeCreateVisible: (state, action) => {
@@ -44,6 +47,9 @@ const slice = createSlice({
     },
     setProjectType: (state, action) => {
       state.projectType = action.payload
+    },
+    setIsUpdateProject(state, action) {
+      state.isUpdateProject = action.payload
     },
   },
 
@@ -74,6 +80,7 @@ export const {
   changeTypeId,
   setProjectType,
   changeGroupIdName,
+  setIsUpdateProject,
 } = slice.actions
 
 export default slice.reducer

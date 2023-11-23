@@ -111,8 +111,6 @@ const ProgressComparison = (props: Props) => {
   const timer = useRef<NodeJS.Timeout | null>(null)
 
   const onUpdateOrderKey = (key: any, val: any) => {
-    console.log(extra, 'extra?.project_ids')
-
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
     props.type === 'Progress_iteration' ||
     props.type === 'Progress_sprint' ||
@@ -1031,9 +1029,6 @@ const ProgressComparison = (props: Props) => {
           projectId={props.projectId}
           onGetExportApi={onGetExportApi}
           onSearchData={e => {
-            console.log(e.project_ids)
-            console.log(location)
-
             // if (e.project_ids.length >= 1) {
             onSearchData(e)
             // }

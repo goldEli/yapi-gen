@@ -71,7 +71,7 @@ const settingWrap = css`
 `
 
 const StaffManagementWrap = styled.div`
-  height: calc(100vh - 94px);
+  height: 100%;
   width: 100%;
   background-color: var(--neutral-white-d1);
 `

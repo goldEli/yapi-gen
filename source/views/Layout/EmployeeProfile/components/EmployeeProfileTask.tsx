@@ -174,7 +174,15 @@ const TaskItem = (props: TaskItemProps) => {
     setPage(newPage)
     const response = await getMemberOverviewMoreStoryList({
       ...filterParams,
-      ...{ page: newPage, user_id: item.id },
+      ...{
+        page: newPage,
+        user_id: item.id,
+        project_ids: filterParams?.user_ids
+          ?.filter(
+            (e: any) => parseInt(e.user_id, 10) === parseInt(item.id, 10),
+          )
+          ?.map((item: any) => item.project_id),
+      },
     })
     onChangeData(response, item.id)
     setMoreLoading(false)

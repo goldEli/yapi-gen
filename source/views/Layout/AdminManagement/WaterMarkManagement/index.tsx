@@ -83,7 +83,7 @@ const WaterMarkManagement = () => {
     >
       <div
         style={{
-          height: 'calc(100vh - 94px)',
+          height: '100%',
           backgroundColor: 'var(--neutral-white-d1)',
         }}
       >

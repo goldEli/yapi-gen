@@ -8,7 +8,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { message, Popover, Progress, Upload } from 'antd'
+import { message, Modal, Popover, Progress, Upload } from 'antd'
 import {
   forwardRef,
   useCallback,
@@ -551,7 +551,6 @@ const UploadAttach = (props: any, ref: any) => {
             activeIndex={pictureList?.index}
             onClose={() => setPreviewOpen(false)}
             onMaskClick={e => {
-              console.log(e)
               setPreviewOpen(false)
             }}
           />
@@ -640,7 +639,6 @@ const UploadAttach = (props: any, ref: any) => {
           activeIndex={pictureList?.index}
           onClose={() => setPreviewOpen(false)}
           onMaskClick={e => {
-            console.log(e)
             setPreviewOpen(false)
           }}
         />

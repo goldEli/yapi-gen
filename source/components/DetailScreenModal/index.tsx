@@ -2,16 +2,21 @@
 
 import { useDispatch, useSelector } from '@store/index'
 import { setIsDetailScreenModal } from '@store/project'
-import { Content, ModalWrap } from './style'
+import { Content, ModalWrap, ModelClose } from './style'
 import DemandDetail from './DemandDetail'
 import FlawDetail from './FlawDetail'
 import AffairsDetail from './AffairsDetail'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useEffect } from 'react'
+import CommonIconFont from '../CommonIconFont'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const DetailScreenModal = () => {
   const dispatch = useDispatch()
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { isDetailScreenModal, projectInfo } = useSelector(
     store => store.project,
@@ -27,6 +32,12 @@ const DetailScreenModal = () => {
     { specialType: 2, content: <FlawDetail /> },
     { specialType: 3, content: <DemandDetail /> },
   ]
+
+  // 关闭弹窗
+  const onClose = () => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
+  }
 
   useEffect(() => {
     // 如果地址栏上带有此参数，默认打开全屏弹层
@@ -95,6 +106,13 @@ const DetailScreenModal = () => {
             undefined
       }
     >
+      <ModelClose onClick={onClose}>
+        <CommonIconFont
+          type="close-solid2"
+          size={40}
+          color="var(--neutral-white-d1)"
+        />
+      </ModelClose>
       {/* 渲染相应的模块 */}
       <Content>
         {

@@ -1,4 +1,9 @@
-import { configureStore, type ThunkAction, type Action } from '@reduxjs/toolkit'
+import {
+  configureStore,
+  type ThunkAction,
+  type Action,
+  getDefaultMiddleware,
+} from '@reduxjs/toolkit'
 import {
   type TypedUseSelectorHook,
   useDispatch as useOriginDispatch,
@@ -75,8 +80,12 @@ export const store = configureStore({
     freed,
     performanceInsight,
     employeeProfile,
-    encephalogram
+    encephalogram,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })
 
 export type AppDispatch = typeof store.dispatch

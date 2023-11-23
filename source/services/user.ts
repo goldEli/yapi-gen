@@ -7,7 +7,6 @@ import { onlySysNotice } from './sysNotice'
 // 获取人员信息
 export const getUserIntroList = async (params: { ids: string }) => {
   const response: any = await http.get<any, any>('getUserIntroList', params)
-  // console.log(response,'ddddddddddd');
 
   return {
     list: response.data.map((i: any) => ({
@@ -171,7 +170,6 @@ export const getMenuPermission: any = async () => {
 export const getMyRecent: any = async () => {
   const response = await http.get('/b/user/recent')
   // return {...response.data,is_member:response.data.}
-  console.log(response.data)
 
   return {
     ...response.data,

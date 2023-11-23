@@ -378,7 +378,7 @@ const DefectTable = (props: Props) => {
         id: projectId,
       }),
     )
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${resultParams}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${resultParams}`)
   }
 
   useEffect(() => {

@@ -103,8 +103,6 @@ export default React.memo(
     const login2 = debounce(
       async () => {
         if (!form2.phone) {
-          console.log('22')
-
           return
         }
         if (!(form2.phone && form2.msg && form2.code)) {
@@ -127,7 +125,6 @@ export default React.memo(
           smsCode: form2.msg,
           captchaCode: form2.code,
         }
-        console.log(data, 'data')
 
         const res = await toLogin(data)
         if (res.code === 0) {
@@ -150,8 +147,6 @@ export default React.memo(
 
     const login = debounce(
       async () => {
-        console.log(1)
-
         if (!form.username) {
           return
         }
@@ -168,7 +163,6 @@ export default React.memo(
           }
           return
         }
-        console.log(2)
 
         const data = {
           account: form.username,
@@ -220,8 +214,6 @@ export default React.memo(
     }
 
     const chooseLanguageMode = (index: number) => {
-      console.log(index)
-
       changeLanguage(index === 1 ? 'en' : 'zh')
       dispatch({
         type: index,
@@ -294,10 +286,10 @@ export default React.memo(
         setErrorCheck({
           phone: t('pleaseEnterAValidPhoneNumber'),
         })
-        console.log('检查', PHONE_NUMBER_REGEXP.test(form2.phone))
+
         return
       }
-      console.log('检查', PHONE_NUMBER_REGEXP.test(form2.phone))
+
       if (
         form2.phone &&
         form.password &&
@@ -352,7 +344,6 @@ export default React.memo(
               <Tabs
                 defaultActiveKey="1"
                 onTabClick={() => {
-                  console.log(1)
                   changeFocus()
                   setTimeout(() => {
                     inputRef.current.focus()
