@@ -147,6 +147,7 @@ const getGraph = () => {
       height,
       groupByTypes: true,
       modes: {
+        // eslint-disable-next-line quotes
         default: [
           {
             type: 'collapse-expand',
@@ -156,7 +157,19 @@ const getGraph = () => {
                 collapsed,
               })
               data.collapsed = collapsed
-              graph.focusItem(data.id, true)
+              const time = (data?.children?.length ?? 0) * 0.5
+              if (collapsed) {
+                if (data?.children?.length > 500) {
+                  setTimeout(() => {
+                    graph.fitCenter()
+                  }, time)
+                }
+              } else {
+                setTimeout(() => {
+                  graph.focusItem(data.id, true)
+                }, time)
+              }
+
               return true
             },
           },

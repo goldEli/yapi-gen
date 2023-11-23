@@ -94,7 +94,10 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
             id: 'map',
             name: '导图',
             url: '/ProjectDetail/Encephalogram',
-            isPermisson: true,
+            isPermisson:
+              projectInfo?.projectPermissions?.filter((i: any) =>
+                String(i.group_name).includes('导图'),
+              ).length > 0,
           },
           {
             id: 'iteration',

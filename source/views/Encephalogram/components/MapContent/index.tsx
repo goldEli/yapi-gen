@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { type TreeGraph } from '@antv/g6'
 import { setEncephalogramParams } from '@store/encephalogram'
 
-const MapContent = (props: any) => {
+const MapContent = () => {
   const { projectId } = useProjectId()
   const { encephalogramParams } = useSelector(store => store.encephalogram)
   const dispatch = useDispatch()
