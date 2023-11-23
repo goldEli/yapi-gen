@@ -1,5 +1,5 @@
 import G6, { Util } from '@antv/g6'
-import { setEncephalogramParams } from '@store/encephalogram'
+import { setExtraParams } from '@store/encephalogram'
 import { store } from '@store/index'
 
 const getGraph = () => {
@@ -223,7 +223,7 @@ const getGraph = () => {
     })
     graph.on('wheel', () => {
       store.dispatch(
-        setEncephalogramParams({
+        setExtraParams({
           numType: 'wheel',
           num: Number(graph.getZoom().toFixed(2)),
         }),

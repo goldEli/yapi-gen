@@ -13,13 +13,15 @@ type SliceState = {
     person: Array<number | string>
     // 按人员/按任务
     group_by: string
+  }
+  loading: boolean
+  extraParams: {
     // 刷新
     refresh: number
     // 放大缩小的
     num: number
     numType: string
   }
-  loading: boolean
   extraInfo: any[]
 }
 
@@ -30,9 +32,11 @@ const initialState: SliceState = {
     time: [],
     person: [],
     group_by: 'user',
-    refresh: 0,
+  },
+  extraParams: {
     num: 1,
     numType: '',
+    refresh: 0,
   },
   loading: false,
   extraInfo: [],
@@ -48,6 +52,12 @@ const slice = createSlice({
         ...action.payload,
       }
     },
+    setExtraParams(state, action) {
+      state.extraParams = {
+        ...state.extraParams,
+        ...action.payload,
+      }
+    },
     setLoading(state, action) {
       state.loading = action.payload
     },
@@ -58,7 +68,11 @@ const slice = createSlice({
 })
 
 const encephalogram = slice.reducer
-export const { setEncephalogramParams, setLoading, setExtraInfo } =
-  slice.actions
+export const {
+  setEncephalogramParams,
+  setLoading,
+  setExtraInfo,
+  setExtraParams,
+} = slice.actions
 
 export default encephalogram

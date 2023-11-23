@@ -10,11 +10,17 @@ import init from '@/views/Encephalogram/until/MapFun'
 import { getMapList, getMapStatisticInfo } from '@/services/map'
 import { useDispatch, useSelector } from '@store/index'
 import { type TreeGraph } from '@antv/g6'
-import { setEncephalogramParams, setExtraInfo } from '@store/encephalogram'
+import {
+  setEncephalogramParams,
+  setExtraInfo,
+  setExtraParams,
+} from '@store/encephalogram'
 
 const MapContent = () => {
   const { projectId } = useProjectId()
-  const { encephalogramParams } = useSelector(store => store.encephalogram)
+  const { encephalogramParams, extraParams } = useSelector(
+    store => store.encephalogram,
+  )
   const dispatch = useDispatch()
   const mapRef = useRef<any>(null)
   const mapBoxRef = useRef<HTMLDivElement>(null)
@@ -32,8 +38,17 @@ const MapContent = () => {
     }
   }
 
+  const getMapExtraInfo = async () => {
+    const result = await getMapStatisticInfo({
+      project_id: projectId,
+    })
+    if (result && result?.length) {
+      dispatch(setExtraInfo(result))
+    }
+  }
   const refreshData = async () => {
     await delTaskForTable(projectId, encephalogramParams.group_by)
+    await getMapExtraInfo()
     await getMapList({
       project_id: projectId,
       group_by: encephalogramParams.group_by,
@@ -41,10 +56,10 @@ const MapContent = () => {
   }
 
   useEffect(() => {
-    if (encephalogramParams.refresh > 0) {
+    if (extraParams.refresh > 0) {
       refreshData()
     }
-  }, [encephalogramParams.refresh])
+  }, [extraParams.refresh])
 
   useEffect(() => {
     if (projectId) {
@@ -65,6 +80,10 @@ const MapContent = () => {
           time: [],
           person: [],
           group_by: 'user',
+        }),
+      )
+      dispatch(
+        setExtraParams({
           refresh: 0,
           num: 1,
           numType: '',
@@ -73,18 +92,11 @@ const MapContent = () => {
     }
   }, [])
   useEffect(() => {
-    if (
-      !encephalogramParams.numType ||
-      encephalogramParams.numType === 'wheel'
-    ) {
+    if (!extraParams.numType || extraParams.numType === 'wheel') {
       return
     }
-    mapRef.current.zoomTo(
-      Number(encephalogramParams.num),
-      { x: 100, y: 100 },
-      true,
-    )
-  }, [encephalogramParams.num, encephalogramParams.numType])
+    mapRef.current.zoomTo(Number(extraParams.num), { x: 100, y: 100 }, true)
+  }, [extraParams.num, extraParams.numType])
   useEffect(() => {
     if (data && mapRef.current) {
       mapRef.current.changeData(data)
@@ -111,15 +123,6 @@ const MapContent = () => {
       observer.current.disconnect()
     }
   }, [])
-
-  const getMapExtraInfo = async () => {
-    const result = await getMapStatisticInfo({
-      project_id: projectId,
-    })
-    if (result && result?.length) {
-      dispatch(setExtraInfo(result))
-    }
-  }
 
   useEffect(() => {
     if (projectId) {

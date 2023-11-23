@@ -29,7 +29,7 @@ const useMapData = () => {
   }, [projectId, group_by])
 
   const data = useMemo(() => {
-    if (!allItems) {
+    if (!allItems?.length) {
       return null
     }
     let result: any
@@ -88,7 +88,7 @@ const useMapData = () => {
     const top = formatObjectForRender(temp, temp)
     const output = res ? res : top
     // 加入额外项目信息
-    if (extraInfo.length) {
+    if (extraInfo.length && output) {
       output.extra = extraInfo.map((i: any) => {
         return {
           name: `${i.department_name} ${i.expect_day ?? 0}天 (${

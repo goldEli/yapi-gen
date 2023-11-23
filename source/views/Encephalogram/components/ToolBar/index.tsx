@@ -7,9 +7,9 @@ import { getMessage } from '@/components/Message'
 import { useDispatch, useSelector } from '@store/index'
 import { offFullScreenMode, onFullScreenMode } from '@store/kanBan/kanBan.thunk'
 import { useEffect, useState } from 'react'
-import { setEncephalogramParams } from '@store/encephalogram'
+import { setEncephalogramParams, setExtraParams } from '@store/encephalogram'
 import styled from '@emotion/styled'
-import { CommonIconFont } from '@/components/CommonIconFont'
+
 import _ from 'lodash'
 
 const Btn = styled.div`
@@ -36,7 +36,9 @@ const ToolBar = () => {
   const dispatch = useDispatch()
   const [value, setValue] = useState<any>(1)
   const { fullScreen } = useSelector(store => store.kanBan)
-  const { encephalogramParams } = useSelector(store => store.encephalogram)
+  const { encephalogramParams, extraParams } = useSelector(
+    store => store.encephalogram,
+  )
   const onChange = (id: number) => {
     dispatch(setEncephalogramParams({ group_by: id === 0 ? 'user' : 'task' }))
   }
@@ -75,7 +77,7 @@ const ToolBar = () => {
     },
   ]
   const handleChange = (val: number) => {
-    dispatch(setEncephalogramParams({ num: val }))
+    dispatch(setExtraParams({ num: val }))
     setValue(val)
   }
 
@@ -108,27 +110,27 @@ const ToolBar = () => {
       })
   })
   const handleChangeAdd = () => {
-    const val = encephalogramParams.num + 0.05
+    const val = extraParams.num + 0.05
 
-    dispatch(setEncephalogramParams({ num: val, numType: 'click' }))
+    dispatch(setExtraParams({ num: val, numType: 'click' }))
   }
   const handleChangeReduce = () => {
-    const val = encephalogramParams.num - 0.05
+    const val = extraParams.num - 0.05
     if (val < 0.2) {
       return
     }
-    dispatch(setEncephalogramParams({ numType: 'click', num: val }))
+    dispatch(setExtraParams({ numType: 'click', num: val }))
   }
   const onRefresh = _.debounce(() => {
     dispatch(
-      setEncephalogramParams({
-        refresh: encephalogramParams.refresh + 1,
+      setExtraParams({
+        refresh: extraParams.refresh + 1,
       }),
     )
   }, 500)
   useEffect(() => {
-    setValue(`${Math.trunc(encephalogramParams.num * 100)}%`)
-  }, [encephalogramParams.num])
+    setValue(`${Math.trunc(extraParams.num * 100)}%`)
+  }, [extraParams.num])
   return (
     <ToolBarBox className="toolBar">
       <RightWrap type="1">
@@ -205,9 +207,6 @@ const ToolBar = () => {
             onChange={(val: any) => handleChange(val)}
             placement="bottomRight"
             dropdownMatchSelectWidth={160}
-            // menuItemSelectedIcon={
-            //   <CommonIconFont type="check" color="var(--primary-d1)" />
-            // }
             dropdownRender={(menu: any) => (
               <>
                 {menu}
