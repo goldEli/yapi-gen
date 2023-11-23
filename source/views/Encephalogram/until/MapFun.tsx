@@ -18,21 +18,37 @@ const getGraph = () => {
         drawShape: (cfg: any, group: any) => {
           const content = cfg.name
           const { fill, color, fontSize } = cfg.style || {}
+          let wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 30
           if (cfg.depth === 0) {
-            cfg.extra?.forEach((txt: string, index: number) => {
+            cfg.extra?.forEach((info: any, index: number) => {
+              const width = Util.getTextSize(info.name, 12)[0] + 20
+              if (width > wd) {
+                wd = width
+              }
+              group.addShape('rect', {
+                attrs: {
+                  fill: info.fill,
+                  width: Util.getTextSize(info.name, 12)[0] + 20,
+                  height: 20,
+                  y: 50 + index * 30,
+                  radius: [2, 2, 2, 2],
+                },
+                name: 'yp_rect' + index,
+              })
               group.addShape('text', {
                 attrs: {
-                  text: txt,
-                  y: 60 + index * 20,
+                  text: info.name,
+                  x: 10,
+                  y: 61 + index * 30,
                   textBaseline: 'middle',
-                  fill: color || '#323233',
+                  fill: info.color,
                   fontSize: 12,
                 },
                 name: 'text-shape' + index,
               })
             })
           }
-          const wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 30
+
           const rect = group.addShape('rect', {
             attrs: {
               fill,
@@ -165,9 +181,11 @@ const getGraph = () => {
                   }, time)
                 }
               } else {
-                setTimeout(() => {
-                  graph.focusItem(data.id, true)
-                }, time)
+                if (data.deep > 1) {
+                  setTimeout(() => {
+                    graph.focusItem(data.id, true)
+                  }, time)
+                }
               }
 
               return true

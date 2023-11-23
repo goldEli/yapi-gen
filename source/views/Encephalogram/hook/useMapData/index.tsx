@@ -12,7 +12,9 @@ import moment from 'moment'
 
 const useMapData = () => {
   const { projectId } = useProjectId()
-  const { encephalogramParams } = useSelector(store => store.encephalogram)
+  const { encephalogramParams, extraInfo } = useSelector(
+    store => store.encephalogram,
+  )
   const { group_by, person, iterationVal, state, time } = encephalogramParams
   const allItems: any[] = useLiveQuery(() => {
     if (projectId) {
@@ -84,13 +86,33 @@ const useMapData = () => {
     const res = buildIntactTree(result)
     const temp = allItems.find((i: any) => i.node_pid === 0)
     const top = formatObjectForRender(temp, temp)
-    return res ? res : top
+    const output = res ? res : top
+    // 加入额外项目信息
+    if (extraInfo.length) {
+      output.extra = extraInfo.map((i: any) => {
+        return {
+          name: `${i.department_name} ${i.expect_day ?? 0}天 (${
+            i.actual ?? 0
+          }天)`,
+          id: `${Date.now()}${Math.random().toString(36).slice(2, 8)}`,
+          fill:
+            i.expect_day === i.actual
+              ? '#BBFFBA'
+              : i.expect_day > i.actual
+              ? '#FFF383'
+              : '#FFC8A0',
+          color: '#323233',
+        }
+      })
+    }
+    return output
   }, [
     JSON.stringify(allItems),
     JSON.stringify(person),
     JSON.stringify(iterationVal),
     JSON.stringify(state),
     JSON.stringify(time),
+    JSON.stringify(extraInfo),
   ])
   console.log(data, 'datasssss')
 

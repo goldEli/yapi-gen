@@ -575,6 +575,7 @@ const urls = {
    */
   getMapList: '/b/project/map',
   getMapMembers: '/b/project/map_members',
+  getMapStatisticInfo: '/b/project/map_statistics',
   // 例外时间列表
   getExceptionTimeList: '/b/project/work_config/work_dates_list',
   // 工作时间查询

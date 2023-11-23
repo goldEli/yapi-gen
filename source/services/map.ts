@@ -24,6 +24,13 @@ export const getMapList = async (params: any) => {
   }
   return response.data
 }
+
+// 获取项目组统计信息
+export const getMapStatisticInfo = async (params: any) => {
+  const response = await http.get('getMapStatisticInfo', params)
+  return response.data
+}
+
 export const getMapMembers = async (params: any) => {
   const response = await http.get('getMapMembers', params)
   return response.data

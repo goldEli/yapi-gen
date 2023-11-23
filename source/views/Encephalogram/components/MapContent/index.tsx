@@ -7,10 +7,10 @@ import {
 import useProjectId from '@/views/Encephalogram/hook/useProjectId'
 import useMapData from '../../hook/useMapData'
 import init from '@/views/Encephalogram/until/MapFun'
-import { getMapList } from '@/services/map'
+import { getMapList, getMapStatisticInfo } from '@/services/map'
 import { useDispatch, useSelector } from '@store/index'
 import { type TreeGraph } from '@antv/g6'
-import { setEncephalogramParams } from '@store/encephalogram'
+import { setEncephalogramParams, setExtraInfo } from '@store/encephalogram'
 
 const MapContent = () => {
   const { projectId } = useProjectId()
@@ -111,6 +111,24 @@ const MapContent = () => {
       observer.current.disconnect()
     }
   }, [])
+
+  const getMapExtraInfo = async () => {
+    const result = await getMapStatisticInfo({
+      project_id: projectId,
+    })
+    if (result && result?.length) {
+      dispatch(setExtraInfo(result))
+    }
+  }
+
+  useEffect(() => {
+    if (projectId) {
+      getMapExtraInfo()
+    }
+    return () => {
+      dispatch(setExtraInfo([]))
+    }
+  }, [projectId])
 
   return <MapContentBox ref={mapBoxRef} id="MapContentMountNode" />
 }

@@ -20,6 +20,7 @@ type SliceState = {
     numType: string
   }
   loading: boolean
+  extraInfo: any[]
 }
 
 const initialState: SliceState = {
@@ -34,6 +35,7 @@ const initialState: SliceState = {
     numType: '',
   },
   loading: false,
+  extraInfo: [],
 }
 
 const slice = createSlice({
@@ -49,10 +51,14 @@ const slice = createSlice({
     setLoading(state, action) {
       state.loading = action.payload
     },
+    setExtraInfo(state, action) {
+      state.extraInfo = action.payload
+    },
   },
 })
 
 const encephalogram = slice.reducer
-export const { setEncephalogramParams, setLoading } = slice.actions
+export const { setEncephalogramParams, setLoading, setExtraInfo } =
+  slice.actions
 
 export default encephalogram
