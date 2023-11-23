@@ -330,7 +330,18 @@ const GlobalStyle = () => {
     }
 
     .ant-table-tbody > tr > td {
-      border-bottom: none;
+      position: relative;
+      border: none;
+      &::after {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 100%;
+        height: 1px;
+        background: var(--neutral-n5);
+        transform: scaleY(0.5);
+      }
     }
 
     .ant-table-tbody > tr > td,

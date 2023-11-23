@@ -5,7 +5,17 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import SiteSettingDrawer from './components/SiteSettingDrawer'
-
+import CommonIconFont from '@/components/CommonIconFont'
+import styled from '@emotion/styled'
+const IconWrap = styled.span`
+  color: var(--neutral-n2);
+  font-size: var(--font14);
+  display: flex;
+  align-items: center;
+  .anticon {
+    margin-right: 8px;
+  }
+`
 const Trends = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
@@ -15,23 +25,42 @@ const Trends = () => {
 
   const list = [
     {
-      label: t('allNotifications'),
+      label: (
+        <IconWrap>
+          <CommonIconFont type="bell" size={20}></CommonIconFont>{' '}
+          {t('allNotifications')}{' '}
+        </IconWrap>
+      ),
       key: '1',
     },
     {
-      label: t('unreadNotifications'),
+      label: (
+        <IconWrap>
+          <CommonIconFont type="bell-notification" size={20}></CommonIconFont>{' '}
+          {t('unreadNotifications')}{' '}
+        </IconWrap>
+      ),
       key: '2',
     },
     {
-      label: t('readNotification'),
+      label: (
+        <IconWrap>
+          <CommonIconFont type="bell-off" size={20}></CommonIconFont>{' '}
+          {t('readNotification')}{' '}
+        </IconWrap>
+      ),
       key: '3',
     },
     {
-      label: t('mentionMine'),
+      label: (
+        <IconWrap>
+          <CommonIconFont type="mention" size={20}></CommonIconFont>{' '}
+          {t('mentionMine')}{' '}
+        </IconWrap>
+      ),
       key: '4',
     },
   ]
-
   //   跳转路由
   const onChangeRouter = (key: any) => {
     setActiveKey(key)
