@@ -191,14 +191,16 @@ export const ReportButton = styled.div`
   color: var(--neutral-white-d7);
   font-size: 14px;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 9;
 `
 
 export const CheckboxAll = styled(Checkbox)`
   padding-left: 28px;
+  font-family: SiYuanMedium;
 `
 export const DepartCheckboxAll = styled(Checkbox)`
   padding-left: 24px;
+  font-family: SiYuanMedium;
 `
 export const CheckBoxWrap = styled.div`
   height: calc(100% - 118px);

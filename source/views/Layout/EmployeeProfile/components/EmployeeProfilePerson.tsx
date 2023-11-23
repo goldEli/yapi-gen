@@ -11,7 +11,7 @@ import {
   ReportButton,
   TabWrap,
 } from '../style'
-import { Checkbox, Collapse, Select } from 'antd'
+import { Checkbox, Collapse, Radio, Select } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { setContrastDrawer } from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
@@ -152,6 +152,10 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [activeKey, setActiveKey] = useState<any>([])
   const [tabActiveKey, setTabActiveKey] = useState('project')
   const { statistiDepartment } = useSelector(store => store.project)
+  const tabs = [
+    { name: '项目组', value: 'project' },
+    { name: '部门', value: 'department' },
+  ]
   const {
     list = [],
     expandedKeys = [],
