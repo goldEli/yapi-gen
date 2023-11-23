@@ -512,7 +512,7 @@ export const TaskContent = styled.div`
   margin-left: 8px;
   .nameBox {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     width: 100%;
     .left {
@@ -521,7 +521,7 @@ export const TaskContent = styled.div`
       font-size: 14px;
       color: var(--neutral-n1-d1);
       .name {
-        max-width: 86%;
+        max-width: 70%;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -531,6 +531,7 @@ export const TaskContent = styled.div`
     .right {
       font-size: 12px;
       color: var(--function-error);
+      text-align: right;
     }
   }
   .info {
