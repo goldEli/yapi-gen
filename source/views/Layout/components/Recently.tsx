@@ -189,7 +189,11 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取汇报列表
-  const getReportData = async (isInit: boolean, page: number) => {
+  const getReportData = async (
+    isInit: boolean,
+    page: number,
+    index?: number,
+  ) => {
     setIsSpinning(true)
     const result = await getReportViewLogList({
       page,
@@ -198,7 +202,7 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      setDataList(result.data)
+      index === 0 && setDataList(result.data)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(result.data.list)
@@ -211,7 +215,11 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取项目列表
-  const getProjectData = async (isInit: boolean, page: number) => {
+  const getProjectData = async (
+    isInit: boolean,
+    page: number,
+    index?: number,
+  ) => {
     setIsSpinning(true)
     const result = await getRecentProject({
       page,
@@ -220,7 +228,7 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      setDataList(result.data)
+      index === 1 && setDataList(result.data)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(result.data.list)
@@ -233,7 +241,7 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取任务列表
-  const getTaskData = async (isInit: boolean, page: number) => {
+  const getTaskData = async (isInit: boolean, page: number, index?: number) => {
     setIsSpinning(true)
     const result = await getRecentStory({
       page,
@@ -242,7 +250,7 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      setDataList(result.data)
+      index === 2 && setDataList(result.data)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(result.data.list)
@@ -258,13 +266,13 @@ const Recently = (props: RecentlyProps) => {
   const getData = () => {
     switch (tabActive) {
       case 2:
-        getTaskData(true, 1)
+        getTaskData(true, 1, tabActive)
         break
       case 1:
-        getProjectData(true, 1)
+        getProjectData(true, 1, tabActive)
         break
       case 0:
-        getReportData(true, 1)
+        getReportData(true, 1, tabActive)
         break
       default:
         break
@@ -375,7 +383,6 @@ const Recently = (props: RecentlyProps) => {
   const onChangeTabActive = (index: number) => {
     if (index === tabActive) return
     setTabActive(index)
-    setDataList({})
   }
 
   useEffect(() => {

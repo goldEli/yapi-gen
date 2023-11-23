@@ -250,7 +250,7 @@ const MainTable = (props: Props) => {
       },
     },
     {
-      title: t('keyboard'),
+      title: t('serial_number'),
       dataIndex: 'prefix',
       width: 160,
     },

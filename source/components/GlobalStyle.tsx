@@ -331,8 +331,9 @@ const GlobalStyle = () => {
 
     .ant-table-tbody > tr > td {
       position: relative;
-      border: none;
-      /* &::after {
+      border-bottom: 0.5px solid var(--neutral-n6-d1);
+      /* border: none;
+      &::after {
         content: ' ';
         position: absolute;
         left: 0;
