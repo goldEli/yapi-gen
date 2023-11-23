@@ -2627,6 +2627,8 @@
   "toBeOpened": "Wait open",
   "onlyTheProjectLeaderCanPausestartTheProject": "Only the project leader can start/pause the project",
   "removed": "(Removed) ",
+  "projectTeam": "Project Team",
+  "department1": "Department",
   "editColumn": "Edit Column",
   "deleteColumn": "Delete Column"
 }
