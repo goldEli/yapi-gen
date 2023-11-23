@@ -380,7 +380,7 @@ const TopArea = () => {
                 </div>
                 <IconFont
                   onClick={() => foldIcon(el)}
-                  type={el.fold ? 'up' : 'down'}
+                  type={el.fold ? 'down' : 'up'}
                   style={{ color: 'var(--auxiliary-text-t2-d1)' }}
                 />
               </RowTree>
@@ -398,7 +398,15 @@ const TopArea = () => {
                           onChange={e => onChangeS(e, item)}
                           checked={item.checked}
                         />
-                        <Image src={item.avatar} />
+                        <img
+                          src={
+                            item.avatar ||
+                            'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png'
+                          }
+                          width={32}
+                          height={32}
+                          style={{ borderRadius: 16 }}
+                        />
                         <TextTree>{item.name}</TextTree>
                       </div>
                       <span className="rowChildtext">
