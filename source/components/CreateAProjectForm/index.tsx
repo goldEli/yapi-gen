@@ -418,6 +418,7 @@ const CreateAProjectForm = () => {
       bodyStyle={{
         height: '100vh',
         minWidth: '1400px',
+        paddingLeft: '70px',
       }}
       width="100vw"
       dex={50}

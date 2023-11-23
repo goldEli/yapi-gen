@@ -545,6 +545,25 @@ export const TaskContent = styled.div`
 export const TabWrap = styled(Tabs)`
   height: calc(100% - 40px);
   margin-left: 16px;
+  .ant-tabs-tab + .ant-tabs-tab {
+    margin: 0px;
+  }
+  .ant-tabs-tab {
+    background: var(--hover-d2);
+    border: 1px solid var(--hover-d2);
+    border-radius: 2px;
+  }
+  .ant-tabs-tab-active {
+    .ant-tabs-tab-btn {
+      background: #fff;
+    }
+  }
+  .ant-tabs-tab-btn {
+    padding: 0px 16px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+  }
   .ant-tabs-nav::before,
   .ant-tabs-nav::before {
     border: none;
@@ -555,7 +574,7 @@ export const TabWrap = styled(Tabs)`
   }
   .ant-tabs-nav .ant-tabs-nav-wrap,
   .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
-    height: 20px;
+    height: 32px;
   }
   .ant-tabs-nav,
   .ant-tabs > div > .ant-tabs-nav {
