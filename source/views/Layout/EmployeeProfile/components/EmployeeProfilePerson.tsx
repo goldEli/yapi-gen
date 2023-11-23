@@ -58,7 +58,7 @@ const CollapseHeader = (props: any) => {
   }, [props.filterParams])
 
   useEffect(() => {
-    const resultList = props.selectKeys.filter((object: any) =>
+    const resultList = props.selectKeys?.filter((object: any) =>
       props.item?.member_list?.some(
         (otherObject: any) => otherObject.id === object,
       ),
