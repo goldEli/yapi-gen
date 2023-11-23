@@ -129,7 +129,7 @@ const GroupItems = (props: GroupItemsProps) => {
                 <div className="info">
                   <span className="name">{i?.user?.name || '--'}</span>
                   <span className="sub">
-                    {i.project ? t('container.project') : t('personal')}
+                    {i.type === 3 ? t('container.project') : t('personal')}
                     {t('daily')} 【{i?.project?.name ?? '--'}】
                   </span>
                 </div>
@@ -156,6 +156,8 @@ const Recently = (props: RecentlyProps) => {
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive2 = useRef<HTMLDivElement>(null)
   const [dataList, setDataList] = useState<any>({})
+  const [dataList1, setDataList1] = useState<any>({})
+  const [dataList2, setDataList2] = useState<any>({})
   const { isRefresh } = useSelector(store => store.user)
   const { language } = useSelector(store => store.global)
 
@@ -189,11 +191,7 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取汇报列表
-  const getReportData = async (
-    isInit: boolean,
-    page: number,
-    index?: number,
-  ) => {
+  const getReportData = async (isInit: boolean, page: number) => {
     setIsSpinning(true)
     const result = await getReportViewLogList({
       page,
@@ -202,7 +200,7 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      index === 0 && setDataList(result.data)
+      setDataList(result.data)
     } else {
       const oldData = _.cloneDeep(dataList.list)
       const newData = _.cloneDeep(result.data.list)
@@ -215,11 +213,7 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取项目列表
-  const getProjectData = async (
-    isInit: boolean,
-    page: number,
-    index?: number,
-  ) => {
+  const getProjectData = async (isInit: boolean, page: number) => {
     setIsSpinning(true)
     const result = await getRecentProject({
       page,
@@ -228,12 +222,12 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      index === 1 && setDataList(result.data)
+      setDataList1(result.data)
     } else {
-      const oldData = _.cloneDeep(dataList.list)
+      const oldData = _.cloneDeep(dataList1.list)
       const newData = _.cloneDeep(result.data.list)
       addMore(oldData, newData)
-      setDataList({
+      setDataList1({
         pager: result.data.pager,
         list: oldData,
       })
@@ -241,7 +235,7 @@ const Recently = (props: RecentlyProps) => {
   }
 
   // 获取任务列表
-  const getTaskData = async (isInit: boolean, page: number, index?: number) => {
+  const getTaskData = async (isInit: boolean, page: number) => {
     setIsSpinning(true)
     const result = await getRecentStory({
       page,
@@ -250,12 +244,12 @@ const Recently = (props: RecentlyProps) => {
       setIsSpinning(false)
     })
     if (isInit) {
-      index === 2 && setDataList(result.data)
+      setDataList2(result.data)
     } else {
-      const oldData = _.cloneDeep(dataList.list)
+      const oldData = _.cloneDeep(dataList2.list)
       const newData = _.cloneDeep(result.data.list)
       addMore(oldData, newData)
-      setDataList({
+      setDataList2({
         pager: result.data.pager,
         list: oldData,
       })
@@ -264,15 +258,18 @@ const Recently = (props: RecentlyProps) => {
 
   //   获取数据
   const getData = () => {
+    setDataList({})
+    setDataList1({})
+    setDataList2({})
     switch (tabActive) {
       case 2:
-        getTaskData(true, 1, tabActive)
+        getTaskData(true, 1)
         break
       case 1:
-        getProjectData(true, 1, tabActive)
+        getProjectData(true, 1)
         break
       case 0:
-        getReportData(true, 1, tabActive)
+        getReportData(true, 1)
         break
       default:
         break
@@ -362,7 +359,7 @@ const Recently = (props: RecentlyProps) => {
       saveViewReportDetailDrawer({
         visible: true,
         id: item.report_user_id,
-        type: 1,
+        type: item.type,
       }),
     )
   }
@@ -387,7 +384,6 @@ const Recently = (props: RecentlyProps) => {
 
   useEffect(() => {
     setPage(1)
-    setDataList({})
     props.isVisible && getData()
   }, [props.isVisible, tabActive])
 
@@ -451,6 +447,41 @@ const Recently = (props: RecentlyProps) => {
     return false
   }, [dataList])
 
+  const hasMore1 = useMemo(() => {
+    if (!dataList1.list) {
+      return false
+    }
+    const allTask = Object.values(dataList1.list).flat(2)
+    if (allTask.length < dataList1.pager.total) {
+      return true
+    }
+    return false
+  }, [dataList1])
+
+  const hasMore2 = useMemo(() => {
+    if (!dataList2.list) {
+      return false
+    }
+    const allTask = Object.values(dataList2.list).flat(2)
+    if (allTask.length < dataList2.pager.total) {
+      return true
+    }
+    return false
+  }, [dataList2])
+
+  // 1是数据，2是更多
+  const onComputedTab = (type: number) => {
+    let result: any
+    if (tabActive === 1) {
+      result = type === 1 ? dataList1?.list : hasMore1
+    } else if (tabActive === 2) {
+      result = type === 1 ? dataList2?.list : hasMore2
+    } else {
+      result = type === 1 ? dataList?.list : hasMore
+    }
+    return result
+  }
+
   return (
     <QuickPopover local={language}>
       <HeaderWrap>
@@ -471,19 +502,21 @@ const Recently = (props: RecentlyProps) => {
         <ContentWrap id="scrollableDiv">
           <InfiniteScroll
             dataLength={
-              dataList.list ? Object.values(dataList.list).flat(2).length : 0
+              onComputedTab(1)
+                ? Object.values(onComputedTab(1)).flat(2).length
+                : 0
             }
             next={fetchMoreData}
-            hasMore={hasMore}
+            hasMore={onComputedTab(2)}
             loader={<Skeleton paragraph={{ rows: 1 }} active />}
             scrollableTarget="scrollableDiv"
           >
-            {dataList.list &&
-              Object.keys(dataList.list)?.map((k: any) => (
+            {onComputedTab(1) &&
+              Object.keys(onComputedTab(1))?.map((k: any) => (
                 <ItemWrap key={k}>
                   <TimeName>{onComputedTime(k)}</TimeName>
                   <GroupItems
-                    row={dataList.list[k]}
+                    row={onComputedTab(1)?.[k]}
                     onClickTask={onClickTask}
                     onClickProject={onClickProject}
                     onClickReport={onClickReport}
@@ -492,8 +525,8 @@ const Recently = (props: RecentlyProps) => {
                 </ItemWrap>
               ))}
           </InfiniteScroll>
-          {(JSON.stringify(dataList?.list) === '{}' ||
-            dataList?.list?.length <= 0) && <NoData />}
+          {(JSON.stringify(onComputedTab(1)) === '{}' ||
+            onComputedTab(1)?.length <= 0) && <NoData />}
         </ContentWrap>
       </Spin>
       <Border />
