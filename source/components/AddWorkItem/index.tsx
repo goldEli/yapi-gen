@@ -115,7 +115,7 @@ const AddWorkItem = () => {
   // 获取项目列表
   const getProjectData = async () => {
     const res = await getProjectList({
-      self: 1,
+      self: [3],
       all: 1,
     })
     setProjectList(res.list)
@@ -143,6 +143,7 @@ const AddWorkItem = () => {
     }
     // 全局创建和快速创建获取最近项目
     if (!params?.projectId) {
+      console.log(111111111)
       getRecentlyList(res.list)
     }
   }

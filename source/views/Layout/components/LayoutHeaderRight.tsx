@@ -534,17 +534,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             </RobotButton>
           </Popover>
         ) : null}
-
-        {/* 我的快捷创建 */}
-        {location.href.includes('/Mine') && (
-          <MineCreate onClick={onQuickCreate}>
-            <div className="icon">
-              <CommonIconFont type="plus" />
-            </div>
-            <div className="label">{t('create')}</div>
-          </MineCreate>
-        )}
-
         <Popover
           content={
             <Recently
