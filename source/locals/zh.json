@@ -2630,5 +2630,6 @@
   "projectTeam": "项目组",
   "department1": "部门",
   "editColumn": "编辑列",
-  "deleteColumn": "删除列"
+  "deleteColumn": "删除列",
+  "managementBackend": "管理后台"
 }

@@ -2630,5 +2630,6 @@
   "projectTeam": "Project Team",
   "department1": "Department",
   "editColumn": "Edit Column",
-  "deleteColumn": "Delete Column"
+  "deleteColumn": "Delete Column",
+  "managementBackend": "Backstage"
 }

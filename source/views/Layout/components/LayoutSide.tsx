@@ -70,7 +70,14 @@ const MorePopoverComponent = (props: MorePopoverComponentProps) => {
               size={24}
               color="var(--neutral-n2)"
             />
-            <div>{i.isRegular ? t(i.name) : i.name}</div>
+            <div>
+              {/* 单独处理后台得翻译 */}
+              {currentMenu?.url === '/AdminManagement'
+                ? t('managementBackend')
+                : i.isRegular
+                ? t(i.name)
+                : i.name}
+            </div>
           </MoreItem>
         ))}
       </MorePopoverContent>
