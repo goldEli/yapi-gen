@@ -180,8 +180,8 @@ export const PersonWrap = styled.div`
 
 export const ReportButton = styled.div`
   position: absolute;
-  right: 0;
-  top: 102px;
+  right: 0px;
+  top: 112px;
   height: 32px;
   line-height: 32px;
   padding: 0 8px;
