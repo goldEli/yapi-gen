@@ -15,13 +15,13 @@ const useGuideModal = () => {
       desc: t(
         'the_card_state_changes_the_final_state_of_ta_according_to_the_draggable_destination',
       ),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mianban/guide_1.jpg',
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/kanban1.jpg',
     },
     {
       key: 1,
       title: t('grouped_view'),
       desc: t('at_the_same_time'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mianban/guide_2.png',
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/kanban2.jpg',
     },
     {
       key: 2,
@@ -29,7 +29,7 @@ const useGuideModal = () => {
       desc: t(
         'vertical_filtering_can_be_performed_according_to_different_workflows',
       ),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mianban/guide_3.jpg',
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/kanban3.jpg',
     },
   ]
   const guildModalEl = (

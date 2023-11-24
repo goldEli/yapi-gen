@@ -1048,6 +1048,12 @@ export const LayoutMenuWrap = styled(Tabs)`
   .ant-tabs-tab {
     padding: 0;
   }
+  .ant-tabs-tab-btn:focus,
+  .ant-tabs-tab-remove:focus,
+  .ant-tabs-tab-btn:active,
+  .ant-tabs-tab-remove:active {
+    color: var(--neutral-n2);
+  }
 `
 
 export const MoreMenuWrap = styled.div`

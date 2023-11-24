@@ -40,12 +40,16 @@ const DetailScreenModal = () => {
   }
 
   useEffect(() => {
-    // 如果地址栏上带有此参数，默认打开全屏弹层
-    if (paramsData?.isOpenScreenDetail && (projectInfo?.id || paramsData?.id)) {
+    // 如果地址栏上带有isOpenScreenDetail此参数，并且传入id与项目id一致，并且个人偏好数据有的情况下
+    if (
+      paramsData?.isOpenScreenDetail &&
+      (projectInfo?.id || paramsData?.id) &&
+      userPreferenceConfig?.previewModel
+    ) {
       const resultParams: any = {
         id: projectInfo?.id || paramsData?.id,
         specialType: paramsData?.specialType,
-        type: paramsData?.type,
+        type: paramsData?.specialType,
       }
       switch (paramsData?.specialType) {
         case 1:
@@ -58,6 +62,7 @@ const DetailScreenModal = () => {
           resultParams.demandId = paramsData?.detailId
           break
       }
+      console.log(userPreferenceConfig, '=userPreferenceConfig')
       dispatch(
         setIsDetailScreenModal({
           visible: true,
@@ -65,7 +70,7 @@ const DetailScreenModal = () => {
         }),
       )
     }
-  }, [paramsData?.isOpenScreenDetail, projectInfo])
+  }, [paramsData?.isOpenScreenDetail, projectInfo, userPreferenceConfig])
 
   return (
     <ModalWrap

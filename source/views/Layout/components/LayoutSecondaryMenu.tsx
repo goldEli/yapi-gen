@@ -14,17 +14,15 @@ import {
   saveScreenDetailModal,
 } from '@store/project/project.thunk'
 
-interface LayoutSecondaryMenuProps {
-  width: number
-}
-
-const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
+const LayoutSecondaryMenu = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [searchParams] = useSearchParams()
 
+  const { layoutSecondaryMenuLeftWidth, layoutSecondaryMenuRightWidth } =
+    useSelector(store => store.global)
   const { currentMenu, userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [items, setItems] = useState<any>([])
@@ -249,7 +247,14 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
   return (
     <LayoutMenuWrap
       style={{
-        width: props.width ? `calc(100% - ${props.width + 120}px)` : 'auto',
+        width:
+          layoutSecondaryMenuLeftWidth && layoutSecondaryMenuRightWidth
+            ? `calc(100% - ${
+                layoutSecondaryMenuLeftWidth +
+                layoutSecondaryMenuRightWidth +
+                120
+              }px)`
+            : 'auto',
       }}
       activeKey={activeKey}
       tabPosition="top"

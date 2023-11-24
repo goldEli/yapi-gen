@@ -46,7 +46,7 @@ import IconFont from '@/components/IconFont'
 import QuickMine from './QuickMine'
 import Recently from './Recently'
 import KeyBoardDrawer from '../Trends/components/KeyBoardDrawer/KeyBoardDrawer'
-import { setAddWorkItemModal } from '@store/project'
+import { setLayoutSecondaryMenuRightWidth } from '@store/global'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -126,7 +126,6 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
 }
 
 interface LayoutHeaderRightProps {
-  onSetWidth(width: number): void
   onChangeReportAssistantModalObj(value: any): void
 }
 
@@ -135,7 +134,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { userInfo, isRefresh } = useSelector(store => store.user)
-  const { language } = useSelector(store => store.global)
   // 帮助中心展开
   const [isHelpVisible, setIsHelpVisible] = useState(false)
   // 我的
@@ -419,20 +417,12 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     </div>
   )
 
-  // 我的模块下-快捷创建
-  const onQuickCreate = () => {
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: { isQuickCreate: true },
-      }),
-    )
-  }
-
   useEffect(() => {
     if (userInfo?.id) {
-      props.onSetWidth(
-        document.getElementById('LayoutHeaderRightWrap')?.clientWidth || 0,
+      dispatch(
+        setLayoutSecondaryMenuRightWidth(
+          document.getElementById('LayoutHeaderRightWrap')?.clientWidth || 0,
+        ),
       )
     }
   }, [isRefresh, userInfo])

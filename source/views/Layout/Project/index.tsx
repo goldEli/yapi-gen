@@ -86,7 +86,6 @@ const ProjectIndex = () => {
       paramsObj.page = params.pageObj.page
       paramsObj.pageSize = params.pageObj.size
     }
-    console.log(paramsObj, '=paramsObjparamsObj')
     const result = await getProjectList(paramsObj)
     setDataList(result)
     setIsSpinning(false)

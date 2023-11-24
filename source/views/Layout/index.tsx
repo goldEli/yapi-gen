@@ -58,11 +58,7 @@ const LayoutIndex = () => {
   const { viewReportModal } = useSelector(store => store.workReport)
   const { loginInfo, menuPermission } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
-
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const [leftWidth, setLeftWidth] = useState(0)
-  const [rightWidth, setRightWidth] = useState(0)
-  const [width, setWidth] = useState(0)
 
   const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
     visible: boolean
@@ -154,10 +150,6 @@ const LayoutIndex = () => {
   }, [loginInfo, menuPermission])
 
   useEffect(() => {
-    setWidth(leftWidth + rightWidth)
-  }, [leftWidth, rightWidth])
-
-  useEffect(() => {
     if (projectInfo?.project_warring_info?.popup_window === 1) {
       dispatch(setProjectWarningModal({ visible: true }))
     }
@@ -172,10 +164,9 @@ const LayoutIndex = () => {
           <LayoutSideIndex onClose={onClose} />
           <LayoutContent isOpen={layoutSideCollapse}>
             <LayoutHeader onClick={onClose}>
-              <LayoutHeaderLeft onSetWidth={setLeftWidth} />
-              <LayoutSecondaryMenu width={width} />
+              <LayoutHeaderLeft />
+              <LayoutSecondaryMenu />
               <LayoutHeaderRight
-                onSetWidth={setRightWidth}
                 onChangeReportAssistantModalObj={setReportAssistantModalObj}
               />
             </LayoutHeader>
