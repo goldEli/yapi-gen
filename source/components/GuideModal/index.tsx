@@ -109,6 +109,7 @@ const GuideModal = (props: {
     top: 50%;
     z-index: 99;
     transform: translate(-50%, -50%);
+    overflow: hidden;
   `
   const [active, setActive] = useState(0)
   const [visible, setVisible] = useState(true)
