@@ -329,7 +329,8 @@ const GlobalStyle = () => {
       height: 44px;
     }
 
-    .ant-table-tbody > tr > td {
+    .ant-table-tbody > tr > td,
+    .ant-table-thead > tr > th {
       position: relative;
       border-bottom: 0.5px solid var(--neutral-n6-d1);
     }

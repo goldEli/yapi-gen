@@ -16,7 +16,6 @@ const TableWrap = styled(Table)`
     }
   }
   .ant-table-thead > tr > th {
-    border-bottom: 0px;
     font-size: var(--font12);
     color: var(--neutral-n3);
     font-family: SiYuanMedium;
