@@ -6,20 +6,16 @@ import {
   findAllParentForTree,
   formatObjectForRender,
 } from '@/views/Encephalogram/until'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useSelector, useDispatch } from '@store/index'
+import { useMemo } from 'react'
+import { useSelector } from '@store/index'
 import moment from 'moment'
-import { setLoading } from '@store/encephalogram'
 
 const useMapData = () => {
   const { projectId } = useProjectId()
   const { encephalogramParams, extraInfo } = useSelector(
     store => store.encephalogram,
   )
-  const timer = useRef()
-  const dispatch = useDispatch()
-  const { group_by } = encephalogramParams
-  const [filterObject, setFilterObject] = useState<any>({})
+  const { group_by, person, iterationVal, state, time } = encephalogramParams
   const allItems: any[] = useLiveQuery(() => {
     if (projectId) {
       const allList = (db as any)[encephalogramParams.group_by]
@@ -32,32 +28,7 @@ const useMapData = () => {
     return []
   }, [projectId, group_by])
 
-  useEffect(() => {
-    clearTimeout(timer.current)
-    setTimeout(() => {
-      dispatch(setLoading(true))
-      setTimeout(() => {
-        setFilterObject({
-          allItems,
-          person: encephalogramParams.person,
-          iterationVal: encephalogramParams.iterationVal,
-          state: encephalogramParams.state,
-          time: encephalogramParams.time,
-          extraInfo,
-        })
-      }, 0)
-    }, 1000)
-  }, [
-    JSON.stringify(allItems),
-    JSON.stringify(encephalogramParams.person),
-    JSON.stringify(encephalogramParams.iterationVal),
-    JSON.stringify(encephalogramParams.state),
-    JSON.stringify(encephalogramParams.time),
-    JSON.stringify(extraInfo),
-  ])
-
   const data = useMemo(() => {
-    const { allItems, person, iterationVal, state, time } = filterObject
     if (!allItems?.length) {
       return null
     }
@@ -137,12 +108,15 @@ const useMapData = () => {
         }
       })
     }
-    setTimeout(() => {
-      dispatch(setLoading(false))
-    }, 1500)
     return output
-  }, [JSON.stringify(filterObject)])
-
+  }, [
+    JSON.stringify(allItems),
+    JSON.stringify(person),
+    JSON.stringify(iterationVal),
+    JSON.stringify(state),
+    JSON.stringify(time),
+    JSON.stringify(extraInfo),
+  ])
   console.log(data, 'datasssss')
 
   return {

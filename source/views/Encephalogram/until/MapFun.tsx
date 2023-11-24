@@ -180,7 +180,7 @@ const getGraph = () => {
                   }, time)
                 }
               } else {
-                if (data.deep > 3) {
+                if (data.deep >= 3) {
                   setTimeout(() => {
                     graph.focusItem(data.id, true)
                   }, time)
