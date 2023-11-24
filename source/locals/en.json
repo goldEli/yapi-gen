@@ -2632,5 +2632,6 @@
   "editColumn": "Edit Column",
   "deleteColumn": "Delete Column",
   "managementBackend": "Backstage",
-  "theTaskIsAboutToEnd": "The task is about to end"
+  "theTaskIsAboutToEnd": "The task is about to end",
+  "theDeadlineForTasksExceeds": "The deadline for tasks exceeds"
 }
