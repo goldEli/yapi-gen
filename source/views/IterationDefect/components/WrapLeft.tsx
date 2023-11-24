@@ -29,7 +29,7 @@ import { changeId } from '@store/counterSlice'
 import { useSearchParams } from 'react-router-dom'
 import { getMessage } from '@/components/Message'
 import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
-import { TreeContext } from '..'
+import { TreeContextDefect } from '..'
 
 const Left = styled.div`
   height: calc(100vh - 150px);
@@ -89,7 +89,7 @@ const rightText = css`
   }
 `
 const TreeItem = (props: any) => {
-  const context: any = useContext(TreeContext)
+  const context: any = useContext(TreeContextDefect)
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [t] = useTranslation()
   const [form] = Form.useForm()
@@ -356,7 +356,7 @@ const WrapLeft = (props: any, ref: any) => {
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const context: any = useContext(TreeContext)
+  const context: any = useContext(TreeContextDefect)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
   const { projectInfoValues } = useSelector(store => store.project)
