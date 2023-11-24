@@ -342,11 +342,15 @@ const Recently = (props: RecentlyProps) => {
       }),
     )
 
+    console.log(row, '=rowrowrow')
+
     navigate(
       `${
         row.defaultHomeMenu
           ? row.defaultHomeMenu
-          : `/ProjectDetail/${row.project_type === 2 ? 'Affair' : 'Demand'}`
+          : `/ProjectDetail/${
+              row?.actionable.project_type === 2 ? 'Affair' : 'Demand'
+            }`
       }?data=${params}`,
     )
   }
