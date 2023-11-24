@@ -77,7 +77,11 @@ const Trends = () => {
   useEffect(() => {
     onUpdateList()
   }, [])
-
+  useEffect(() => {
+    if (routerPath.pathname === '/Trends/AllNote/1') {
+      setActiveKey('1')
+    }
+  }, [routerPath])
   return (
     <HaveTabsContentWrap>
       <TabsContent

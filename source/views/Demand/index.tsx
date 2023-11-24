@@ -76,6 +76,7 @@ const DemandIndex = () => {
   const { filterKeys, isUpdateAddWorkItem, projectInfo } = useSelector(
     store => store.project,
   )
+  const { userInfo } = useSelector(store => store.user)
   const { isRefresh } = useSelector(store => store.user)
   const { currentMenu } = useSelector(store => store.user)
   const searchChoose = useSelector(store => store.view.searchChoose)
@@ -118,14 +119,20 @@ const DemandIndex = () => {
         statusIds: searchParamsObj.statusId,
         iterateIds: searchParamsObj.iterateId,
         priorityIds: searchParamsObj.priorityId,
-        userId: searchParamsObj.userId,
+        userId:
+          searchChoose?.system_view === 3
+            ? userInfo.id
+            : searchParamsObj.userId,
         tagIds: searchParamsObj.tagId,
         startTime: searchParamsObj.createdAtId,
         expectedStart: searchParamsObj.expectedStartAtId,
         expectedEnd: searchParamsObj.expectedendat,
         updatedTime: searchParamsObj.updatedat,
         endTime: searchParamsObj.finishAt,
-        usersNameId: searchParamsObj.usersnameId,
+        usersNameId:
+          searchChoose?.system_view === 2
+            ? userInfo.id
+            : searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
         class_ids: searchParamsObj.class_ids,
         category_id: searchParamsObj.category_id,
@@ -133,6 +140,7 @@ const DemandIndex = () => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
+        system_view: searchChoose?.system_view,
       }
     } else {
       params = {
@@ -145,14 +153,20 @@ const DemandIndex = () => {
         statusIds: searchParamsObj.statusId,
         iterateIds: searchParamsObj.iterateId,
         priorityIds: searchParamsObj.priorityId,
-        userId: searchParamsObj.userId,
+        userId:
+          searchChoose?.system_view === 3
+            ? userInfo.id
+            : searchParamsObj.userId,
         tagIds: searchParamsObj.tagId,
         startTime: searchParamsObj.createdAtId,
         expectedStart: searchParamsObj.expectedStartAtId,
         expectedEnd: searchParamsObj.expectedendat,
         updatedTime: searchParamsObj.updatedat,
         endTime: searchParamsObj.finishAt,
-        usersNameId: searchParamsObj.usersnameId,
+        usersNameId:
+          searchChoose?.system_view === 2
+            ? userInfo.id
+            : searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
         class_ids: searchParamsObj.class_ids,
         category_id: searchParamsObj.category_id,
@@ -160,6 +174,7 @@ const DemandIndex = () => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
+        system_view: searchChoose?.system_view,
       }
     }
     if (state === 2) {
