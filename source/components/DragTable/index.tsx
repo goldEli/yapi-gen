@@ -32,6 +32,7 @@ interface DragTableProps {
   // 项目列表判断手柄
   filterParams?: any
   onRow?(row: any): void
+  hasHandle?: boolean
 }
 
 const DragTable = (props: DragTableProps) => {
@@ -88,9 +89,10 @@ const DragTable = (props: DragTableProps) => {
     render: () => <DragHandle />,
   }
 
-  const resColumns = hasHandle
-    ? [...(props.hasOperation || []), ...[dragHandle], ...props.columns]
-    : [...(props.hasOperation || []), ...props.columns]
+  const resColumns =
+    hasHandle || props.hasHandle
+      ? [...(props.hasOperation || []), ...[dragHandle], ...props.columns]
+      : [...(props.hasOperation || []), ...props.columns]
 
   return (
     <TableWrap

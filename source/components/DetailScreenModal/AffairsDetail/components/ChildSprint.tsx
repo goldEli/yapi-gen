@@ -491,6 +491,7 @@ const ChildSprint = (
                 onChangeData={onChangeData}
                 showHeader={false}
                 hasOperation={operationList}
+                hasHandle
               />
             </TableBorder>
           </>

@@ -34,14 +34,6 @@ const Wrap = styled.div({
   flexDirection: 'column',
 })
 
-const SetTitleWrap = styled.div({
-  margin: '10px 24px 20px 8px',
-
-  display: 'flex',
-  alignItems: 'center',
-  fontSize: 12,
-})
-
 const ContentWrap = styled.div({
   borderRadius: 6,
   background: 'white',
@@ -115,7 +107,7 @@ const Workflow = () => {
                   src={categoryItem?.attachmentPath}
                   style={{ width: 20, marginRight: 4 }}
                 />
-                {categoryItem.name}
+                {categoryItem?.name}
               </>
             </CategoryWrap>
           </LabelWrap>

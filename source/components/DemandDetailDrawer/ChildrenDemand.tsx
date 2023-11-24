@@ -414,6 +414,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
             dataSource={dataList}
             onChangeData={onChangeData}
             hasOperation={operationList}
+            hasHandle
           />
         </TableBorder>
       ) : null}

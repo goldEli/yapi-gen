@@ -896,6 +896,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
                       onChangeData={arr => onChangeData(i, arr)}
                       showHeader={false}
                       hasOperation={operationList}
+                      hasHandle
                     />
                   </TableBorder>
                 </div>

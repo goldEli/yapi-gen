@@ -254,6 +254,15 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       let resultMenu = menuPermission?.menus?.filter((i: any) =>
         routerPath.pathname?.includes(i.url),
       )[0]
+      // 特殊处理老路由 !!!!!
+      if (
+        routerPath.pathname?.includes('/SprintProjectManagement/') ||
+        routerPath.pathname?.includes('/ProjectManagement/')
+      ) {
+        resultMenu = menuPermission?.menus?.filter(
+          (i: any) => i.url === '/Project',
+        )[0]
+      }
       dispatch(setCurrentMenu(resultMenu))
       onComputedMenu(layoutSideCollapse, menuPermission?.menus)
     }

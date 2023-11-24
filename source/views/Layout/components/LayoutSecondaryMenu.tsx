@@ -87,13 +87,20 @@ const LayoutSecondaryMenu = () => {
   useEffect(() => {
     let resultItems: any = []
     if (currentMenu?.id && routerPath?.pathname && userInfo?.id) {
-      if (projectInfo?.id && routerPath?.pathname.includes('/ProjectDetail')) {
+      if (
+        (projectInfo?.id && routerPath?.pathname.includes('/ProjectDetail')) ||
+        // 特殊处理老路由 !!!!!
+        (projectInfo?.id &&
+          routerPath?.pathname.includes('/SprintProjectManagement')) ||
+        (projectInfo?.id && routerPath?.pathname.includes('/ProjectManagement'))
+      ) {
         setParamsData(getParamsData(searchParams))
-        // 显示项目下的菜单，例需求
+        // 显示项目下的菜单，例需求 oldKey 是特殊处理老路由得key
         const resultMenu = [
           // { id: 'map', name: t('map'), url: '', isPermisson: true  },
           {
             id: 'iteration',
+            oldKey: 'Iteration',
             name: t('sprintProject.iteration'),
             url: '/ProjectDetail/Iteration',
             isPermisson:
@@ -103,6 +110,7 @@ const LayoutSecondaryMenu = () => {
           },
           {
             id: 'demand',
+            oldKey: 'Demand',
             name: t('need'),
             url: '/ProjectDetail/Demand',
             isPermisson:
@@ -112,6 +120,7 @@ const LayoutSecondaryMenu = () => {
           },
           {
             id: 'defect',
+            oldKey: 'Defect',
             name: t('defect1'),
             url: '/ProjectDetail/Defect',
             isPermisson:
@@ -121,6 +130,7 @@ const LayoutSecondaryMenu = () => {
           },
           {
             id: 'affairs',
+            oldKey: 'Affair',
             name: t('affairs'),
             url: '/ProjectDetail/Affair',
             isPermisson:
@@ -130,6 +140,7 @@ const LayoutSecondaryMenu = () => {
           },
           {
             id: 'sprint',
+            oldKey: 'Sprint',
             name: t('sprint2'),
             url: '/ProjectDetail/Sprint',
             isPermisson:
@@ -170,6 +181,7 @@ const LayoutSecondaryMenu = () => {
           },
           {
             id: 'set',
+            oldKey: 'Setting',
             name: t('setUp'),
             url: '/ProjectDetail/Setting',
             isPermisson:
@@ -234,8 +246,11 @@ const LayoutSecondaryMenu = () => {
       } else if (routerPath?.pathname.includes('/ProjectDetail/MemberInfo')) {
         currentHavePath = resultItems?.filter((i: any) => i.id === 'member')
       } else {
-        currentHavePath = resultItems?.filter((i: any) =>
-          routerPath?.pathname?.includes(i.url),
+        currentHavePath = resultItems?.filter(
+          (i: any) =>
+            routerPath?.pathname?.includes(i.url) ||
+            // 特殊处理老路由 !!!!!
+            routerPath?.pathname?.includes(i.oldKey),
         )
       }
       setActiveKey(
