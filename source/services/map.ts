@@ -7,8 +7,20 @@ import { setLoading } from '@store/encephalogram'
 
 // 获取导图任务列表
 export const getMapList = async (params: any) => {
-  store.dispatch(setLoading(true))
-  const response = await http.get('getMapList', params)
+  if (params.needLoading) {
+    store.dispatch(setLoading(true))
+  }
+
+  const response = await http
+    .get('getMapList', {
+      project_id: params.project_id,
+      group_by: params.group_by,
+    })
+    .finally(() => {
+      if (params.needLoading) {
+        store.dispatch(setLoading(false))
+      }
+    })
   // 拆分树，存入indexDB
   if (response.data) {
     const temp = {

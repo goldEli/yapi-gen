@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { MapContentBox } from '@/views/Encephalogram/styles'
+import { MapContentBox, ModalTitleBox } from '@/views/Encephalogram/styles'
 import {
   delTaskForTable,
   haveHistoryData,
@@ -14,17 +14,22 @@ import {
   setEncephalogramParams,
   setExtraInfo,
   setExtraParams,
+  setUpdateModal,
 } from '@store/encephalogram'
+import { notification } from 'antd'
+import CommonButton from '@/components/CommonButton'
+import IconFont from '@/components/IconFont'
 
 const MapContent = () => {
   const { projectId } = useProjectId()
-  const { encephalogramParams, extraParams } = useSelector(
+  const { encephalogramParams, extraParams, updateModal } = useSelector(
     store => store.encephalogram,
   )
   const dispatch = useDispatch()
   const mapRef = useRef<any>(null)
   const mapBoxRef = useRef<HTMLDivElement>(null)
   const { data } = useMapData()
+
   const addTask = async () => {
     const hasId: any = await haveHistoryData(
       projectId,
@@ -34,6 +39,7 @@ const MapContent = () => {
       await getMapList({
         project_id: projectId,
         group_by: encephalogramParams.group_by,
+        needLoading: true,
       })
     }
   }
@@ -52,6 +58,7 @@ const MapContent = () => {
     await getMapList({
       project_id: projectId,
       group_by: encephalogramParams.group_by,
+      needLoading: true,
     })
   }
 
@@ -132,6 +139,70 @@ const MapContent = () => {
       dispatch(setExtraInfo([]))
     }
   }, [projectId])
+
+  const openNotification = () => {
+    const key = `open${Date.now()}`
+    const btn = (
+      <CommonButton
+        type="primary"
+        size="small"
+        onClick={async () => {
+          await refreshData()
+          notification.close(key)
+        }}
+      >
+        立即刷新
+      </CommonButton>
+    )
+    notification.open({
+      message: (
+        <ModalTitleBox>
+          <IconFont type="bell" style={{ fontSize: 20 }} color="red" />
+          更新提示
+        </ModalTitleBox>
+      ),
+      description: (
+        <span style={{ color: 'var(--neutral-n2)' }}>
+          导图数据有更新，请点击查看~
+        </span>
+      ),
+      placement: 'bottomLeft',
+      duration: null,
+      style: {
+        backgroundColor: '#F0F3FF',
+        width: 340,
+        borderLeft: '4px solid var(--primary-d1)',
+        marginLeft: 80,
+      },
+      btn,
+      key,
+      onClose: () => {
+        dispatch(
+          setUpdateModal({
+            visible: false,
+            isShow: false,
+            projectId: 0,
+          }),
+        )
+      },
+    })
+  }
+
+  useEffect(() => {
+    if (
+      !updateModal.isShow &&
+      updateModal.visible &&
+      projectId === updateModal.projectId
+    ) {
+      dispatch(
+        setUpdateModal({
+          ...updateModal,
+          isShow: true,
+        }),
+      )
+      openNotification()
+    }
+  }, [JSON.stringify(updateModal)])
 
   return <MapContentBox ref={mapBoxRef} id="MapContentMountNode" />
 }

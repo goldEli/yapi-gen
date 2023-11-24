@@ -35,6 +35,8 @@ import NoteModal from '@/components/NoteModal'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { setProjectInfo, setProjectWarningModal } from '@store/project'
+import { setUpdateModal } from '@store/encephalogram'
+import { getMapList } from '@/services/map'
 
 const mcs = css`
   overflow: hidden;
@@ -61,6 +63,7 @@ const SiteNotifications = (props: any, ref: any) => {
   const isRefresh = useSelector(store => store.user.isRefresh)
   const { layoutSideCollapse } = useSelector(store => store.global)
   const { currentMenu, menuIconList } = useSelector(store => store.user)
+  const { updateModal } = useSelector(store => store.encephalogram)
 
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
@@ -76,6 +79,33 @@ const SiteNotifications = (props: any, ref: any) => {
   }
 
   const sendMsg = () => {
+    if (
+      wsData?.data?.customData?.action === 'map_task_tree' ||
+      wsData?.data?.customData?.action === 'map_user_tree'
+    ) {
+      if (
+        location.href.includes('/ProjectDetail/Encephalogram') &&
+        !updateModal.isShow &&
+        !updateModal.visible
+      ) {
+        dispatch(
+          setUpdateModal({
+            visible: true,
+            projectId: Number(wsData?.data?.customData?.project_id),
+          }),
+        )
+      } else if (!location.href.includes('/ProjectDetail/Encephalogram')) {
+        getMapList({
+          needLoading: false,
+          project_id: Number(wsData?.data?.customData?.project_id),
+          group_by:
+            wsData?.data?.customData?.action === 'map_task_tree'
+              ? 'task'
+              : 'user',
+        })
+      }
+      return true
+    }
     if (wsData?.data?.customData?.noticeStyle === '2') {
       const element: any = document.getElementsByClassName('ant-message')
 
@@ -91,8 +121,6 @@ const SiteNotifications = (props: any, ref: any) => {
             const childNode = element[i]
             childNode.remove()
           }
-
-          // dispatch(changeVisible(!isVisible))
         },
       })
     } else if (
@@ -178,6 +206,7 @@ const SiteNotifications = (props: any, ref: any) => {
 
     init2()
   }
+
   const setNewName = (type: string, code: number) => {
     let name = ''
     if (type === 'project') {
@@ -475,7 +504,7 @@ const SiteNotifications = (props: any, ref: any) => {
           />
         </Badge>
       )}
-      {layoutSideCollapse && (
+      {layoutSideCollapse ? (
         <>
           <CommonIconFont
             type={
@@ -492,7 +521,7 @@ const SiteNotifications = (props: any, ref: any) => {
           />
           <FeedBadge size="small" offset={[-2, 1]} count={all} />
         </>
-      )}
+      ) : null}
       <NoteModal
         onClose={() => setFirst(false)}
         data={first2}

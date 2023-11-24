@@ -143,8 +143,8 @@ export const PopoverBtn = styled.div`
 export const Content = styled.div`
   padding: 0 24px;
   width: 360px;
-  max-height:680px;
-  overflow-x:hidden;
+  max-height: 680px;
+  overflow-x: hidden;
   overflow-y: scroll;
 `
 export const HeaderPopover = styled.div`
@@ -322,3 +322,12 @@ export const RightWrap = styled.div<{ type: string }>(
     marginRight: type === '1' ? '32px' : '0',
   }),
 )
+
+export const ModalTitleBox = styled.div`
+  display: flex;
+  align-items: center;
+  font-family: SiYuanMedium;
+  svg {
+    color: var(--primary-d1);
+  }
+`

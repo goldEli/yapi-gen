@@ -23,6 +23,12 @@ type SliceState = {
     numType: string
   }
   extraInfo: any[]
+  // 是否弹窗提示更新
+  updateModal: {
+    visible: boolean
+    isShow: boolean
+    projectId: number
+  }
 }
 
 const initialState: SliceState = {
@@ -40,6 +46,11 @@ const initialState: SliceState = {
   },
   loading: false,
   extraInfo: [],
+  updateModal: {
+    visible: false,
+    isShow: false,
+    projectId: 0,
+  },
 }
 
 const slice = createSlice({
@@ -64,6 +75,12 @@ const slice = createSlice({
     setExtraInfo(state, action) {
       state.extraInfo = action.payload
     },
+    setUpdateModal(state, action) {
+      state.updateModal = {
+        ...state.updateModal,
+        ...action.payload,
+      }
+    },
   },
 })
 
@@ -73,6 +90,7 @@ export const {
   setLoading,
   setExtraInfo,
   setExtraParams,
+  setUpdateModal,
 } = slice.actions
 
 export default encephalogram
