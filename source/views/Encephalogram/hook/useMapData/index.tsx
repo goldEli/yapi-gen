@@ -6,16 +6,20 @@ import {
   findAllParentForTree,
   formatObjectForRender,
 } from '@/views/Encephalogram/until'
-import { useMemo } from 'react'
-import { useSelector } from '@store/index'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useSelector, useDispatch } from '@store/index'
 import moment from 'moment'
+import { setLoading } from '@store/encephalogram'
 
 const useMapData = () => {
   const { projectId } = useProjectId()
   const { encephalogramParams, extraInfo } = useSelector(
     store => store.encephalogram,
   )
-  const { group_by, person, iterationVal, state, time } = encephalogramParams
+  const timer = useRef()
+  const dispatch = useDispatch()
+  const { group_by } = encephalogramParams
+  const [filterObject, setFilterObject] = useState<any>({})
   const allItems: any[] = useLiveQuery(() => {
     if (projectId) {
       const allList = (db as any)[encephalogramParams.group_by]
@@ -28,12 +32,39 @@ const useMapData = () => {
     return []
   }, [projectId, group_by])
 
+  useEffect(() => {
+    clearTimeout(timer.current)
+    setTimeout(() => {
+      dispatch(setLoading(true))
+      setTimeout(() => {
+        setFilterObject({
+          allItems,
+          person: encephalogramParams.person,
+          iterationVal: encephalogramParams.iterationVal,
+          state: encephalogramParams.state,
+          time: encephalogramParams.time,
+          extraInfo,
+        })
+      }, 0)
+    }, 1000)
+  }, [
+    JSON.stringify(allItems),
+    JSON.stringify(encephalogramParams.person),
+    JSON.stringify(encephalogramParams.iterationVal),
+    JSON.stringify(encephalogramParams.state),
+    JSON.stringify(encephalogramParams.time),
+    JSON.stringify(extraInfo),
+  ])
+
   const data = useMemo(() => {
+    const { allItems, person, iterationVal, state, time } = filterObject
     if (!allItems?.length) {
       return null
     }
     let result: any
+    let isExpandAll = false
     if (person.length || iterationVal.length || state.length || time.length) {
+      isExpandAll = true
       const filterItems = allItems.filter((item: any) => {
         if (item.node_type === 'story') {
           let isNeed = true
@@ -81,11 +112,12 @@ const useMapData = () => {
       })
       result = findAllParentForTree(filterItems, allItems)
     } else {
+      isExpandAll = false
       result = allItems
     }
-    const res = buildIntactTree(result)
+    const res = buildIntactTree(result, isExpandAll)
     const temp = allItems.find((i: any) => i.node_pid === 0)
-    const top = formatObjectForRender(temp, temp)
+    const top = formatObjectForRender(temp, temp, isExpandAll)
     const output = res ? res : top
     // 加入额外项目信息
     if (extraInfo.length && output) {
@@ -105,15 +137,12 @@ const useMapData = () => {
         }
       })
     }
+    setTimeout(() => {
+      dispatch(setLoading(false))
+    }, 1500)
     return output
-  }, [
-    JSON.stringify(allItems),
-    JSON.stringify(person),
-    JSON.stringify(iterationVal),
-    JSON.stringify(state),
-    JSON.stringify(time),
-    JSON.stringify(extraInfo),
-  ])
+  }, [JSON.stringify(filterObject)])
+
   console.log(data, 'datasssss')
 
   return {

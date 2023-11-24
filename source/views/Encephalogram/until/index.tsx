@@ -88,12 +88,16 @@ export const generatorUserText = (obj: any) => {
   return obj.name
 }
 
-// 将查出来的数据先进行颜色标识等赋值操作
-export const formatObjectForRender = (obj: any, topObj: any) => {
+// 将查出来的数据先进行颜色标识等赋值操作 (不带筛选条件默认展开三级，带筛选条件全部展开)
+export const formatObjectForRender = (
+  obj: any,
+  topObj: any,
+  isExpandAll: boolean,
+) => {
   if (obj) {
     const temp = {
       ...obj,
-      collapsed: obj.group_by === 'user' ? obj.deep >= 3 : obj.deep >= 2,
+      collapsed: isExpandAll ? false : obj.deep >= 3,
       name: generatorUserText(obj),
       style: generatorStyleObject(obj, topObj),
     }
@@ -103,7 +107,7 @@ export const formatObjectForRender = (obj: any, topObj: any) => {
 }
 
 // 把叶子变成树
-export const buildIntactTree = (tempArr: any[]) => {
+export const buildIntactTree = (tempArr: any[], isExpandAll: boolean) => {
   if (!tempArr) {
     return []
   }
@@ -111,7 +115,7 @@ export const buildIntactTree = (tempArr: any[]) => {
 
   // 格式化数据
   const arr = tempArr.map((item: any) => {
-    return formatObjectForRender(item, topObj)
+    return formatObjectForRender(item, topObj, isExpandAll)
   })
   // 构建 node_key 到对象的映射
   let idMap = arr.reduce((map, item) => {

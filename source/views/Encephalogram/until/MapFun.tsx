@@ -161,7 +161,6 @@ const getGraph = () => {
       container: 'MapContentMountNode',
       width,
       height,
-      groupByTypes: true,
       modes: {
         // eslint-disable-next-line quotes
         default: [
@@ -181,13 +180,12 @@ const getGraph = () => {
                   }, time)
                 }
               } else {
-                if (data.deep > 1) {
+                if (data.deep > 3) {
                   setTimeout(() => {
                     graph.focusItem(data.id, true)
                   }, time)
                 }
               }
-
               return true
             },
           },
