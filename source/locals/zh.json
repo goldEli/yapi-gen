@@ -2632,5 +2632,6 @@
   "editColumn": "编辑列",
   "deleteColumn": "删除列",
   "managementBackend": "管理后台",
-  "theTaskIsAboutToEnd": "任务即将截止"
+  "theTaskIsAboutToEnd": "任务即将截止",
+  "theDeadlineForTasksExceeds": "截止任务数超过"
 }
