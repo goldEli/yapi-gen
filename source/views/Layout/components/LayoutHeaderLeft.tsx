@@ -3,20 +3,21 @@ import { LayoutHeaderLeftWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { setLayoutSecondaryMenuLeftWidth } from '@store/global'
 
-interface LayoutHeaderLeftProps {
-  onSetWidth(width: number): void
-}
-
-const LayoutHeaderLeft = (props: LayoutHeaderLeftProps) => {
+const LayoutHeaderLeft = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const { currentMenu, menuIconList, isRefresh } = useSelector(
     store => store.user,
   )
   useEffect(() => {
     if (currentMenu?.id) {
-      props.onSetWidth(
-        document.getElementById('LayoutHeaderLeftWrap')?.clientWidth || 0,
+      dispatch(
+        setLayoutSecondaryMenuLeftWidth(
+          document.getElementById('LayoutHeaderLeftWrap')?.clientWidth || 0,
+        ),
       )
     }
   }, [isRefresh, currentMenu])
@@ -36,9 +37,9 @@ const LayoutHeaderLeft = (props: LayoutHeaderLeftProps) => {
         {/* 单独处理后台得翻译 */}
         {currentMenu?.url === '/AdminManagement'
           ? t('managementBackend')
-          : currentMenu.isRegular
-          ? t(currentMenu.name)
-          : currentMenu.name}
+          : currentMenu?.isRegular
+          ? t(currentMenu?.name)
+          : currentMenu?.name}
       </div>
     </LayoutHeaderLeftWrap>
   )
