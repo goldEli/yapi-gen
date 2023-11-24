@@ -385,13 +385,13 @@ const routes = [
       },
       // 兼容老路由
       {
+        path: 'ProjectManagement/Project',
+        element: lazy(() => import('@/views/Layout/Project')),
+      },
+      {
         path: '/ProjectManagement',
         element: lazy(() => import('@/views/ProjectDetail')),
         children: [
-          {
-            path: 'Project',
-            element: lazy(() => import('@/views/Layout/Project')),
-          },
           {
             path: 'Demand',
             element: lazy(() => import('@/views/Demand')),
