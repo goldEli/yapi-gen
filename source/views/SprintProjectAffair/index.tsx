@@ -104,6 +104,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const searchChoose = useSelector(store => store.view.searchChoose)
+  console.log('searchChoose', searchChoose)
   const projectId = paramsData.id
   const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
     store => store.project,
@@ -149,6 +150,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         discovery_version: searchParamsObj?.discovery_version,
         severity: searchParamsObj?.severity,
         solution: searchParamsObj?.solution,
+        system_view: searchChoose?.system_view,
       }
     } else {
       params = {
@@ -180,6 +182,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         discovery_version: searchParamsObj?.discovery_version,
         severity: searchParamsObj?.severity,
         solution: searchParamsObj?.solution,
+        system_view: searchChoose?.system_view,
       }
     }
     if (state === 2) {
