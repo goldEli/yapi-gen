@@ -47,6 +47,8 @@ const Index = (props: any) => {
   const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
+  const searchChoose = useSelector(store => store.view.searchChoose)
+  const { userInfo } = useSelector(store => store.user)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -152,14 +154,18 @@ const Index = (props: any) => {
       statusIds: searchParamsObj.statusId,
       iterateIds: searchParamsObj.iterateId,
       priorityIds: searchParamsObj.priorityId,
-      userId: searchParamsObj.userId,
+      userId:
+        searchChoose?.system_view === 3 ? userInfo.id : searchParamsObj.userId,
       tagIds: searchParamsObj.tagId,
       startTime: searchParamsObj.createdAtId,
       expectedStart: searchParamsObj.expectedStartAtId,
       expectedEnd: searchParamsObj.expectedendat,
       updatedTime: searchParamsObj.updatedat,
       endTime: searchParamsObj.finishAt,
-      usersNameId: searchParamsObj.usersnameId,
+      usersNameId:
+        searchChoose?.system_view === 2
+          ? userInfo.id
+          : searchParamsObj.usersnameId,
       copySendId: searchParamsObj.usersCopysendNameId,
       class_ids: searchParamsObj.class_ids,
       category_id: searchParamsObj.category_id,
@@ -170,6 +176,7 @@ const Index = (props: any) => {
       discovery_version: searchParamsObj?.discovery_version,
       severity: searchParamsObj?.severity,
       solution: searchParamsObj?.solution,
+      system_view: searchChoose?.system_view,
     }
     dispatch(setFilterParams(params))
     const result = await getFlawList(params)

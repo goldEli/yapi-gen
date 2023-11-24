@@ -35,6 +35,7 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { getMessage } from '@/components/Message'
 import useKeyPress from '@/hooks/useKeyPress'
 import WrapLeft from './components/WrapLeft'
+import { userInfo } from 'os'
 
 interface IProps {}
 
@@ -109,7 +110,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
-
+  const { userInfo } = useSelector(store => store.user)
   const getList = async (
     state: any,
     searchParamsObj: any,
@@ -131,14 +132,20 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         statusIds: searchParamsObj.statusId,
         iterateIds: searchParamsObj.iterateId,
         priorityIds: searchParamsObj.priorityId,
-        userId: searchParamsObj.userId,
+        userId:
+          searchChoose?.system_view === 3
+            ? userInfo.id
+            : searchParamsObj.userId,
         tagIds: searchParamsObj.tagId,
         startTime: searchParamsObj.createdAtId,
         expectedStart: searchParamsObj.expectedStartAtId,
         expectedEnd: searchParamsObj.expectedendat,
         updatedTime: searchParamsObj.updatedat,
         endTime: searchParamsObj.finishAt,
-        usersNameId: searchParamsObj.usersnameId,
+        usersNameId:
+          searchChoose?.system_view === 2
+            ? userInfo.id
+            : searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
         class_ids: searchParamsObj.class_ids,
         category_id: searchParamsObj.category_id,
@@ -163,14 +170,20 @@ const SprintProjectAffair: React.FC<IProps> = props => {
         statusIds: searchParamsObj.statusId,
         iterateIds: searchParamsObj.iterateId,
         priorityIds: searchParamsObj.priorityId,
-        userId: searchParamsObj.userId,
+        userId:
+          searchChoose?.system_view === 3
+            ? userInfo.id
+            : searchParamsObj.userId,
         tagIds: searchParamsObj.tagId,
         startTime: searchParamsObj.createdAtId,
         expectedStart: searchParamsObj.expectedStartAtId,
         expectedEnd: searchParamsObj.expectedendat,
         updatedTime: searchParamsObj.updatedat,
         endTime: searchParamsObj.finishAt,
-        usersNameId: searchParamsObj.usersnameId,
+        usersNameId:
+          searchChoose?.system_view === 2
+            ? userInfo.id
+            : searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
         class_ids: searchParamsObj.class_ids,
         category_id: searchParamsObj.category_id,
