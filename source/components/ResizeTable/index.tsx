@@ -39,7 +39,7 @@ const TableWrap = styled(Table)`
     height: 44px;
   }
   .ant-table-thead > tr > th {
-    border-bottom: 0;
+    /* border-bottom: 0; */
     font-size: var(--font12);
     color: var(--neutral-n3);
     font-family: SiYuanMedium;
