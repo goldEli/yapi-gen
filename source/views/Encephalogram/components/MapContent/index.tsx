@@ -28,6 +28,7 @@ const MapContent = () => {
   const dispatch = useDispatch()
   const mapRef = useRef<any>(null)
   const mapBoxRef = useRef<HTMLDivElement>(null)
+  const notifyKey = useRef<any>('')
   const { data } = useMapData()
 
   const addTask = async () => {
@@ -141,14 +142,14 @@ const MapContent = () => {
   }, [projectId])
 
   const openNotification = () => {
-    const key = `open${Date.now()}`
+    notifyKey.current = `open${Date.now()}`
     const btn = (
       <CommonButton
         type="primary"
         size="small"
         onClick={async () => {
           await refreshData()
-          notification.close(key)
+          notification.close(notifyKey.current)
         }}
       >
         立即刷新
@@ -175,7 +176,7 @@ const MapContent = () => {
         marginLeft: 80,
       },
       btn,
-      key,
+      key: notifyKey.current,
       onClose: () => {
         dispatch(
           setUpdateModal({
@@ -201,6 +202,11 @@ const MapContent = () => {
         }),
       )
       openNotification()
+    }
+    return () => {
+      if (!location.href.includes('/ProjectDetail/Encephalogram')) {
+        notification.close(notifyKey.current)
+      }
     }
   }, [JSON.stringify(updateModal)])
 

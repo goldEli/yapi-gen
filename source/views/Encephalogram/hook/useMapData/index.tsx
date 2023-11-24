@@ -87,7 +87,7 @@ const useMapData = () => {
       result = allItems
     }
     const res = buildIntactTree(result, isExpandAll)
-    const temp = allItems.find((i: any) => i.node_pid === 0)
+    const temp = allItems.find((i: any) => i.pid === '0')
     const top = formatObjectForRender(temp, temp, isExpandAll)
     const output = res ? res : top
     // 加入额外项目信息

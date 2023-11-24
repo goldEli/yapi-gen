@@ -1,32 +1,35 @@
 import moment from 'moment'
-import { v4 as uuidv4 } from 'uuid'
 
 export const flattenObjectToArray = (
   obj: any,
   group_by: string,
   array: any[] = [],
   deep = 1,
+  pid = '0',
 ) => {
+  const idStr = `${Date.now()}${Math.random().toString(36).slice(2, 8)}`
   if (Array.isArray(obj.children)) {
     const temp = {
       ...obj,
-      id: `${Date.now()}${Math.random().toString(36).slice(2, 8)}`,
+      id: idStr,
+      node_id: obj.id,
       group_by,
-      ids: obj.id,
       deep,
+      pid,
     }
     delete temp.children
     array.push(temp)
     obj.children.forEach((item: any) => {
-      flattenObjectToArray(item, group_by, array, deep + 1)
+      flattenObjectToArray(item, group_by, array, deep + 1, idStr)
     })
   } else {
     array.push({
       ...obj,
-      ids: obj.id,
-      id: `${Date.now()}${Math.random().toString(36).slice(2, 8)}`,
+      id: idStr,
+      node_id: obj.id,
       group_by,
       deep,
+      pid,
     })
   }
   return array
@@ -111,21 +114,21 @@ export const buildIntactTree = (tempArr: any[], isExpandAll: boolean) => {
   if (!tempArr) {
     return []
   }
-  const topObj = tempArr.find((s: any) => s.node_pid === 0) ?? {}
+  const topObj = tempArr.find((s: any) => s.pid === '0') ?? {}
 
   // 格式化数据
   const arr = tempArr.map((item: any) => {
     return formatObjectForRender(item, topObj, isExpandAll)
   })
-  // 构建 node_key 到对象的映射
+  // 构建 id 到对象的映射
   let idMap = arr.reduce((map, item) => {
-    map[item.node_key] = item
+    map[item.id] = item
     return map
   }, {})
 
-  // 通过 node_pid 构建树形结构
+  // 通过 pid 构建树形结构
   const tree = arr.reduce((tree, item) => {
-    const parent = idMap[item.node_pid]
+    const parent = idMap[item.pid]
     if (parent) {
       if (!parent.children) {
         parent.children = []
@@ -141,16 +144,15 @@ export const buildIntactTree = (tempArr: any[], isExpandAll: boolean) => {
       if (
         k.node_type === 'story' &&
         k.group_by === 'task' &&
-        idMap[k.node_key] &&
-        !idMap[k.node_key]?.children?.length
+        idMap[k.id] &&
+        !idMap[k.id]?.children?.length
       ) {
-        const item = idMap[k.node_key]
+        const item = idMap[k.id]
         const tempArr = item?.handlers?.map((i: any) => {
           return {
             ...i,
             id: `${Date.now()}${Math.random().toString(36).slice(2, 8)}`,
-            node_key: String(uuidv4()),
-            node_pid: k.node_key,
+            pid: k.id,
             name: `${i.department_name} ${i.position_name} ${i.name}`,
             project_id: k.project_id,
             node_type: 'user',
@@ -170,7 +172,7 @@ export const buildIntactTree = (tempArr: any[], isExpandAll: boolean) => {
 
   if (Array.isArray(tree)) {
     idMap = null
-    return tree.find((k: any) => k.node_pid === 0)
+    return tree.find((k: any) => k.pid === '0')
   }
   return tree
 }
@@ -180,11 +182,11 @@ const recursiveSupervisorSearch = (
   target: any,
   result: any[],
 ) => {
-  result.push(target.node_key)
+  result.push(target.id)
   for (let i = 0; i < array.length; i++) {
-    if (array[i].node_key === target.node_pid) {
+    if (array[i].id === target.pid) {
       if (array[i]) {
-        result.push(array[i]?.node_key)
+        result.push(array[i]?.id)
         recursiveSupervisorSearch(array, array[i], result)
       }
     }
@@ -198,6 +200,6 @@ export const findAllParentForTree = (arr: any[], allArr: any[]) => {
     recursiveSupervisorSearch(allArr, item, result)
   })
   return [...new Set(result)].map((key: string) => {
-    return allArr.find((k: any) => k.node_key === key)
+    return allArr.find((k: any) => k.id === key)
   })
 }

@@ -32,7 +32,6 @@ const PermissionWrap = ({
   children: any
 }) => {
   const [t] = useTranslation()
-
   if (!permission || permission?.length <= 0) {
     return ''
   }
