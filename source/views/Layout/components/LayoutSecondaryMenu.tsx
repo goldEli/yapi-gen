@@ -182,9 +182,6 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
         ]
 
         resultItems = resultMenu?.filter((i: any) => i.isPermisson)
-        if (projectInfo?.projectType === 2) {
-          resultItems = resultItems?.filter((i: any) => i.id !== 'defect')
-        }
         setItems(resultItems)
       } else {
         if (routerPath?.pathname.includes('/AdminManagement')) {
