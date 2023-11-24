@@ -11,6 +11,7 @@ import { setIterateInfo } from '@store/iterate'
 import {
   getProjectInfoStore,
   getProjectInfoValuesStore,
+  saveScreenDetailModal,
 } from '@store/project/project.thunk'
 
 interface LayoutSecondaryMenuProps {
@@ -66,6 +67,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
 
   // 点击切换tab
   const handleModeChange = (e: any) => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     setActiveKey(e)
     const url = items?.filter((i: any) => i.id === Number(e) || i.id === e)[0]
       ?.url
@@ -178,7 +180,11 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
               ).length > 0,
           },
         ]
+
         resultItems = resultMenu?.filter((i: any) => i.isPermisson)
+        if (projectInfo?.projectType === 2) {
+          resultItems = resultItems?.filter((i: any) => i.id !== 'defect')
+        }
         setItems(resultItems)
       } else {
         if (routerPath?.pathname.includes('/AdminManagement')) {
