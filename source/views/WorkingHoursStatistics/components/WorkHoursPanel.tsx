@@ -285,7 +285,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                           return
                         }
 
-                        // time -1请假 -2 未上报
+                        // time -1请假 -2 未上报 -3节假日
                         let value = 2
                         const { time, id } = col
                         if (time === -1) {
@@ -303,9 +303,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
                     >
                       <div>
                         {col.time === -2
-                          ? t('notReported')
+                          ? '--'
                           : col.time === -1
                           ? t('askForLeave')
+                          : col.time === -3
+                          ? '节假日'
                           : `${col.time / 3600}${t('workingHours')}`}
                       </div>
                     </WorkHourLabel>
