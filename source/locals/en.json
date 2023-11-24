@@ -2522,7 +2522,7 @@
   "question": "Question",
   "noneToday": "None today",
   "theTaskIsAboutToExceedTheExpectedEndDateAndIsNotCompleted": "The task is about to exceed the expected end date and is not completed",
-  "taskIsAboutToExpire": "Task is about to expire",
+  "taskIsAboutToExpire": "The task is about to end",
   "systemDateDistanceFromExpectedEndDate": "System date distance from expected end date",
   "theNumberOfOverdueTasksExceeds": "The number of overdue tasks exceeds",
   "taskIsOverdue": "Task is overdue",
