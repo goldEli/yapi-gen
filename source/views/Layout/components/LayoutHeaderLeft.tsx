@@ -33,7 +33,12 @@ const LayoutHeaderLeft = (props: LayoutHeaderLeftProps) => {
         color="var(--neutral-n2)"
       />
       <div>
-        {currentMenu?.isRegular ? t(currentMenu?.name) : currentMenu?.name}
+        {/* 单独处理后台得翻译 */}
+        {currentMenu?.url === '/AdminManagement'
+          ? t('managementBackend')
+          : currentMenu.isRegular
+          ? t(currentMenu.name)
+          : currentMenu.name}
       </div>
     </LayoutHeaderLeftWrap>
   )
