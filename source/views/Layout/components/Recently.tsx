@@ -314,6 +314,14 @@ const Recently = (props: RecentlyProps) => {
       JSON.stringify({
         id: row?.actionable.project_id,
         type: row?.actionable.project_type === 2 ? 'sprint' : 'iteration',
+        isOpenScreenDetail: true,
+        detailId: row?.actionable?.id,
+        specialType:
+          row?.actionable.project_type === 2
+            ? 1
+            : row?.actionable.project_type === 1 && row?.actionable.is_bug === 1
+            ? 2
+            : 3,
       }),
     )
 
@@ -322,9 +330,9 @@ const Recently = (props: RecentlyProps) => {
         row.defaultHomeMenu
           ? row.defaultHomeMenu
           : `/ProjectDetail/${
-              row.project_type === 2
+              row?.actionable.project_type === 2
                 ? 'Affair'
-                : row.is_bug === 2
+                : row?.actionable.is_bug === 2
                 ? 'Demand'
                 : 'Defect'
             }`

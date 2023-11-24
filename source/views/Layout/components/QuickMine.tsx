@@ -288,6 +288,14 @@ const QuickMine = (props: QuickMineProps) => {
       JSON.stringify({
         id: row.project_id,
         type: row.project_type === 2 ? 'sprint' : 'iteration',
+        isOpenScreenDetail: true,
+        detailId: row?.id,
+        specialType:
+          row.project_type === 2
+            ? 1
+            : row.project_type === 1 && row.is_bug === 1
+            ? 2
+            : 3,
       }),
     )
 

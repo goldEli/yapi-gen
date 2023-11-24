@@ -27,6 +27,7 @@ import { getShapeAffairsRight } from '@/services/affairs'
 import { getShapeFlawRight } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
 import MoreSelect from '@/components/MoreSelect'
+import { getProjectIdByUrl } from '@/tools'
 
 interface StatusModalProps {
   // 弹窗显示状态

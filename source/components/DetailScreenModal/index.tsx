@@ -40,6 +40,11 @@ const DetailScreenModal = () => {
   }
 
   useEffect(() => {
+    console.log(
+      paramsData?.isOpenScreenDetail,
+      projectInfo?.id || paramsData?.id,
+      userPreferenceConfig?.previewModel,
+    )
     // 如果地址栏上带有isOpenScreenDetail此参数，并且传入id与项目id一致，并且个人偏好数据有的情况下
     if (
       paramsData?.isOpenScreenDetail &&
@@ -62,7 +67,6 @@ const DetailScreenModal = () => {
           resultParams.demandId = paramsData?.detailId
           break
       }
-      console.log(userPreferenceConfig, '=userPreferenceConfig')
       dispatch(
         setIsDetailScreenModal({
           visible: true,
