@@ -174,13 +174,13 @@ const getGraph = () => {
               data.collapsed = collapsed
               const time = (data?.children?.length ?? 0) * 0.5
               if (collapsed) {
-                if (data?.children?.length > 500) {
+                if (data?.children?.length > 100) {
                   setTimeout(() => {
                     graph.fitCenter()
                   }, time)
                 }
               } else {
-                if (data.deep >= 3) {
+                if (data.deep >= 3 && data?.children?.length > 100) {
                   setTimeout(() => {
                     graph.focusItem(data.id, true)
                   }, time)

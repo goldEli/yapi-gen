@@ -55,21 +55,21 @@ export const getWorkTimeList = async (params: any) => {
 }
 // 添加例外时间
 export const addExceptionTime = async (params: any) => {
-  const response = await http.get('addExceptionTime', params)
+  const response = await http.post('addExceptionTime', params)
   return response
 }
 // 编辑例外时间
 export const editExceptionTime = async (params: any) => {
-  const response = await http.get('editExceptionTime', params)
+  const response = await http.put('editExceptionTime', params)
   return response
 }
 // 删除例外时间
 export const delExceptionTime = async (params: any) => {
-  const response = await http.get('delExceptionTime', params)
+  const response = await http.delete('delExceptionTime', params)
   return response
 }
 // 编辑工作时间
 export const editWorkTime = async (params: any) => {
-  const response = await http.get('editWorkTime', params)
+  const response = await http.put('editWorkTime', params)
   return response
 }

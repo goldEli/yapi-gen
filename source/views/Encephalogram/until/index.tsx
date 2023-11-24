@@ -10,7 +10,7 @@ export const flattenObjectToArray = (
   if (Array.isArray(obj.children)) {
     const temp = {
       ...obj,
-      id: String(obj.node_key),
+      id: `${Date.now()}${Math.random().toString(36).slice(2, 8)}`,
       group_by,
       ids: obj.id,
       deep,
@@ -24,7 +24,7 @@ export const flattenObjectToArray = (
     array.push({
       ...obj,
       ids: obj.id,
-      id: String(obj.node_key),
+      id: `${Date.now()}${Math.random().toString(36).slice(2, 8)}`,
       group_by,
       deep,
     })
