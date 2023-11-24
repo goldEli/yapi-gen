@@ -4,7 +4,7 @@ import ManageView from '@/components/ManageView'
 import PermissionWrap from '@/components/PermissionWrap'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
-import { getParamsData, onComputedPermission } from '@/tools'
+import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { useSearchParams } from 'react-router-dom'
 import {

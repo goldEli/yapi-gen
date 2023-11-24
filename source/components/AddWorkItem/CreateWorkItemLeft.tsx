@@ -428,16 +428,21 @@ const CreateDemandLeft = (props: Props) => {
     if (categoryObj?.id) {
       form.setFieldsValue({
         requiredCategory: categoryObj?.id,
-        info: [2, 5].includes(categoryObj?.work_type)
-          ? `<p>【${t('defectDescription')}】<p></p><p></p><p></p>【${t(
-              'reproSteps',
-            )}】<p></p><p></p><p></p>【${t(
-              'expectedResults',
-            )}】<p></p><p></p><p></p>【${t(
-              'screenshot',
-            )}】<p></p><p></p><p></p>`
-          : ' ',
       })
+      // 不是编辑的情况下，并且满足条件的
+      if (!params?.editId) {
+        form.setFieldsValue({
+          info: [2, 5].includes(categoryObj?.work_type)
+            ? `<p>【${t('defectDescription')}】<p></p><p></p><p></p>【${t(
+                'reproSteps',
+              )}】<p></p><p></p><p></p>【${t(
+                'expectedResults',
+              )}】<p></p><p></p><p></p>【${t(
+                'screenshot',
+              )}】<p></p><p></p><p></p>`
+            : ' ',
+        })
+      }
       getCategoryField(categoryObj?.id)
       getStatusList(categoryObj?.id)
       props.onChangeCategoryType(categoryObj?.work_type)

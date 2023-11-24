@@ -4,7 +4,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { getParamsData, onComputedPermission } from '@/tools'
+import { getParamsData } from '@/tools'
 import {
   ContentLeft,
   ContentMain,
@@ -28,7 +28,7 @@ import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
-export const TreeContext: any = React.createContext('')
+export const TreeContextDefect: any = React.createContext('')
 
 const Index = (props: any) => {
   const [t] = useTranslation()
@@ -68,13 +68,15 @@ const Index = (props: any) => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const { currentMenu } = useSelector(store => store.user)
 
   const keyValueTree = {
     key,
     changeKey: (value: any) => {
+      setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
       keyRef.current = value
+
+      getList(searchItems, pageObj, order)
     },
   }
 
@@ -324,7 +326,7 @@ const Index = (props: any) => {
         onClose={() => setIsSettingState(false)}
         getCheckList={getCheckList}
       />
-      <TreeContext.Provider value={keyValueTree}>
+      <TreeContextDefect.Provider value={keyValueTree}>
         <Wrap>
           <ProjectCommonOperation
             onInputSearch={onInputSearch}
@@ -376,7 +378,7 @@ const Index = (props: any) => {
             </ContentRight>
           </ContentWrap>
         </Wrap>
-      </TreeContext.Provider>
+      </TreeContextDefect.Provider>
     </PermissionWrap>
   )
 }
