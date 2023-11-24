@@ -113,7 +113,11 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
 
   //   获取关联项列表
   const getList = async (pageParams: any, orderParams: any) => {
+    if (!props.detail.id) {
+      return
+    }
     setIsSpinning(true)
+
     const response = await getFlawRelationStories({
       projectId: id ?? props.detail.projectId,
       id: props.detail.id,

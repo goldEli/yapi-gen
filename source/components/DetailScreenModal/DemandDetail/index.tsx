@@ -93,7 +93,7 @@ const DemandDetail = () => {
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
   // 当前选中那一个
-  const [tabActive, setTabActive] = useState(String(params.type) ?? '1')
+  const [tabActive, setTabActive] = useState('1')
   // 是否可改变类别弹窗
   const [isShowChange, setIsShowChange] = useState(false)
   // 当前需求的下标

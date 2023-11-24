@@ -295,7 +295,13 @@ const QuickMine = (props: QuickMineProps) => {
       `${
         row.defaultHomeMenu
           ? row.defaultHomeMenu
-          : `/ProjectDetail/${row.project_type === 2 ? 'Affair' : 'Demand'}`
+          : `/ProjectDetail/${
+              row.project_type === 2
+                ? 'Affair'
+                : row.is_bug === 2
+                ? 'Demand'
+                : 'Defect'
+            }`
       }?data=${params}`,
     )
   }

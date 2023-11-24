@@ -74,7 +74,11 @@ const LayoutSecondaryMenu = () => {
       resultUrl = '/Report/Review/List/1'
     } else if (paramsData?.id) {
       dispatch(setIterateInfo({}))
-      const params = encryptPhp(JSON.stringify(paramsData))
+      const newParamsData = {
+        ...paramsData,
+        ...{ isOpenScreenDetail: false },
+      }
+      const params = encryptPhp(JSON.stringify(newParamsData))
       dispatch(getProjectInfoStore({ projectId: paramsData?.id }))
       dispatch(getProjectInfoValuesStore({ projectId: paramsData?.id }))
       resultUrl = `${url}?data=${params}`

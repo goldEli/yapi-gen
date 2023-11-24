@@ -279,6 +279,9 @@ const LinkSprint = (props: {
     page: number
     pagesize: number
   }) => {
+    if (!props.detail.id) {
+      return
+    }
     const response = await getAffairsRelationStoriesList({
       projectId: projectInfo.id,
       id: props.detail.id,
