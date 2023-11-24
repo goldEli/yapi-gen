@@ -34,6 +34,7 @@ const routes = [
     path: '/ScheduleSearch',
     element: lazy(() => import('@/views/ScheduleSearch')),
   },
+
   {
     path: '',
     element: lazy(() => import('@/views/Layout')),
@@ -379,6 +380,63 @@ const routes = [
                 element: lazy(() => import('@/views/MemberInfo/Profile')),
               },
             ],
+          },
+        ],
+      },
+      // 兼容老路由
+      {
+        path: '/ProjectManagement',
+        element: lazy(() => import('@/views/ProjectDetail')),
+        children: [
+          {
+            path: 'Project',
+            element: lazy(() => import('@/views/Layout/Project')),
+          },
+          {
+            path: 'Demand',
+            element: lazy(() => import('@/views/Demand')),
+          },
+          {
+            path: 'Iteration',
+            element: lazy(() => import('@/views/Iteration')),
+          },
+          {
+            path: 'IterationDetail',
+            element: lazy(() => import('@/views/IterationDetail')),
+          },
+          {
+            path: 'KanBan',
+            element: lazy(() => import('@/views/KanBanBoard')),
+          },
+          {
+            path: 'Defect',
+            element: lazy(() => import('@/views/IterationDefect')),
+          },
+          {
+            path: 'ProjectSetting',
+            element: lazy(() => import('@/views/ProjectSetting')),
+          },
+        ],
+      },
+      {
+        path: 'SprintProjectManagement',
+        element: lazy(() => import('@/views/ProjectDetail')),
+        children: [
+          {
+            path: 'KanBan',
+            element: lazy(() => import('@/views/KanBanBoard')),
+          },
+          {
+            path: 'Sprint',
+            element: lazy(() => import('@/views/SprintProjectSprint')),
+          },
+          {
+            path: 'Affair',
+            element: lazy(() => import('@/views/SprintProjectAffair')),
+          },
+          {
+            path: 'Setting',
+            element: lazy(() => import('@/views/ProjectSetting')),
           },
         ],
       },
