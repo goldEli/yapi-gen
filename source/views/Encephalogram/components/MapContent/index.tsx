@@ -103,7 +103,7 @@ const MapContent = () => {
     if (!extraParams.numType || extraParams.numType === 'wheel') {
       return
     }
-    mapRef.current.zoomTo(Number(extraParams.num), { x: 100, y: 100 }, true)
+    mapRef.current.zoomTo(Number(extraParams.num), { x: 100, y: 100 })
   }, [extraParams.num, extraParams.numType])
   useEffect(() => {
     if (data && mapRef.current) {

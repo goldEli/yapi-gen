@@ -6,7 +6,7 @@ import {
   findAllParentForTree,
   formatObjectForRender,
 } from '@/views/Encephalogram/until'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from '@store/index'
 import moment from 'moment'
 
@@ -16,6 +16,13 @@ const useMapData = () => {
     store => store.encephalogram,
   )
   const { group_by, person, iterationVal, state, time } = encephalogramParams
+
+  // const iterationValRef = useRef(iterationVal)
+
+  // useEffect(() => {
+  //   iterationValRef.current = iterationVal
+  // }, [iterationVal])
+
   const allItems: any[] = useLiveQuery(() => {
     if (projectId) {
       const allList = (db as any)[encephalogramParams.group_by]
@@ -34,6 +41,7 @@ const useMapData = () => {
     }
     let result: any
     let isExpandAll = false
+    const temp = allItems.find((i: any) => i.pid === '0')
     if (person.length || iterationVal.length || state.length || time.length) {
       isExpandAll = true
       const filterItems = allItems.filter((item: any) => {
@@ -82,12 +90,19 @@ const useMapData = () => {
         return false
       })
       result = findAllParentForTree(filterItems, allItems)
+      if (temp?.group_by === 'user' && person.length) {
+        result = result.filter((m: any) => {
+          if (m.node_type === 'user') {
+            return person.includes(m.user_id)
+          }
+          return true
+        })
+      }
     } else {
       isExpandAll = false
       result = allItems
     }
     const res = buildIntactTree(result, isExpandAll)
-    const temp = allItems.find((i: any) => i.pid === '0')
     const top = formatObjectForRender(temp, temp, isExpandAll)
     const output = res ? res : top
     // 加入额外项目信息

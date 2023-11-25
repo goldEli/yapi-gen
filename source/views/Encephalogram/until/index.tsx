@@ -37,6 +37,7 @@ export const flattenObjectToArray = (
 
 export const generatorStyleObject = (obj: any, topObj: any) => {
   const temp: any = {}
+  temp.stroke = '#D5D6D9'
   switch (obj.node_type) {
     case 'project':
       temp.fontSize = 18
@@ -64,12 +65,15 @@ export const generatorStyleObject = (obj: any, topObj: any) => {
     switch (obj.progress_status) {
       case 'new':
         temp.fill = '#E4D8FF'
+        temp.stroke = ''
         break
       case 'processing':
         temp.fill = '#FFF383'
+        temp.stroke = ''
         break
       case 'ended':
         temp.fill = '#BBFFBA'
+        temp.stroke = ''
         break
       default:
         temp.fill = '#FFFFFF'
@@ -77,6 +81,7 @@ export const generatorStyleObject = (obj: any, topObj: any) => {
     }
   } else if (obj.node_type === 'story') {
     temp.fill = '#FFC8A0'
+    temp.stroke = ''
   } else {
     temp.fill = '#FFFFFF'
   }
@@ -197,6 +202,33 @@ const recursiveSupervisorSearch = (
 export const findAllParentForTree = (arr: any[], allArr: any[]) => {
   const result: any[] = []
   arr.forEach((item: any) => {
+    recursiveSupervisorSearch(allArr, item, result)
+  })
+  return [...new Set(result)].map((key: string) => {
+    return allArr.find((k: any) => k.id === key)
+  })
+}
+
+// 找出某个节点所有儿子
+const recursiveChildrenSearch = (array: any[], target: any, result: any[]) => {
+  result.push(target.id)
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].pid === target.id) {
+      if (array[i]) {
+        result.push(array[i]?.id)
+        recursiveChildrenSearch(array, array[i], result)
+      }
+    }
+  }
+}
+// 根据筛选出来的叶子反推出所有的父节点并去重
+export const findAllChildrenForTree = (arr: any[], allArr: any[]) => {
+  const res: any[] = []
+  const result: any[] = []
+  arr.forEach((item: any) => {
+    recursiveChildrenSearch(allArr, item, res)
+  })
+  res.forEach((item: any) => {
     recursiveSupervisorSearch(allArr, item, result)
   })
   return [...new Set(result)].map((key: string) => {

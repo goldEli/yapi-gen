@@ -17,7 +17,7 @@ const getGraph = () => {
         },
         drawShape: (cfg: any, group: any) => {
           const content = cfg.name
-          const { fill, color, fontSize } = cfg.style || {}
+          const { fill, color, fontSize, stroke } = cfg.style || {}
           let wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 30
           if (cfg.depth === 0) {
             cfg.extra?.forEach((info: any, index: number) => {
@@ -52,7 +52,7 @@ const getGraph = () => {
           const rect = group.addShape('rect', {
             attrs: {
               fill,
-              stroke: '#D5D6D9',
+              stroke,
               width: wd > 100 ? wd : 100,
               height: 40,
             },
@@ -80,8 +80,8 @@ const getGraph = () => {
                 y: bbox.height / 2,
                 r: 6,
                 symbol: cfg.collapsed ? G6.Marker.expand : G6.Marker.collapse,
-                stroke: '#969799',
-                lineWidth: 1,
+                stroke: '#6688FF',
+                lineWidth: 2,
               },
               name: 'collapse-icon',
             })
