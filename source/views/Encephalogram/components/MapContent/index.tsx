@@ -19,6 +19,7 @@ import {
 import { notification } from 'antd'
 import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
+import _ from 'lodash'
 
 const MapContent = () => {
   const { projectId } = useProjectId()
@@ -78,8 +79,6 @@ const MapContent = () => {
   useEffect(() => {
     const graph = init()
     mapRef.current = graph
-    graph.data({ name: '', style: { fontSize: 18 } })
-    graph.render()
     return () => {
       dispatch(
         setEncephalogramParams({
@@ -107,7 +106,8 @@ const MapContent = () => {
   }, [extraParams.num, extraParams.numType])
   useEffect(() => {
     if (data && mapRef.current) {
-      mapRef.current.changeData(data)
+      const result = _.cloneDeep(data)
+      mapRef.current.changeData(result)
       mapRef.current.fitCenter()
     }
   }, [JSON.stringify(data)])

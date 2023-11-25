@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 type SliceState = {
+  data: any
   encephalogramParams: {
     // 迭代
     iterationVal: Array<number | string>
@@ -51,12 +52,18 @@ const initialState: SliceState = {
     isShow: false,
     projectId: 0,
   },
+  data: { name: '暂无数据', style: { fontSize: 18 } },
 }
 
 const slice = createSlice({
   name: 'encephalogram',
   initialState,
   reducers: {
+    setData(state, action) {
+      state.data = {
+        ...action.payload,
+      }
+    },
     setEncephalogramParams(state, action) {
       state.encephalogramParams = {
         ...state.encephalogramParams,
@@ -86,6 +93,7 @@ const slice = createSlice({
 
 const encephalogram = slice.reducer
 export const {
+  setData,
   setEncephalogramParams,
   setLoading,
   setExtraInfo,

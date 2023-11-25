@@ -6,22 +6,33 @@ import {
   findAllParentForTree,
   formatObjectForRender,
 } from '@/views/Encephalogram/until'
-import { useEffect, useMemo, useRef } from 'react'
-import { useSelector } from '@store/index'
+import { useCallback, useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from '@store/index'
 import moment from 'moment'
+import { setData } from '@store/encephalogram'
 
 const useMapData = () => {
   const { projectId } = useProjectId()
-  const { encephalogramParams, extraInfo } = useSelector(
+  const dispatch = useDispatch()
+  const { encephalogramParams, extraInfo, data } = useSelector(
     store => store.encephalogram,
   )
+  const searchParamsRef = useRef<any>({})
   const { group_by, person, iterationVal, state, time } = encephalogramParams
 
-  // const iterationValRef = useRef(iterationVal)
-
-  // useEffect(() => {
-  //   iterationValRef.current = iterationVal
-  // }, [iterationVal])
+  useEffect(() => {
+    searchParamsRef.current.person = person
+    searchParamsRef.current.iterationVal = iterationVal
+    searchParamsRef.current.state = state
+    searchParamsRef.current.time = time
+    searchParamsRef.current.extraInfo = extraInfo
+  }, [
+    JSON.stringify(person),
+    JSON.stringify(iterationVal),
+    JSON.stringify(state),
+    JSON.stringify(time),
+    JSON.stringify(extraInfo),
+  ])
 
   const allItems: any[] = useLiveQuery(() => {
     if (projectId) {
@@ -35,7 +46,9 @@ const useMapData = () => {
     return []
   }, [projectId, group_by])
 
-  const data = useMemo(() => {
+  const getRenderData = useCallback(() => {
+    const { person, iterationVal, state, time, extraInfo } =
+      searchParamsRef.current
     if (!allItems?.length) {
       return null
     }
@@ -123,19 +136,19 @@ const useMapData = () => {
         }
       })
     }
-    return output
-  }, [
-    JSON.stringify(allItems),
-    JSON.stringify(person),
-    JSON.stringify(iterationVal),
-    JSON.stringify(state),
-    JSON.stringify(time),
-    JSON.stringify(extraInfo),
-  ])
+    dispatch(setData(output))
+  }, [JSON.stringify(allItems)])
+
+  useEffect(() => {
+    getRenderData()
+  }, [JSON.stringify(allItems)])
+
   console.log(data, 'datasssss')
 
   return {
-    data: data,
+    data,
+    searchParamsRef,
+    getRenderData,
   }
 }
 

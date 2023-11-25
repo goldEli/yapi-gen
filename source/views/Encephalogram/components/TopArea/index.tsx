@@ -37,6 +37,8 @@ import { useSelector } from '@store/index'
 import { getIterateList } from '@/services/iterate'
 import { useTranslation } from 'react-i18next'
 import { getMapMembers } from '@/services/map'
+import useMapData from '@/views/Encephalogram/hook/useMapData'
+import _ from 'lodash'
 
 const TopArea = () => {
   const [t] = useTranslation()
@@ -51,12 +53,13 @@ const TopArea = () => {
   const [length, setLength] = useState(0)
   const [stateVal, setStateVal] = useState([])
   const dispatch = useDispatch()
-  const { encephalogramParams } = useSelector(store => store.encephalogram)
   // 状态的
   const [priorityList, setPriorityList] = useState()
   // 迭代的
   const [interateList, setInterateList] = useState()
   const { projectInfoValues, projectInfo } = useSelector(store => store.project)
+  const { searchParamsRef, getRenderData } = useMapData()
+  const searchData = _.debounce(getRenderData, 1000)
   useEffect(() => {
     // 状态的
     const list = projectInfoValues
@@ -224,20 +227,25 @@ const TopArea = () => {
     newVal = i.children.map((el: any) => el.id)
     // 组value
     if (e.target.checked) {
-      setPersonVal([...personVal, ...newVal])
+      const val = [...personVal, ...newVal]
+      setPersonVal(val)
+      searchParamsRef.current.person = val
       dispatch(
         setEncephalogramParams({
-          person: [...personVal, ...newVal],
+          person: val,
         }),
       )
     } else {
-      setPersonVal(personVal.filter((el: any) => !newVal?.includes(el)))
+      const val = personVal.filter((el: any) => !newVal?.includes(el))
+      searchParamsRef.current.person = val
+      setPersonVal(val)
       dispatch(
         setEncephalogramParams({
-          person: personVal.filter((el: any) => !newVal?.includes(el)),
+          person: personVal.filter(val),
         }),
       )
     }
+    searchData()
   }
   // 点击子级,设置勾选获取value
   const onChangeS = (e: any, i: any) => {
@@ -257,20 +265,25 @@ const TopArea = () => {
     setPersonData(newChild)
     // 组value
     if (e.target.checked) {
-      setPersonVal([...personVal, i.id])
+      const val = [...personVal, i.id]
+      searchParamsRef.current.person = val
+      setPersonVal(val)
       dispatch(
         setEncephalogramParams({
-          person: [...personVal, i.id],
+          person: val,
         }),
       )
     } else {
-      setPersonVal(personVal.filter((el: any) => el !== i.id))
+      const val = personVal.filter((el: any) => el !== i.id)
+      searchParamsRef.current.person = val
+      setPersonVal(val)
       dispatch(
         setEncephalogramParams({
-          person: personVal.filter((el: any) => el !== i.id),
+          person: val,
         }),
       )
     }
+    searchData()
   }
   // 折叠
   const foldIcon = (e: { id: number; fold: boolean }) => {
@@ -334,11 +347,13 @@ const TopArea = () => {
       })),
     }))
     setPersonData(newChild)
+    searchParamsRef.current.person = []
     dispatch(
       setEncephalogramParams({
         person: [],
       }),
     )
+    searchData()
   }
   const contentPerson = () => {
     return (
@@ -423,28 +438,32 @@ const TopArea = () => {
   }
   // 选中任务状态
   const onClickSearch = (value: []) => {
+    searchParamsRef.current.state = value || []
     setStateVal(value || [])
     dispatch(
       setEncephalogramParams({
         state: value || [],
       }),
     )
+    searchData()
   }
   // 选中迭代
   const onChangeSelect = (value: Array<number>) => {
+    searchParamsRef.current.iterationVal = value || []
     dispatch(
       setEncephalogramParams({
         iterationVal: value || [],
       }),
     )
+    searchData()
   }
   // 时间选择
   const onChangeTime = (dates: any) => {
     if (dates) {
       let s = moment(dates[0]).format('YYYY-MM-DD') || ''
       let d = moment(dates[1]).format('YYYY-MM-DD') || ''
-      console.log(s, d)
       if (s === '1970-01-01') {
+        searchParamsRef.current.time = []
         setDate(null)
         dispatch(
           setEncephalogramParams({
@@ -453,6 +472,7 @@ const TopArea = () => {
         )
         return
       }
+      searchParamsRef.current.time = [s, d]
       setDate([s, d])
       dispatch(
         setEncephalogramParams({
@@ -461,12 +481,14 @@ const TopArea = () => {
       )
     } else {
       setDate(null)
+      searchParamsRef.current.time = []
       dispatch(
         setEncephalogramParams({
           time: [],
         }),
       )
     }
+    searchData()
   }
 
   return (

@@ -77,6 +77,7 @@ export const generatorStyleObject = (obj: any, topObj: any) => {
         break
       default:
         temp.fill = '#FFFFFF'
+        temp.stroke = '#D5D6D9'
         break
     }
   } else if (obj.node_type === 'story') {
@@ -84,6 +85,7 @@ export const generatorStyleObject = (obj: any, topObj: any) => {
     temp.stroke = ''
   } else {
     temp.fill = '#FFFFFF'
+    temp.stroke = '#D5D6D9'
   }
 
   return temp
@@ -165,6 +167,7 @@ export const buildIntactTree = (tempArr: any[], isExpandAll: boolean) => {
             style: {
               fontSize: 14,
               fill: '#FFFFFF',
+              stroke: '#D5D6D9',
             },
           }
         })
