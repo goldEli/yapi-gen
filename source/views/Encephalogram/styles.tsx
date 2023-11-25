@@ -2,14 +2,11 @@ import CustomSelect from '@/components/CustomSelect'
 import styled from '@emotion/styled'
 
 export const EncephalogramBox = styled.div`
-  width: calc(100% - 24px);
+  width: 100%;
   height: 100%;
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
-  padding: 20px 6px 0px 0px !important;
-  margin-left: 24px !important;
-  background-color: var(--neutral-white-d1);
   .g6-component-tooltip {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 6px;
@@ -46,6 +43,7 @@ export const TopAreaWrap = styled.div`
 export const TopAreaBox = styled.div`
   display: flex;
   flex: 1;
+  justify-content: flex-end;
 `
 export const TypeBox = styled.div`
   min-width: 312px;
@@ -155,8 +153,8 @@ export const HeaderPopover = styled.div`
 `
 export const ToolBarBox = styled.div`
   position: absolute;
-  bottom: 16px;
-  right: 16px;
+  bottom: 0px;
+  right: 0px;
   display: flex;
 `
 export const MianHeader = styled.div`

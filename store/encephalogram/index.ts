@@ -52,7 +52,7 @@ const initialState: SliceState = {
     isShow: false,
     projectId: 0,
   },
-  data: { name: '暂无数据', style: { fontSize: 18 } },
+  data: { name: '', style: { fontSize: 18 } },
 }
 
 const slice = createSlice({

@@ -10,6 +10,8 @@ interface FullScreenContainerProps {
 
 const Box = styled(FullScreen)<{ fullScreen: boolean }>`
   height: ${(prop: any) => (prop.fullScreen ? '100vh' : 'calc(100vh - 56px)')};
+  background-color: var(--neutral-n8);
+  padding: 20px;
 `
 
 const FullScreenBox: React.FC<FullScreenContainerProps> = props => {

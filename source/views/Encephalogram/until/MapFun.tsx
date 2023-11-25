@@ -18,13 +18,9 @@ const getGraph = () => {
         drawShape: (cfg: any, group: any) => {
           const content = cfg.name
           const { fill, color, fontSize, stroke } = cfg.style || {}
-          let wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 30
+          const wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 25
           if (cfg.depth === 0) {
             cfg.extra?.forEach((info: any, index: number) => {
-              const width = Util.getTextSize(info.name, 12)[0] + 20
-              if (width > wd) {
-                wd = width
-              }
               group.addShape('rect', {
                 attrs: {
                   fill: info.fill,
@@ -53,8 +49,8 @@ const getGraph = () => {
             attrs: {
               fill,
               stroke,
-              width: wd > 100 ? wd : 100,
-              height: 40,
+              width: wd,
+              height: 28,
             },
             name: 'rect-shape',
           })
@@ -62,7 +58,7 @@ const getGraph = () => {
           group.addShape('text', {
             attrs: {
               text: content,
-              x: 10,
+              x: 12,
               y: bbox.height / 2,
               textBaseline: 'middle',
               fill: color || '#323233',
@@ -78,10 +74,11 @@ const getGraph = () => {
               attrs: {
                 x: bbox.width - 1.5,
                 y: bbox.height / 2,
-                r: 6,
+                r: 7,
                 symbol: cfg.collapsed ? G6.Marker.expand : G6.Marker.collapse,
-                stroke: '#6688FF',
-                lineWidth: 2,
+                stroke: cfg.collapsed ? '#969799' : '#6688FF',
+                fill: '#FFFFFF',
+                lineWidth: 1,
               },
               name: 'collapse-icon',
             })
@@ -96,6 +93,9 @@ const getGraph = () => {
               'symbol',
               cfg.collapsed ? G6.Marker.expand : G6.Marker.collapse,
             )
+            icon.attr({
+              stroke: cfg.collapsed ? '#969799' : '#6688FF',
+            })
           }
         },
       },
@@ -197,7 +197,7 @@ const getGraph = () => {
         type: 'customNode',
       },
       defaultEdge: {
-        type: 'polyline',
+        type: 'cubic-horizontal',
       },
       nodeStateStyles: {
         hover: {
@@ -209,12 +209,15 @@ const getGraph = () => {
         type: 'compactBox',
         direction: 'LR',
         getHeight: function getHeight() {
-          return 40
+          return 28
         },
         getHGap: function getHGap(cfg: any) {
           const wd =
             Util.getTextSize(cfg.name, cfg.style.fontSize || 14)[0] + 20
           return wd > 100 ? wd : 100
+        },
+        getVGap: function getHGap() {
+          return 10
         },
       },
       plugins: [tooltip],

@@ -11,6 +11,7 @@ import { getMapList, getMapStatisticInfo } from '@/services/map'
 import { useDispatch, useSelector } from '@store/index'
 import { type TreeGraph } from '@antv/g6'
 import {
+  setData,
   setEncephalogramParams,
   setExtraInfo,
   setExtraParams,
@@ -96,6 +97,7 @@ const MapContent = () => {
           numType: '',
         }),
       )
+      dispatch(setData({ name: '', style: { fontSize: 18 } }))
     }
   }, [])
   useEffect(() => {

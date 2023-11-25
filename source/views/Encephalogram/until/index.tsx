@@ -44,11 +44,7 @@ export const generatorStyleObject = (obj: any, topObj: any) => {
       break
     case 'class':
     case 'user':
-      if (obj.level === 1) {
-        temp.fontSize = 16
-      } else {
-        temp.fontSize = 14
-      }
+      temp.fontSize = 14
       break
     case 'story':
       temp.fontSize = 14
