@@ -163,67 +163,67 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   }
 
   const onChangeCurrentMenu = (item: any) => {
-    setTimeout(() => {
-      // 效能洞察参数
-      dispatch(
-        setHeaderParmas({
-          iterate_ids: [],
-          projectIds: [],
-          users: [],
-          time: {
-            type: 1,
-            time: '',
-          },
-          view: {
-            title: '',
-            value: 0,
-          },
-          period_time: 'one_month',
-        }),
-      )
-      dispatch(setSave(false))
-
-      // 如果有二级菜单的则取第一条
-      let navigateUrl =
-        item.children?.length > 0 ? item.children[0].url : item.url
-
-      // 如果是工作汇报则默认跳转
-      if (item.url === '/Report') {
-        navigateUrl = `${item.url}/Review/List/1`
-      }
-
-      // 如果是我的则默认跳转我的概况
-      if (item.url === '/Mine') {
-        navigateUrl = `${item.url}/Profile`
-      }
-
-      // 如果是动态则默认跳转全部
-      if (item.url === '/Trends') {
-        dispatch(changeVisible(false))
-        dispatch(changeVisibleFilter(false))
-        navigateUrl = `${item.url}/AllNote/1`
-      }
-
-      // 如果是统计则默认跳转
-      if (item.url === '/Statistics') {
-        navigateUrl = `${item.url}/Task`
-      }
-
-      navigate(navigateUrl)
-      const resultMenu = {
-        ...item,
-        ...{
-          icon: menuIconList?.filter((i: any) =>
-            String(item.url).includes(i.key),
-          )[0]?.normal,
+    // 效能洞察参数
+    dispatch(
+      setHeaderParmas({
+        iterate_ids: [],
+        projectIds: [],
+        users: [],
+        time: {
+          type: 1,
+          time: '',
         },
-      }
-      dispatch(setProjectInfo({}))
-      dispatch({
-        type: 'user/setCurrentMenu',
-        payload: resultMenu,
-      })
+        view: {
+          title: '',
+          value: 0,
+        },
+        period_time: 'one_month',
+      }),
+    )
+    dispatch(setSave(false))
+
+    // 如果有二级菜单的则取第一条
+    let navigateUrl =
+      item.children?.length > 0 ? item.children[0].url : item.url
+
+    // 如果是工作汇报则默认跳转
+    if (item.url === '/Report') {
+      navigateUrl = `${item.url}/Review/List/1`
+    }
+
+    // 如果是我的则默认跳转我的概况
+    if (item.url === '/Mine') {
+      navigateUrl = `${item.url}/Profile`
+    }
+
+    // 如果是动态则默认跳转全部
+    if (item.url === '/Trends') {
+      dispatch(changeVisible(false))
+      dispatch(changeVisibleFilter(false))
+      navigateUrl = `${item.url}/AllNote/1`
+    }
+
+    // 如果是统计则默认跳转
+    if (item.url === '/Statistics') {
+      navigateUrl = `${item.url}/Task`
+    }
+    setTimeout(() => {
+      navigate(navigateUrl)
     }, 10)
+
+    const resultMenu = {
+      ...item,
+      ...{
+        icon: menuIconList?.filter((i: any) =>
+          String(item.url).includes(i.key),
+        )[0]?.normal,
+      },
+    }
+    dispatch({
+      type: 'user/setCurrentMenu',
+      payload: resultMenu,
+    })
+    dispatch(setProjectInfo({}))
   }
 
   // 新开页面打开外链

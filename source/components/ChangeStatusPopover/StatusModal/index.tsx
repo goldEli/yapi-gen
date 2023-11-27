@@ -380,6 +380,7 @@ const StatusModal = (props: StatusModalProps) => {
       verifyId: reviewerValue,
     }
 
+    // 判断两个时间都有值，并且开始时间小于且不等于结束时间时拦截
     if (
       new Set([
         ...new Set(Object.keys(res)),
@@ -389,7 +390,8 @@ const StatusModal = (props: StatusModalProps) => {
       res?.expected_end_at &&
       !moment(res.expected_start_at, 'YYYY-MM-DD HH:mm:ss').isBefore(
         moment(res.expected_end_at, 'YYYY-MM-DD HH:mm:ss'),
-      )
+      ) &&
+      res?.expected_start_at !== res?.expected_end_at
     ) {
       getMessage({
         type: 'warning',
@@ -547,46 +549,6 @@ const StatusModal = (props: StatusModalProps) => {
                         },
                       ]}
                     >
-                      {/* <CustomSelect
-                        mode="multiple"
-                        dropdownRender={(menu: any) => {
-                          return (
-                            <div
-                              style={{
-                                padding: '8px ',
-                              }}
-                            >
-                              {format2(i, 2) && (
-                                <MyDiv
-                                  show={valid() as unknown as boolean}
-                                  onClick={setMyValue}
-                                >
-                                  {format2(i, 2)}
-                                </MyDiv>
-                              )}
-
-                              <MyDiv
-                                show={form
-                                  .getFieldsValue()
-                                  ?.users_name?.includes(info)}
-                                onClick={setMyValue2}
-                              >
-                                {format2(i, 1)}
-                              </MyDiv>
-                              <Divider style={{ margin: '8px 0' }} />
-                              {menu}
-                            </div>
-                          )
-                        }}
-                        placeholder={t('common.pleaseSelect')}
-                        allowClear
-                        options={i.children?.map((item: any) => ({
-                          label: item.name,
-                          value: item.id,
-                        }))}
-                        optionFilterProp="label"
-                      ></CustomSelect> */}
-
                       <CustomSelect
                         mode="multiple"
                         placeholder={t('common.pleaseSelect')}

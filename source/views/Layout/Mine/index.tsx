@@ -71,11 +71,13 @@ const Mine = () => {
   useEffect(() => {
     onUpdateList()
   }, [])
+
   useEffect(() => {
     if (routerPath.pathname === '/Mine/Profile') {
       setActiveKey('1')
     }
   }, [routerPath])
+
   return (
     <HaveTabsContentWrap>
       <TabsContent
