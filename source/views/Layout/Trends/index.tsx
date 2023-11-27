@@ -63,7 +63,6 @@ const Trends = () => {
   ]
   //   跳转路由
   const onChangeRouter = (key: any) => {
-    setActiveKey(key)
     //   拼接三级菜单路由
     navigate(`/Trends/AllNote/${key}`)
   }
@@ -77,9 +76,15 @@ const Trends = () => {
   useEffect(() => {
     onUpdateList()
   }, [])
+
   useEffect(() => {
     if (routerPath.pathname === '/Trends/AllNote/1') {
       setActiveKey('1')
+    } else {
+      //   获取当前路由的key
+      const currentRouterKey =
+        routerPath?.pathname?.split('/Trends/AllNote/')[1]
+      setActiveKey(currentRouterKey)
     }
   }, [routerPath])
   return (
