@@ -102,7 +102,7 @@ export const FullScreenDiv = styled.div<{ isScreen: boolean }>`
 
 const Head = styled.div`
   box-sizing: border-box;
-  padding: 24px;
+  padding: 24px ;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
   display: flex;
@@ -128,17 +128,17 @@ const CenterRight = styled.div`
   border-radius: 6px;
 `
 const InnerWrap = styled.div`
-  margin-top: 16px;
+  // margin-top: 16px;
   min-height: 88px;
   background: rgba(255, 255, 255, 1);
   background-blend-mode: normal;
   display: flex;
-  justify-content: space-around;
+  justify-content:space-between;
   box-sizing: border-box;
-  padding: 26px 24px 26px 24px;
+  // padding: 26px 24px 26px 24px;
   border-radius: 6px;
   text-align: center;
-  box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
+  // box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
 `
 
 const TimeLineWrap = styled.div`
@@ -395,11 +395,11 @@ const Profile = () => {
         <Head>
           <div>
             <InnerWrap>
-              <ChartsItem1>
+              <ChartsItem1 background="rgba(102,136,255,0.08)">
                 <span className={titleNumberCss}>{data?.project_count}</span>
                 <span className={titleTextCss}>{t('mine.totalProject')}</span>
               </ChartsItem1>
-              <ChartsItem1>
+              <ChartsItem1 background="rgba(250,151,70,0.08)">
                 <span className={titleNumberCss}>{data?.story_count}</span>
                 <span className={titleTextCss}>
                   {t('accumulated_work_items')}

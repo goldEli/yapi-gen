@@ -122,12 +122,17 @@ const ChartsItem2 = styled.span`
   height: 56px;
   border-right: 1px solid var(--neutral-n6-d1);
 `
-const ChartsItem = styled.span`
+const ChartsItem = styled.div`
   cursor: pointer;
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  width:12%;
+  height:88px;
+  padding:16px 0;
+  &:hover{
+    background:var(--hover-d2);
+  }
 `
 const ChartsItem333 = styled.span`
   /* cursor: pointer; */
@@ -136,12 +141,18 @@ const ChartsItem333 = styled.span`
   flex-direction: column;
   justify-content: space-between;
 `
-const ChartsItem1 = styled.span`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`
+
+const ChartsItem1 = styled.div<{background:string}>({
+  width:'12%',
+  height:'88px',
+  padding:'16px 0',
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  borderRadius: '6px',
+},({ background }) => ({
+  background
+}),)
 const titleCss = css`
   color: var(--neutral-n1-d1);
   padding-left: 8px;
