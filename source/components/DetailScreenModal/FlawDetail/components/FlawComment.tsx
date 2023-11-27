@@ -8,7 +8,6 @@ import { useSelector } from '@store/index'
 import { Editor } from 'ifunuikit'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Viewer from 'react-viewer'
 import {
   BlueCss,
   Card,

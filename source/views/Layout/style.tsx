@@ -51,7 +51,9 @@ export const RobotButton = styled.div`
   user-select: none;
   display: flex;
   align-items: center;
-  margin-right: 4px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 4px;
   .img {
     height: 24px;
   }
@@ -59,6 +61,9 @@ export const RobotButton = styled.div`
     margin-left: 8px;
     font-size: 14px;
     color: var(--neutral-n1-d1);
+  }
+  &:hover {
+    background: var(--active);
   }
 `
 
@@ -145,6 +150,18 @@ export const LayoutSide = styled.div<{ isOpen?: boolean }>`
   align-items: ${props => (props.isOpen ? 'flex-start' : 'center')};
   z-index: 200;
   position: relative;
+  .ant-popover-placement-rightTop {
+    padding-left: 20px !important;
+  }
+`
+
+export const MenusWrap = styled.div<{ isOpen?: boolean }>`
+  height: ${props =>
+    props.isOpen ? 'calc(100% - 106px)' : 'calc(100% - 124px)'};
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 `
 
 export const LayoutContent = styled.div<{ isOpen?: boolean }>`
@@ -277,6 +294,7 @@ export const openSideMenu = css`
 
 export const activeSideMenu = css`
   background: var(--selected) !important;
+  border: none !important;
   svg {
     color: var(--primary-d2) !important;
   }
@@ -296,10 +314,17 @@ export const CollapseWrapItem = styled.div`
   align-items: center;
   padding: 4px 8px;
   cursor: pointer;
+  border-radius: 6px;
+  svg {
+    color: var(--neutral-n2);
+  }
   div {
     font-size: 16px;
     color: var(--neutral-n1-d1);
     margin-left: 8px;
+  }
+  &:hover {
+    background: var(--hover-d1);
   }
 `
 
@@ -369,21 +394,21 @@ export const MoreOtherSystemWrap = styled.div`
   border-radius: 6px;
   border: 2px solid var(--neutral-n6-d2);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 16px;
   width: 348px;
-  height: 248px;
+  /* height: 248px; */
 `
 
-export const MoreOtherSystemItem = styled.div`
+export const MoreOtherSystemItem = styled.div<{ disable?: boolean }>`
   width: 88px;
-  height: 88px;
+  /* height: 88px; */
   padding: 5px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
+  cursor: ${props => (props.disable ? 'inherit' : 'pointer')};
   .box {
     height: 48px;
     width: 48px;
@@ -392,12 +417,27 @@ export const MoreOtherSystemItem = styled.div`
     align-items: center;
     justify-content: center;
     background: var(--neutral-n7);
+    span {
+      cursor: ${props => (props.disable ? 'inherit' : 'pointer')};
+      color: ${props =>
+        props.disable ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
+    }
+  }
+  &:hover {
+    .box {
+      span {
+        color: ${props =>
+          props.disable ? 'var(--neutral-n4)' : 'var(--primary-d1)'};
+      }
+    }
   }
   .name {
     margin-top: 8px;
     font-size: 14px;
-    color: var(--neutral-n1-d1);
+    color: ${props =>
+      props.disable ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
     font-family: SiYuanMedium;
+    text-align: center;
   }
 `
 
@@ -454,6 +494,7 @@ export const PhoneWrap = styled.div`
 
 export const MenuItems = styled.div`
   margin-top: 12px;
+  width: 100%;
 `
 
 export const MenuLeft = styled.div`
@@ -462,6 +503,13 @@ export const MenuLeft = styled.div`
   font-size: var(--font14);
   svg {
     margin-right: 8px;
+  }
+  div {
+    display: inline-block;
+    width: 80%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 `
 
@@ -877,7 +925,7 @@ export const ProjectItem = styled.div<{ local?: string }>`
     width: ${props =>
       props.local === 'zh' ? 'calc(100% - 32px)' : 'calc(100% - 56px)'};
     .icon {
-      height: 32px;
+      width: 32px;
       height: 32px;
       border-radius: 4px;
       overflow: hidden;
@@ -959,12 +1007,16 @@ export const LoadingMore = styled.div`
 `
 
 // 二级菜单样式
-export const LayoutMenuWrap = styled(Tabs)<{ width: number }>`
-  max-width: calc(100% - ${props => props.width}px);
+export const LayoutMenuWrap = styled(Tabs)`
   height: 56px;
   font-size: 14px;
   color: var(--neutral-n1-d1);
   position: relative;
+
+  .ant-tabs-nav-list {
+    margin: auto;
+    height: 56px;
+  }
   .ant-tabs-nav {
     margin: 0 !important;
     height: 56px;
@@ -977,6 +1029,9 @@ export const LayoutMenuWrap = styled(Tabs)<{ width: number }>`
   }
   .ant-tabs-content-holder {
     display: none;
+  }
+  .ant-tabs-tab-active {
+    font-size: 16px;
   }
   .ant-tabs-dropdown-menu {
     background-clip: initial;
@@ -992,6 +1047,12 @@ export const LayoutMenuWrap = styled(Tabs)<{ width: number }>`
   }
   .ant-tabs-tab {
     padding: 0;
+  }
+  .ant-tabs-tab-btn:focus,
+  .ant-tabs-tab-remove:focus,
+  .ant-tabs-tab-btn:active,
+  .ant-tabs-tab-remove:active {
+    color: var(--neutral-n2);
   }
 `
 

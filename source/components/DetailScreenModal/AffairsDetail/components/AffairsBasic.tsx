@@ -54,7 +54,7 @@ const AffairsBasic = (props: Props) => {
         },
       }),
     )
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
   }
 
   return (

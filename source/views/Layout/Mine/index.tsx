@@ -1,15 +1,23 @@
 import { HaveTabsContentWrap } from '@/components/StyleCommon'
 import TabsContent from '@/components/TabsContent'
+import styled from '@emotion/styled'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+
+const Content = styled.div({
+  width: '100%',
+  height: 'calc(100% - 38px)',
+  background: 'var(--neutral-white-d1)',
+})
 
 const Mine = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [activeKey, setActiveKey] = useState('')
-  const [resultTabList, setResultTabList] = useState<any>([
+
+  const list = [
     {
       key: '1',
       label: t('mine.mineSurvey'),
@@ -40,34 +48,44 @@ const Mine = () => {
       label: t('newlyAdd.mineExamine'),
       url: '/Mine/Examine',
     },
-  ])
+  ]
 
   //   跳转路由
   const onChangeRouter = (key: any) => {
-    const url = resultTabList?.filter((i: any) => i.key === key)[0]?.url
+    const url = list?.filter((i: any) => i.key === key)[0]?.url
     setActiveKey(String(key))
     //   拼接三级菜单路由
     navigate(url)
   }
 
-  useEffect(() => {
+  const onUpdateList = () => {
     //   获取当前路由的key
-    const currentRouter = resultTabList?.filter(
+    const currentRouter = list?.filter(
       (i: any) => i.url === routerPath?.pathname,
     )
     onChangeRouter(
-      currentRouter?.length > 0 ? currentRouter[0]?.key : resultTabList[0].key,
+      currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key,
     )
-  }, [])
+  }
 
+  useEffect(() => {
+    onUpdateList()
+  }, [])
+  useEffect(() => {
+    if (routerPath.pathname === '/Mine/Profile') {
+      setActiveKey('1')
+    }
+  }, [routerPath])
   return (
     <HaveTabsContentWrap>
       <TabsContent
         onChangeRouter={onChangeRouter}
-        tabItems={resultTabList}
+        tabItems={list}
         activeKey={activeKey}
       />
-      <Outlet />
+      <Content>
+        <Outlet />
+      </Content>
     </HaveTabsContentWrap>
   )
 }

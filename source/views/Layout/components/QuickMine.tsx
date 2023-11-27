@@ -141,6 +141,10 @@ const QuickMine = (props: QuickMineProps) => {
   const [tabActive, setTabActive] = useState(0)
   // 审核列表
   const [dataList, setDataList] = useState<any>({})
+
+  const [dataList1, setDataList1] = useState<any>({})
+  const [dataList2, setDataList2] = useState<any>({})
+
   // 审核数据
   const [verifyInfo, setVerifyInfo] = useState<any>({})
 
@@ -175,12 +179,12 @@ const QuickMine = (props: QuickMineProps) => {
       pagesize: 15,
     })
     if (isInit) {
-      setDataList(res)
+      setDataList2(res)
     } else {
-      const oldData = _.cloneDeep(dataList.list)
+      const oldData = _.cloneDeep(dataList2.list)
       const newData = _.cloneDeep(res.list)
       addMore(oldData, newData)
-      setDataList({
+      setDataList2({
         pager: res.pager,
         list: oldData,
       })
@@ -218,13 +222,14 @@ const QuickMine = (props: QuickMineProps) => {
     }
     const res = await getVerifyUserListHeader(params)
     setIsSpinning(false)
+
     if (isInit) {
-      setDataList(res)
+      setDataList1(res)
     } else {
-      const oldData = _.cloneDeep(dataList.list)
+      const oldData = _.cloneDeep(dataList1.list)
       const newData = _.cloneDeep(res.list)
       addMore(oldData, newData)
-      setDataList({
+      setDataList1({
         pager: res.pager,
         list: oldData,
       })
@@ -234,6 +239,8 @@ const QuickMine = (props: QuickMineProps) => {
   //   获取数据 tabActive 0 待办 1 待审核 2 已办理
   const getData = () => {
     setDataList({})
+    setDataList1({})
+    setDataList2({})
     switch (tabActive) {
       case 2:
         onGetMineFinishList(true, 1)
@@ -281,6 +288,14 @@ const QuickMine = (props: QuickMineProps) => {
       JSON.stringify({
         id: row.project_id,
         type: row.project_type === 2 ? 'sprint' : 'iteration',
+        isOpenScreenDetail: true,
+        detailId: row?.id,
+        specialType:
+          row.project_type === 2
+            ? 1
+            : row.project_type === 1 && row.is_bug === 1
+            ? 2
+            : 3,
       }),
     )
 
@@ -288,7 +303,13 @@ const QuickMine = (props: QuickMineProps) => {
       `${
         row.defaultHomeMenu
           ? row.defaultHomeMenu
-          : `/ProjectDetail/${row.project_type === 2 ? 'Affair' : 'Demand'}`
+          : `/ProjectDetail/${
+              row.project_type === 2
+                ? 'Affair'
+                : row.is_bug === 2
+                ? 'Demand'
+                : 'Defect'
+            }`
       }?data=${params}`,
     )
   }
@@ -312,9 +333,14 @@ const QuickMine = (props: QuickMineProps) => {
     return time
   }
 
+  // 点击tab切换
+  const onChangeTabActive = (index: number) => {
+    if (index === tabActive) return
+    setTabActive(index)
+  }
+
   useEffect(() => {
     setPage(1)
-    setDataList({})
     props.isVisible && getData()
   }, [props.isVisible, tabActive])
 
@@ -377,6 +403,41 @@ const QuickMine = (props: QuickMineProps) => {
     return false
   }, [dataList])
 
+  const hasMore1 = useMemo(() => {
+    if (!dataList1.list) {
+      return false
+    }
+    const allTask = Object.values(dataList1.list).flat(2)
+    if (allTask.length < dataList1.pager.total) {
+      return true
+    }
+    return false
+  }, [dataList1])
+
+  const hasMore2 = useMemo(() => {
+    if (!dataList2.list) {
+      return false
+    }
+    const allTask = Object.values(dataList2.list).flat(2)
+    if (allTask.length < dataList2.pager.total) {
+      return true
+    }
+    return false
+  }, [dataList2])
+
+  // 1是数据，2是更多
+  const onComputedTab = (type: number) => {
+    let result: any
+    if (tabActive === 1) {
+      result = type === 1 ? dataList1?.list : hasMore1
+    } else if (tabActive === 2) {
+      result = type === 1 ? dataList2?.list : hasMore2
+    } else {
+      result = type === 1 ? dataList?.list : hasMore
+    }
+    return result
+  }
+
   return (
     <>
       {isExamineVisible && (
@@ -401,10 +462,7 @@ const QuickMine = (props: QuickMineProps) => {
           <TabsWrap ref={tabBox}>
             {tabs.map((i: any, index) => (
               <TabsWrapItem
-                onClick={() => {
-                  setTabActive(index)
-                  setDataList({})
-                }}
+                onClick={() => onChangeTabActive(index)}
                 active={tabActive === index}
                 key={i.label}
               >
@@ -418,19 +476,21 @@ const QuickMine = (props: QuickMineProps) => {
           <ContentWrap id="scrollableDiv">
             <InfiniteScroll
               dataLength={
-                dataList.list ? Object.values(dataList.list).flat(2).length : 0
+                onComputedTab(1)
+                  ? Object.values(onComputedTab(1)).flat(2).length
+                  : 0
               }
               next={fetchMoreData}
-              hasMore={hasMore}
+              hasMore={onComputedTab(2)}
               loader={<Skeleton paragraph={{ rows: 1 }} active />}
               scrollableTarget="scrollableDiv"
             >
-              {dataList.list &&
-                Object.keys(dataList.list)?.map((k: any) => (
+              {onComputedTab(1) &&
+                Object.keys(onComputedTab(1))?.map((k: any) => (
                   <ItemWrap key={k}>
                     <TimeName>{onComputedTime(k)}</TimeName>
                     <GroupItems
-                      row={dataList.list[k]}
+                      row={onComputedTab(1)?.[k]}
                       onOpenExamine={onOpenExamine}
                       onClickItem={onClickItem}
                       tabActive={tabActive}
@@ -438,8 +498,8 @@ const QuickMine = (props: QuickMineProps) => {
                   </ItemWrap>
                 ))}
             </InfiniteScroll>
-            {(JSON.stringify(dataList?.list) === '{}' ||
-              dataList?.list?.length <= 0) && <NoData />}
+            {(JSON.stringify(onComputedTab(1)) === '{}' ||
+              onComputedTab(1)?.length <= 0) && <NoData />}
           </ContentWrap>
         </SpinWrap>
 

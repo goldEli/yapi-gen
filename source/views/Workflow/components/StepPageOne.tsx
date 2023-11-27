@@ -457,6 +457,7 @@ const StepPageOne = (propsOne: Props) => {
                   onChangeData={setDataSource}
                   showHeader
                   hasOperation={false}
+                  hasHandle
                 />
                 <div
                   style={{

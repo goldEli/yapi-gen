@@ -2,16 +2,21 @@
 
 import { useDispatch, useSelector } from '@store/index'
 import { setIsDetailScreenModal } from '@store/project'
-import { Content, ModalWrap } from './style'
+import { Content, ModalWrap, ModelClose } from './style'
 import DemandDetail from './DemandDetail'
 import FlawDetail from './FlawDetail'
 import AffairsDetail from './AffairsDetail'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useEffect } from 'react'
+import CommonIconFont from '../CommonIconFont'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const DetailScreenModal = () => {
   const dispatch = useDispatch()
+  // 不能删除open方法
+  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { isDetailScreenModal, projectInfo } = useSelector(
     store => store.project,
@@ -28,13 +33,28 @@ const DetailScreenModal = () => {
     { specialType: 3, content: <DemandDetail /> },
   ]
 
+  // 关闭弹窗
+  const onClose = () => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
+    closeScreenModal()
+  }
+
   useEffect(() => {
-    // 如果地址栏上带有此参数，默认打开全屏弹层
-    if (paramsData?.isOpenScreenDetail && (projectInfo?.id || paramsData?.id)) {
+    console.log(
+      paramsData?.isOpenScreenDetail,
+      projectInfo?.id || paramsData?.id,
+      userPreferenceConfig?.previewModel,
+    )
+    // 如果地址栏上带有isOpenScreenDetail此参数，并且传入id与项目id一致，并且个人偏好数据有的情况下
+    if (
+      paramsData?.isOpenScreenDetail &&
+      (projectInfo?.id || paramsData?.id) &&
+      userPreferenceConfig?.previewModel
+    ) {
       const resultParams: any = {
         id: projectInfo?.id || paramsData?.id,
         specialType: paramsData?.specialType,
-        type: paramsData?.type,
+        type: paramsData?.specialType,
       }
       switch (paramsData?.specialType) {
         case 1:
@@ -54,7 +74,7 @@ const DetailScreenModal = () => {
         }),
       )
     }
-  }, [paramsData?.isOpenScreenDetail, projectInfo])
+  }, [paramsData?.isOpenScreenDetail, projectInfo, userPreferenceConfig])
 
   return (
     <ModalWrap
@@ -95,6 +115,13 @@ const DetailScreenModal = () => {
             undefined
       }
     >
+      <ModelClose onClick={onClose}>
+        <CommonIconFont
+          type="close-solid2"
+          size={40}
+          color="var(--neutral-white-d1)"
+        />
+      </ModelClose>
       {/* 渲染相应的模块 */}
       <Content>
         {

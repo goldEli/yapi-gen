@@ -1,5 +1,5 @@
+/* eslint-disable new-cap */
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
 /* eslint-disable complexity */
@@ -61,9 +61,6 @@ const SiteNotifications = (props: any, ref: any) => {
   const isRefresh = useSelector(store => store.user.isRefresh)
   const { layoutSideCollapse } = useSelector(store => store.global)
   const { currentMenu, menuIconList } = useSelector(store => store.user)
-  const isDesktopDevice = /Windows|Macintosh|X11|Android|webOS/i.test(
-    navigator.userAgent,
-  )
 
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
@@ -112,10 +109,40 @@ const SiteNotifications = (props: any, ref: any) => {
         id: wsData.data.msgIds,
       })
     }
-    if (isDesktopDevice) {
-      Notification.requestPermission().then(result => {
+
+    const isMobile = {
+      Android: function () {
+        return navigator.userAgent.match(/Android/i)
+      },
+      BlackBerry: function () {
+        return navigator.userAgent.match(/BlackBerry/i)
+      },
+      iOS: function () {
+        return navigator.userAgent.match(/iPhone|iPad|iPod/i)
+      },
+      Opera: function () {
+        return navigator.userAgent.match(/Opera Mini/i)
+      },
+      Windows: function () {
+        return navigator.userAgent.match(/IEMobile/i)
+      },
+      any: function () {
+        return (
+          isMobile.Android() ||
+          isMobile.BlackBerry() ||
+          isMobile.iOS() ||
+          isMobile.Opera() ||
+          isMobile.Windows()
+        )
+      },
+    }
+
+    if (!isMobile.any()) {
+      Notification?.requestPermission().then(result => {
+        // 如果传输消息为空则不提示任何消息
+        if (!wsData) return
         if (result === 'granted') {
-          const n: any = new Notification(wsData?.data?.msgBody?.title, {
+          const n: any = new Notification(wsData.data.msgBody.title, {
             body: wsData.data.msgBody.content,
           })
           n.onclick = function () {

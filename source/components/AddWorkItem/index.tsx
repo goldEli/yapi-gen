@@ -115,7 +115,7 @@ const AddWorkItem = () => {
   // 获取项目列表
   const getProjectData = async () => {
     const res = await getProjectList({
-      self: 1,
+      self: [3],
       all: 1,
     })
     setProjectList(res.list)
@@ -143,6 +143,7 @@ const AddWorkItem = () => {
     }
     // 全局创建和快速创建获取最近项目
     if (!params?.projectId) {
+      console.log(111111111)
       getRecentlyList(res.list)
     }
   }
@@ -175,17 +176,6 @@ const AddWorkItem = () => {
       dispatch(setIsUpdateStatus(true))
       dispatch(setIsUpdateChangeLog(true))
     } else {
-      let createParams: any = {
-        projectId,
-        ...values,
-      }
-
-      if ([2, 5].includes(work_type) && !createParams.info) {
-        createParams.info =
-          '<p>【缺陷描述】</br></br></br>【重现步骤】</br></br></br>【预期结果】</br></br></br>【截图】</br></br></br></p>'
-      }
-      console.log(createParams)
-      return
       await resultMethod?.create({
         projectId,
         ...values,

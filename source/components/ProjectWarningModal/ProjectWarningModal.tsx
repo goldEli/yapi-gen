@@ -61,7 +61,7 @@ const ProjectWarningModal = () => {
         name = t('taskIsOverdue')
         break
       case 'task_soon_expired':
-        name = t('taskIsAboutToExpire')
+        name = t('theTaskIsAboutToEnd')
         break
 
       default:
@@ -196,7 +196,6 @@ const ProjectWarningModal = () => {
     let formattedDate =
       now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
 
-    console.log(formattedDate)
     let date1 = new Date(dateStr2)
     let date2 = new Date(formattedDate)
 
@@ -331,7 +330,11 @@ const ProjectWarningModal = () => {
                       {Number(item.day) !== 0 && (
                         <span
                           style={{
-                            color: '#FF5C5E',
+                            color:
+                              nowKey === 'task_soon_expired' ||
+                              nowKey === 'bug_soon_expired'
+                                ? '#FA9746'
+                                : '#FF5C5E',
                             marginLeft: 'auto',
                             fontSize: 12,
                           }}

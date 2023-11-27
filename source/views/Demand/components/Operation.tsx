@@ -147,7 +147,6 @@ const Operation = (props: Props) => {
       return
     }
     const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
-    console.log(filterFelid, '=filterFelidfilterFelid')
     setSearchList(arr)
     dispatch(saveScreen(arr))
     setFilterBasicsList(projectInfo?.filterBasicsList)

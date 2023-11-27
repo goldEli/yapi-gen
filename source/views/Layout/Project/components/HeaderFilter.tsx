@@ -35,7 +35,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
   const dispatch = useDispatch()
   const { userInfo } = useSelector(store => store.user)
   const { filterParamsAll, onChangeParamsUpdate } = props
-  const [time, setTime] = useState([])
   const [spanMaps, setSpanMaps] = useState<any>()
 
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
@@ -130,7 +129,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
             : [],
         },
       }
-      setTime(value)
     } else {
       resultParams = { ...filterParams, ...{ [key]: value } }
     }
@@ -139,12 +137,11 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
   //   重置
   const onReset = () => {
-    setTime([])
     setFilterParams({
       status: 0,
       keyword: '',
       time: [],
-      otherType: [1, 2, 3],
+      otherType: [1, 2],
       order: { value: '', key: '' },
       pageObj: {
         page: 1,
@@ -207,6 +204,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
             placeholder={t('other.pleaseNameOrKey')}
             onChangeSearch={(value: string) => onChangeParams('keyword', value)}
             leftIcon
+            defaultValue={filterParams.keyword}
           />
           <SelectWrapBedeck>
             <span
@@ -220,7 +218,14 @@ const HeaderFilter = (props: HeaderFilterProps) => {
               width="230px"
               w={spanMaps?.get('time')}
               isShowQuick
-              dateValue={time}
+              dateValue={
+                filterParams?.time?.length > 0
+                  ? [
+                      moment(filterParams?.time[0]),
+                      moment(filterParams?.time[1]),
+                    ]
+                  : null
+              }
               onChange={(values: any) => onChangeParams('time', values)}
             />
           </SelectWrapBedeck>

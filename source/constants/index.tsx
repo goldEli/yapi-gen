@@ -12,3 +12,14 @@ export const FAULT_MAPS = ['发现版本', '严重程度', '解决方法']
 export const AFFAIRS_CHILD_TYPE: any = { 3: [4, 5], 4: [6], 5: [6] }
 
 export const PHONE_NUMBER_REGEXP = /^\d+$/u
+
+export const ROUTERS_URL: any = {
+  '/SprintProjectManagement/Affair': '/ProjectDetail/Affair',
+  '/ProjectManagement/Demand': '/ProjectDetail/Demand',
+  '/ProjectManagement/Defect': '/ProjectDetail/Defect',
+  '/ProjectManagement/Iteration': '/ProjectDetail/Iteration',
+  '/ProjectManagement/IterationDetail': '/ProjectDetail/IterationDetail',
+  '/SprintProjectManagement/Sprint': '/ProjectDetail/Sprint',
+  '/ProjectManagement/ProjectSetting': '/ProjectDetail/Setting',
+  '/SprintProjectManagement/Setting': '/ProjectDetail/Setting',
+}

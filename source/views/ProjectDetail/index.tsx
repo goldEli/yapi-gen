@@ -1,12 +1,18 @@
+import RightWran from '@/hooks/useRightWran'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
 import { setActiveCategory, setCategoryList } from '@store/category'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { saveInputKey } from '@store/view'
 import { useEffect, useState } from 'react'
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 
 const ProjectWrap = styled.div`
   position: relative;
@@ -19,9 +25,17 @@ const ProjectWrap = styled.div`
 const ProjectDetail = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const routerPath = useLocation()
   const [searchParams] = useSearchParams()
   const [isShowPage, setIsShowPage] = useState(false)
   const paramsData = getParamsData(searchParams)
+  const { projectInfo } = useSelector(store => store.project)
+
+  // 预警小铃铛是否显示，项目设置不展示和没有配置预警规则，且不等于项目成员
+  const isShowWarn =
+    projectInfo?.project_warring_info?.warring_list_nums &&
+    !routerPath?.pathname.includes('/ProjectDetail/Setting') &&
+    !routerPath?.pathname.includes('/ProjectDetail/Member')
 
   // 获取项目详情
   const getInfo = async () => {
@@ -44,6 +58,7 @@ const ProjectDetail = () => {
     const result = await getProjectInfoValues({ projectId: paramsData?.id }, 1)
     dispatch(setProjectInfoValues(result))
   }
+
   useEffect(() => {
     if (paramsData?.id) {
       getInfo()
@@ -54,7 +69,16 @@ const ProjectDetail = () => {
     }
   }, [paramsData?.id])
 
-  return <ProjectWrap>{isShowPage ? <Outlet /> : null}</ProjectWrap>
+  return (
+    <ProjectWrap>
+      {isShowPage ? (
+        <>
+          {isShowWarn && <RightWran />}
+          <Outlet />
+        </>
+      ) : null}
+    </ProjectWrap>
+  )
 }
 
 export default ProjectDetail

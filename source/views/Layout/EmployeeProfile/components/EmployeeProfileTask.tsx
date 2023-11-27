@@ -36,9 +36,12 @@ const TaskItemContent = (props: TaskItemContentProps) => {
   const [t] = useTranslation()
   const { row, id } = props
   const tagRef = useRef<HTMLDivElement>(null)
+  const { isRefresh } = useSelector(store => store.user)
+  const { language } = useSelector(store => store.global)
   const [currentStatus, setCurrentStatus] = useState<any>({})
   const [tagWidth, setTagWidth] = useState<number>(0)
   const [openDemandDetail] = useOpenDemandDetail()
+  const rightWidth = language === 'zh' ? 102 : 76
 
   const statusList = [
     {
@@ -88,7 +91,7 @@ const TaskItemContent = (props: TaskItemContentProps) => {
     if (tagRef.current) {
       setTagWidth(tagRef.current.clientWidth + 11 || 0)
     }
-  }, [tagRef])
+  }, [tagRef, isRefresh])
 
   useEffect(() => {
     setCurrentStatus(statusList?.filter((i: any) => i.key === row.status)[0])
@@ -110,7 +113,9 @@ const TaskItemContent = (props: TaskItemContentProps) => {
         <div className="nameBox" onClick={() => onToDetail(row)}>
           <div
             className="left"
-            style={{ width: row.status === 5 ? '80%' : '100%' }}
+            style={{
+              width: row.status === 5 ? `calc(100% - ${rightWidth}px)` : '100%',
+            }}
           >
             <div className="name">
               【{row?.story_prefix_key}】{row?.name}
@@ -127,7 +132,7 @@ const TaskItemContent = (props: TaskItemContentProps) => {
             </div>
           </div>
           {row.status === 5 && (
-            <div className="right">
+            <div className="right" style={{ width: rightWidth }}>
               {t('timeOverdue', { time: row?.expected_end_at })}
             </div>
           )}
@@ -178,7 +183,9 @@ const TaskItem = (props: TaskItemProps) => {
         page: newPage,
         user_id: item.id,
         project_ids: filterParams?.user_ids
-          ?.filter((e: any) => e.id === item.id)
+          ?.filter(
+            (e: any) => parseInt(e.user_id, 10) === parseInt(item.id, 10),
+          )
           ?.map((item: any) => item.project_id),
       },
     })

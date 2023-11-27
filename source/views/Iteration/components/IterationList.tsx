@@ -132,7 +132,6 @@ const IterationList = (props: IterationListProps) => {
 
   // isUpdateProjectInfoValues：是否需要更新项目下拉数据
   const getList = async (isUpdateProjectInfoValues?: boolean, id?: number) => {
-    console.log(11111111111)
     setIsSpinning(true)
     const values = form.getFieldsValue()
     if (values.startTime) {

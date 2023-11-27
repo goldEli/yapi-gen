@@ -11,7 +11,7 @@ import { useSelector } from '@store/index'
 import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({
-  height: 'calc(100% - 38px)',
+  height: '100%',
   overflowY: 'scroll',
   background: 'var(--neutral-white-d1)',
 })

@@ -337,15 +337,6 @@ const FormWork = () => {
     paramsData?.isOpen && paramsData?.type === 'report' && setIsVisible(true)
   }, [])
 
-  // useEffect(() => {
-  //   return () => {
-  //     dispatch(setEditSave(true))
-  //     dispatch(setActiveItem(null))
-  //   }
-  // })
-
-  console.log(dataList, 'dataList', activeItem)
-
   return (
     <HaveTabsContentWrap>
       {/* 创建模板 */}

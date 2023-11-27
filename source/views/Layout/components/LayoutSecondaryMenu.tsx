@@ -11,19 +11,18 @@ import { setIterateInfo } from '@store/iterate'
 import {
   getProjectInfoStore,
   getProjectInfoValuesStore,
+  saveScreenDetailModal,
 } from '@store/project/project.thunk'
 
-interface LayoutSecondaryMenuProps {
-  width: number
-}
-
-const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
+const LayoutSecondaryMenu = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [searchParams] = useSearchParams()
 
+  const { layoutSecondaryMenuLeftWidth, layoutSecondaryMenuRightWidth } =
+    useSelector(store => store.global)
   const { currentMenu, userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [items, setItems] = useState<any>([])
@@ -66,6 +65,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
 
   // 点击切换tab
   const handleModeChange = (e: any) => {
+    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     setActiveKey(e)
     const url = items?.filter((i: any) => i.id === Number(e) || i.id === e)[0]
       ?.url
@@ -74,7 +74,11 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
       resultUrl = '/Report/Review/List/1'
     } else if (paramsData?.id) {
       dispatch(setIterateInfo({}))
-      const params = encryptPhp(JSON.stringify(paramsData))
+      const newParamsData = {
+        ...paramsData,
+        ...{ isOpenScreenDetail: false },
+      }
+      const params = encryptPhp(JSON.stringify(newParamsData))
       dispatch(getProjectInfoStore({ projectId: paramsData?.id }))
       dispatch(getProjectInfoValuesStore({ projectId: paramsData?.id }))
       resultUrl = `${url}?data=${params}`
@@ -87,14 +91,21 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
   useEffect(() => {
     let resultItems: any = []
     if (currentMenu?.id && routerPath?.pathname && userInfo?.id) {
-      if (projectInfo?.id && routerPath?.pathname.includes('/ProjectDetail')) {
+      if (
+        (projectInfo?.id && routerPath?.pathname.includes('/ProjectDetail')) ||
+        // 特殊处理老路由 !!!!!
+        (projectInfo?.id &&
+          routerPath?.pathname.includes('/SprintProjectManagement')) ||
+        (projectInfo?.id && routerPath?.pathname.includes('/ProjectManagement'))
+      ) {
         setParamsData(getParamsData(searchParams))
-        // 显示项目下的菜单，例需求
+        // 显示项目下的菜单，例需求 oldKey 是特殊处理老路由得key
         const resultMenu = [
           // { id: 'map', name: t('map'), url: '', isPermisson: true  },
           {
             id: 'iteration',
-            name: t('iteration'),
+            oldKey: 'Iteration',
+            name: t('sprintProject.iteration'),
             url: '/ProjectDetail/Iteration',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
@@ -103,6 +114,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'demand',
+            oldKey: 'Demand',
             name: t('need'),
             url: '/ProjectDetail/Demand',
             isPermisson:
@@ -112,6 +124,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'defect',
+            oldKey: 'Defect',
             name: t('defect1'),
             url: '/ProjectDetail/Defect',
             isPermisson:
@@ -121,6 +134,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'affairs',
+            oldKey: 'Affair',
             name: t('affairs'),
             url: '/ProjectDetail/Affair',
             isPermisson:
@@ -130,6 +144,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'sprint',
+            oldKey: 'Sprint',
             name: t('sprint2'),
             url: '/ProjectDetail/Sprint',
             isPermisson:
@@ -170,6 +185,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
           },
           {
             id: 'set',
+            oldKey: 'Setting',
             name: t('setUp'),
             url: '/ProjectDetail/Setting',
             isPermisson:
@@ -178,6 +194,7 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
               ).length > 0,
           },
         ]
+
         resultItems = resultMenu?.filter((i: any) => i.isPermisson)
         setItems(resultItems)
       } else {
@@ -233,15 +250,15 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
       } else if (routerPath?.pathname.includes('/ProjectDetail/MemberInfo')) {
         currentHavePath = resultItems?.filter((i: any) => i.id === 'member')
       } else {
-        currentHavePath = resultItems?.filter((i: any) =>
-          routerPath?.pathname?.includes(i.url),
+        currentHavePath = resultItems?.filter(
+          (i: any) =>
+            routerPath?.pathname?.includes(i.url) ||
+            // 特殊处理老路由 !!!!!
+            routerPath?.pathname?.includes(i.oldKey),
         )
       }
-
       setActiveKey(
-        currentHavePath?.length > 0
-          ? String(currentHavePath[0]?.id)
-          : String(resultItems[0]?.id),
+        currentHavePath?.length > 0 ? String(currentHavePath[0]?.id) : '0',
       )
       if (
         routerPath?.pathname === '/ProjectDetail/Department' ||
@@ -254,11 +271,20 @@ const LayoutSecondaryMenu = (props: LayoutSecondaryMenuProps) => {
 
   return (
     <LayoutMenuWrap
+      style={{
+        width:
+          layoutSecondaryMenuLeftWidth && layoutSecondaryMenuRightWidth
+            ? `calc(100% - ${
+                layoutSecondaryMenuLeftWidth +
+                layoutSecondaryMenuRightWidth +
+                120
+              }px)`
+            : 'auto',
+      }}
       activeKey={activeKey}
       tabPosition="top"
       getPopupContainer={n => n}
       onChange={handleModeChange}
-      width={props.width + 120}
       moreIcon={
         <MoreMenuWrap>
           <div>{t('more')}</div>

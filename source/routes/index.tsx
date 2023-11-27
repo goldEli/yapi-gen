@@ -34,10 +34,15 @@ const routes = [
     path: '/ScheduleSearch',
     element: lazy(() => import('@/views/ScheduleSearch')),
   },
+
   {
     path: '',
     element: lazy(() => import('@/views/Layout')),
     children: [
+      {
+        path: '*',
+        element: lazy(() => import('@/views/Layout/Project')),
+      },
       {
         path: 'Project',
         element: lazy(() => import('@/views/Layout/Project')),
@@ -339,6 +344,13 @@ const routes = [
                     ),
                 ),
               },
+              {
+                path: 'ProjectWarning',
+                element: lazy(
+                  () =>
+                    import('@/views/ProjectSetting/components/ProjectWarning'),
+                ),
+              },
             ],
           },
           {
@@ -346,31 +358,6 @@ const routes = [
             element: lazy(
               () => import('@/views/ProjectSetting/components/ProjectMember'),
             ),
-            // children: [],
-            // children: [
-            //   {
-            //     path: 'MemberInfo',
-            //     element: lazy(() => import('@/views/MemberInfo')),
-            //     children: [
-            //       {
-            //         path: 'Carbon',
-            //         element: lazy(() => import('@/views/MemberInfo/Carbon')),
-            //       },
-            //       {
-            //         path: 'Create',
-            //         element: lazy(() => import('@/views/MemberInfo/Create')),
-            //       },
-            //       {
-            //         path: 'Finished',
-            //         element: lazy(() => import('@/views/MemberInfo/Finished')),
-            //       },
-            //       {
-            //         path: 'Profile',
-            //         element: lazy(() => import('@/views/MemberInfo/Profile')),
-            //       },
-            //     ],
-            //   },
-            // ],
           },
           {
             path: 'Department',
@@ -404,34 +391,65 @@ const routes = [
           },
         ],
       },
+      // 兼容老路由
+      {
+        path: 'ProjectManagement/Project',
+        element: lazy(() => import('@/views/Layout/Project')),
+      },
+      {
+        path: '/ProjectManagement',
+        element: lazy(() => import('@/views/ProjectDetail')),
+        children: [
+          {
+            path: 'Demand',
+            element: lazy(() => import('@/views/Demand')),
+          },
+          {
+            path: 'Iteration',
+            element: lazy(() => import('@/views/Iteration')),
+          },
+          {
+            path: 'IterationDetail',
+            element: lazy(() => import('@/views/IterationDetail')),
+          },
+          {
+            path: 'KanBan',
+            element: lazy(() => import('@/views/KanBanBoard')),
+          },
+          {
+            path: 'Defect',
+            element: lazy(() => import('@/views/IterationDefect')),
+          },
+          {
+            path: 'ProjectSetting',
+            element: lazy(() => import('@/views/ProjectSetting')),
+          },
+        ],
+      },
+      {
+        path: 'SprintProjectManagement',
+        element: lazy(() => import('@/views/ProjectDetail')),
+        children: [
+          {
+            path: 'KanBan',
+            element: lazy(() => import('@/views/KanBanBoard')),
+          },
+          {
+            path: 'Sprint',
+            element: lazy(() => import('@/views/SprintProjectSprint')),
+          },
+          {
+            path: 'Affair',
+            element: lazy(() => import('@/views/SprintProjectAffair')),
+          },
+          {
+            path: 'Setting',
+            element: lazy(() => import('@/views/ProjectSetting')),
+          },
+        ],
+      },
     ],
   },
-
-  //     {
-  //       path: 'MemberInfo',
-  //       element: lazy(() => import('@/views/MemberInfo')),
-  //       children: [
-  //         {
-  //           path: 'Carbon',
-  //           element: lazy(() => import('@/views/MemberInfo/Carbon')),
-  //         },
-  //         {
-  //           path: 'Create',
-  //           element: lazy(() => import('@/views/MemberInfo/Create')),
-  //         },
-  //         {
-  //           path: 'Finished',
-  //           element: lazy(() => import('@/views/MemberInfo/Finished')),
-  //         },
-  //         {
-  //           path: 'Profile',
-  //           element: lazy(() => import('@/views/MemberInfo/Profile')),
-  //         },
-  //       ],
-  //     },
-
-  //   ],
-  // },
 ]
 
 export default () => useRoutes(routes)

@@ -46,7 +46,7 @@ import IconFont from '@/components/IconFont'
 import QuickMine from './QuickMine'
 import Recently from './Recently'
 import KeyBoardDrawer from '../Trends/components/KeyBoardDrawer/KeyBoardDrawer'
-import { setAddWorkItemModal } from '@store/project'
+import { setLayoutSecondaryMenuRightWidth } from '@store/global'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -126,7 +126,6 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
 }
 
 interface LayoutHeaderRightProps {
-  onSetWidth(width: number): void
   onChangeReportAssistantModalObj(value: any): void
 }
 
@@ -135,7 +134,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { userInfo, isRefresh } = useSelector(store => store.user)
-  const { language } = useSelector(store => store.global)
   // 帮助中心展开
   const [isHelpVisible, setIsHelpVisible] = useState(false)
   // 我的
@@ -340,9 +338,9 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             )}
             {i.key !== 0 && (
               <MenuItem key={i.key} onClick={() => onClickMenu(i.key)}>
-                <MenuLeft className="menuLeft">
+                <MenuLeft className="menuLeft" style={{ width: '80%' }}>
                   <CommonIconFont type={i.icon} />
-                  <span>{i.name}</span>
+                  <div>{i.name}</div>
                 </MenuLeft>
                 {i.key === 1 && (
                   <MenuRight>
@@ -419,20 +417,12 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     </div>
   )
 
-  // 我的模块下-快捷创建
-  const onQuickCreate = () => {
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: { isQuickCreate: true },
-      }),
-    )
-  }
-
   useEffect(() => {
     if (userInfo?.id) {
-      props.onSetWidth(
-        document.getElementById('LayoutHeaderRightWrap')?.clientWidth || 0,
+      dispatch(
+        setLayoutSecondaryMenuRightWidth(
+          document.getElementById('LayoutHeaderRightWrap')?.clientWidth || 0,
+        ),
       )
     }
   }, [isRefresh, userInfo])
@@ -516,7 +506,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
 
       <Space size={8}>
         {/* 日报机器人 只有项目内部和汇报才有机器人 */}
-        {location.href.includes('/Project/') ||
+        {location.href.includes('/ProjectDetail/') ||
         location.href.includes('/Report') ? (
           <Popover
             placement="bottomLeft"
@@ -534,17 +524,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             </RobotButton>
           </Popover>
         ) : null}
-
-        {/* 我的快捷创建 */}
-        {location.href.includes('/Mine') && (
-          <MineCreate onClick={onQuickCreate}>
-            <div className="icon">
-              <CommonIconFont type="plus" />
-            </div>
-            <div className="label">{t('create')}</div>
-          </MineCreate>
-        )}
-
         <Popover
           content={
             <Recently

@@ -9,9 +9,9 @@ import {
   MemberItem,
   PersonWrap,
   ReportButton,
-  TabWrap,
+  TabsWrap,
 } from '../style'
-import { Checkbox, Collapse, Select } from 'antd'
+import { Checkbox, Collapse, Radio, Select } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { setContrastDrawer } from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
@@ -58,7 +58,7 @@ const CollapseHeader = (props: any) => {
   }, [props.filterParams])
 
   useEffect(() => {
-    const resultList = props.selectKeys.filter((object: any) =>
+    const resultList = props.selectKeys?.filter((object: any) =>
       props.item?.member_list?.some(
         (otherObject: any) => otherObject.id === object,
       ),
@@ -152,6 +152,10 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [activeKey, setActiveKey] = useState<any>([])
   const [tabActiveKey, setTabActiveKey] = useState('project')
   const { statistiDepartment } = useSelector(store => store.project)
+  const tabs = [
+    { name: t('projectTeam'), value: 'project' },
+    { name: t('department1'), value: 'department' },
+  ]
   const {
     list = [],
     expandedKeys = [],
@@ -356,23 +360,28 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
           </MoreSelect>
         )}
       </div>
-      {/* <div className="label">
-        {currentKey?.name}（{props?.filterParams?.user_ids?.length}）
-      </div> */}
-      <TabWrap
-        items={[
-          { label: '项目组', key: 'project', children: projectEle },
-          {
-            label: '部门',
-            key: 'department',
-            children: <EmployeeDepartment></EmployeeDepartment>,
-          },
-        ]}
-        activeKey={tabActiveKey}
-        onChange={key => {
-          setTabActiveKey(key)
-        }}
-      ></TabWrap>
+
+      <TabsWrap style={{ margin: '0 16px 0 0' }}>
+        {tabs.map(item => {
+          return (
+            <div
+              key={item.value}
+              className="item-tab"
+              onClick={() => setTabActiveKey(item.value)}
+            >
+              {tabActiveKey === item.value ? (
+                <div className="cover"> {item.name}</div>
+              ) : null}
+              {item.name}
+            </div>
+          )
+        })}
+      </TabsWrap>
+      {tabActiveKey === 'project' ? (
+        projectEle
+      ) : (
+        <EmployeeDepartment></EmployeeDepartment>
+      )}
     </PersonWrap>
   )
 }

@@ -646,16 +646,6 @@ const Undistributed = (props: any) => {
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
 
-  // 需求勾选
-  const onSelectChange = (record: any, selected: any) => {
-    const resultKeys = selected
-      ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
-      : selectedRowKeys?.filter((i: any) => i.id !== record.id)
-
-    setSelectedRowKeys([...new Set(resultKeys)])
-    onOperationCheckbox('add', [...new Set(resultKeys)])
-  }
-
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
     const redClassElements = document.getElementsByClassName(
@@ -671,20 +661,6 @@ const Undistributed = (props: any) => {
         div2.className = 'tagLength'
         i.appendChild(div2)
       }
-    }
-  }
-  // 全选
-  const onSelectAll = (selected: any) => {
-    if (selected) {
-      let childKeys: any = []
-      data?.list?.forEach((element: any) => {
-        childKeys = [...childKeys, ...[element]]
-      })
-      setSelectedRowKeys([...new Set(childKeys)])
-      onOperationCheckbox('add', [...new Set(childKeys)])
-    } else {
-      setSelectedRowKeys([])
-      onOperationCheckbox('remove')
     }
   }
   const onChangePage = (page: number, size: number) => {

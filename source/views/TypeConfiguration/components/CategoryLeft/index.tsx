@@ -87,7 +87,6 @@ const CategoryList = () => {
   const { getTypeCategory } = useCategory()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const paramsType = paramsData?.type
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
   const [tabsActive, setTabsActive] = useState(0)

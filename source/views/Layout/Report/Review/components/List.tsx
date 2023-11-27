@@ -761,7 +761,7 @@ const List = () => {
           <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
         </ListHead>
 
-        <Divider style={{ margin: '4px 0px 20px 0px' }} />
+        {/* <Divider style={{ margin: '4px 0px 20px 0px' }} /> */}
         <ResizeTable
           isSpinning={isSpinning}
           dataWrapNormalHeight="calc(100% - 200px)"

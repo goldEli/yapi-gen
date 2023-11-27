@@ -22,6 +22,11 @@ export interface GlobalState {
 
   // 全局左侧折叠
   layoutSideCollapse: boolean
+
+  // 菜单宽度
+  layoutSecondaryMenuLeftWidth: number
+  // 菜单宽度
+  layoutSecondaryMenuRightWidth: number
 }
 
 const initialState: GlobalState = {
@@ -92,6 +97,8 @@ const initialState: GlobalState = {
   ],
   listActiveId: 0,
   hasSideCommonLayoutWidth: 0,
+  layoutSecondaryMenuLeftWidth: 0,
+  layoutSecondaryMenuRightWidth: 0,
 }
 
 export const globalSlice = createSlice({
@@ -119,6 +126,12 @@ export const globalSlice = createSlice({
     setHasSideCommonLayoutWidth(preState: GlobalState, action) {
       preState.hasSideCommonLayoutWidth = action.payload
     },
+    setLayoutSecondaryMenuLeftWidth(preState: GlobalState, action) {
+      preState.layoutSecondaryMenuLeftWidth = action.payload
+    },
+    setLayoutSecondaryMenuRightWidth(preState: GlobalState, action) {
+      preState.layoutSecondaryMenuRightWidth = action.payload
+    },
   },
   extraReducers: builder => {
     //
@@ -129,6 +142,8 @@ export const {
   setListActiveId,
   setHasSideCommonLayoutWidth,
   setLayoutSideCollapse,
+  setLayoutSecondaryMenuLeftWidth,
+  setLayoutSecondaryMenuRightWidth,
 } = globalSlice.actions
 
 export default globalSlice.reducer

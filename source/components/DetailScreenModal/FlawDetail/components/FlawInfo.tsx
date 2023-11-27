@@ -56,7 +56,7 @@ const FlawInfo = () => {
         },
       }),
     )
-    navigate(`/ProjectDetail/Setting/ProjectInfo?data=${params}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
   }
   useEffect(() => {
     if (flawInfo?.id && projectInfo?.id) {

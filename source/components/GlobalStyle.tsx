@@ -329,8 +329,10 @@ const GlobalStyle = () => {
       height: 44px;
     }
 
-    .ant-table-tbody > tr > td {
-      border-bottom: none;
+    .ant-table-tbody > tr > td,
+    .ant-table-thead > tr > th {
+      position: relative;
+      border-bottom: 0.5px solid var(--neutral-n6-d1);
     }
 
     .ant-table-tbody > tr > td,
@@ -454,7 +456,11 @@ const GlobalStyle = () => {
     .ant-select-item {
       padding: 5px 16px !important;
     }
-
+    .ant-select-item.removeStyle {
+      border-top: 1px solid var(--neutral-n6-d2);
+      padding: 0px !important;
+      margin: 0px 16px;
+    }
     .ant-select-item-option {
       font-weight: inherit;
       color: var(--neutral-n2);

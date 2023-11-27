@@ -102,7 +102,7 @@ const Index = (props: any) => {
     // 项目负责人或者是超管
     const isRolePermission =
       userInfo?.is_company_super_admin !== 1 &&
-      props.item.leader_id !== userInfo?.id
+      props.item?.leader?.id !== userInfo?.id
 
     const items: any = [
       {
@@ -157,7 +157,7 @@ const Index = (props: any) => {
           pageIdx: 'member',
         }),
       )
-      let url = '/ProjectDetail/Setting/ProjectInfo'
+      let url = '/ProjectDetail/Member'
       navigate(`${url}?data=${params}`)
     } else if (type === 'demand') {
       if (props.item.projectType === 1) {
@@ -232,11 +232,10 @@ const Index = (props: any) => {
 
         <CardRightSecond>
           {t('functionary')}
-          {props.item.leaderName}
+          {props.item?.leaderName}
         </CardRightSecond>
         <CardRightSecond>
-          {t('keyM')}
-          {props.item.prefix}
+          {t('serial_number')}：{props.item.prefix}
         </CardRightSecond>
         <TransformWrap>
           <ProgressWrap>
@@ -266,11 +265,10 @@ const Index = (props: any) => {
           trigger={['hover']}
           menu={{
             items: getItems(),
-
             onClick,
           }}
           placement="bottomRight"
-          getPopupContainer={(i: any) => i.parentNode}
+          // getPopupContainer={(i: any) => i.parentNode}
         >
           <HoverIcon>
             <IconFont

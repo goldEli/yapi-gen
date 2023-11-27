@@ -18,6 +18,7 @@ import {
   MoreOtherPopover,
   NotOpenLogoWrap,
   OpenLogoWrap,
+  MenusWrap,
 } from '../style'
 import { Popover, Tooltip } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -34,59 +35,51 @@ import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
 
 interface MorePopoverComponentProps {
   onClose(): void
+  foldList: any
+  onChangeCurrentMenu(row: any): void
 }
 
 // 更多的展示组件
 const MorePopoverComponent = (props: MorePopoverComponentProps) => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { menuPermission, menuIconList } = useSelector(store => store.user)
-
-  // 点击跳转后台管理
-  const onToAdmin = () => {
-    const resultMenu = menuPermission?.menus?.filter(
-      (i: any) => i.url === '/AdminManagement',
-    )[0]
-    if (resultMenu) {
-      props.onClose()
-      navigate(resultMenu?.children?.[0]?.url)
-      dispatch({
-        type: 'user/setCurrentMenu',
-        payload: resultMenu,
-      })
-    }
-  }
+  const { menuIconList, currentMenu } = useSelector(store => store.user)
 
   return (
     <MorePopover>
       <MoreTitle>{t('moreApplications')}</MoreTitle>
       <MorePopoverContent>
-        {menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement')
-          ?.length > 0 && (
-          <MoreItem onClick={onToAdmin}>
+        {props.foldList?.map((i: any) => (
+          <MoreItem
+            onClick={() => {
+              props.onChangeCurrentMenu(i)
+              props.onClose()
+            }}
+            key={i.id}
+            className={currentMenu?.url === i.url ? activeSideMenu : ''}
+          >
             <CommonIconFont
+              type={
+                currentMenu?.id === i.id
+                  ? menuIconList?.filter((k: any) =>
+                      String(i.url).includes(k.key),
+                    )[0]?.active
+                  : menuIconList?.filter((k: any) =>
+                      String(i.url).includes(k.key),
+                    )[0]?.normal
+              }
               size={24}
               color="var(--neutral-n2)"
-              type={
-                menuIconList?.filter((k: any) =>
-                  String('/AdminManagement').includes(k.key),
-                )[0]?.normal
-              }
             />
             <div>
-              {
-                menuPermission.menus?.filter(
-                  (k: any) => k.url === '/AdminManagement',
-                )[0]?.name
-              }
+              {/* 单独处理后台得翻译 */}
+              {i?.url === '/AdminManagement'
+                ? t('managementBackend')
+                : i?.isRegular
+                ? t(i?.name)
+                : i?.name}
             </div>
           </MoreItem>
-        )}
-        {/* <MoreItem isDisable>
-          <CommonIconFont size={24} type="plus" color="var(--neutral-n2)" />
-          <div>禁用</div>
-        </MoreItem> */}
+        ))}
       </MorePopoverContent>
     </MorePopover>
   )
@@ -109,20 +102,56 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
 
   const [isPopover, setIsPopover] = useState(false)
   const [isLogoChange, setIsLogoChange] = useState(false)
+  // 正常显示的菜单
+  const [notFoldList, setNotFoldList] = useState([])
+  // 折叠菜单
+  const [foldList, setFoldList] = useState([])
 
   // 其他系统列表
   const otherSystemList = [
-    { name: 'iFun BI', url: 'https://bi.ifun.com/', icon: 'plus' },
-    { name: 'iFun AI', url: 'https://iai.ifun.com/', icon: 'plus' },
-    { name: 'iFun GM', url: 'https://gm.ifun.com', icon: 'plus' },
-    { name: 'iFun Mail', url: 'https://imail.ifun.com/', icon: 'plus' },
-    { name: 'iFun OA', url: 'https://oa.ifun.com/', icon: 'plus' },
+    { name: 'iFun BI', url: 'https://bi.ifun.com/', icon: 'BI' },
+    { name: 'iFun AI', url: 'https://iai.ifun.com/', icon: 'AI' },
+    { name: 'iFun GM', url: 'https://gm.ifun.com', icon: 'GM' },
+    { name: 'iFun Mail', url: 'https://imail.ifun.com/', icon: 'MI' },
+    { name: 'iFun OA', url: 'https://oa.ifun.com/', icon: 'OA' },
+    { name: t('toBeOpened'), url: '', icon: 'time', disable: true },
   ]
+
+  // 计算菜单显示
+  const onComputedMenu = (state: boolean, menu: any) => {
+    if (!menu?.length) return
+    // 获取左侧菜单剩余展示菜案高度
+    const clientHeight =
+      (document.getElementById('LayoutSide')?.clientHeight || 0) -
+      (state ? 142 : 160)
+    // 计算菜单显示区域能显示几个菜单
+    const menuNumber = Math.floor(clientHeight / (state ? 48 : 72)) - 1
+
+    // 如果显示条数大于菜单条数，则全部显示除后台管理
+    if (menuNumber > menu?.length) {
+      setNotFoldList(
+        menuPermission.menus?.filter((k: any) => k.url !== '/AdminManagement'),
+      )
+      setFoldList(
+        menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement'),
+      )
+    } else {
+      // 删除后台管理
+      const notHave = menu?.filter((k: any) => k.url !== '/AdminManagement')
+      setNotFoldList(notHave.slice(0, menuNumber))
+      setFoldList(
+        notHave
+          .slice(menuNumber, menu?.length - 1)
+          .concat(menu?.filter((k: any) => k.url === '/AdminManagement')),
+      )
+    }
+  }
 
   // 切换展开折叠
   const onChangeCollapse = () => {
     setTimeout(() => {
       dispatch(setLayoutSideCollapse(!layoutSideCollapse))
+      onComputedMenu(!layoutSideCollapse, menuPermission?.menus)
     }, 100)
   }
 
@@ -134,65 +163,67 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   }
 
   const onChangeCurrentMenu = (item: any) => {
-    // 效能洞察参数
-    dispatch(
-      setHeaderParmas({
-        iterate_ids: [],
-        projectIds: [],
-        users: [],
-        time: {
-          type: 1,
-          time: '',
+    setTimeout(() => {
+      // 效能洞察参数
+      dispatch(
+        setHeaderParmas({
+          iterate_ids: [],
+          projectIds: [],
+          users: [],
+          time: {
+            type: 1,
+            time: '',
+          },
+          view: {
+            title: '',
+            value: 0,
+          },
+          period_time: 'one_month',
+        }),
+      )
+      dispatch(setSave(false))
+
+      // 如果有二级菜单的则取第一条
+      let navigateUrl =
+        item.children?.length > 0 ? item.children[0].url : item.url
+
+      // 如果是工作汇报则默认跳转
+      if (item.url === '/Report') {
+        navigateUrl = `${item.url}/Review/List/1`
+      }
+
+      // 如果是我的则默认跳转我的概况
+      if (item.url === '/Mine') {
+        navigateUrl = `${item.url}/Profile`
+      }
+
+      // 如果是动态则默认跳转全部
+      if (item.url === '/Trends') {
+        dispatch(changeVisible(false))
+        dispatch(changeVisibleFilter(false))
+        navigateUrl = `${item.url}/AllNote/1`
+      }
+
+      // 如果是统计则默认跳转
+      if (item.url === '/Statistics') {
+        navigateUrl = `${item.url}/Task`
+      }
+
+      navigate(navigateUrl)
+      const resultMenu = {
+        ...item,
+        ...{
+          icon: menuIconList?.filter((i: any) =>
+            String(item.url).includes(i.key),
+          )[0]?.normal,
         },
-        view: {
-          title: '',
-          value: 0,
-        },
-        period_time: 'one_month',
-      }),
-    )
-    dispatch(setSave(false))
-
-    // 如果有二级菜单的则取第一条
-    let navigateUrl =
-      item.children?.length > 0 ? item.children[0].url : item.url
-
-    // 如果是工作汇报则默认跳转
-    if (item.url === '/Report') {
-      navigateUrl = `${item.url}/Review/List/1`
-    }
-
-    // 如果是我的则默认跳转我的概况
-    if (item.url === '/Mine') {
-      navigateUrl = `${item.url}/Profile`
-    }
-
-    // 如果是动态则默认跳转全部
-    if (item.url === '/Trends') {
-      dispatch(changeVisible(false))
-      dispatch(changeVisibleFilter(false))
-      navigateUrl = `${item.url}/AllNote/1`
-    }
-
-    // 如果是统计则默认跳转
-    if (item.url === '/Statistics') {
-      navigateUrl = `${item.url}/Task`
-    }
-
-    navigate(navigateUrl)
-    const resultMenu = {
-      ...item,
-      ...{
-        icon: menuIconList?.filter((i: any) =>
-          String(item.url).includes(i.key),
-        )[0]?.normal,
-      },
-    }
-    dispatch(setProjectInfo({}))
-    dispatch({
-      type: 'user/setCurrentMenu',
-      payload: resultMenu,
-    })
+      }
+      dispatch(setProjectInfo({}))
+      dispatch({
+        type: 'user/setCurrentMenu',
+        payload: resultMenu,
+      })
+    }, 10)
   }
 
   // 新开页面打开外链
@@ -203,7 +234,13 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   const moreOtherSystem = (
     <MoreOtherSystemWrap>
       {otherSystemList?.map((i: any) => (
-        <MoreOtherSystemItem key={i.name} onClick={() => onOpenUrl(i.url)}>
+        <MoreOtherSystemItem
+          key={i.name}
+          disable={i.disable}
+          onClick={() => {
+            i.disable ? void 0 : onOpenUrl(i.url)
+          }}
+        >
           <div className="box">
             <CommonIconFont type={i.icon} size={24} />
           </div>
@@ -219,77 +256,99 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       let resultMenu = menuPermission?.menus?.filter((i: any) =>
         routerPath.pathname?.includes(i.url),
       )[0]
+      // 特殊处理老路由 !!!!!
+      if (
+        routerPath.pathname?.includes('/SprintProjectManagement/') ||
+        routerPath.pathname?.includes('/ProjectManagement/')
+      ) {
+        resultMenu = menuPermission?.menus?.filter(
+          (i: any) => i.url === '/Project',
+        )[0]
+      }
       dispatch(setCurrentMenu(resultMenu))
+      onComputedMenu(layoutSideCollapse, menuPermission?.menus)
     }
   }, [menuPermission, routerPath])
 
   return (
-    <LayoutSide isOpen={layoutSideCollapse} onClick={props.onClose}>
+    <LayoutSide
+      isOpen={layoutSideCollapse}
+      onClick={props.onClose}
+      id="LayoutSide"
+    >
       {/* 折叠状态下的 */}
       {!layoutSideCollapse && (
         <NotOpenLogoWrap>
-          {isLogoChange && (
-            <MoreOtherPopover
-              content={moreOtherSystem}
-              open
-              placement="bottomLeft"
-              onOpenChange={(state: boolean) =>
-                state ? void 0 : onChangeLogo(false)
-              }
+          <MoreOtherPopover
+            content={isLogoChange ? moreOtherSystem : null}
+            open={isLogoChange}
+            placement="rightTop"
+            onOpenChange={(state: boolean) => {
+              onChangeLogo(state)
+            }}
+            getPopupContainer={n => n}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
             >
-              <OtherSystemMenuNotOpen>
-                <CommonIconFont
-                  type="menu-02"
-                  size={24}
-                  color="var(--neutral-n2)"
+              {isLogoChange ? (
+                <OtherSystemMenuNotOpen>
+                  <CommonIconFont
+                    type="menu-02"
+                    size={24}
+                    color="var(--neutral-n2)"
+                  />
+                </OtherSystemMenuNotOpen>
+              ) : (
+                <img
+                  onMouseEnter={() => onChangeLogo(true)}
+                  className="logo"
+                  src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-40px.svg"
+                  alt=""
+                  onMouseOut={() => {
+                    onChangeLogo(false)
+                  }}
                 />
-              </OtherSystemMenuNotOpen>
-            </MoreOtherPopover>
-          )}
-          {!isLogoChange && (
-            <img
-              onMouseEnter={() => onChangeLogo(true)}
-              className="logo"
-              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-40px.svg"
-              alt=""
-            />
-          )}
-          <img
-            className="img"
-            src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
-            alt=""
-          />
+              )}
+              <img
+                className="img"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
+                alt=""
+              />
+            </div>
+          </MoreOtherPopover>
         </NotOpenLogoWrap>
       )}
 
       {/* 展开的交互 */}
       {layoutSideCollapse && (
-        <>
-          {isLogoChange && (
-            <MoreOtherPopover
-              content={moreOtherSystem}
-              open
-              placement="bottomLeft"
-              onOpenChange={(state: boolean) =>
-                state ? void 0 : onChangeLogo(false)
-              }
-            >
-              <OtherSystemMenuOpen>
-                <CommonIconFont
-                  type="menu-02"
-                  size={24}
-                  color="var(--neutral-n2)"
-                />
-                <img
-                  className="img"
-                  src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
-                  alt=""
-                />
-              </OtherSystemMenuOpen>
-            </MoreOtherPopover>
-          )}
-          {!isLogoChange && (
-            <OpenLogoWrap onMouseEnter={() => onChangeLogo(true)}>
+        <MoreOtherPopover
+          content={isLogoChange ? moreOtherSystem : null}
+          open={isLogoChange}
+          placement="rightBottom"
+          onOpenChange={(state: boolean) => {
+            onChangeLogo(state)
+          }}
+        >
+          {isLogoChange ? (
+            <OtherSystemMenuOpen>
+              <CommonIconFont
+                type="menu-02"
+                size={24}
+                color="var(--neutral-n2)"
+              />
+              <img
+                className="img"
+                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
+                alt=""
+              />
+            </OtherSystemMenuOpen>
+          ) : (
+            <OpenLogoWrap>
               <img
                 className="logo"
                 src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-28px.svg"
@@ -302,15 +361,14 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
               />
             </OpenLogoWrap>
           )}
-        </>
+        </MoreOtherPopover>
       )}
 
       {/* 占位使用 */}
       <div style={{ width: 60, height: layoutSideCollapse ? 24 : 16 }} />
 
-      {menuPermission.menus
-        ?.filter((k: any) => k.url !== '/AdminManagement')
-        ?.map((i: any) => (
+      <MenusWrap isOpen={layoutSideCollapse}>
+        {notFoldList?.map((i: any) => (
           <div
             key={i.id}
             onClick={() => onChangeCurrentMenu(i)}
@@ -340,25 +398,52 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
           </div>
         ))}
 
-      <Popover
-        placement="right"
-        destroyTooltipOnHide
-        open={isPopover}
-        content={<MorePopoverComponent onClose={() => setIsPopover(false)} />}
-        onOpenChange={setIsPopover}
-      >
-        <div className={layoutSideCollapse ? openSideMenu : notOpenSideMenu}>
-          <CommonIconFont type="plus" size={24} color="var(--neutral-n2)" />
-          <div>{t('more')}</div>
-        </div>
-      </Popover>
+        {foldList?.length > 0 && (
+          <Popover
+            placement="right"
+            destroyTooltipOnHide
+            open={isPopover}
+            content={
+              <MorePopoverComponent
+                onClose={() => setIsPopover(false)}
+                foldList={foldList}
+                onChangeCurrentMenu={onChangeCurrentMenu}
+              />
+            }
+            onOpenChange={setIsPopover}
+          >
+            <div
+              className={`${
+                layoutSideCollapse ? openSideMenu : notOpenSideMenu
+              } ${
+                foldList?.filter((i: any) => i.url === currentMenu?.url)
+                  ?.length > 0
+                  ? activeSideMenu
+                  : ''
+              }`}
+            >
+              <CommonIconFont
+                type={
+                  foldList?.filter((i: any) => i.url === currentMenu?.url)
+                    ?.length > 0
+                    ? 'selections-sel'
+                    : 'selections-nor'
+                }
+                size={24}
+                color="var(--neutral-n2)"
+              />
+              <div>{t('more')}</div>
+            </div>
+          </Popover>
+        )}
+      </MenusWrap>
 
       <CollapseWrap>
         {layoutSideCollapse && (
           <CollapseWrapItem onClick={onChangeCollapse}>
             <CommonIconFont
               type={layoutSideCollapse ? 'outdent' : 'indent'}
-              size={20}
+              size={24}
             />
             <div>{layoutSideCollapse ? t('fold') : t('expand')}</div>
           </CollapseWrapItem>
@@ -368,7 +453,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
             <CloseWrap width={32} height={32} onClick={onChangeCollapse}>
               <CommonIconFont
                 type={layoutSideCollapse ? 'outdent' : 'indent'}
-                size={20}
+                size={24}
               />
             </CloseWrap>
           </Tooltip>

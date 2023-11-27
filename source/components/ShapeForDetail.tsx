@@ -32,6 +32,7 @@ import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import CommonButton from './CommonButton'
 import CustomSelect from './CustomSelect'
 import { MyDiv } from './Shape'
+import { getProjectIdByUrl } from '@/tools'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -376,6 +377,7 @@ const ShapeContentForDetail = (props: any) => {
   }
 
   const init2 = async () => {
+    if (props.row.project_id !== getProjectIdByUrl()) return
     setLoading(false)
     setActiveStatus(props.row.status)
     const res2 = await getProjectMember(projectId)
@@ -615,43 +617,64 @@ const ShapeContentForDetail = (props: any) => {
                         >
                           <CustomSelect
                             mode="multiple"
-                            dropdownRender={(menu: any) => {
-                              return (
-                                <div
-                                  style={{
-                                    padding: '8px ',
-                                  }}
-                                >
-                                  {format2(i, 2) && (
-                                    <MyDiv
-                                      show={valid() as unknown as boolean}
-                                      onClick={setMyValue}
-                                    >
-                                      {format2(i, 2)}
-                                    </MyDiv>
-                                  )}
+                            // dropdownRender={(menu: any) => {
+                            //   return (
+                            //     <div
+                            //       style={{
+                            //         padding: '8px ',
+                            //       }}
+                            //     >
+                            //       {format2(i, 2) && (
+                            //         <MyDiv
+                            //           show={valid() as unknown as boolean}
+                            //           onClick={setMyValue}
+                            //         >
+                            //           {format2(i, 2)}
+                            //         </MyDiv>
+                            //       )}
 
-                                  <MyDiv
-                                    show={form
-                                      .getFieldsValue()
-                                      ?.users_name?.includes(info)}
-                                    onClick={setMyValue2}
-                                  >
-                                    {format2(i, 1)}
-                                  </MyDiv>
-                                  <Divider style={{ margin: '8px 0' }} />
-                                  {menu}
-                                </div>
-                              )
-                            }}
+                            //       <MyDiv
+                            //         show={form
+                            //           .getFieldsValue()
+                            //           ?.users_name?.includes(info)}
+                            //         onClick={setMyValue2}
+                            //       >
+                            //         {format2(i, 1)}
+                            //       </MyDiv>
+                            //       <Divider style={{ margin: '8px 0' }} />
+                            //       {menu}
+                            //     </div>
+                            //   )
+                            // }}
                             placeholder={t('common.pleaseSelect')}
                             allowClear
-                            options={i.children?.map((item: any) => ({
-                              label: item.name,
-                              value: item.id,
-                            }))}
+                            // options={i.children?.map((item: any) => ({
+                            //   label: item.name,
+                            //   value: item.id,
+                            // }))}
                             optionFilterProp="label"
-                          />
+                          >
+                            {i.children.map((item: any) => {
+                              return (
+                                <Select.Option
+                                  key={item.id}
+                                  value={item.id}
+                                  label={item.name}
+                                  className={
+                                    item.status === 2 && item.isFirst
+                                      ? 'removeStyle'
+                                      : ''
+                                  }
+                                  disabled={item.status === 2}
+                                >
+                                  {item.name ?? item.content}
+                                  <span>
+                                    {item.status === 1 ? '' : t('removed')}
+                                  </span>
+                                </Select.Option>
+                              )
+                            })}
+                          </CustomSelect>
                         </Form.Item>
                       )}
                     {['select_checkbox', 'checkbox'].includes(i.type) &&

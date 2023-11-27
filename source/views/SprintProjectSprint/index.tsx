@@ -7,7 +7,7 @@ import InputSearch from '@/components/InputSearch'
 import { CloseWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import TabItem from './components/TabItem'
 import IconFont from '@/components/IconFont'
-import { Popover, Spin, Tooltip } from 'antd'
+import { Popover, Spin, Tooltip, Select } from 'antd'
 import CustomSelect from '@/components/MoreSelect'
 import DndKitTable from './components/DndKitTable'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
@@ -36,6 +36,7 @@ import {
   SprintDetailMouseDom,
 } from '@/components/DetailScreenModal/DemandDetail/style'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import { css } from '@emotion/css'
 
 const SearchBox = styled.div`
   display: flex;
@@ -349,19 +350,19 @@ const SprintProjectSprint: React.FC = () => {
       key: 0,
       title: t('sprint.stepTitle1'),
       desc: t('sprint.stepDesc1'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sprint/guide_1.jpg',
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/sprint1.jpg',
     },
     {
       key: 1,
       title: t('sprint.stepTitle2'),
       desc: t('sprint.stepDesc2'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sprint/guide_2.jpg',
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/sprint2.jpg',
     },
     {
       key: 2,
       title: t('sprint.stepTitle3'),
       desc: t('sprint.stepDesc3'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sprint/guide_3.jpg',
+      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/sprint3.jpg',
     },
   ]
 
@@ -517,6 +518,7 @@ const SprintProjectSprint: React.FC = () => {
 
       return newA
         .map((i: any) => ({
+          ...i,
           id: i.id,
           value: i.value,
           label: `${i.label}（${t('myself')}）`,
@@ -545,6 +547,22 @@ const SprintProjectSprint: React.FC = () => {
 
   const onVisibleChange = (visible: any) => {
     setIsFilter(visible)
+  }
+  const splitArrayByValue = (arr: any) => {
+    let arr1 = arr.filter((x: any) => x.status === 1)
+    // 已离职
+    let arr2 = arr
+      .filter((x: any) => x.status === 2)
+      .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
+    const a = {
+      label: t('working'),
+      children: arr1,
+    }
+    const b = {
+      label: t('resigned'),
+      children: arr2,
+    }
+    return [...arr1, ...arr2]
   }
 
   const isLength =
@@ -765,8 +783,10 @@ const SprintProjectSprint: React.FC = () => {
                   allowClear
                   optionFilterProp="label"
                   showArrow
+                  popupClassName="aa"
                   showSearch
                   value={searchObject.search?.user_ids}
+                  renderChildren
                   options={format(
                     removeNull(projectInfoValues, 'user_name')?.map(
                       (k: any) => ({
@@ -786,7 +806,34 @@ const SprintProjectSprint: React.FC = () => {
                     })
                   }}
                   onConfirm={() => null}
-                />
+                >
+                  {splitArrayByValue(
+                    format(
+                      removeNull(projectInfoValues, 'user_name')?.map(
+                        (k: any) => ({
+                          ...k,
+                          label: k.content,
+                          id: k.id,
+                          value: k.id,
+                        }),
+                      ),
+                    ),
+                  ).map((item: any) => {
+                    return (
+                      <Select.Option
+                        key={item.id}
+                        value={item.id}
+                        label={item.label}
+                        className={
+                          item.status === 2 && item.isFirst ? 'removeStyle' : ''
+                        }
+                      >
+                        {item.label ?? item.content}
+                        <span>{item.status === 1 ? '' : t('removed')}</span>
+                      </Select.Option>
+                    )
+                  })}
+                </CustomSelect>
               </SelectWrapForList>
               <CategorySelectWrap>
                 <span className="title">{t('sprint.transactionType')}</span>
