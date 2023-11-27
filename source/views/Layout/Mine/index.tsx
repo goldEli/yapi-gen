@@ -57,20 +57,6 @@ const Mine = () => {
     navigate(url)
   }
 
-  const onUpdateList = () => {
-    //   获取当前路由的key
-    const currentRouter = list?.filter(
-      (i: any) => i.url === routerPath?.pathname,
-    )
-    onChangeRouter(
-      currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key,
-    )
-  }
-
-  useEffect(() => {
-    onUpdateList()
-  }, [])
-
   useEffect(() => {
     if (routerPath.pathname === '/Mine/Profile') {
       setActiveKey('1')

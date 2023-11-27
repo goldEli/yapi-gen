@@ -75,7 +75,10 @@ const LayoutSecondaryMenu = () => {
     let resultUrl: any
     if (url === '/Report/Review') {
       resultUrl = '/Report/Review/List/1'
-    } else if (paramsData?.id) {
+    } else if (
+      paramsData?.id &&
+      routerPath?.pathname.includes('/ProjectDetail')
+    ) {
       dispatch(setIterateInfo({}))
       const newParamsData = {
         ...paramsData,
@@ -194,7 +197,7 @@ const LayoutSecondaryMenu = () => {
             id: 'set',
             oldKey: 'Setting',
             name: t('setUp'),
-            url: '/ProjectDetail/Setting',
+            url: '/ProjectDetail/Setting/ProjectInfo',
             isPermisson:
               projectInfo?.projectPermissions?.filter((i: any) =>
                 String(i.group_name).includes('项目设置'),

@@ -56,14 +56,6 @@ const SafetyManagement = () => {
         isPermission: urls?.includes(String(i.key)),
       }))
       setResultTabList(resultList?.filter((i: any) => i.isPermission))
-      //   获取当前路由的key
-      const currentRouter = resultList?.filter(
-        (i: any) => i.url === routerPath?.pathname,
-      )
-      onChangeRouter(
-        currentRouter?.length > 0 ? currentRouter[0]?.key : resultList[0].key,
-        resultList,
-      )
     }
   }, [currentMenu?.id, isRefresh])
 
