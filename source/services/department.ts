@@ -25,6 +25,19 @@ export const delDepartment = async (params: any) => {
 
   return response
 }
+// 获取所有部门
+export const getAllDepartment = async (params: any) => {
+  const response: any = await http.get<any, any>('getAllDepartment', params)
+  return response
+}
+// 更新员工的部门
+export const updateUserDepartment = async (params: any) => {
+  const response: any = await http.post<any, any>(
+    'updateUserDepartment',
+    params,
+  )
+  return response
+}
 
 // 获取职位列表
 export const getPositionList = async (params: any) => {

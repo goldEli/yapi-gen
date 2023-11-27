@@ -588,6 +588,10 @@ const urls = {
   editDepartment: '/b/project_department/update',
   // 删除部门
   delDepartment: '/b/project_department/batch',
+  // 获取所有部门
+  getAllDepartment: '/b/project_department/all',
+  // 设置员工部门
+  updateUserDepartment: '/b/project_department/member/set',
 
   // 获取职位列表
   getPositionList: '/b/project/position/list',
@@ -597,6 +601,8 @@ const urls = {
   editPosition: '/b/project/position/update',
   // 删除职位
   delPosition: '/b/project/position/batch_del',
+  // 设置员工职位
+  updateUserPosition: '/b/project/position/member_set',
 }
 export default urls
 

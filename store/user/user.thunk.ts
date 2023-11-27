@@ -18,3 +18,11 @@ export const getLoginDetail = createAsyncThunk(
     }
   },
 )
+
+export const getAllDepartment = createAsyncThunk(
+  'user/getAllDepartment',
+  async (params: any) => {
+    const res = await services.department.getAllDepartment(params)
+    return res?.data?.list
+  },
+)

@@ -19,7 +19,7 @@ import * as affairs from './affairs'
 import * as flaw from './flaw'
 import * as employeeProfile from './employeeProfile'
 import * as performanceInsight from './performanceInsight'
-
+import * as department from './department'
 export {
   formwork,
   report,
@@ -42,4 +42,5 @@ export {
   flaw,
   employeeProfile,
   performanceInsight,
+  department,
 }
