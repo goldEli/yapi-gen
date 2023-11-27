@@ -18,8 +18,8 @@ const batchBox = css`
   display: flex;
   align-items: center;
   padding: 0 32px;
-  height: 64px;
-  border-radius: 16px;
+  height: 52px;
+  border-radius: 8px;
   background: rgba(4, 4, 4, 0.6);
   width: fit-content;
 `

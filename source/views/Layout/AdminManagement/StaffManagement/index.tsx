@@ -222,41 +222,7 @@ const StaffManagement = () => {
     updateOrderkey,
   })
 
-  const menuTable = (record: any) => {
-    const items = [
-      {
-        key: '1',
-        label: (
-          <div onClick={() => controlStaffPersonalVisible(record)}>
-            {t('staff.setPermission')}
-          </div>
-        ),
-      },
-      {
-        key: '12',
-        label: (
-          <div onClick={() => controlStaffPersonalVisibleA(record)}>
-            {t('quitAndHandover')}
-          </div>
-        ),
-      },
-      {
-        key: '123',
-        label: (
-          <div onClick={() => controlStaffPersonalVisibleC(record)}>
-            {t('the_handover_state_is_restored')}
-          </div>
-        ),
-      },
-    ]
-    let newArr: any = []
-    if (record.handover_status === 1) {
-      newArr = items.slice(0, 2)
-    } else if (record.handover_status === 2) {
-      newArr = items.slice(2, 3)
-    }
-    return <Menu items={newArr} />
-  }
+ 
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
@@ -306,49 +272,79 @@ const StaffManagement = () => {
       }
     }
 
-    const initColumns = [
-      {
-        width: 40,
-        render: (_text: any, record: any) => {
-          const isEdit = (
-            userInfo.company_permissions?.map((i: any) => i.identity) || []
-          ).includes('b/companyuser/update')
-          return (
-            isEdit && (
-              <div>
-                <MoreDropdown menu={menuTable(record)} />
-              </div>
-            )
-          )
-        },
-      },
-    ]
-
-    initColumns.push(Table.SELECTION_COLUMN as any)
-
+    const isEdit = (
+      userInfo.company_permissions?.map((i: any) => i.identity) || []
+    ).includes('b/companyuser/update')
     const lastList = [
       {
         title: t('newlyAdd.operation'),
         dataIndex: 'action',
-        width: 120,
         fixed: 'right',
+        width:320,
         render: (_text: string, record: any) => {
           return (
             <>
               {!hasCheck ? (
                 '--'
               ) : (
-                <span
-                  onClick={() => onToDetail(record)}
-                  style={{
-                    fontSize: 14,
-                    color: 'var(--primary-d2)',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {t('project.checkInfo')}
-                </span>
+                <div>
+                  <span
+                    onClick={() => onToDetail(record)}
+                    style={{
+                      fontSize: 14,
+                      color: 'var(--primary-d2)',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {t('project.checkInfo')}
+                  </span>
+                  {isEdit ? (
+                    <>
+                      {record.handover_status === 1 ? (
+                        <>
+                          <span
+                           onClick={() => controlStaffPersonalVisible(record)}
+                            style={{
+                              fontSize: 14,
+                              marginLeft:' 16px',
+                              color: 'var(--primary-d2)',
+                              cursor: 'pointer',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {t('staff.setPermission')}
+                          </span>
+                          <span
+                          onClick={() => controlStaffPersonalVisibleA(record)}
+                            style={{
+                              marginLeft:' 16px',
+                              fontSize: 14,
+                              color: 'var(--primary-d2)',
+                              cursor: 'pointer',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                             {t('quitAndHandover')}
+                          </span>
+                        </>
+                      ) : (
+                        <span
+                        style={{
+                          fontSize: 14,
+                          marginLeft:' 16px',
+                          color: 'var(--primary-d2)',
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap',
+                        }}
+                        onClick={() => controlStaffPersonalVisibleC(record)}
+                        >
+                          {t('the_handover_state_is_restored')}
+                        </span>
+                      )}
+                    </>
+                  ) : null}
+                </div>
               )}
             </>
           )
@@ -357,7 +353,7 @@ const StaffManagement = () => {
     ]
 
     const resultLast = isHaveCheck ? lastList : []
-    return [...initColumns, ...newList, ...resultLast]
+    return [ ...newList, ...resultLast]
   }, [titleList, titleList2, columns])
 
   const showModal = () => {
@@ -612,8 +608,8 @@ const StaffManagement = () => {
             getPopupContainer={node => node}
             title={t('common.permissionGroup')}
           >
-            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
-              <IconFont type="lock" />
+            <div style={{color:'var(--neutral-white-d7)'}} onClick={() => setBatchEditVisible(true)}>
+              权限
             </div>
           </Tooltip>
         </BatchAction>
