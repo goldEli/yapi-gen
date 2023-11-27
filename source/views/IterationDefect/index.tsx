@@ -123,12 +123,14 @@ const Index = (props: any) => {
       setSearchVal(keyValue)
       const params = searchItems
       params.searchValue = keyValue
+      params.keyword = keyValue
       setSearchItems(params)
       setDataList({ list: undefined })
       setPageObj({
         page: 1,
         size: pageObj.size,
       })
+      getList(searchItems, pageObj, { key: '', value: '' })
       // 添加搜索项 计数
       const keys = keyValue
         ? [...filterKeys, ...['searchVal']]
@@ -152,7 +154,7 @@ const Index = (props: any) => {
       pageSize: item.size,
       order: orderItem.value,
       orderKey: orderItem.key,
-      searchValue: searchVal,
+      searchValue: searchParamsObj.searchValue,
       statusIds: searchParamsObj.statusId,
       iterateIds: searchParamsObj.iterateId,
       priorityIds: searchParamsObj.priorityId,
