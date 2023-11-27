@@ -590,7 +590,7 @@ const HiddenText = styled.div({
   display: 'flex',
   alignItems: 'center',
 })
-const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean,colorState?: any }>(
   {
     width: '80%',
     display: 'flex',
@@ -620,8 +620,8 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
       },
     },
   },
-  ({ isClose, isName }) => ({
-    color: isClose ? 'var(--neutral-n3)' : '',
+  ({ isClose, isName,colorState }) => ({
+    color: colorState ? 'rgb(250, 151, 70)' : isClose ? 'var(--neutral-n3)' : '',
     textDecoration: isName && isClose ? 'line-through' : '',
   }),
 )

@@ -193,34 +193,64 @@ const Need = (props: any) => {
   }
 
   const selectColum: any = useMemo(() => {
-    if (activeTab === 1) {
-      return columns.concat([
-        {
-          title: <>{t('newlyAdd.operation')}</>,
-          dataIndex: 'action',
-          key: 'action',
-          render: (_: string, record: any) => {
-            return (
-              <>
-                {record.status === 1 && (
+    return columns.concat([
+      {
+        title: <>{t('newlyAdd.operation')}</>,
+        dataIndex: 'action',
+        key: 'action',
+        render: (_: string, record: any) => {
+          return (
+            <>
+              {record.status === 1 ? (
+                <>
                   <Button
+                    style={{ marginRight: '12px',padding:0 }}
                     type="link"
-                    style={{ padding: 0 }}
                     onClick={() => {
-                      setDelIsVisible(true)
-                      setCurrentItem(record)
+                      onChangeOperation(record)
                     }}
                   >
-                    {t('newlyAdd.cancelExamine')}
+                   {t('common.info')}
                   </Button>
-                )}
-              </>
-            )
-          },
+                  {activeTab === 1 && (
+                    <Button
+                      type="link"
+                      style={{ padding: 0 }}
+                      onClick={() => {
+                        setDelIsVisible(true)
+                        setCurrentItem(record)
+                      }}
+                    >
+                      {t('newlyAdd.cancelExamine')}
+                    </Button>
+                  )}
+                </>
+              ):(
+                <>
+                  <Button
+                    style={{ marginRight: '12px',padding:0 }}
+                    type="link"
+                    disabled
+                  >
+                    {t('common.info')}
+                  </Button>
+                  {activeTab === 1 && (
+                    <Button
+                      type="link"
+                      style={{ padding: 0 }}
+                      disabled
+                    >
+                      {t('newlyAdd.cancelExamine')}
+                    </Button>
+                  )}
+                </>
+              )
+            }
+            </>
+          )
         },
-      ])
-    }
-    return columns
+      },
+    ])
   }, [columns])
 
   const onChangeTab = (val: number) => {
