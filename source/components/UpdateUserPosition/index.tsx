@@ -45,8 +45,8 @@ interface IProps {
   roleName: string
   callBack(data: Model.Sprint.ProjectSettings): void
 }
-const TableSelectOptions = (props: IProps) => {
-  const { projectRoleList } = useSelector(state => state.sprint)
+const UpdateUserPosition = (props: IProps) => {
+  const { positionList } = useSelector(state => state.user)
   const [isVisible, setIsVisible] = useState(false)
 
   const onClick = (item: any) => {
@@ -62,7 +62,7 @@ const TableSelectOptions = (props: IProps) => {
       trigger={['hover']}
       content={
         <SelectOptions>
-          {projectRoleList?.map((item: any, index: any) => (
+          {positionList?.map((item: any, index: any) => (
             <SelectItem key={index} onClick={() => onClick(item)}>
               <span className={props.roleName === item.name ? 'activity' : ''}>
                 {item.name}
@@ -90,4 +90,4 @@ const TableSelectOptions = (props: IProps) => {
     </Popover>
   )
 }
-export default TableSelectOptions
+export default UpdateUserPosition

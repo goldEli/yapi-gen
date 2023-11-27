@@ -61,3 +61,8 @@ export const delPosition = async (params: any) => {
 
   return response
 }
+//
+export const updateUserPosition = async (params: any) => {
+  const response: any = await http.post<any, any>('updateUserPosition', params)
+  return response
+}

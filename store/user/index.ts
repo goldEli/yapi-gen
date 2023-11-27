@@ -1,6 +1,6 @@
 /* eslint-disable no-duplicate-imports */
 import { createSlice } from '@reduxjs/toolkit'
-import { getLoginDetail, getAllDepartment } from './user.thunk'
+import { getLoginDetail, getAllDepartment, getAllPosition } from './user.thunk'
 
 export interface CounterState {
   loginInfo: any
@@ -90,6 +90,9 @@ export const counterSlice = createSlice({
     }),
       builder.addCase(getAllDepartment.fulfilled, (state, action) => {
         state.departmentList = action.payload
+      }),
+      builder.addCase(getAllPosition.fulfilled, (state, action) => {
+        state.positionList = action.payload
       })
   },
 })

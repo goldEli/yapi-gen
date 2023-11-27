@@ -227,7 +227,7 @@ const Index = () => {
 
   return (
     <PermissionWrap
-      auth="b/flaw/"
+      auth="b/project/position"
       permission={
         isLength
           ? ['0']
