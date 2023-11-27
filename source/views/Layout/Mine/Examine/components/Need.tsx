@@ -266,33 +266,40 @@ const Need = (props: any) => {
       >
         <div
           style={{
-            width: '100%',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
-            <div>{t('newlyAdd.needMineExamine')}</div>
-          </TabsItem>
-          <LabNumber isActive={!activeTab}>{count?.verifyUser}</LabNumber>
-
-          <TabsItem
-            isActive={activeTab === 1}
-            style={{ marginLeft: 32 }}
-            onClick={() => onChangeTab(1)}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 24,
+            }}
           >
-            <div>{t('newlyAdd.mineSubmit')}</div>
-          </TabsItem>
-          <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
-        </div>
-        <SearchWrap>
-          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
-            <InputSearch
-              placeholder={t('common.pleaseSearchDemand')}
-              onChangeSearch={onPressEnter}
-              leftIcon
-            />
+            <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
+              <div>{t('newlyAdd.needMineExamine')}</div>
+            </TabsItem>
+            <LabNumber isActive={!activeTab}>{count?.verifyUser}</LabNumber>
+
+            <TabsItem
+              isActive={activeTab === 1}
+              style={{ marginLeft: 32 }}
+              onClick={() => onChangeTab(1)}
+            >
+              <div>{t('newlyAdd.mineSubmit')}</div>
+            </TabsItem>
+            <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
           </div>
+          <InputSearch
+            placeholder={t('searchForRequirementNameOrNumber')}
+            onChangeSearch={onPressEnter}
+            leftIcon
+            width={184}
+          />
+        </div>
+
+        <SearchWrap>
           <ScreenMinHover
             label={t('common.search')}
             icon="filter"

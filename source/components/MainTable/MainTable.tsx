@@ -80,6 +80,9 @@ const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
   overflow: ${props => (props.srcollState ? 'hidden' : 'auto')};
   .ant-table-row {
     cursor: pointer;
+    .controlMaxWidth {
+      border-bottom: 1px solid transparent;
+    }
     &:hover {
       .controlMaxWidth {
         border-bottom: 1px solid var(--primary-d1);

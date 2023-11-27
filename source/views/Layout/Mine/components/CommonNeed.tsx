@@ -739,19 +739,27 @@ const CommonNeed = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <TabsItem isActive>
-            <div>{props?.subTitle}</div>
-          </TabsItem>
-          <LabNumber isActive>{total ?? 0}</LabNumber>
-        </div>
-        <SearchWrap>
-          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
-            <InputSearch
-              placeholder={t('common.pleaseSearchDemand')}
-              onChangeSearch={onPressEnter}
-              leftIcon
-            />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 24,
+            }}
+          >
+            <TabsItem isActive>
+              <div>{props?.subTitle}</div>
+            </TabsItem>
+            <LabNumber isActive>{total ?? 0}</LabNumber>
           </div>
+          <InputSearch
+            placeholder={t('searchForRequirementNameOrNumber')}
+            onChangeSearch={onPressEnter}
+            leftIcon
+            width={184}
+          />
+        </div>
+
+        <SearchWrap>
           <Space style={{ display: 'flex' }} size={8}>
             {props?.isMember ? null : (
               <>
