@@ -39,6 +39,7 @@ import ClickDropdown from './ClickDropdown'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 import CommonProgress from '@/components/CommonProgress'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import NoData from '@/components/NoData'
 
 const MoveFont = styled(IconFont)`
   font-size: 16;
@@ -897,6 +898,14 @@ const DndKitTable = (props: any) => {
             />
           )
         })}
+        {(props?.activeKey === 0 && props?.checkCommission?.[props?.activeKey]
+          ? rightSprintList.filter((i: any) => i.id === 0)
+          : rightSprintList
+        ).length === 0 ? (
+          <div style={{ marginTop: 150 }}>
+            <NoData />
+          </div>
+        ) : null}
       </CustomReactBox>
       <DeleteConfirm
         title={`${t('sprint.delete')}【${deleteItem?.story_prefix_key}】？`}

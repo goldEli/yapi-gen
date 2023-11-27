@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import GuideModal from '@/components/GuideModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
@@ -18,25 +18,19 @@ import {
 } from '@store/sprint/sprint.thunk'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { useSearchParams } from 'react-router-dom'
-import {
-  getIsPermission,
-  getParamsData,
-  onComputedPermission,
-  removeNull,
-} from '@/tools'
+import { getIsPermission, getParamsData, removeNull } from '@/tools'
 import CategoryDropdown from '@/components/CategoryDropdown'
 import useKeyPress from '@/hooks/useKeyPress'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
 import { setAddWorkItemModal } from '@store/project'
-import { setCheckList } from '@store/sprint'
+import { setCheckList, setRightSprintList } from '@store/sprint'
 import PermissionWrap from '@/components/PermissionWrap'
 import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
 } from '@/components/DetailScreenModal/DemandDetail/style'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
-import { css } from '@emotion/css'
 
 const SearchBox = styled.div`
   display: flex;
@@ -300,7 +294,6 @@ const SprintProjectSprint: React.FC = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const timer = useRef<NodeJS.Timeout | null>(null)
   const [searchObject, setSearchObject] = useState<any>({
     order: 'desc',
     orderkey: 'id',
@@ -336,7 +329,7 @@ const SprintProjectSprint: React.FC = () => {
     is_long_story: 0,
   })
   const [checkCommission, setCheckCommission] = useState([false, false])
-  const { userPreferenceConfig, currentMenu } = useSelector(store => store.user)
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
@@ -410,7 +403,7 @@ const SprintProjectSprint: React.FC = () => {
     sessionStorage.removeItem('noRefresh')
     setActiveKey(1)
     setSearchObject({
-      ...searchObject,
+      search: { ...searchObject.search, resource_ids: [] },
       is_long_story: 1,
     })
     setLeftSearchObject({
@@ -440,31 +433,35 @@ const SprintProjectSprint: React.FC = () => {
 
   useEffect(() => {
     sessionStorage.removeItem('noRefresh')
+    return () => {
+      dispatch(setRightSprintList([]))
+    }
   }, [])
 
+  const searchRight = useMemo(() => {
+    if (leftSprintList.list.length === 0 && activeKey === 0) {
+      return false
+    }
+    const search = {
+      ...searchObject,
+      search: {
+        ...searchObject.search,
+        resource_ids:
+          activeKey === 1 && searchObject.is_no_creation_long_story === 1
+            ? []
+            : leftSprintList.list
+                .filter((_, idx) => checkList[idx])
+                .map(k => k.id),
+      },
+    }
+    return search
+  }, [JSON.stringify(searchObject), JSON.stringify(checkList)])
+
   useEffect(() => {
-    timer.current && clearTimeout(timer.current)
-    timer.current = setTimeout(() => {
-      // if (
-      //   leftSprintList.list.filter((_, idx) => checkList[idx]).map(k => k.id)
-      //     .length > 0
-      // ) {
-      dispatch(
-        getRightSprintList({
-          ...searchObject,
-          search: {
-            ...searchObject.search,
-            resource_ids:
-              activeKey === 1 && searchObject.is_no_creation_long_story === 1
-                ? []
-                : leftSprintList.list
-                    .filter((_, idx) => checkList[idx])
-                    .map(k => k.id),
-          },
-        }),
-      )
-    }, 100)
-  }, [searchObject, checkList])
+    if (searchRight) {
+      dispatch(getRightSprintList(searchRight))
+    }
+  }, [JSON.stringify(searchRight)])
 
   useEffect(() => {
     dispatch(getLeftSprintList(leftSearchObject))
@@ -494,7 +491,9 @@ const SprintProjectSprint: React.FC = () => {
 
   useEffect(() => {
     // 监听创建事务，刷新页面
-    dispatch(getLeftSprintList(leftSearchObject))
+    if (isUpdateAddWorkItem > 0) {
+      dispatch(getLeftSprintList(leftSearchObject))
+    }
   }, [isUpdateAddWorkItem])
 
   const checkNoCreateLongStory = useCallback(
@@ -549,19 +548,11 @@ const SprintProjectSprint: React.FC = () => {
     setIsFilter(visible)
   }
   const splitArrayByValue = (arr: any) => {
-    let arr1 = arr.filter((x: any) => x.status === 1)
+    const arr1 = arr.filter((x: any) => x.status === 1)
     // 已离职
-    let arr2 = arr
+    const arr2 = arr
       .filter((x: any) => x.status === 2)
       .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
-    const a = {
-      label: t('working'),
-      children: arr1,
-    }
-    const b = {
-      label: t('resigned'),
-      children: arr2,
-    }
     return [...arr1, ...arr2]
   }
 
@@ -711,7 +702,7 @@ const SprintProjectSprint: React.FC = () => {
                     color: 'var(--neutral-n3) !important',
                   }}
                   type="plus"
-                />{' '}
+                />
                 {activeKey === 0
                   ? t('sprint.createSprint')
                   : t('sprint.createStory')}

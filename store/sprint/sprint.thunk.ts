@@ -9,7 +9,6 @@ export const getSprintKanBanList = createAsyncThunk(
   `${name}/getSprintKanBanList`,
   async () => {
     const res = await services.sprint.getSprintKanBanList({ id: 123 })
-
     return res.data.list
   },
 )
