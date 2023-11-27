@@ -42,11 +42,11 @@ const TextWrap = styled.span`
   }
 `
 interface IProps {
+  projectPermission: any
   roleName: string
   callBack(data: Model.Sprint.ProjectSettings): void
 }
 const TableSelectOptions = (props: IProps) => {
-  const { projectRoleList } = useSelector(state => state.sprint)
   const [isVisible, setIsVisible] = useState(false)
 
   const onClick = (item: any) => {
@@ -62,16 +62,16 @@ const TableSelectOptions = (props: IProps) => {
       trigger={['hover']}
       content={
         <SelectOptions>
-          {projectRoleList?.map((item: any, index: any) => (
+          {props.projectPermission?.map((item: any, index: any) => (
             <SelectItem key={index} onClick={() => onClick(item)}>
-              <span className={props.roleName === item.name ? 'activity' : ''}>
-                {item.name}
+              <span className={props.roleName === item.label ? 'activity' : ''}>
+                {item.label}
               </span>
-              {props.roleName === item.name && (
+              {props.roleName === item.label && (
                 <IconFont
                   type="check"
                   style={{ marginLeft: '30px' }}
-                  className={props.roleName === item.name ? 'activity' : ''}
+                  className={props.roleName === item.label ? 'activity' : ''}
                 ></IconFont>
               )}
             </SelectItem>

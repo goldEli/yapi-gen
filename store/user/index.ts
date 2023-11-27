@@ -34,7 +34,7 @@ const initialState: CounterState = {
     { key: '/EmployeeProfile', normal: 'employee-nor', active: 'employee-sel' },
     { key: '/Statistics', normal: 'measure-nor', active: 'measure-sel' },
     { key: '/Trends', normal: 'bell', active: 'bell-sel' },
-    { key: '/Mine', normal: 'user', active: 'user' },
+    { key: '/Mine', normal: 'user', active: 'user-sel' },
     { key: '/AdminManagement', normal: 'management', active: 'management' },
   ],
   departmentList: [],

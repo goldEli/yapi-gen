@@ -636,7 +636,8 @@ const CommonNeed = (props: any) => {
   useEffect(() => {
     // 如果分页为1则调用接口
     if (pageObj.page === 1) {
-      init(false)
+      // 如果项目id变化了，并且搜索值不同的话则清空
+      keyword === '' ? init(false) : setKeyword('')
     } else {
       // 如果分页改变则，重置分页
       setPageObj({ page: 1, size: pageObj.size })
@@ -739,19 +740,28 @@ const CommonNeed = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <TabsItem isActive>
-            <div>{props?.subTitle}</div>
-          </TabsItem>
-          <LabNumber isActive>{total ?? 0}</LabNumber>
-        </div>
-        <SearchWrap>
-          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
-            <InputSearch
-              placeholder={t('common.pleaseSearchDemand')}
-              onChangeSearch={onPressEnter}
-              leftIcon
-            />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 24,
+            }}
+          >
+            <TabsItem isActive>
+              <div>{props?.subTitle}</div>
+            </TabsItem>
+            <LabNumber isActive>{total ?? 0}</LabNumber>
           </div>
+          <InputSearch
+            placeholder={t('searchForRequirementNameOrNumber')}
+            onChangeSearch={onPressEnter}
+            leftIcon
+            defaultValue={keyword}
+            width={184}
+          />
+        </div>
+
+        <SearchWrap>
           <Space style={{ display: 'flex' }} size={8}>
             {props?.isMember ? null : (
               <>

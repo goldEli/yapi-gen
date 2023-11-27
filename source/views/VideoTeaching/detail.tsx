@@ -10,19 +10,6 @@ const Detail = () => {
   return (
     <DetailWrap>
       <Header time={time} />
-      {/* <Bread>
-        <span
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            history.go(-1)
-          }}
-        >
-          <CommonIconFont type="return" color=" #6688ff"></CommonIconFont>
-          <span className="back">返回</span>
-        </span>
-        <span className="devide">|</span>
-        <span className="text">{data.text}</span>
-      </Bread> */}
       <div className="content">
         <div className="title">{data.text}</div>
         <video

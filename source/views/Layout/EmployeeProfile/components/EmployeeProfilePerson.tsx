@@ -94,6 +94,13 @@ const CollapseHeader = (props: any) => {
   }, [userKeys])
   useEffect(() => {
     const { user_ids } = filterParamsOverall ?? {}
+    if (
+      user_ids.some(
+        (item: any) => item.project_id === 'undefined' || !item.project_id,
+      )
+    ) {
+      return
+    }
     const userKeys = user_ids?.map(
       (item: any) => `${item.project_id}_${item.user_id}`,
     )

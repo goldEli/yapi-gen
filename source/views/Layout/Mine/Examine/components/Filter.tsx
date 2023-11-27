@@ -12,7 +12,6 @@ import { Form, Input, Select } from 'antd'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
-import CustomSelect from '@/components/CustomSelect'
 
 const ClearForm = styled.div({
   display: 'flex',
