@@ -67,8 +67,11 @@ const LayoutSecondaryMenu = () => {
   const handleModeChange = (e: any) => {
     dispatch(saveScreenDetailModal({ visible: false, params: {} }))
     setActiveKey(e)
-    const url = items?.filter((i: any) => i.id === Number(e) || i.id === e)[0]
-      ?.url
+    // 匹配跳转的数据
+    const currentObj = items?.filter(
+      (i: any) => i.id === Number(e) || i.id === e,
+    )
+    const url = currentObj[0]?.url
     let resultUrl: any
     if (url === '/Report/Review') {
       resultUrl = '/Report/Review/List/1'
@@ -83,7 +86,11 @@ const LayoutSecondaryMenu = () => {
       dispatch(getProjectInfoValuesStore({ projectId: paramsData?.id }))
       resultUrl = `${url}?data=${params}`
     } else {
-      resultUrl = url
+      // 特殊处理下后台管理跳转地址
+      resultUrl =
+        url?.includes('/AdminManagement') && currentObj[0]?.children?.length > 0
+          ? String(currentObj[0]?.children[0])?.replace('/AdminManagement', url)
+          : url
     }
     navigate(resultUrl)
   }

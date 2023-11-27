@@ -207,9 +207,6 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
     if (item.url === '/Statistics') {
       navigateUrl = `${item.url}/Task`
     }
-    setTimeout(() => {
-      navigate(navigateUrl)
-    }, 10)
 
     const resultMenu = {
       ...item,
@@ -224,6 +221,10 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       payload: resultMenu,
     })
     dispatch(setProjectInfo({}))
+
+    setTimeout(() => {
+      navigate(navigateUrl)
+    }, 10)
   }
 
   // 新开页面打开外链
