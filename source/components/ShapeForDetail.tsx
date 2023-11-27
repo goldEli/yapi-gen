@@ -377,7 +377,8 @@ const ShapeContentForDetail = (props: any) => {
   }
 
   const init2 = async () => {
-    if (props.row.project_id !== getProjectIdByUrl()) return
+    // console.log(props.row, '=111111',)
+    // if (props.row.project_id !== getProjectIdByUrl()) return
     setLoading(false)
     setActiveStatus(props.row.status)
     const res2 = await getProjectMember(projectId)
@@ -395,9 +396,7 @@ const ShapeContentForDetail = (props: any) => {
   }
 
   useEffect(() => {
-    if (props.row.id !== props.sid) {
-      init2()
-    }
+    init2()
   }, [props.row])
 
   const onClear = () => {

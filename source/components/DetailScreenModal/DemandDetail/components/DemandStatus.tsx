@@ -37,7 +37,7 @@ const StatusWrap = styled.div({
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
   const [active, setActive] = useState(0)
-  const [rows, setRows] = useState(null)
+  const [rows, setRows] = useState<any>(null)
   const { projectInfo, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
@@ -91,14 +91,15 @@ const DemandStatusBox = (props: any) => {
     dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
-  useEffect(() => {
-    if (props.visible) {
-      init()
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (props.visible) {
+  //     init()
+  //   }
+  // }, [])
 
   useEffect(() => {
     if (props.visible && demandInfo.id) {
+      setRows(null)
       init()
     }
   }, [demandInfo, props.visible])
@@ -157,7 +158,7 @@ const DemandStatusBox = (props: any) => {
             verifyInfo={demandInfo.verify_data}
           />
         )}
-        {rows && !demandInfo?.isExamine && (
+        {rows?.id && !demandInfo?.isExamine && (
           <ShapeContentForDetail
             active={demandInfo?.status?.status}
             sid={props.sid}
