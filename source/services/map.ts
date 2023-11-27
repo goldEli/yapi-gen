@@ -73,3 +73,30 @@ export const editWorkTime = async (params: any) => {
   const response = await http.put('editWorkTime', params)
   return response
 }
+
+export const getIterateList: any = async (params: any) => {
+  const response: any = await http.get<any>('mapGetList', {
+    search: {
+      project_id: params?.projectId,
+      name: params?.name,
+      created_at: params?.startTime,
+      end_at: params?.endTime,
+      status: params?.status,
+      all: 1,
+    },
+    orderkey: params.orderKey,
+    order: params.order,
+  })
+  return {
+    list: response.data.map((i: any) => ({
+      id: i.id,
+      status: i.status,
+      name: i.name,
+      finishCount: i.story_finish_count,
+      storyCount: i.story_count,
+      createdTime: i.start_at,
+      endTime: i.end_at,
+      info: i.info,
+    })),
+  }
+}

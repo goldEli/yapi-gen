@@ -17,8 +17,10 @@ const getGraph = () => {
         },
         drawShape: (cfg: any, group: any) => {
           const content = cfg.name
+          // eslint-disable-next-line require-unicode-regexp
+          const computedName = cfg.name?.replace(/[0-9,A-Z]/g, 'B')
           const { fill, color, fontSize, stroke } = cfg.style || {}
-          const wd = Util.getTextSize(cfg.name, cfg.style.fontSize)[0] + 25
+          const wd = Util.getTextSize(computedName, cfg.style.fontSize)[0] + 25
           if (cfg.depth === 0) {
             cfg.extra?.forEach((info: any, index: number) => {
               group.addShape('rect', {
@@ -162,7 +164,6 @@ const getGraph = () => {
       width,
       height,
       modes: {
-        // eslint-disable-next-line quotes
         default: [
           {
             type: 'collapse-expand',
@@ -212,8 +213,9 @@ const getGraph = () => {
           return 28
         },
         getHGap: function getHGap(cfg: any) {
-          const wd =
-            Util.getTextSize(cfg.name, cfg.style.fontSize || 14)[0] + 20
+          // eslint-disable-next-line require-unicode-regexp
+          const nameStr = cfg.name?.replace(/[0-9]/g, 'B')
+          const wd = Util.getTextSize(nameStr, cfg.style.fontSize || 14)[0] + 20
           return wd > 100 ? wd : 100
         },
         getVGap: function getHGap() {
@@ -234,7 +236,11 @@ const getGraph = () => {
       const { item } = event
       const data = item.getModel()
       graph.setItemState(item, 'hover', true)
-      if (data.node_type === 'project' || data.node_type === 'user') {
+      if (
+        data.node_type === 'project' ||
+        data.node_type === 'user' ||
+        data.node_type === 'class'
+      ) {
         tooltip.hide()
       }
     })

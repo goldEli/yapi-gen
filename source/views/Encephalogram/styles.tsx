@@ -126,6 +126,29 @@ export const TypeSelectBox = styled.div`
   height: 44px;
   padding: 6px 20px;
   margin-left: 32px;
+  cursor: pointer;
+  .ant-select-show-search.ant-select:not(.ant-select-customize-input)
+    .ant-select-selector {
+    cursor: pointer !important;
+  }
+  .ant-select-selector .ant-select-selection-placeholder {
+    &:hover {
+      color: var(--auxiliary-text-t2-d2) !important;
+    }
+  }
+
+  .iter:hover .ant-select-selector .ant-select-selection-placeholder {
+    color: var(--auxiliary-text-t2-d2) !important;
+  }
+  .iter:hover .ant-select-arrow {
+    color: var(--auxiliary-text-t2-d2) !important;
+  }
+  .status:hover .ant-select-selector .ant-select-selection-placeholder {
+    color: var(--auxiliary-text-t2-d2) !important;
+  }
+  .status:hover .ant-select-arrow {
+    color: var(--auxiliary-text-t2-d2) !important;
+  }
 `
 export const PopoverBtn = styled.div`
   background-color: var(--auxiliary-b4);
@@ -249,6 +272,7 @@ export const TextWrap = styled.div`
 `
 export const CustomSelectWrap = styled(CustomSelect)`
   min-width: 100px;
+  cursor: pointer;
 `
 export const RangePickerWrap = styled.div<{ type: boolean }>(
   {
@@ -271,10 +295,14 @@ export const RangePickerWrap = styled.div<{ type: boolean }>(
       background: 'transparent',
       zIndex: 8,
     },
+    '&:hover .timeText': {
+      color: 'var(--auxiliary-text-t2-d2)!important',
+      cursor: 'pointer',
+    },
     '&:hover': {
-      color: 'var(--auxiliary-text-t2-d2)',
+      color: 'var(--auxiliary-text-t2-d2)!important',
       '.ant-picker-suffix': {
-        color: 'var(--auxiliary-text-t2-d2)',
+        color: 'var(--auxiliary-text-t2-d2)!important',
       },
       cursor: 'pointer',
     },
@@ -315,8 +343,8 @@ export const RightWrap = styled.div<{ type: string }>(
     },
   },
   ({ type }) => ({
-    width: type === '1' ? '160px' : '340px',
-    padding: type === '2' ? '0 20px' : ' 4px',
+    width: type === '1' ? '160px' : '277px',
+    padding: type === '2' ? '0 16px' : ' 4px',
     marginRight: type === '1' ? '32px' : '0',
   }),
 )

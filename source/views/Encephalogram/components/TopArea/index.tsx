@@ -34,9 +34,8 @@ import MyBreadcrumb from '@/components/MyBreadcrumb'
 import { useDispatch } from 'react-redux'
 import { setEncephalogramParams } from '@store/encephalogram'
 import { useSelector } from '@store/index'
-import { getIterateList } from '@/services/iterate'
 import { useTranslation } from 'react-i18next'
-import { getMapMembers } from '@/services/map'
+import { getIterateList, getMapMembers } from '@/services/map'
 import useMapData from '@/views/Encephalogram/hook/useMapData'
 import _ from 'lodash'
 
@@ -505,31 +504,37 @@ const TopArea = () => {
         </TypeBox>
         <TypeSelectBox className="selectBgc">
           <Space size={20}>
-            <CustomSelectWrap
-              mode="multiple"
-              placeholder="选择迭代"
-              showArrow
-              showSearch
-              getPopupContainer={(node: any) => node}
-              allowClear
-              optionFilterProp="label"
-              onChange={onChangeSelect}
-              options={interateList}
-            />
-            <MoreSelect
-              showArrow
-              mode="multiple"
-              selectWidth={100}
-              placeholder="任务状态"
-              showSearch
-              optionFilterProp="label"
-              placement="bottomRight"
-              width={200}
-              value={stateVal}
-              allowClear
-              options={priorityList}
-              onChange={(value: any) => onClickSearch(value)}
-            />
+            <div className="iter">
+              <CustomSelectWrap
+                mode="multiple"
+                placeholder={
+                  projectInfo.projectType === 2 ? '选择冲刺' : '选择迭代'
+                }
+                showArrow
+                showSearch
+                getPopupContainer={(node: any) => node}
+                allowClear
+                optionFilterProp="label"
+                onChange={onChangeSelect}
+                options={interateList}
+              />
+            </div>
+            <div className="status">
+              <MoreSelect
+                showArrow
+                mode="multiple"
+                selectWidth={100}
+                placeholder="任务状态"
+                showSearch
+                optionFilterProp="label"
+                placement="bottomRight"
+                width={200}
+                value={stateVal}
+                allowClear
+                options={priorityList}
+                onChange={(value: any) => onClickSearch(value)}
+              />
+            </div>
             <RangePickerWrap type={date?.length >= 1}>
               <RangePicker
                 isShowQuick
@@ -564,7 +569,7 @@ const TopArea = () => {
               open={clickePerson}
             >
               <PopoverBtn onClick={() => setClickePerson(!clickePerson)}>
-                <IconFont type="intro" />
+                <IconFont type="team" />
                 <span>项目人员</span>
               </PopoverBtn>
             </Popover>

@@ -181,10 +181,10 @@ const ToolBar = () => {
           <span className="line" />
         </Space>
         <Space size={10}>
-          <Tooltip placement="top" title={'放大'}>
+          <Tooltip placement="top" title={'缩小'}>
             <IconFont
-              onClick={handleChangeAdd}
-              type="zoomin"
+              onClick={handleChangeReduce}
+              type="reduce"
               style={{
                 fontSize: 24,
                 color: 'var(--neutral-n2)',
@@ -216,10 +216,10 @@ const ToolBar = () => {
               </>
             )}
           />
-          <Tooltip placement="top" title={'缩小'}>
+          <Tooltip placement="top" title={'放大'}>
             <IconFont
-              onClick={handleChangeReduce}
-              type="reduce"
+              onClick={handleChangeAdd}
+              type="zoomin"
               style={{
                 fontSize: 24,
                 color: 'var(--neutral-n2)',
@@ -227,15 +227,15 @@ const ToolBar = () => {
               }}
             />
           </Tooltip>
-          <span className="line" />
+          {/* <span className="line" /> */}
         </Space>
-        <Tooltip placement="top" title={'下载'}>
+        {/* <Tooltip placement="top" title={'下载'}>
           <IconFont
             type="download"
             style={{ fontSize: 24, color: 'var(--neutral-n2)' }}
             onClick={downloadImage}
           />
-        </Tooltip>
+        </Tooltip> */}
       </RightWrap>
     </ToolBarBox>
   )
