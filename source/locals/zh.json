@@ -2633,5 +2633,6 @@
   "deleteColumn": "删除列",
   "managementBackend": "管理后台",
   "theTaskIsAboutToEnd": "任务即将截止",
-  "theDeadlineForTasksExceeds": "截止任务数超过"
+  "theDeadlineForTasksExceeds": "截止任务数超过",
+  "searchForRequirementNameOrNumber": "搜索需求名称或编号"
 }

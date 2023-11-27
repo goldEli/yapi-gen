@@ -259,7 +259,7 @@ const StaffManagement = () => {
 
   return (
     <PermissionWrap
-      auth="/AdminManagement/StaffManagement"
+      auth="/AdminManagement/NoteManagement"
       permission={menuPermission?.menus
         ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
         ?.children?.map((i: any) => i.url)}
