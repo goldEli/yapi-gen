@@ -63,7 +63,8 @@ import { updateProjectRole } from '@/services/sprint'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
-
+import { getAllDepartment } from '@store/user/user.thunk'
+import UpdateUserDepartment from '@/components/UpdateUserDepartment/idnex'
 const Wrap = styled.div({
   padding: '24px 24px 0',
   display: 'flex',
@@ -213,6 +214,7 @@ const ProjectMember = () => {
   useEffect(() => {
     getJobList()
     getPermission()
+    dispatch(getAllDepartment({ project_id: projectId }))
   }, [])
 
   useEffect(() => {
@@ -319,7 +321,15 @@ const ProjectMember = () => {
       navigate(`/ProjectDetail/MemberInfo/Profile?data=${params}`)
     }
   }
-
+  // 更新部门
+  const _updateUserDepartment = ({ data, record }: any) => {
+    console.log('data')
+    const params = {
+      user_id: record?.id,
+      department_id: data?.id,
+      project_id: projectId,
+    }
+  }
   const onOperationCheckbox = (keys: number[]) => {
     const redClassElements = document.getElementsByClassName(
       'ant-checkbox-wrapper',
@@ -404,7 +414,16 @@ const ProjectMember = () => {
       ),
       dataIndex: 'departmentName',
       width: 200,
-      render: (text: string) => {
+      render: (text: string, record: any, index: number) => {
+        return (
+          <UpdateUserDepartment
+            roleName={text}
+            callBack={data => {
+              _updateUserDepartment({ data, record })
+              console.log('data---', data, record)
+            }}
+          />
+        )
         return <span>{text || '--'}</span>
       },
     },
@@ -774,6 +793,24 @@ const ProjectMember = () => {
           open={selectedRowKeys.length > 0}
           onCancel={() => setSelectedRowKeys([])}
         >
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title="职位"
+          >
+            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+              <IconFont type="position" />
+            </div>
+          </Tooltip>
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title="部门"
+          >
+            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+              <IconFont type="apartment02" />
+            </div>
+          </Tooltip>
           <Tooltip
             placement="top"
             getPopupContainer={node => node}
