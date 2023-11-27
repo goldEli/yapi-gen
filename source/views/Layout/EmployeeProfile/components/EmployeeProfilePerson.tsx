@@ -382,7 +382,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         projectEle
       ) : (
         <div style={{ height: 'calc(100% - 118px)', overflowY: 'auto' }}>
-          <EmployeeDepartment></EmployeeDepartment>
+          <EmployeeDepartment />
         </div>
       )}
     </PersonWrap>
