@@ -198,6 +198,8 @@ const Need = (props: any) => {
         title: <>{t('newlyAdd.operation')}</>,
         dataIndex: 'action',
         key: 'action',
+        width: 200,
+        fixed: 'right',
         render: (_: string, record: any) => {
           return (
             <>

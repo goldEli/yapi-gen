@@ -50,6 +50,7 @@ const SwiperCardMove = (props: any) => {
 
   return (
     <SwiperWrap>
+      <div style={{marginTop:'16px',padding:'16px 24px 0 24px',width:'calc(100% - 48px)',background:'var(--neutral-n8)'}}>
       <Swiper
         spaceBetween={16}
         freeMode
@@ -87,6 +88,7 @@ const SwiperCardMove = (props: any) => {
           )
         })}
       </Swiper>
+      </div>
     </SwiperWrap>
   )
 }
