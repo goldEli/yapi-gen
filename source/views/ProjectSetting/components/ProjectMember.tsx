@@ -492,13 +492,10 @@ const ProjectMember = () => {
   ]
 
   // 修改角色权限
-  const setProjectClick = async (
-    data: Model.Sprint.ProjectSettings,
-    record: any,
-  ) => {
+  const setProjectClick = async (data: any, record: any) => {
     try {
       await updateProjectRole({
-        user_group_id: data.id,
+        user_group_id: data.value,
         project_id: projectId,
         user_id: record.id,
       })

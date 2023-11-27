@@ -24,7 +24,6 @@ const SafetyManagement = () => {
   const onChangeRouter = (key: any, arr?: any) => {
     const url = (arr ?? resultTabList)?.filter((i: any) => i.key === key)[0]
       ?.url
-    setActiveKey(key)
     //   拼接三级菜单路由
     navigate(url)
   }
@@ -67,6 +66,16 @@ const SafetyManagement = () => {
       )
     }
   }, [currentMenu?.id, isRefresh])
+
+  useEffect(() => {
+    //   获取当前路由的key
+    const currentRouter = resultTabList?.filter(
+      (i: any) => i.url === routerPath?.pathname,
+    )
+    setActiveKey(
+      currentRouter?.length > 0 ? currentRouter[0]?.key : resultTabList[0]?.key,
+    )
+  }, [routerPath])
 
   return (
     <HaveTabsContentWrap>
