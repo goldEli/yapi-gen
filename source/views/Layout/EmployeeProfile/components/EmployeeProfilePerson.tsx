@@ -247,8 +247,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
     )
   }
   const projectEle = (
-    <div style={{height: 'calc(100% - 118px)',
-      overflowY: 'auto'}}>
+    <div style={{ height: 'calc(100% - 118px)', overflowY: 'auto' }}>
       <CheckboxAll
         checked={checkAll}
         indeterminate={indeterminate}
@@ -378,10 +377,13 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
           )
         })}
       </TabsWrap>
+
       {tabActiveKey === 'project' ? (
         projectEle
       ) : (
-        <EmployeeDepartment></EmployeeDepartment>
+        <div style={{ height: 'calc(100% - 118px)', overflowY: 'auto' }}>
+          <EmployeeDepartment></EmployeeDepartment>
+        </div>
       )}
     </PersonWrap>
   )
