@@ -91,6 +91,19 @@ const secondaryText = css`
     color: var(--auxiliary-text-t2-d2) !important;
   }
 `
+const secondaryText1 = css`
+  background: var(--auxiliary-b4) !important;
+  color: var(--auxiliary-text-t2-d1) !important ;
+  border: 1px solid transparent !important;
+  &:hover {
+    background: var(--auxiliary-b5) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
+  }
+  &:active {
+    background: var(--auxiliary-b6) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
+  }
+`
 const icon = css`
   width: auto !important;
   padding: 0 6px !important;
@@ -129,6 +142,7 @@ interface Props {
     | 'primaryText'
     | 'secondaryText'
     | 'icon'
+    | 'secondaryText1'
 
   //   图标位置
   iconPlacement?: 'left' | 'right'
@@ -155,6 +169,7 @@ const CommonButton = (props: Props) => {
     danger,
     primaryText,
     secondaryText,
+    secondaryText1,
     icon,
   }
 

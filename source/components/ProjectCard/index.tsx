@@ -234,9 +234,9 @@ const Index = (props: any) => {
           {t('functionary')}
           {props.item?.leaderName}
         </CardRightSecond>
-        <CardRightSecond>
+        {/* <CardRightSecond>
           {t('serial_number')}：{props.item.prefix}
-        </CardRightSecond>
+        </CardRightSecond> */}
         <TransformWrap>
           <ProgressWrap>
             <Progress

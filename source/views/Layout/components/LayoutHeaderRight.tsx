@@ -22,7 +22,6 @@ import {
   Line,
   Line2,
   MenuItemBox,
-  MineCreate,
   CompanyCard,
   RobotButton,
 } from '../style'

@@ -22,6 +22,7 @@ export const CardRightFirst = styled.div`
   font-weight: 400;
   color: var(--neutral-n1-d1);
   line-height: 22px;
+  margin-top: 4px;
 `
 
 export const CardRightSecond = styled.div`
@@ -35,10 +36,11 @@ export const CardRightSecond = styled.div`
   font-weight: 400;
   color: var(--neutral-n3);
   line-height: 20px;
+  margin-top: 2px;
 `
 
 export const TransformWrap = styled.div`
-  margin-top: 5px;
+  margin-top: 8px;
 `
 
 export const ProgressWrap = styled.div`
@@ -86,9 +88,9 @@ export const ProjectCard = styled.div`
   position: relative;
   width: 280px;
   box-sizing: border-box;
-  padding: 22px 16px;
-  height: 124px;
-  background: var(--neutral-n10);
+  padding: 12px 16px;
+  height: 104px;
+  background: var(--neutral-n8);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
   display: flex;

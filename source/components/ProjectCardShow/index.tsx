@@ -41,10 +41,9 @@ const Index = (props: any) => {
           {t('functionary') as string}
           {null ?? 'XXX'}
         </CardRightSecond>
-        <CardRightSecond>
-          {t('keyM') as string}
-          {null ?? 'XXXXX'}
-        </CardRightSecond>
+        {/* <CardRightSecond>
+          {t('serial_number') as string}：{null ?? 'XXXXX'}
+        </CardRightSecond> */}
         <TransformWrap>
           <ProgressWrap>
             <Progress

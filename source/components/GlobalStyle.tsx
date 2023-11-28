@@ -795,9 +795,9 @@ const GlobalStyle = () => {
     .selectBgc
       .ant-select:not(.ant-select-customize-input)
       .ant-select-selector,
-    input,
-    .ant-select-selection-placeholder,
-    .ant-select-arrow {
+    .selectBgc input,
+    .selectBgc .ant-select-selection-placeholder,
+    .selectBgc .ant-select-arrow {
       background-color: var(--auxiliary-b4);
       color: var(--auxiliary-text-t2-d1) !important;
       font-size: 14px;
