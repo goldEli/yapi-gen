@@ -88,14 +88,6 @@ const GroupItems = (props: GroupItemsProps) => {
                     : i.status?.is_start === 2 && i.status?.is_end === 2
                     ? 'var(--function-success)'
                     : '',
-                color:
-                  i.status?.is_start === 1 && i.status?.is_end === 2
-                    ? 'var(--neutral-n7)'
-                    : i.status?.is_end === 1 && i.status?.is_start === 2
-                    ? 'var(--neutral-n1-d1)'
-                    : i.status?.is_start === 2 && i.status?.is_end === 2
-                    ? 'var(--neutral-n7)'
-                    : '',
               }}
             >
               {i.status?.status?.content}
