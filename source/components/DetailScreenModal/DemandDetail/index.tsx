@@ -473,6 +473,7 @@ const DemandDetail = () => {
 
   useEffect(() => {
     if (visible || params.demandId) {
+      dispatch(setDemandInfo({}))
       dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
       dispatch(
         getDemandCommentList({

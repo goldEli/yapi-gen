@@ -296,6 +296,7 @@ const Need = (props: any) => {
             onChangeSearch={onPressEnter}
             leftIcon
             width={184}
+            defaultValue={keyword}
           />
         </div>
 
@@ -326,15 +327,13 @@ const Need = (props: any) => {
       <div style={{ height: 'calc(100vh - 295px)' }}>
         <LoadingSpin spinning={isSpin}>
           <div style={{ padding: '0 24px' }}>
-            {listData?.list && listData?.list?.length > 0 && (
-              <ResizeTable
-                isSpinning={false}
-                dataWrapNormalHeight="calc(100vh - 295px)"
-                col={selectColum}
-                dataSource={listData?.list}
-                noData={<NoData />}
-              />
-            )}
+            <ResizeTable
+              isSpinning={false}
+              dataWrapNormalHeight="calc(100vh - 295px)"
+              col={selectColum}
+              dataSource={listData?.list}
+              noData={<NoData />}
+            />
           </div>
         </LoadingSpin>
       </div>
