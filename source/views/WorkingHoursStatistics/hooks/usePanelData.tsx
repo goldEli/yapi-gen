@@ -19,9 +19,9 @@ const usePanelData = (data: any[], array: any[]) => {
         child.push({
           time: item.time,
           user_id: ele.user_id,
-          story_id: ele.story.id,
+          story_id: ele.story?.id,
           project_id: ele.project_id,
-          id: ele.id,
+          id: ele.id ?? ele?.user?.id,
         })
         map.set(item.date, child)
       }
