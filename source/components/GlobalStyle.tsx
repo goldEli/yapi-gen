@@ -791,6 +791,36 @@ const GlobalStyle = () => {
       color: var(--neutral-n2);
       border: 1px solid var(--neutral-n6-d1);
     }
+    // 导图需要跟换的背景色
+    .selectBgc
+      .ant-select:not(.ant-select-customize-input)
+      .ant-select-selector,
+    input,
+    .ant-select-selection-placeholder,
+    .ant-select-arrow {
+      background-color: var(--auxiliary-b4);
+      color: var(--auxiliary-text-t2-d1) !important;
+      font-size: 14px;
+      border-color: var(--auxiliary-b4);
+    }
+    .selectBgc .ant-select-clear .anticon {
+      background-color: var(--auxiliary-b4);
+    }
+    .selectBgc .ant-select-open .ant-select-selector {
+      border: 1px solid var(--primary-d1) !important;
+      border-radius: 6px;
+    }
+    .selectBgc .ant-select-open .ant-select-selection-placeholder,
+    .selectBgc .ant-select-open .ant-select-arrow {
+      color: var(--auxiliary-text-t2-d2) !important;
+    }
+    .selectBgc .ant-picker-input,
+    .ant-picker-range-separator {
+      display: none;
+    }
+    .selectBgc .ant-picker {
+      border: none;
+    }
     .ant-pagination-item,
     .ant-select-selection-item,
     .ant-pagination-options-quick-jumper {
@@ -820,6 +850,45 @@ const GlobalStyle = () => {
       }
       border-color: var(--neutral-n6-d1);
     }
+    .toolBar .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+    input {
+      border: none;
+    }
+    .toolBar
+      .ant-select-single.ant-select-show-arrow
+      .ant-select-selection-search {
+      padding: 0;
+    }
+    .toolBar
+      .ant-select-single.ant-select-show-arrow
+      .ant-select-selection-item {
+      width: 51px;
+      height: 32px;
+      text-align: center;
+      background: transparent;
+      border-radius: 6px 6px 6px 6px;
+      padding: 0;
+    }
+    .toolBar
+      .ant-select-single.ant-select-show-arrow
+      .ant-select-selection-item:hover {
+      background: var(--auxiliary-b10);
+    }
+    .toolBar
+      .ant-select-single.ant-select-show-arrow
+      .ant-select-selection-placeholder {
+      padding: 0;
+    }
+    .toolBar
+      .ant-select-single:not(.ant-select-customize-input)
+      .ant-select-selector {
+      padding: 0;
+    }
+    // .toolBar .ant-select-selection-item{
+    //   padding:0;
+    //   display:block;
+    //   width:32px;
+    //  }
 
     .ant-select:hover {
       border-color: 1px solid red !important;
@@ -991,6 +1060,19 @@ const GlobalStyle = () => {
     }
     .rowBgc .ant-table-body::-webkit-scrollbar {
       width: 0;
+    }
+    // 导图
+    #MapContentMountNode {
+      background: #fff;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-image: url('https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/mind/dotBg.png');
+    }
+    .fullscreen-enabled .encephalogramBox {
+      padding-left: 24px !important;
     }
   `
   return <Global styles={globalCss} />

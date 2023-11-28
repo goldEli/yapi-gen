@@ -209,7 +209,7 @@ const Index = () => {
   }, [keyword])
   return (
     <PermissionWrap
-      auth="b/flaw/"
+      auth="b/project_department"
       permission={
         isLength
           ? ['0']

@@ -36,7 +36,7 @@ const StatusWrap = styled.div({
 const FlawStatus = (props: any) => {
   const [t] = useTranslation()
   const [active, setActive] = useState<any>(0)
-  const [rows, setRows] = useState(null)
+  const [rows, setRows] = useState<any>(null)
   const { projectInfo, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
@@ -89,13 +89,16 @@ const FlawStatus = (props: any) => {
     dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
-  useEffect(() => {
-    init()
-  }, [])
+  // useEffect(() => {
+  //   init()
+  // }, [])
 
   useEffect(() => {
-    init()
-  }, [flawInfo])
+    if (props.visible && flawInfo.id) {
+      setRows(null)
+      init()
+    }
+  }, [flawInfo, props.visible])
 
   return (
     <div>
@@ -151,7 +154,7 @@ const FlawStatus = (props: any) => {
             verifyInfo={flawInfo.verify_data}
           />
         )}
-        {rows && !flawInfo?.isExamine && (
+        {rows?.id && !flawInfo?.isExamine && (
           <ShapeContentForDetail
             active={flawInfo?.status?.status}
             sid={props.sid}

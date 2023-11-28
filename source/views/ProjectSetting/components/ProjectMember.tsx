@@ -47,12 +47,11 @@ import {
 } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateMember, setProjectInfo } from '@store/project'
+import { updateUserDepartment, updateUserPosition } from '@/services/department'
 import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
-
-import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from './BatchSetPermGroup'
@@ -63,8 +62,9 @@ import { updateProjectRole } from '@/services/sprint'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
-import { getAllDepartment } from '@store/user/user.thunk'
-import UpdateUserDepartment from '@/components/UpdateUserDepartment/idnex'
+import { getAllDepartment, getAllPosition } from '@store/user/user.thunk'
+import UpdateUserDepartment from '@/components/UpdateUserDepartment'
+import UpdateUserPosition from '@/components/UpdateUserPosition'
 const Wrap = styled.div({
   padding: '24px 24px 0',
   display: 'flex',
@@ -215,6 +215,7 @@ const ProjectMember = () => {
     getJobList()
     getPermission()
     dispatch(getAllDepartment({ project_id: projectId }))
+    dispatch(getAllPosition({ project_id: projectId, is_all: 1 }))
   }, [])
 
   useEffect(() => {
@@ -322,13 +323,26 @@ const ProjectMember = () => {
     }
   }
   // 更新部门
-  const _updateUserDepartment = ({ data, record }: any) => {
-    console.log('data')
+  const _updateUserDepartment = async ({ data, record }: any) => {
     const params = {
       user_id: record?.id,
       department_id: data?.id,
       project_id: projectId,
     }
+    const res = await updateUserDepartment(params)
+    getList(order, { page: 1, size: pageObj.size })
+    console.log(params)
+  }
+  // 更新职务
+  const _updateUserPosition = async ({ data, record }: any) => {
+    const params = {
+      user_id: record?.id,
+      id: data?.id,
+      project_id: projectId,
+    }
+    const res = await updateUserPosition(params)
+    getList(order, { page: 1, size: pageObj.size })
+    console.log(params)
   }
   const onOperationCheckbox = (keys: number[]) => {
     const redClassElements = document.getElementsByClassName(
@@ -346,6 +360,7 @@ const ProjectMember = () => {
       }
     }
   }
+
   const onSelectChange = (keys: number[]) => {
     setSelectedRowKeys(keys)
     onOperationCheckbox(keys)
@@ -440,7 +455,16 @@ const ProjectMember = () => {
       ),
       dataIndex: 'positionName',
       width: 180,
-      render: (text: string) => {
+      render: (text: string, record: any) => {
+        return (
+          <UpdateUserPosition
+            roleName={text}
+            callBack={data => {
+              _updateUserPosition({ data, record })
+              console.log('data---', data, record)
+            }}
+          />
+        )
         return <span>{text || '--'}</span>
       },
     },
@@ -482,8 +506,9 @@ const ProjectMember = () => {
               text
             ) : (
               <TableSelectOptions
+                projectPermission={projectPermission}
                 roleName={text}
-                callBack={data => setProjectClick(data, record, index)}
+                callBack={data => setProjectClick(data, record)}
               />
             )}
           </>
@@ -536,29 +561,17 @@ const ProjectMember = () => {
   ]
 
   // 修改角色权限
-  const setProjectClick = async (
-    data: Model.Sprint.ProjectSettings,
-    record: any,
-    index: number,
-  ) => {
+  const setProjectClick = async (data: any, record: any) => {
     try {
       await updateProjectRole({
-        user_group_id: data.id,
+        user_group_id: data.value,
         project_id: projectId,
         user_id: record.id,
       })
       getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
-      // setMemberList((prevData: any) => {
-      //   let obj = { ...prevData }
-      //   let cloneList = [...obj.list]
-      //   cloneList[index] = { ...record, roleName: data.name }
-      //   obj.list = cloneList
-      //   return obj
-      // })
-      // setOptionsDrop(false)
       getList(order, { page: 1, size: pageObj.size })
     } catch (error) {
-      // getMessage({ msg: error as string, type: 'error' })
+      //
     }
   }
 

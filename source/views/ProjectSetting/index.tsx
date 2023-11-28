@@ -7,6 +7,7 @@ import ProjectInfo from './components/ProjectInfo'
 import ProjectSet from './components/ProjectSet'
 import KanBanSettings from './components/KanBanSetting'
 import HomeSettings from './components/HomeSetting'
+import WorkingTimeConfig from './components/WorkTimeConfig/index'
 import {
   Outlet,
   useLocation,
@@ -55,7 +56,6 @@ const Setting = () => {
   //   跳转路由
   const onChangeRouter = (key: any) => {
     const url = resultTabList?.filter((i: any) => i.key === key)[0]?.url
-    setActiveKey(key)
     //   拼接三级菜单路由
     navigate(
       `${url}?data=${encryptPhp(JSON.stringify({ id: paramsData?.id }))}`,
@@ -143,23 +143,40 @@ const Setting = () => {
           key: 'ProjectWarning',
           url: '/ProjectDetail/Setting/ProjectWarning',
         },
+        {
+          label: '工作时间配置',
+          icon: 'settings',
+          content: <WorkingTimeConfig />,
+          isPermission: true,
+          key: 'WorkingTimeConfig',
+          url: '/ProjectDetail/Setting/WorkingTimeConfig',
+        },
       ]
       setResultTabList(list?.filter((i: any) => i.isPermission))
-      //   获取当前路由的key
-      const currentRouter = list?.filter(
-        (i: any) => i.url === routerPath?.pathname,
-      )
-      const resultKey =
-        currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key
-      setActiveKey(resultKey)
-      //   拼接三级菜单路由
-      navigate(
-        `${
-          list?.filter((i: any) => i.key === resultKey)[0]?.url
-        }?data=${encryptPhp(JSON.stringify({ id: paramsData?.id }))}`,
-      )
+      // //   获取当前路由的key
+      // const currentRouter = list?.filter(
+      //   (i: any) => i.url === routerPath?.pathname,
+      // )
+      // const resultKey =
+      //   currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key
+      // //   拼接三级菜单路由
+      // navigate(
+      //   `${
+      //     list?.filter((i: any) => i.key === resultKey)[0]?.url
+      //   }?data=${encryptPhp(JSON.stringify({ id: paramsData?.id }))}`,
+      // )
     }
   }, [projectInfo, currentMenu])
+
+  useEffect(() => {
+    //   获取当前路由的key
+    const currentRouter = resultTabList?.filter(
+      (i: any) => i.url === routerPath?.pathname,
+    )
+    const resultKey =
+      currentRouter?.length > 0 ? currentRouter[0]?.key : resultTabList?.[0].key
+    setActiveKey(resultKey)
+  }, [routerPath])
 
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))
