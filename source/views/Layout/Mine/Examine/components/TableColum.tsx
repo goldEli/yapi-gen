@@ -172,6 +172,7 @@ export const useDynamicColumns = (state: any) => {
       title: t('newlyAdd.reviewStatus'),
       dataIndex: 'statusFromTo',
       key: 'status_from_to',
+      width:300,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -184,13 +185,9 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'status',
       key: 'verify_status',
-      render: (text: any, record: any) => {
+      render: (text: any) => {
         return (
-          //  onClick={() => state.onChangeOperation(record)}
           <div>
-            {/* {text === 1 && !state.activeTab ? (
-              <CanClick>{t('newlyAdd.waitExamine')}</CanClick>
-            ) : ( */}
               <StatusWrap>
                 <CircleWrap
                   style={{
@@ -205,7 +202,6 @@ export const useDynamicColumns = (state: any) => {
                     : t('newlyAdd.notPass')}
                 </ClickWrap>
               </StatusWrap>
-            {/* )} */}
           </div>
         )
       },
@@ -216,6 +212,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'verifyTime',
       key: 'verify_at',
+      width:220,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
