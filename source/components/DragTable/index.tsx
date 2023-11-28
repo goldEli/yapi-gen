@@ -9,7 +9,15 @@ import { Table } from 'antd'
 import { DragTableIcon } from '../StyleCommon'
 import styled from '@emotion/styled'
 
-const TableWrap = styled(Table)`
+const TableWrap = styled(Table)<{ isProject?: boolean }>`
+  user-select: none;
+  height: 100%;
+  .ant-table-wrapper,
+  .ant-table,
+  .ant-table-container,
+  .ant-table-content {
+    height: 100%;
+  }
   .ant-table-row:hover {
     .dropdownIcon {
       visibility: visible;
@@ -19,6 +27,9 @@ const TableWrap = styled(Table)`
     font-size: var(--font12);
     color: var(--neutral-n3);
     font-family: SiYuanMedium;
+  }
+  .ant-table-body {
+    height: ${props => (props.isProject ? 'calc(100% - 52px)' : 'inherit')};
   }
 `
 
@@ -32,7 +43,10 @@ interface DragTableProps {
   // 项目列表判断手柄
   filterParams?: any
   onRow?(row: any): void
+  // 是否有手柄
   hasHandle?: boolean
+  // 是否是项目列表
+  isProject?: boolean
 }
 
 const DragTable = (props: DragTableProps) => {
@@ -96,6 +110,7 @@ const DragTable = (props: DragTableProps) => {
 
   return (
     <TableWrap
+      isProject={props.isProject}
       pagination={false}
       dataSource={props.dataSource.list}
       columns={resColumns}
