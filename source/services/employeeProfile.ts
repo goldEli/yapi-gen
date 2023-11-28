@@ -6,6 +6,7 @@ import { resolve } from 'path'
 // 获取事务详情
 export const getMemberOverviewList = async () => {
   const response = await http.get<any>('getMemberOverviewList', { type: 1 })
+
   const newData = response.data.list
   for (const item of newData) {
     for (let user of item.member_list) {

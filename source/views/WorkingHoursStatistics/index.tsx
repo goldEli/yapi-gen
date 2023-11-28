@@ -44,6 +44,7 @@ const WorkHours: React.FC<IProps> = props => {
     absence: 0,
     leave: 0,
   })
+  const [styleStatus, setStyleStatus] = useState('')
   const onInputSearch = (val: any) => {
     setKey(val)
     onSearch(formVal, type, val)
@@ -89,6 +90,7 @@ const WorkHours: React.FC<IProps> = props => {
       page: page ? page : pageObj.currentPage,
       pagesize: pageSize ? pageSize : pageObj.pageSize,
       keyword: keyVal,
+      style: val?.style,
     }
     const res = await workTimeList(parmas)
     setPageObj({
@@ -166,7 +168,11 @@ const WorkHours: React.FC<IProps> = props => {
               width: `calc(100% - ${leftWidth}px)`,
             }}
           >
-            <TableLeft data={data} updateOverdue={updateOverdueApi} />
+            <TableLeft
+              data={data}
+              updateOverdue={updateOverdueApi}
+              type={formVal?.style}
+            />
             <div className="openIconBox">
               <CommonIconFont
                 type={direction ? 'indent' : 'outdent'}
@@ -205,6 +211,7 @@ const WorkHours: React.FC<IProps> = props => {
                 onSearch(formVal, type, key)
               }}
               type={type}
+              status={formVal?.style}
             />
           </div>
         </MianWrap>
