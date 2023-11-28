@@ -4,26 +4,15 @@ import { changeWater, getWater } from '@/services/setting'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { changeWaterStatus } from '@store/waterState'
-import { Switch } from 'antd'
+import { Radio, Switch } from 'antd'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const Header = styled.div({
-  height: 64,
-  background: 'white',
-  lineHeight: '64px',
-  position: 'sticky',
-  top: 0,
-  zIndex: 1,
-  span: {
-    fontSize: 16,
-    fontWeight: 400,
-    color: 'var(--neutral-n1-d1)',
-    paddingLeft: 24,
-  },
-})
-
 const Content = styled.div`
-  padding: 0 24px;
+  width: 616px;
+  height: 100%;
+  padding-top: 80px;
+  margin: 0 auto;
 `
 
 const SwitchWrap = styled.div`
@@ -37,7 +26,7 @@ const Text = styled.div`
   height: 46px;
   margin-bottom: 24px;
   > div:nth-of-type(1) {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
     color: var(--neutral-n1-d1);
     margin-bottom: 4px;
@@ -46,9 +35,28 @@ const Text = styled.div`
     font-size: 12px;
     font-weight: 400;
     color: var(--neutral-n3);
+    margin-bottom: 24px;
   }
 `
-
+const RadioBgcWrap = styled(Radio.Group)`
+  display: flex;
+`
+const Col = styled.div<{ margin?: boolean ,state:boolean}>`
+  display: flex;
+  width: 284px;
+  border-radius: 8px;
+  border: ${props => (props.state ? '1px solid var(--primary-d1)' : '1px solid var(--neutral-n6-d1)')} ;
+  margin-left: ${props => (props.margin ? '48px' : '0')};
+  padding: 12px;
+  flex-direction: column;
+  img {
+    width: 100%;
+    margin-bottom:12px;
+  }
+  &:hover {
+    border: 1px solid var(--primary-d1);
+  }
+`
 const WaterMarkManagement = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
@@ -56,14 +64,14 @@ const WaterMarkManagement = () => {
 
   const { value: checked } = useSelector(store => store.water)
   const { menuPermission } = useSelector(store => store.user)
+  const [val,setVal]= useState(checked ? 1 : 2)
   const dispatch = useDispatch()
-
-  const onChange = async (value: boolean) => {
+  const onChange = async (e: any) => {
+    setVal(e.target.value)
     const res = await getWater()
-    const res2 = await changeWater({ id: res.id, status: value ? 1 : 2 })
-
+    const res2 = await changeWater({ id: res.id, status: e.target.value })
     if (res2.code === 0) {
-      dispatch(changeWaterStatus(value))
+      dispatch(changeWaterStatus(e.target.value === 1))
     }
   }
   const configList = [
@@ -73,7 +81,6 @@ const WaterMarkManagement = () => {
       key: 'watermark',
     },
   ]
-
   return (
     <PermissionWrap
       auth="/AdminManagement/WaterMarkManagement"
@@ -87,10 +94,6 @@ const WaterMarkManagement = () => {
           backgroundColor: 'var(--neutral-white-d1)',
         }}
       >
-        <Header>
-          <span>{t('secure_watermark')}</span>
-        </Header>
-
         <Content>
           {configList.map(item => (
             <SwitchWrap key={item.title}>
@@ -98,9 +101,18 @@ const WaterMarkManagement = () => {
                 <div>{t(item.title as any)}</div>
                 <div>{t(item.des as any)}</div>
               </Text>
-              <Switch onChange={onChange} checked={checked} />
             </SwitchWrap>
           ))}
+          <RadioBgcWrap onChange={onChange} value={val}>
+            <Col state={val === 2}>
+              <img src="/bgc/nor.png" />
+              <Radio value={2}>无水印</Radio>
+            </Col>
+            <Col margin state={val === 1}>
+              <img src="/bgc/sel.png" />
+              <Radio value={1}>有水印</Radio>
+            </Col>
+          </RadioBgcWrap>
         </Content>
       </div>
     </PermissionWrap>

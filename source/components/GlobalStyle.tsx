@@ -795,7 +795,7 @@ const GlobalStyle = () => {
     .selectBgc
       .ant-select:not(.ant-select-customize-input)
       .ant-select-selector,
-      .selectBgc input,
+    .selectBgc input,
     .selectBgc .ant-select-selection-placeholder,
     .selectBgc .ant-select-arrow {
       background-color: var(--auxiliary-b4);
