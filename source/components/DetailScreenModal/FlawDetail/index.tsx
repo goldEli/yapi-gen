@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
 import { useDispatch, useSelector } from '@store/index'
@@ -81,7 +82,7 @@ const FlawDetail = () => {
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
   const { userPreferenceConfig } = useSelector(store => store.user)
-  const [tabActive, setTabActive] = useState(params?.type ?? '1')
+  const [tabActive, setTabActive] = useState('1')
   const [filter, setFilter] = useState(false)
   // 是否可改变类别弹窗
   const [isShowChange, setIsShowChange] = useState(false)
@@ -455,6 +456,7 @@ const FlawDetail = () => {
 
   useEffect(() => {
     if (visible || params.flawId) {
+      dispatch(setFlawInfo({}))
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
       dispatch(
         getFlawCommentList({

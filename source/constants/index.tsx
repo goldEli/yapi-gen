@@ -31,3 +31,13 @@ export const TYPE_ENCEPHALOGRAM = [
     color: '#FFC8A0',
   },
 ]
+export const ROUTERS_URL: any = {
+  '/SprintProjectManagement/Affair': '/ProjectDetail/Affair',
+  '/ProjectManagement/Demand': '/ProjectDetail/Demand',
+  '/ProjectManagement/Defect': '/ProjectDetail/Defect',
+  '/ProjectManagement/Iteration': '/ProjectDetail/Iteration',
+  '/ProjectManagement/IterationDetail': '/ProjectDetail/IterationDetail',
+  '/SprintProjectManagement/Sprint': '/ProjectDetail/Sprint',
+  '/ProjectManagement/ProjectSetting': '/ProjectDetail/Setting',
+  '/SprintProjectManagement/Setting': '/ProjectDetail/Setting',
+}

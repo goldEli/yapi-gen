@@ -180,8 +180,8 @@ export const PersonWrap = styled.div`
 
 export const ReportButton = styled.div`
   position: absolute;
-  right: 0;
-  top: 72px;
+  right: 0px;
+  top: 112px;
   height: 32px;
   line-height: 32px;
   padding: 0 8px;
@@ -512,7 +512,7 @@ export const TaskContent = styled.div`
   margin-left: 8px;
   .nameBox {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     width: 100%;
     .left {
@@ -521,7 +521,7 @@ export const TaskContent = styled.div`
       font-size: 14px;
       color: var(--neutral-n1-d1);
       .name {
-        max-width: 86%;
+        max-width: 70%;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -531,6 +531,7 @@ export const TaskContent = styled.div`
     .right {
       font-size: 12px;
       color: var(--function-error);
+      text-align: right;
     }
   }
   .info {
@@ -544,7 +545,6 @@ export const TaskContent = styled.div`
 `
 export const TabWrap = styled(Tabs)`
   height: calc(100% - 40px);
-  margin-left: 16px;
   .ant-tabs-tab + .ant-tabs-tab {
     margin: 0px;
   }
@@ -588,7 +588,46 @@ export const TabWrap = styled(Tabs)`
     height: 100%;
   }
 `
+export const TabsWrap = styled.div`
+  /* width: 2cm; */
+  width: 246px;
+  height: 32px;
+  box-sizing: border-box;
+  padding-left: 2px;
+  margin-bottom: 18px;
+  border-radius: 4px 4px 4px 4px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--neutral-n2);
+  cursor: pointer;
+  position: relative;
+  background: var(--hover-d2);
 
+  .item-tab {
+    padding: 0px 16px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 6;
+    box-sizing: border-box;
+    width: 120px;
+    justify-content: center;
+    .cover {
+      background: #ffffff;
+      position: absolute;
+      height: 28px;
+      border-radius: 4px;
+      width: 120px;
+      top: 2px;
+      left: 1px;
+      text-align: center;
+      line-height: 28px;
+      color: var(--primary-d1);
+    }
+  }
+`
 export const TreeWrap = styled(Tree)`
   height: 100%;
   overflow-y: scroll;

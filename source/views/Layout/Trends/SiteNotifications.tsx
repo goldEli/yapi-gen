@@ -167,6 +167,8 @@ const SiteNotifications = (props: any, ref: any) => {
 
     if (!isMobile.any()) {
       Notification?.requestPermission().then(result => {
+        // 如果传输消息为空则不提示任何消息
+        if (!wsData) return
         if (result === 'granted') {
           const n: any = new Notification(wsData.data.msgBody.title, {
             body: wsData.data.msgBody.content,

@@ -26,7 +26,7 @@ const PushConditions = () => {
       name: t('taskIsAboutToExpire'),
       sub: t('theTaskIsAboutToExceedTheExpectedEndDateAndIsNotCompleted'),
       conditionSub: t('systemDateDistanceFromExpectedEndDate'),
-      thresholdSub: t('theNumberOfOverdueTasksExceeds'),
+      thresholdSub: t('theDeadlineForTasksExceeds'),
       type: 'task_soon_expired',
     },
     {

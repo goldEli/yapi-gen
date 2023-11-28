@@ -1744,7 +1744,7 @@
   "grouped_view": "分组视图",
   "at_the_same_time": "同时支持按人员、类别、优先级三个横向参数进行工作对比与查看",
   "columns_and_status": "列与状态",
-  "vertical_filtering_can_be_performed_according_to_different_workflows": "可以按不同工作流进行纵向筛选，如需定义工作流可在配置看板中新增或编辑它",
+  "vertical_filtering_can_be_performed_according_to_different_workflows": "可以按不同工作流进行纵向筛选，如需定义工作流可在配置看板中新增或编辑他",
   "count_person": "共计{{count}}个事务",
   "group": "分组",
   "are_you_sure_to_delete_this_requirement?": "确认删除该需求吗？",
@@ -2524,7 +2524,7 @@
   "question": "问题",
   "noneToday": "今日暂无",
   "theTaskIsAboutToExceedTheExpectedEndDateAndIsNotCompleted": "任务即将超过预计结束日期未完成",
-  "taskIsAboutToExpire": "任务即将逾期",
+  "taskIsAboutToExpire": "任务即将截止",
   "systemDateDistanceFromExpectedEndDate": "系统日期距离预计结束日期",
   "theNumberOfOverdueTasksExceeds": "逾期任务数超过",
   "taskIsOverdue": "任务逾期 ",
@@ -2628,6 +2628,12 @@
   "toBeOpened": "待开放",
   "onlyTheProjectLeaderCanPausestartTheProject": "项目负责人才能开始/暂停项目",
   "removed": "（已移除）",
+  "projectTeam": "项目组",
+  "department1": "部门",
   "editColumn": "编辑列",
-  "deleteColumn": "删除列"
+  "deleteColumn": "删除列",
+  "managementBackend": "管理后台",
+  "theTaskIsAboutToEnd": "任务即将截止",
+  "theDeadlineForTasksExceeds": "截止任务数超过",
+  "searchForRequirementNameOrNumber": "搜索需求名称或编号"
 }

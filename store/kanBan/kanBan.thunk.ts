@@ -487,21 +487,29 @@ export const updateKanbanByGroup = createAsyncThunk(
       project_id: getProjectIdByUrl(),
       kanban_config_id: parseInt(columnId, 10),
     }
-    const myres = await getNewkanbanGroups({
-      ...params,
-      group_by: type,
-    })
-    store.dispatch(setSpinning(false))
-    const newData = store
-      .getState()
-      .kanBan?.kanbanInfoByGroup?.map((k: any) => {
-        const temp = myres.find((s: any) => s.id === k.id)
-        return {
-          ...temp,
-          columns: k.columns,
-        }
+    if (type === 'priority') {
+      const myres = await getNewkanbanGroups({
+        ...params,
+        group_by: type,
       })
-    return newData
+
+      store.dispatch(setSpinning(false))
+      const newData = store
+        .getState()
+        .kanBan?.kanbanInfoByGroup?.map((k: any) => {
+          const temp = myres.find((s: any) => s.id === k.id)
+          return {
+            ...temp,
+            columns: k.columns,
+          }
+        })
+      return newData
+    }
+    return store.getState().kanBan?.kanbanInfoByGroup?.map((k: any) => {
+      return {
+        columns: k.columns,
+      }
+    })
   },
 )
 

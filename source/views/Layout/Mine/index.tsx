@@ -53,24 +53,23 @@ const Mine = () => {
   //   跳转路由
   const onChangeRouter = (key: any) => {
     const url = list?.filter((i: any) => i.key === key)[0]?.url
-    setActiveKey(String(key))
     //   拼接三级菜单路由
     navigate(url)
   }
 
-  const onUpdateList = () => {
-    //   获取当前路由的key
-    const currentRouter = list?.filter(
-      (i: any) => i.url === routerPath?.pathname,
-    )
-    onChangeRouter(
-      currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key,
-    )
-  }
-
   useEffect(() => {
-    onUpdateList()
-  }, [])
+    if (routerPath.pathname === '/Mine/Profile') {
+      setActiveKey('1')
+    } else {
+      //   获取当前路由的key
+      const currentRouter = list?.filter(
+        (i: any) => i.url === routerPath?.pathname,
+      )
+      setActiveKey(
+        String(currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key),
+      )
+    }
+  }, [routerPath])
 
   return (
     <HaveTabsContentWrap>

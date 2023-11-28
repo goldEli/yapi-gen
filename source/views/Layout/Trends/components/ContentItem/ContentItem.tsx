@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-negated-condition */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/jsx-handler-names */
@@ -17,7 +18,7 @@ import { getMessage } from '@/components/Message'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setProjectWarningModal } from '@store/project'
-
+import { ROUTERS_URL } from '@/constants'
 const ContentItem = (props: any) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
@@ -62,6 +63,9 @@ const ContentItem = (props: any) => {
   }
 
   function formateBlue(str: string, url?: string) {
+    // const _str: any = url?.split('.com')[1].split('?')[0]
+    // const newUrl = ROUTERS_URL[_str]
+    // url = url?.replace(_str, newUrl)
     if (url) {
       return str.concat(
         '',

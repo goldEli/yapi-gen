@@ -32,6 +32,7 @@ import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import CommonButton from './CommonButton'
 import CustomSelect from './CustomSelect'
 import { MyDiv } from './Shape'
+import { getProjectIdByUrl } from '@/tools'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -376,6 +377,8 @@ const ShapeContentForDetail = (props: any) => {
   }
 
   const init2 = async () => {
+    // console.log(props.row, '=111111',)
+    // if (props.row.project_id !== getProjectIdByUrl()) return
     setLoading(false)
     setActiveStatus(props.row.status)
     const res2 = await getProjectMember(projectId)
@@ -393,9 +396,7 @@ const ShapeContentForDetail = (props: any) => {
   }
 
   useEffect(() => {
-    if (props.row.id !== props.sid) {
-      init2()
-    }
+    init2()
   }, [props.row])
 
   const onClear = () => {

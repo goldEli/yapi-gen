@@ -42,8 +42,6 @@ import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
-
-import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from './BatchSetPermGroup'
@@ -311,6 +309,7 @@ const ProjectMember = () => {
       }
     }
   }
+
   const onSelectChange = (keys: number[]) => {
     setSelectedRowKeys(keys)
     onOperationCheckbox(keys)
@@ -438,8 +437,9 @@ const ProjectMember = () => {
               text
             ) : (
               <TableSelectOptions
+                projectPermission={projectPermission}
                 roleName={text}
-                callBack={data => setProjectClick(data, record, index)}
+                callBack={data => setProjectClick(data, record)}
               />
             )}
           </>
@@ -492,29 +492,17 @@ const ProjectMember = () => {
   ]
 
   // 修改角色权限
-  const setProjectClick = async (
-    data: Model.Sprint.ProjectSettings,
-    record: any,
-    index: number,
-  ) => {
+  const setProjectClick = async (data: any, record: any) => {
     try {
       await updateProjectRole({
-        user_group_id: data.id,
+        user_group_id: data.value,
         project_id: projectId,
         user_id: record.id,
       })
       getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
-      // setMemberList((prevData: any) => {
-      //   let obj = { ...prevData }
-      //   let cloneList = [...obj.list]
-      //   cloneList[index] = { ...record, roleName: data.name }
-      //   obj.list = cloneList
-      //   return obj
-      // })
-      // setOptionsDrop(false)
       getList(order, { page: 1, size: pageObj.size })
     } catch (error) {
-      // getMessage({ msg: error as string, type: 'error' })
+      //
     }
   }
 

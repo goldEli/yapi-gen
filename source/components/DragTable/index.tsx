@@ -16,7 +16,6 @@ const TableWrap = styled(Table)`
     }
   }
   .ant-table-thead > tr > th {
-    border-bottom: 0px;
     font-size: var(--font12);
     color: var(--neutral-n3);
     font-family: SiYuanMedium;
@@ -33,6 +32,7 @@ interface DragTableProps {
   // 项目列表判断手柄
   filterParams?: any
   onRow?(row: any): void
+  hasHandle?: boolean
 }
 
 const DragTable = (props: DragTableProps) => {
@@ -89,9 +89,10 @@ const DragTable = (props: DragTableProps) => {
     render: () => <DragHandle />,
   }
 
-  const resColumns = hasHandle
-    ? [...(props.hasOperation || []), ...[dragHandle], ...props.columns]
-    : [...(props.hasOperation || []), ...props.columns]
+  const resColumns =
+    hasHandle || props.hasHandle
+      ? [...(props.hasOperation || []), ...[dragHandle], ...props.columns]
+      : [...(props.hasOperation || []), ...props.columns]
 
   return (
     <TableWrap

@@ -8,12 +8,12 @@ import SiteSettingDrawer from './components/SiteSettingDrawer'
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 const IconWrap = styled.span`
-  color: var(--neutral-n2);
+  /* color: var(--neutral-n2); */
   font-size: var(--font14);
   display: flex;
   align-items: center;
   .anticon {
-    margin-right: 8px;
+    margin-right: 4px;
   }
 `
 const Trends = () => {
@@ -27,7 +27,7 @@ const Trends = () => {
     {
       label: (
         <IconWrap>
-          <CommonIconFont type="bell" size={20}></CommonIconFont>{' '}
+          <CommonIconFont type="bell" size={16}></CommonIconFont>{' '}
           {t('allNotifications')}{' '}
         </IconWrap>
       ),
@@ -36,7 +36,7 @@ const Trends = () => {
     {
       label: (
         <IconWrap>
-          <CommonIconFont type="bell-notification" size={20}></CommonIconFont>{' '}
+          <CommonIconFont type="bell-notification" size={16}></CommonIconFont>{' '}
           {t('unreadNotifications')}{' '}
         </IconWrap>
       ),
@@ -45,7 +45,7 @@ const Trends = () => {
     {
       label: (
         <IconWrap>
-          <CommonIconFont type="bell-off" size={20}></CommonIconFont>{' '}
+          <CommonIconFont type="bell-off" size={16}></CommonIconFont>{' '}
           {t('readNotification')}{' '}
         </IconWrap>
       ),
@@ -54,7 +54,7 @@ const Trends = () => {
     {
       label: (
         <IconWrap>
-          <CommonIconFont type="mention" size={20}></CommonIconFont>{' '}
+          <CommonIconFont type="mention" size={16}></CommonIconFont>{' '}
           {t('mentionMine')}{' '}
         </IconWrap>
       ),
@@ -63,21 +63,20 @@ const Trends = () => {
   ]
   //   跳转路由
   const onChangeRouter = (key: any) => {
-    setActiveKey(key)
     //   拼接三级菜单路由
     navigate(`/Trends/AllNote/${key}`)
   }
 
-  const onUpdateList = () => {
-    //   获取当前路由的key
-    const currentRouterKey = routerPath?.pathname?.split('/Trends/AllNote/')[1]
-    onChangeRouter(currentRouterKey)
-  }
-
   useEffect(() => {
-    onUpdateList()
-  }, [])
-
+    if (routerPath.pathname === '/Trends/AllNote/1') {
+      setActiveKey('1')
+    } else {
+      //   获取当前路由的key
+      const currentRouterKey =
+        routerPath?.pathname?.split('/Trends/AllNote/')[1]
+      setActiveKey(currentRouterKey)
+    }
+  }, [routerPath])
   return (
     <HaveTabsContentWrap>
       <TabsContent

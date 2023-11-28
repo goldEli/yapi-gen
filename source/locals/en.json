@@ -2523,7 +2523,7 @@
   "question": "Question",
   "noneToday": "None today",
   "theTaskIsAboutToExceedTheExpectedEndDateAndIsNotCompleted": "The task is about to exceed the expected end date and is not completed",
-  "taskIsAboutToExpire": "Task is about to expire",
+  "taskIsAboutToExpire": "The task is about to end",
   "systemDateDistanceFromExpectedEndDate": "System date distance from expected end date",
   "theNumberOfOverdueTasksExceeds": "The number of overdue tasks exceeds",
   "taskIsOverdue": "Task is overdue",
@@ -2628,6 +2628,12 @@
   "toBeOpened": "Wait open",
   "onlyTheProjectLeaderCanPausestartTheProject": "Only the project leader can start/pause the project",
   "removed": "(Removed) ",
+  "projectTeam": "Project Team",
+  "department1": "Department",
   "editColumn": "Edit Column",
-  "deleteColumn": "Delete Column"
+  "deleteColumn": "Delete Column",
+  "managementBackend": "Backstage",
+  "theTaskIsAboutToEnd": "The task is about to end",
+  "theDeadlineForTasksExceeds": "The deadline for tasks exceeds",
+  "searchForRequirementNameOrNumber": "Search for requirement name or number"
 }

@@ -70,7 +70,14 @@ const MorePopoverComponent = (props: MorePopoverComponentProps) => {
               size={24}
               color="var(--neutral-n2)"
             />
-            <div>{i.isRegular ? t(i.name) : i.name}</div>
+            <div>
+              {/* 单独处理后台得翻译 */}
+              {i?.url === '/AdminManagement'
+                ? t('managementBackend')
+                : i?.isRegular
+                ? t(i?.name)
+                : i?.name}
+            </div>
           </MoreItem>
         ))}
       </MorePopoverContent>
@@ -201,7 +208,6 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       navigateUrl = `${item.url}/Task`
     }
 
-    navigate(navigateUrl)
     const resultMenu = {
       ...item,
       ...{
@@ -210,11 +216,15 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
         )[0]?.normal,
       },
     }
-    dispatch(setProjectInfo({}))
     dispatch({
       type: 'user/setCurrentMenu',
       payload: resultMenu,
     })
+    dispatch(setProjectInfo({}))
+
+    setTimeout(() => {
+      navigate(navigateUrl)
+    }, 10)
   }
 
   // 新开页面打开外链
@@ -247,6 +257,15 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       let resultMenu = menuPermission?.menus?.filter((i: any) =>
         routerPath.pathname?.includes(i.url),
       )[0]
+      // 特殊处理老路由 !!!!!
+      if (
+        routerPath.pathname?.includes('/SprintProjectManagement/') ||
+        routerPath.pathname?.includes('/ProjectManagement/')
+      ) {
+        resultMenu = menuPermission?.menus?.filter(
+          (i: any) => i.url === '/Project',
+        )[0]
+      }
       dispatch(setCurrentMenu(resultMenu))
       onComputedMenu(layoutSideCollapse, menuPermission?.menus)
     }
