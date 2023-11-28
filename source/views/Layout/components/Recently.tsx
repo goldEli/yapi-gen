@@ -37,6 +37,9 @@ import moment from 'moment'
 import _ from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
+import { setDemandInfo } from '@store/demand'
+import { setFlawInfo } from '@store/flaw'
+import { setAffairsInfo } from '@store/affairs'
 
 interface GroupItemsProps {
   row: any
@@ -349,8 +352,6 @@ const Recently = (props: RecentlyProps) => {
         type: row?.actionable.project_type === 2 ? 'sprint' : 'iteration',
       }),
     )
-
-    console.log(row, '=rowrowrow')
 
     navigate(
       `${

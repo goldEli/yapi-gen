@@ -456,6 +456,7 @@ const FlawDetail = () => {
 
   useEffect(() => {
     if (visible || params.flawId) {
+      dispatch(setFlawInfo({}))
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
       dispatch(
         getFlawCommentList({
