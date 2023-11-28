@@ -65,7 +65,7 @@ const GlobalStyle = () => {
       --neutral-white-d4: #ffffff;
       --neutral-white-d5: #ffffff;
       --neutral-white-d6: #ffffff;
-      --neutral-n10: #fafafc;
+      --neutral-n10: #f3f3f5;
       --neutral-white-d7: #ffffff;
       --function-success: #43ba9a;
       --function-error: #ff5c5e;
@@ -795,7 +795,7 @@ const GlobalStyle = () => {
     .selectBgc
       .ant-select:not(.ant-select-customize-input)
       .ant-select-selector,
-      .selectBgc input,
+    .selectBgc input,
     .selectBgc .ant-select-selection-placeholder,
     .selectBgc .ant-select-arrow {
       background-color: var(--auxiliary-b4);

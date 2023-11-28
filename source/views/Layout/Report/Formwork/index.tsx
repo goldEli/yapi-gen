@@ -13,7 +13,10 @@ import {
   setTemplateContentConfigs,
   setTemplateName,
 } from '@store/formWork'
-import { HaveTabsContentWrap } from '@/components/StyleCommon'
+import {
+  HaveTabsContentWrap,
+  TabsBarExtraButton,
+} from '@/components/StyleCommon'
 import TabsContent from '@/components/TabsContent'
 import AddFormWork from './AddFormWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -25,6 +28,8 @@ import { debounce } from 'lodash'
 import { aWeekDataList } from './DataList'
 import { createTemplate, upDateTemplate } from '@/services/formwork'
 import CommonButton from '@/components/CommonButton'
+import CommonInput from '@/components/CommonInput'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const FormWork = () => {
   const [t]: any = useTranslation()
@@ -381,9 +386,8 @@ const FormWork = () => {
         }))}
         activeKey={String(isActive)}
         tabBarExtraContent={
-          <CommonButton
-            type="primaryText"
-            icon="plus"
+          <TabsBarExtraButton
+            isPrimary
             onClick={() => {
               if (!editSave && activeItem?.name) {
                 setDelIsVisible(true)
@@ -393,8 +397,9 @@ const FormWork = () => {
               setIsVisible(true)
             }}
           >
-            {t('createNewTemplate')}
-          </CommonButton>
+            <CommonIconFont type="plus" />
+            <div>{t('createNewTemplate')}</div>
+          </TabsBarExtraButton>
         }
       />
       <RightFormWork />

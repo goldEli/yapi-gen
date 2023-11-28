@@ -127,11 +127,11 @@ const ChartsItem = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  width:12%;
-  height:88px;
-  padding:16px 0;
-  &:hover{
-    background:var(--hover-d2);
+  width: 12%;
+  height: 88px;
+  padding: 16px 0;
+  &:hover {
+    background: var(--hover-d2);
   }
 `
 const ChartsItem333 = styled.span`
@@ -142,17 +142,20 @@ const ChartsItem333 = styled.span`
   justify-content: space-between;
 `
 
-const ChartsItem1 = styled.div<{background:string}>({
-  width:'12%',
-  height:'88px',
-  padding:'16px 0',
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  borderRadius: '6px',
-},({ background }) => ({
-  background
-}),)
+const ChartsItem1 = styled.div<{ background: string }>(
+  {
+    width: '12%',
+    height: '88px',
+    padding: '16px 0',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    borderRadius: '6px',
+  },
+  ({ background }) => ({
+    background,
+  }),
+)
 const titleCss = css`
   color: var(--neutral-n1-d1);
   padding-left: 8px;
@@ -590,7 +593,11 @@ const HiddenText = styled.div({
   display: 'flex',
   alignItems: 'center',
 })
-const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean,colorState?: any }>(
+const ClickWrap = styled.div<{
+  isClose?: boolean
+  isName?: boolean
+  colorState?: any
+}>(
   {
     width: '80%',
     display: 'flex',
@@ -620,8 +627,12 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean,colorState?: 
       },
     },
   },
-  ({ isClose, isName,colorState }) => ({
-    color: colorState ? 'rgb(250, 151, 70)' : isClose ? 'var(--neutral-n3)' : '',
+  ({ isClose, isName, colorState }) => ({
+    color: colorState
+      ? 'rgb(250, 151, 70)'
+      : isClose
+      ? 'var(--neutral-n3)'
+      : '',
     textDecoration: isName && isClose ? 'line-through' : '',
   }),
 )
@@ -1127,7 +1138,7 @@ const HaveTabsContentWrap = styled.div<{ height?: any }>`
   height: ${props => props.height ?? 'calc(100vh - 56px)'};
   background: #f0f0f5;
   .ant-tabs-nav {
-    padding: 0px 24px;
+    padding: 0px 16px;
     margin: 6px 0 0;
     .ant-tabs-tab {
       padding: 5px 16px;
@@ -1160,7 +1171,28 @@ const HaveTabsContentWrap = styled.div<{ height?: any }>`
   }
 `
 
+const TabsBarExtraButton = styled.div<{ isPrimary?: boolean }>`
+  margin-top: -6px;
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  font-size: var(--font14);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: ${props =>
+    props.isPrimary
+      ? 'var(--auxiliary-text-t2-d2)'
+      : 'var(--auxiliary-text-t2-d1)'};
+  &:hover {
+    background: var(--neutral-white-d1) !important;
+  }
+`
+
 export {
+  TabsBarExtraButton,
   TableActionWrap,
   TableActionItem,
   HaveTabsContentWrap,

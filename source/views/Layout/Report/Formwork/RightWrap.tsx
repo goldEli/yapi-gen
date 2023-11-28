@@ -40,8 +40,7 @@ const RightFormWorkStyle = styled.div`
 `
 
 const HeaderOperate = styled.div`
-  padding: 20px 24px 0;
-  height: 52px;
+  padding: 22px 24px 0;
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
@@ -54,7 +53,7 @@ export const RowStyle = styled.div`
 
 export const Col2 = styled.div`
   max-width: 200px;
-  height: 32px;
+  height: 28px;
   display: flex;
   position: absolute;
   right: -147px;
@@ -65,7 +64,7 @@ export const Col2 = styled.div`
 
 export const Col = styled.div`
   max-width: 200px;
-  height: 32px;
+  height: 28px;
   display: flex;
   &:hover {
     cursor: pointer;
@@ -76,8 +75,8 @@ export const Text = styled.div<{ bgc: any }>(
   {
     padding: '0 24px 0 0',
     minWidth: '99px',
-    height: '32px',
-    lineHeight: '32px',
+    height: '28px',
+    lineHeight: '28px',
     textAlign: 'center',
     fontSize: '14px',
   },
@@ -92,7 +91,7 @@ export const StyleRight = styled.div<{ bgc?: any }>(
   {
     width: 0,
     height: 0,
-    border: '16px solid transparent',
+    border: '14px solid transparent',
     lineHeight: 0,
     fontSize: 0,
   },
@@ -107,7 +106,7 @@ export const StyleLeft = styled.div<{ bgc?: any }>(
   {
     width: 0,
     height: 0,
-    border: '16px solid transparent',
+    border: '14px solid transparent',
     lineHeight: 0,
     fontSize: 0,
   },
@@ -123,29 +122,28 @@ export const BtnRight = styled.div`
 `
 
 export const EditFormWorkBox = styled.div`
-  margin: 20px 0 20px 24px;
+  padding: 0 24px;
+`
+
+const EditFormWorkLabel = styled.div`
+  font-size: 14px;
+  color: var(--neutral-n1-d1);
+  margin-bottom: 8px;
+  font-family: SiYuanMedium;
 `
 
 const EditFormWorkStyle = styled(Input)({
-  border: 'none',
-  borderRadius: 0,
-  borderBottom: '1px solid var(--neutral-n6-d1)',
+  borderRadius: 6,
+  border: '1px solid var(--neutral-n6-d1)',
   marginBottom: '14px',
   color: 'var(--neutral-n1-d1)',
   fontFamily: 'SiYuanMedium',
   '&::placeholder': {
-    fontSize: '18px',
+    fontSize: '14px',
     color: 'var(--neutral-n4)',
   },
 })
-const BtnRow = styled.div`
-  align-items: center;
-  width: 100%;
-  height: 80px;
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 24px;
-`
+
 const RightFormWork = () => {
   const [t] = useTranslation()
   const inputRefDom = useRef<any>(null)
@@ -444,6 +442,9 @@ const RightFormWork = () => {
         {/* 编辑 */}
         {isActive === 0 ? (
           <EditFormWorkBox>
+            <EditFormWorkLabel>
+              {t('pleaseEnterTheTemplateTitle')}
+            </EditFormWorkLabel>
             <EditFormWorkStyle
               ref={inputRefDom}
               placeholder={t('formWork.t7')}

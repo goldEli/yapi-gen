@@ -13,7 +13,6 @@ import Title from './Title'
 import FormMain from './FormMain'
 import { Form, message, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   setReportContent,
   setFillingRequirements,
@@ -22,15 +21,15 @@ import {
 } from '@store/formWork'
 import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
-import { debounce, throttle } from 'lodash'
+import { throttle } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 
 const PermissionConfigStyle = styled.div`
-  padding: 0 24px;
+  padding: 0 24px 24px;
   overflow-y: auto;
-  height: calc(100vh - 166px);
+  height: calc(100vh - 170px);
 `
 const TitleText = styled.div`
   font-size: 14px;
@@ -38,9 +37,9 @@ const TitleText = styled.div`
 `
 const bian2 = css`
   transition: all 0.3s;
-  background: #fafafc;
+  background: var(--hover-d2);
   :hover {
-    background: #f6f7f9;
+    background: var(--neutral-n10);
   }
 `
 const DayFormBox = styled(Form)({

@@ -153,18 +153,6 @@ const Setting = () => {
         },
       ]
       setResultTabList(list?.filter((i: any) => i.isPermission))
-      // //   获取当前路由的key
-      // const currentRouter = list?.filter(
-      //   (i: any) => i.url === routerPath?.pathname,
-      // )
-      // const resultKey =
-      //   currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key
-      // //   拼接三级菜单路由
-      // navigate(
-      //   `${
-      //     list?.filter((i: any) => i.key === resultKey)[0]?.url
-      //   }?data=${encryptPhp(JSON.stringify({ id: paramsData?.id }))}`,
-      // )
     }
   }, [projectInfo, currentMenu])
 

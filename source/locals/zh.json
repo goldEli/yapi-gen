@@ -1425,7 +1425,7 @@
       "reviewMe": "汇报我的",
       "openReview": "公开汇报",
       "searchTitle": "搜索汇报标题",
-      "search": "搜索汇报内容",
+      "search": "搜索汇报标题或内容",
       "dateReport": "汇报日期",
       "dateSubmit": "提交时间",
       "reportType": "汇报类型",
@@ -2634,5 +2634,6 @@
   "managementBackend": "管理后台",
   "theTaskIsAboutToEnd": "任务即将截止",
   "theDeadlineForTasksExceeds": "截止任务数超过",
-  "searchForRequirementNameOrNumber": "搜索需求名称或编号"
+  "searchForRequirementNameOrNumber": "搜索需求名称或编号",
+  "pleaseEnterTheTemplateTitle": "请输入模板标题"
 }

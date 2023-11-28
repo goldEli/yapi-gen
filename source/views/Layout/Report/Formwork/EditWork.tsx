@@ -163,7 +163,7 @@ const EditWork = (props: PropsType) => {
     setDataList(templateContentConfigs)
   }, [templateContentConfigs])
   return (
-    <div id="father" style={{ display: 'flex', height: 'calc(100vh - 231px)' }}>
+    <div id="father" style={{ display: 'flex', height: 'calc(100vh - 260px)' }}>
       <LeftTabs
         onDragOver={event => {
           event.preventDefault(), event.stopPropagation()
@@ -199,7 +199,7 @@ const EditWork = (props: PropsType) => {
       </LeftTabs>
       {/* 基础控件 */}
       <RightTabs>
-        <TitleStyle draggable="false">
+        <TitleStyle draggable="false" style={{ marginLeft: 0 }}>
           <span>{t('formWork.msg1')}</span>
           <span>{t('formWork.msg2')}</span>
         </TitleStyle>
