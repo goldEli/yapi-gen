@@ -81,16 +81,19 @@ const GroupItems = (props: GroupItemsProps) => {
             <StatusBox
               style={{
                 background:
-                  i.status?.is_start === 1 && i.status?.is_end === 2
+                  i.category_status?.is_start === 1 &&
+                  i.category_status?.is_end === 2
                     ? 'var(--primary-d2)'
-                    : i.status?.is_end === 1 && i.status?.is_start === 2
+                    : i.category_status?.is_end === 1 &&
+                      i.category_status?.is_start === 2
                     ? 'var(--neutral-n7)'
-                    : i.status?.is_start === 2 && i.status?.is_end === 2
+                    : i.category_status?.is_start === 2 &&
+                      i.category_status?.is_end === 2
                     ? 'var(--function-success)'
                     : '',
               }}
             >
-              {i.status?.status?.content}
+              {i.category_status?.status?.content}
             </StatusBox>
           )}
         </TaskItem>

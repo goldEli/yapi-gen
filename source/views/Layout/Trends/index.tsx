@@ -77,6 +77,7 @@ const Trends = () => {
       setActiveKey(currentRouterKey)
     }
   }, [routerPath])
+
   return (
     <HaveTabsContentWrap>
       <TabsContent
