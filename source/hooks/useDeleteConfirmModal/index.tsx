@@ -14,17 +14,20 @@ type ModalProps = Omit<
   'onConfirm' | 'onChangeVisible' | 'isVisible'
 > & {
   onConfirm(): Promise<any>
+  onChangeVisible?(): any
 }
 
 export const useDeleteConfirmModal = () => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false)
   const onConfirm = useRef<ModalProps['onConfirm'] | null>(null)
+  const onChangeVisible = useRef<ModalProps['onChangeVisible'] | null>(null)
   const [modalProps, setModalProps] = useState<ModalProps>()
 
   const open = (options: ModalProps) => {
     setModalProps(options)
     setDeleteModalVisible(true)
     onConfirm.current = options.onConfirm
+    onChangeVisible.current = options.onChangeVisible
   }
 
   const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = props => {
@@ -38,6 +41,7 @@ export const useDeleteConfirmModal = () => {
         }}
         onChangeVisible={() => {
           setDeleteModalVisible(false)
+          onChangeVisible.current?.()
         }}
       />
     )

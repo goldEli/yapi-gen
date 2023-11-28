@@ -96,7 +96,6 @@ const index = (props: any) => {
         options: prepositionItems,
         fieldNames: { label: 'label', value: 'value', options: 'children' },
       }
-
   return (
     <SelectWrap
       {...selectProps}

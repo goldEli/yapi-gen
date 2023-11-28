@@ -36,7 +36,10 @@ const FlawInfo = () => {
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
   const [activeTabs, setActiveTabs] = useState(1)
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, isDetailScreenModal } = useSelector(
+    store => store.project,
+  )
+  const { params, visible } = isDetailScreenModal
 
   //   刷新缺陷详情
   const onUpdate = () => {
@@ -97,7 +100,11 @@ const FlawInfo = () => {
           <div style={{ margin: '16px', background: '#f5f5f7' }}>
             <FlawInfoInfoItem>
               <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-              <FlawStatus pid={projectInfo.id} sid={flawInfo.id} />
+              <FlawStatus
+                pid={projectInfo.id}
+                sid={flawInfo.id}
+                visible={visible}
+              />
             </FlawInfoInfoItem>
           </div>
         )}

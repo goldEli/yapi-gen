@@ -248,6 +248,10 @@ const routes = [
         element: lazy(() => import('@/views/ProjectDetail')),
         children: [
           {
+            path: 'Encephalogram',
+            element: lazy(() => import('@/views/Encephalogram')),
+          },
+          {
             path: 'PrivatePermission',
             element: lazy(
               () =>
@@ -342,6 +346,13 @@ const routes = [
                     import(
                       '@/views/ProjectSetting/components/DailyReportRules'
                     ),
+                ),
+              },
+              {
+                path: 'WorkingTimeConfig',
+                element: lazy(
+                  () =>
+                    import('@/views/ProjectSetting/components/WorkTimeConfig'),
                 ),
               },
               {
