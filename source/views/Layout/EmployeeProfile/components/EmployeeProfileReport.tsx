@@ -445,12 +445,13 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
   }
 
   useEffect(() => {
+    console.log('filterParams', filterParams)
     if (filterParams?.status) {
       setDataList({ list: undefined })
       setLoading(true)
       getReportList()
     }
-  }, [filterParams.time, filterParams.user_ids])
+  }, [filterParams.time, JSON.stringify(filterParams.user_ids)])
 
   return (
     <ReportWrap>
