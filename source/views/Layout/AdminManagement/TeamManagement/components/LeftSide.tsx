@@ -71,30 +71,8 @@ const TeamAdd = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 16px 16px 0;
-  margin-bottom: 16px;
+  padding: 16px 0;
   &:hover {
-    cursor: pointer;
-  }
-`
-const TiamTitleText = styled.span`
-  font-size: var(--font14);
-  font-family: siyuanmedium;
-  color: var(--neutral-n1-d1);
-  margin-bottom: 16px;
-`
-const IconFontStyle = styled(IconFont)`
-  font-size: 18px;
-  color: var(--neutral-n2);
-  border-radius: 6px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    background-color: var(--hover-d1);
-    color: var(--neutral-n1-d1);
     cursor: pointer;
   }
 `
@@ -198,6 +176,7 @@ const UploadTitle = styled.div`
 `
 
 const Content = styled.div`
+  padding:0 16px;
   height: 100%;
 `
 
@@ -468,7 +447,6 @@ const LeftSide = (props: any) => {
       </SprintDetailMouseDom>
       <Content>
         <TeamAdd>
-          <TiamTitleText>{t('team_management') as string}</TiamTitleText>
           <CommonButton
             type="primary"
             icon="plus"
