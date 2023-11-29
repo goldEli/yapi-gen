@@ -472,7 +472,7 @@ const DemandDetail = () => {
   }
 
   useEffect(() => {
-    if (visible || params.demandId) {
+    if (visible && params.demandId) {
       dispatch(setDemandInfo({}))
       dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
       dispatch(
@@ -503,7 +503,7 @@ const DemandDetail = () => {
 
   useEffect(() => {
     if (isUpdateAddWorkItem && visible) {
-      dispatch(getDemandInfo({ projectId: params.id, id: demandInfo.id }))
+      dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
       dispatch(
         getDemandCommentList({
           projectId: params.id,

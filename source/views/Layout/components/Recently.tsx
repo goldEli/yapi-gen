@@ -40,6 +40,7 @@ import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { setDemandInfo } from '@store/demand'
 import { setFlawInfo } from '@store/flaw'
 import { setAffairsInfo } from '@store/affairs'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 interface GroupItemsProps {
   row: any
@@ -302,6 +303,7 @@ const Recently = (props: RecentlyProps) => {
   // 任务-点击跳转详情
   const onClickTask = async (row: any) => {
     props.onClose()
+    dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({
         id: row?.actionable.project_id,
@@ -317,19 +319,21 @@ const Recently = (props: RecentlyProps) => {
       }),
     )
 
-    navigate(
-      `${
-        row.defaultHomeMenu
-          ? row.defaultHomeMenu
-          : `/ProjectDetail/${
-              row?.actionable.project_type === 2
-                ? 'Affair'
-                : row?.actionable.is_bug === 2
-                ? 'Demand'
-                : 'Defect'
-            }`
-      }?data=${params}`,
-    )
+    setTimeout(() => {
+      navigate(
+        `${
+          row.defaultHomeMenu
+            ? row.defaultHomeMenu
+            : `/ProjectDetail/${
+                row?.actionable.project_type === 2
+                  ? 'Affair'
+                  : row?.actionable.is_bug === 2
+                  ? 'Demand'
+                  : 'Defect'
+              }`
+        }?data=${params}`,
+      )
+    }, 2)
   }
 
   // 项目-点击跳转详情

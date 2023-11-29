@@ -492,7 +492,8 @@ const SprintProjectSprint: React.FC = () => {
   useEffect(() => {
     // 监听创建事务，刷新页面
     if (isUpdateAddWorkItem > 0) {
-      dispatch(getLeftSprintList(leftSearchObject))
+      // dispatch(getLeftSprintList(leftSearchObject))
+      dispatch(getRightSprintList(searchRight))
     }
   }, [isUpdateAddWorkItem])
 
@@ -877,6 +878,9 @@ const SprintProjectSprint: React.FC = () => {
                 <DndKitTable
                   activeKey={activeKey}
                   checkCommission={checkCommission}
+                  callback={() => {
+                    dispatch(getRightSprintList(searchRight))
+                  }}
                 />
               </DragContent>
             </Spin>

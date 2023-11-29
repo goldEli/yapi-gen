@@ -455,7 +455,7 @@ const FlawDetail = () => {
   }
 
   useEffect(() => {
-    if (visible || params.flawId) {
+    if (visible && params.flawId) {
       dispatch(setFlawInfo({}))
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
       dispatch(
@@ -486,7 +486,7 @@ const FlawDetail = () => {
 
   useEffect(() => {
     if (isUpdateAddWorkItem && visible) {
-      dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
+      dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
     }
   }, [isUpdateAddWorkItem])
 
