@@ -1,5 +1,4 @@
 import { Line } from '@ant-design/plots'
-import React, { useState, useEffect } from 'react'
 
 const LineAnimation = (props: any) => {
   const config = {
@@ -7,6 +6,7 @@ const LineAnimation = (props: any) => {
     xField: 'year',
     yField: 'gdp',
     seriesField: 'name',
+
     yAxis: {
       grid: {
         line: {
@@ -23,7 +23,7 @@ const LineAnimation = (props: any) => {
       },
     },
 
-    smooth: true,
+    smooth: false,
     // @TODO 后续会换一种动画方式
     animation: {
       appear: {

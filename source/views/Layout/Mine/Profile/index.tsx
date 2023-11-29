@@ -180,8 +180,7 @@ const Profile = () => {
 
   const { isUpdateCreate } = useSelector(store => store.mine)
   const [data, setData] = useState<any>({})
-  const [isScreen, setIsScreen] = useState<boolean>(false)
-  const [nowYear, setNowYear] = useState<any>(2023)
+  const [nowYear, setNowYear] = useState<any>('2023')
   const [chartData, setChartData] = useState<any>([])
   const [nowYearOptions, setNowYearOptions] = useState<any>()
   const [gatteData, setGatteData] = useState<any>([])
@@ -298,9 +297,7 @@ const Profile = () => {
   }
   const getYearList = async () => {
     const res = await getProjectCharts(nowYear)
-
     setNowYearOptions(res.data.years)
-
     setChartData(trans(res.data.list))
   }
 
@@ -451,9 +448,12 @@ const Profile = () => {
                 </SecondTitle>
                 <Select
                   onChange={handleChange}
-                  defaultValue={nowYear}
+                  value={nowYear}
                   style={{ width: 120 }}
-                  options={nowYearOptions}
+                  options={nowYearOptions?.map((i: any) => ({
+                    value: i.value,
+                    label: i.name,
+                  }))}
                 />
               </div>
               <CenterRight>

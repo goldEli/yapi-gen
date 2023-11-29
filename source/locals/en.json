@@ -2639,5 +2639,9 @@
   "application": "Application",
   "notificationItems": "Notification items",
   "workItemReceptionAndProcessingStatus": "Work item reception and processing status",
-  "dateDistributionOfCompletedWorkItems": "Date distribution of completed work items"
+  "dateDistributionOfCompletedWorkItems": "Date distribution of completed work items",
+  "completedTasks": "Completed tasks",
+  "createTask": "Create Task",
+  "toDoTasks": "To Do Tasks",
+  "ccTask": "CC Task"
 }

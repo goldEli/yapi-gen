@@ -12,7 +12,7 @@ const Carbon = () => {
     <MainIndex
       title={t('mine.mineCarbon')}
       type="abeyance"
-      subTitle={t('mine.carbonDemand')}
+      subTitle={t('toDoTasks')}
     />
   )
 }

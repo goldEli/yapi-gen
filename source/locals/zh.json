@@ -2639,5 +2639,9 @@
   "application": "应用",
   "notificationItems": "通知项",
   "workItemReceptionAndProcessingStatus": "工作项接收处理情况",
-  "dateDistributionOfCompletedWorkItems": "已办工作项日期分布"
+  "dateDistributionOfCompletedWorkItems": "已办工作项日期分布",
+  "completedTasks": "已办任务",
+  "createTask": "创建任务",
+  "toDoTasks": "待办任务",
+  "ccTask": "抄送任务"
 }
