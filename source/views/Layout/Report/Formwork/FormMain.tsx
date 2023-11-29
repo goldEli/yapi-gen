@@ -471,7 +471,7 @@ const FormMain = (props: FormType) => {
           rules={[{ required: true, message: '' }]}
           style={{
             marginTop: '16px',
-            marginBottom: '44px',
+            marginBottom: '24px',
           }}
           label={t('formWork.msg9')}
           name="reminder_time"

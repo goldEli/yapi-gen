@@ -11,6 +11,7 @@ import CommonButton from '@/components/CommonButton'
 import { useEffect, useState, useLayoutEffect } from 'react'
 import Export from '@/components/Export'
 import { getProjectMember } from '@/services/project'
+import { cos } from '@/services'
 
 const WorkHoursHeaderWrap = styled.div`
   padding: 20px 0px 0px 0;
@@ -58,6 +59,7 @@ const WorkHoursHeader = (props: {
   const [memberList, setMemberList] = useState<any>([])
   const [dropdownMatchSelectWidth, setDropdownMatchSelectWidth] =
     useState<any>(0)
+  const [statusWidth, setStatusWidth] = useState<any>(0)
   const confirm = () => {
     props.onSearch(form.getFieldsValue(), dateType)
   }
@@ -69,6 +71,7 @@ const WorkHoursHeader = (props: {
       date: getWeekDates(),
       type: 0,
       state: 1,
+      style: 'story',
     })
     setDateType(1)
     setState(0)
@@ -80,6 +83,11 @@ const WorkHoursHeader = (props: {
       .querySelector('#SelectWrap')
       ?.getBoundingClientRect().width
     setDropdownMatchSelectWidth(w)
+    const statusW = document
+      .querySelector('#statusSelectWrap')
+      ?.getBoundingClientRect().width
+    setDropdownMatchSelectWidth(w)
+    setStatusWidth(statusW)
   }, [window.localStorage.getItem('language')])
   // 人员接口
   const getList = async () => {
@@ -131,18 +139,26 @@ const WorkHoursHeader = (props: {
     {
       id: 3,
       text: t('askForLeave'),
+      label: t('askForLeave'),
+      value: 3,
     },
     {
       id: 2,
       text: t('reportNormally'),
+      label: t('reportNormally'),
+      value: 2,
     },
     {
       id: 1,
       text: t('notReported'),
+      label: t('notReported'),
+      value: 1,
     },
     {
       id: 0,
       text: t('all'),
+      label: t('all'),
+      value: 0,
     },
   ]
   const tabsValue2 = [
@@ -157,6 +173,17 @@ const WorkHoursHeader = (props: {
     {
       id: 0,
       text: t('all'),
+    },
+  ]
+  // 按人员和按项目
+  const tabsValuePersonAndTask = [
+    {
+      id: 0,
+      text: '按人员',
+    },
+    {
+      id: 1,
+      text: '任务',
     },
   ]
   const onGetExportApi = () => {
@@ -240,7 +267,10 @@ const WorkHoursHeader = (props: {
       : form.setFieldValue('state', val)
     props.onSearch(form.getFieldsValue(), dateType)
   }
-
+  const onChangeMode = (type: string) => {
+    form.setFieldValue('style', type ? 'story' : 'member')
+    props.onSearch(form.getFieldsValue(), dateType)
+  }
   return (
     <>
       <WorkHoursHeaderWrap>
@@ -258,6 +288,21 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
+            <SelectWrapBedeck
+              style={{ margin: '0 0px 20px 16px' }}
+              id="statusSelectWrap"
+            >
+              <Form.Item name={'type'}>
+                <MoreSelect
+                  onConfirm={confirm}
+                  options={tabsValue1}
+                  width={statusWidth}
+                  more
+                  hiddernfooter
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+
             <SelectWrapBedeck style={{ marginLeft: 16, marginBottom: 20 }}>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('time')}
@@ -280,6 +325,18 @@ const WorkHoursHeader = (props: {
               </Form.Item>
             </SelectWrapBedeck>
             <SelectWrapBedeck
+              style={{ marginLeft: 16, marginBottom: 20, border: 'none' }}
+            >
+              <Form.Item name={'style'}>
+                <Tabs
+                  tabsValue={tabsValuePersonAndTask}
+                  active={dateType}
+                  onChange={onChangeMode}
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+
+            <SelectWrapBedeck
               style={{ margin: '0 16px 20px 16px', border: 'none' }}
             >
               <Form.Item name={'date'}>
@@ -290,17 +347,7 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
-            <SelectWrapBedeck
-              style={{ margin: '0 16px 20px 0px', border: 'none' }}
-            >
-              <Form.Item name={'type'}>
-                <Tabs
-                  tabsValue={tabsValue1}
-                  active={form.getFieldValue('type')}
-                  onChange={val => onChangeType(val, 1)}
-                />
-              </Form.Item>
-            </SelectWrapBedeck>
+
             <SelectWrapBedeck
               style={{ margin: '0 16px 20px 0', border: 'none' }}
             >

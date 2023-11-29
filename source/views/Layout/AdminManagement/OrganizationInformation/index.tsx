@@ -29,6 +29,17 @@ const OrganizationInformation = () => {
     navigate(url)
   }
 
+  // 选中key
+  const onChangeKey = (list: any) => {
+    //   获取当前路由的key
+    const currentRouter = list?.filter(
+      (i: any) => i.url === routerPath?.pathname,
+    )
+    setActiveKey(
+      currentRouter?.length > 0 ? currentRouter[0]?.key : list[0]?.key,
+    )
+  }
+
   useEffect(() => {
     if (currentMenu?.id || isRefresh) {
       const list = [
@@ -51,18 +62,15 @@ const OrganizationInformation = () => {
         isPermission: urls?.includes(String(i.key)),
       }))
       setResultTabList(resultList?.filter((i: any) => i.isPermission))
+      onChangeKey(resultList?.filter((i: any) => i.isPermission))
     }
   }, [currentMenu?.id, isRefresh])
 
   useEffect(() => {
-    //   获取当前路由的key
-    const currentRouter = resultTabList?.filter(
-      (i: any) => i.url === routerPath?.pathname,
-    )
-    setActiveKey(
-      currentRouter?.length > 0 ? currentRouter[0]?.key : resultTabList[0]?.key,
-    )
-  }, [routerPath])
+    if (resultTabList?.length > 0) {
+      onChangeKey(resultTabList)
+    }
+  }, [routerPath, resultTabList])
 
   return (
     <>

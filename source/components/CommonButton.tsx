@@ -209,7 +209,10 @@ const CommonButton = (props: Props) => {
       >
         {props.iconPlacement !== 'right' && (
           <Space size={8}>
-            <IconFont type={props.icon} />
+            <IconFont
+              style={{ fontSize: props.size === 'small' ? 14 : 16 }}
+              type={props.icon}
+            />
             {props.children}
           </Space>
         )}
@@ -217,7 +220,10 @@ const CommonButton = (props: Props) => {
         {props.iconPlacement === 'right' && (
           <Space size={8}>
             {props.children}
-            <IconFont type={props.icon} />
+            <IconFont
+              type={props.icon}
+              style={{ fontSize: props.size === 'small' ? 14 : 16 }}
+            />
           </Space>
         )}
       </ButtonWrap>

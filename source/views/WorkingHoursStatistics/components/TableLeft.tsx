@@ -20,7 +20,11 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import { getMessage } from '@/components/Message'
 
-const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
+const TableLeft = (props: {
+  data: any
+  updateOverdue: (val: any) => void
+  type?: string
+}) => {
   const [state, setState] = useState(false)
   const inputRef = useRef<any>(null)
   const [value, setValue] = useState('')
@@ -115,7 +119,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
             }}
           >
             <img
-              src={record.story.category_attachment}
+              src={record?.story?.category_attachment}
               style={{ marginRight: 4, width: 20, height: 20 }}
             />
             <span className="text">{record.story?.name || '--'}</span>
@@ -132,19 +136,19 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
           <>
             <StatusWrap
               state={
-                record.story.category_status?.is_start === 1 &&
-                record.story.category_status?.is_end === 2
+                record.story?.category_status?.is_start === 1 &&
+                record.story?.category_status?.is_end === 2
                   ? 1
-                  : record.story.category_status?.is_end === 1 &&
+                  : record.story?.category_status?.is_end === 1 &&
                     record.story.category_status?.is_start === 2
                   ? 2
-                  : record.story.category_status?.is_start === 2 &&
-                    record.story.category_status?.is_end === 2
+                  : record.story?.category_status?.is_start === 2 &&
+                    record.story?.category_status?.is_end === 2
                   ? 3
                   : 0
               }
             />
-            {record.story.category_status?.status?.content}
+            {record.story?.category_status?.status?.content}
           </>
         )
       },
@@ -247,6 +251,66 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
       },
     },
   ]
+  const personColum = [
+    {
+      title: t('name'),
+      dataIndex: 'user',
+      width: 250,
+      render: (text: any, record: any) => {
+        return (
+          <CommonUserAvatar
+            size="small"
+            avatar={record.user?.avatar}
+            name={record.user?.name}
+            positionName={record.user.position?.name}
+          />
+        )
+      },
+    },
+    {
+      title: '上报天数',
+      dataIndex: 'name',
+      width: 180,
+      render: (text: any, record: any) => {
+        return (
+          <div>
+            {record.report}/{record.report_total}
+          </div>
+        )
+      },
+    },
+    {
+      title: '日均消耗',
+      dataIndex: 'daily_average_time',
+      width: 150,
+      render: (text: any, record: any) => {
+        return <div>{(text / 3600).toFixed(2)}h</div>
+      },
+    },
+    {
+      title: '最长工时',
+      dataIndex: 'longest_time',
+      render: (text: any, record: any) => {
+        return <div>{text / 3600}h</div>
+      },
+    },
+    {
+      title: '最短工时',
+      dataIndex: 'shortest_time',
+      width: 120,
+      render: (text: any) => {
+        return <div>{text / 3600}h</div>
+      },
+    },
+    {
+      title: '累计消耗',
+      dataIndex: 'total_time',
+      width: 120,
+      render: (text: any) => {
+        return <div>{text / 3600}h</div>
+      },
+    },
+  ]
 
   const onConfirm = () => {
     if (value) {
@@ -266,7 +330,7 @@ const TableLeft = (props: { data: any; updateOverdue: (val: any) => void }) => {
         isSpinning={false}
         srcollState={true}
         dataWrapNormalHeight="calc(100% - 0px)"
-        col={colum}
+        col={props.type === 'story' ? colum : personColum}
         noData={<NoData />}
         dataSource={props.data}
       />

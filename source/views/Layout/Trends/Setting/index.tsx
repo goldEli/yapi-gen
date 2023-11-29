@@ -1,13 +1,15 @@
 import CommonButton from '@/components/CommonButton'
-import {
-  CheckboxWrap,
-  OperationWrap,
-  PermissionItem,
-  TitleGroup,
-} from '@/views/ProjectSetting/components/ProjectSet'
+import { PermissionItem } from '@/views/ProjectSetting/components/ProjectSet'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Wrap, MainWrap, FooterWrap } from './style'
+import {
+  Wrap,
+  MainWrap,
+  FooterWrap,
+  CheckboxWrap,
+  OperationWrap,
+  TitleGroup,
+} from './style'
 import { useDispatch, useSelector } from '@store/index'
 import { editMyAllNoteSet } from '@/services/SiteNotifications'
 import { setMyConfiguration } from '@store/SiteNotifications'
@@ -16,6 +18,7 @@ import { getMessage } from '@/components/Message'
 const Setting = (props: { onClose(): void }) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { language } = useSelector(store => store.global)
   const [selectKeys, setSelectKeys] = useState<any>()
   const configurations = useSelector(
     store => store.siteNotifications.configuration,
@@ -45,10 +48,10 @@ const Setting = (props: { onClose(): void }) => {
 
   return (
     <Wrap>
-      <TitleGroup>
+      <TitleGroup isZh={language === 'zh'}>
+        <OperationWrap>{t('application')}</OperationWrap>
         <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
-        <OperationWrap>{t('operand')}</OperationWrap>
-        <span>{t('common.permission')}</span>
+        <span>{t('notificationItems')}</span>
       </TitleGroup>
       <MainWrap>
         {configurations.map((i: any) => {

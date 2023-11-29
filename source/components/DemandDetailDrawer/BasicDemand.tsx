@@ -9,7 +9,7 @@ import {
 } from '@/services/demand'
 import { getCustomNormalValue } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { Tooltip } from 'antd'
+import { InputNumber, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangePriorityPopover from '../ChangePriorityPopover'
@@ -66,7 +66,7 @@ const BasicDemand = (props: Props) => {
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
   const { demandDetailDrawerProps } = useSelector(store => store.demand)
-
+  const [workHoursValue, setWorkHoursValue] = useState<any>()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -99,7 +99,28 @@ const BasicDemand = (props: Props) => {
     }
     return Object.keys(needChangeList).includes(key) ? needChangeList[key] : key
   }
-
+  // 快速更新工时
+  const updateWorkHours = async (item: any) => {
+    const res = await updateTableParams({
+      id: props.detail.id,
+      projectId: props.detail.projectId,
+      otherParams: {
+        work_hours: workHoursValue * 3600,
+      },
+    })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
+    props.onUpdate?.()
+    // if (props.isInfoPage) {
+    //   dispatch(
+    //     getAffairsInfo({
+    //       projectId: props.detail.projectId,
+    //       sprintId: props.detail?.id,
+    //     }),
+    //   )
+    // } else {
+    //   props.onUpdate?.()
+    // }
+  }
   const getFieldData = async () => {
     const result = await getCategoryConfigList({
       projectId: props.detail?.projectId,
@@ -191,7 +212,7 @@ const BasicDemand = (props: Props) => {
   const getBasicTypeComponent = (item: any) => {
     let nodeComponent
     // 如果不属于下列字段的则渲染
-    if (!['parent_id', 'priority'].includes(item.content)) {
+    if (!['parent_id', 'priority', 'work_hours'].includes(item.content)) {
       const filterContent = basicFieldList?.filter(
         (i: any) => i.content === item.content,
       )[0]
@@ -285,6 +306,21 @@ const BasicDemand = (props: Props) => {
           </div>
         </ChangePriorityPopover>
       )
+    } else if (item.content === 'work_hours') {
+      // 工时统计
+      nodeComponent = (
+        <InputNumber
+          placeholder={t('common.pleaseEnter')}
+          autoComplete="off"
+          style={{ width: '100%' }}
+          min={1}
+          value={workHoursValue}
+          onBlur={updateWorkHours}
+          onChange={e => {
+            setWorkHoursValue(e)
+          }}
+        />
+      )
     }
 
     return nodeComponent
@@ -323,6 +359,9 @@ const BasicDemand = (props: Props) => {
   useEffect(() => {
     if (props.detail?.category) {
       getFieldData()
+    }
+    if (props.detail?.work_hours) {
+      setWorkHoursValue(props.detail?.work_hours)
     }
   }, [props.detail])
 

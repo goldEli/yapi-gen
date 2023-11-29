@@ -1426,7 +1426,7 @@
       "reviewMe": "Report to me",
       "openReview": "Public reporting",
       "searchTitle": "Search for report title",
-      "search": "Search for report content",
+      "search": "Search report title or content",
       "dateReport": "Date of report",
       "dateSubmit": "Submission time",
       "reportType": "Reporting type",
@@ -2634,5 +2634,8 @@
   "managementBackend": "Backstage",
   "theTaskIsAboutToEnd": "The task is about to end",
   "theDeadlineForTasksExceeds": "The deadline for tasks exceeds",
-  "searchForRequirementNameOrNumber": "Search for requirement name or number"
+  "searchForRequirementNameOrNumber": "Search for requirement name or number",
+  "pleaseEnterTheTemplateTitle": "Please enter the template title",
+  "application": "Application",
+  "notificationItems": "Notification items"
 }

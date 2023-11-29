@@ -460,6 +460,7 @@ export const getAffairsInfo = async (
     parent: [
       { value: response.data.parent?.id, label: response.data.parent?.name },
     ],
+    work_hours: response?.data?.work_hours / 3600,
   }
 }
 
@@ -495,6 +496,7 @@ export const addAffairs: any = async (params: any) => {
     solution: params.solution,
     severity: params.severity || 0,
     discovery_version: params.discovery_version,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -537,6 +539,7 @@ export const updateAffairs: any = async (params: any) => {
     solution: params.solution,
     severity: params.severity || 0,
     discovery_version: params.discovery_version,
+    work_hours: params?.work_hours,
   })
 }
 

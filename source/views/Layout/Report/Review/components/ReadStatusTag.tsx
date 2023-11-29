@@ -9,7 +9,7 @@ const mapStatusColor: any = {
 }
 
 const ReadSateTagWrap = styled.div`
-  span {
+  .label {
     margin-left: 7px;
     font-size: 14px;
     font-family: SiYuanRegular;
@@ -34,7 +34,7 @@ const ReadStatusTag = (props: ReadStatusProps) => {
   return (
     <ReadSateTagWrap>
       <Badge color={mapStatusColor[status]} />
-      <span>{mapStatusText[status]}</span>
+      <span className="label">{mapStatusText[status]}</span>
     </ReadSateTagWrap>
   )
 }

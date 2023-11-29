@@ -513,7 +513,7 @@ const urls = {
   updateOverdue: '/b/story/work_time/update_overdue',
   workTimeExport: '/b/story/work_time/export',
   updateWorkTime: '/b/story/work_time/set_daily',
-
+  getWorkTimeInfo: '/b/story/work_time/story/detail',
   /**
    * 项目日报
    */
