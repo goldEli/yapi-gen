@@ -851,6 +851,7 @@ export const deleteProjectGroup: any = async (params: any) => {
 
 // 获取项目下拉数据
 export const getProjectInfoValues: any = async (params: any, all?: number) => {
+  const language = localStorage.getItem('language') || 'zh'
   const response: any = await http.get<any>('/b/project/getfilter_values', {
     id: params.projectId,
     all,
@@ -933,7 +934,8 @@ export const getProjectInfoValues: any = async (params: any, all?: number) => {
           ? [
               ...[
                 {
-                  title: '未分类',
+                  name:
+                    language === 'zh' ? '默认分类' : 'Default classification',
                   key: 0,
                   value: 0,
                   children: [],

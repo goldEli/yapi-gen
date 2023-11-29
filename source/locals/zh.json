@@ -573,7 +573,7 @@
     "number": "数值型",
     "demandProgress": "需求进度",
     "underReview": "该需求正在审核中，现在不能流转操作！",
-    "unclassified": "未分类",
+    "unclassified": "默认分类",
     "demandClass": "需求分类",
     "pleaseClass": "请选择需求分类",
     "open": "展开",
