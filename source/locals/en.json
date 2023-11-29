@@ -575,7 +575,7 @@
     "number": "Numerical",
     "demandProgress": "Demand progress",
     "underReview": "This requirement is under review and cannot be transferred now!",
-    "unclassified": "Uncategorized",
+    "unclassified": "Default classification",
     "demandClass": "Demand Classification",
     "pleaseClass": "Please select a Demand Classification",
     "open": "Expand",

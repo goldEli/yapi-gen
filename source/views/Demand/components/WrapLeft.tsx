@@ -308,13 +308,15 @@ const WrapLeft = (props: any, ref: any) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
-  const { isUpdateAddWorkItem } = useSelector(store => store.project)
+  const { isUpdateAddWorkItem, projectInfoValues } = useSelector(
+    store => store.project,
+  )
+  const { isRefresh } = useSelector(store => store.user)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { projectInfoValues } = useSelector(store => store.project)
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
   // 重组为下拉筛选格式
@@ -454,10 +456,11 @@ const WrapLeft = (props: any, ref: any) => {
     }
   })
   useEffect(() => {
-    if (isUpdateAddWorkItem) {
+    if (isUpdateAddWorkItem || isRefresh) {
       init(false, false)
     }
-  }, [isUpdateAddWorkItem])
+  }, [isUpdateAddWorkItem, isRefresh])
+
   const onDragLine = () => {
     document.onmousemove = e => {
       setFocus(true)
