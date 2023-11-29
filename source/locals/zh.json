@@ -2635,5 +2635,7 @@
   "theTaskIsAboutToEnd": "任务即将截止",
   "theDeadlineForTasksExceeds": "截止任务数超过",
   "searchForRequirementNameOrNumber": "搜索需求名称或编号",
-  "pleaseEnterTheTemplateTitle": "请输入模板标题"
+  "pleaseEnterTheTemplateTitle": "请输入模板标题",
+  "application": "应用",
+  "notificationItems": "通知项"
 }

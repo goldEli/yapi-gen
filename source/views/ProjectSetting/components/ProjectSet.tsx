@@ -133,7 +133,33 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   }),
 )
 
-export const TitleGroup = styled.div({
+const CheckboxWrap = styled.div<{ isZh?: boolean }>`
+  width: ${props => (props.isZh ? 80 : 100)}px;
+  position: relative;
+  .provider {
+    height: 16px;
+    width: 1px;
+    background: var(--neutral-n5);
+    position: absolute;
+    top: 2px;
+    left: ${props => (props.isZh ? 48 : 58)}px;
+  }
+`
+
+const OperationWrap = styled.div<{ isZh?: boolean }>`
+  width: ${props => (props.isZh ? 100 : 180)}px;
+`
+
+const GroupWrap = styled.div<{ isZh?: boolean }>`
+  display: flex;
+  align-items: center;
+  width: ${props => (props.isZh ? 'calc(100% - 180px)' : 'calc(100% - 280px)')};
+  .ant-checkbox-group-item: {
+    margin: 6px 24px 6px 0;
+  }
+`
+
+const TitleGroup = styled.div<{ isZh?: boolean }>({
   display: 'flex',
   alignItems: 'center',
   color: 'var(--neutral-n2)',
@@ -164,36 +190,11 @@ const MainWrapItem = styled.div({
   },
 })
 
-const ModalHeader = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  fontSize: 16,
-  color: 'var(--neutral-n1-d2)',
-})
-
 const ModalFooter = styled(Space)({
   width: '100%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-})
-
-export const CheckboxWrap = styled.div({ width: 100 })
-
-export const OperationWrap = styled.div({
-  minWidth: 100,
-  whiteSpace: 'nowrap',
-  width: 'fit-content',
-})
-
-export const GroupWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  width: 'calc(100% - 200px)',
-  '.ant-checkbox-group-item': {
-    margin: '6px 24px 6px 0',
-  },
 })
 
 interface ItemProps {
@@ -204,6 +205,7 @@ interface ItemProps {
 }
 
 export const PermissionItem = (props: ItemProps) => {
+  const { language } = useSelector(store => store.global)
   const keys =
     props.value?.filter(
       (i: any) => !!props.item.children.find((item: any) => item.value === i),
@@ -223,7 +225,8 @@ export const PermissionItem = (props: ItemProps) => {
 
   return (
     <MainWrapItem>
-      <CheckboxWrap>
+      <OperationWrap isZh={language === 'zh'}>{props.item.name}</OperationWrap>
+      <CheckboxWrap isZh={language === 'zh'}>
         <Checkbox
           disabled={props.activeDetail?.type === 1}
           indeterminate={
@@ -234,9 +237,9 @@ export const PermissionItem = (props: ItemProps) => {
             keys.length > 0 && keys.length === props.item.children.length
           }
         />
+        <div className="provider" />
       </CheckboxWrap>
-      <OperationWrap>{props.item.name}</OperationWrap>
-      <GroupWrap>
+      <GroupWrap isZh={language === 'zh'}>
         <Checkbox.Group value={keys} onChange={onChange}>
           {props.item.children.map((item: any) => {
             return (
@@ -285,6 +288,7 @@ const ProjectSet = () => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
+  const { language } = useSelector(store => store.global)
   asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
@@ -578,8 +582,12 @@ const ProjectSet = () => {
                   </BtnHeader>
                 </RightHeader>
                 <TitleGroup>
-                  <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
-                  <OperationWrap>{t('setting.operationObject')}</OperationWrap>
+                  <OperationWrap isZh={language === 'zh'}>
+                    {t('setting.operationObject')}
+                  </OperationWrap>
+                  <CheckboxWrap isZh={language === 'zh'}>
+                    {t('setting.all')}
+                  </CheckboxWrap>
                   <span>{t('common.permission')}</span>
                 </TitleGroup>
                 <MainWrap>

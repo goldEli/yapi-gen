@@ -4,14 +4,9 @@
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import CommonButton from '@/components/CommonButton'
 import LeftTitle from '@/components/LeftTitle'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  changeNumber,
-  changeVisible,
-  changeVisibleFilter,
-} from '@store/SiteNotifications'
+import { changeNumber } from '@store/SiteNotifications'
 import { useParams } from 'react-router'
 import ContentItem from '../components/ContentItem/ContentItem'
 import { useTranslation } from 'react-i18next'
@@ -26,6 +21,8 @@ import { useEffect, useRef, useState } from 'react'
 import { css } from '@emotion/css'
 import NoData from '@/components/NoData'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
+import styled from '@emotion/styled'
+import CommonIconFont from '@/components/CommonIconFont'
 
 export const scrollListWrap = css`
   padding: 0px 4px 0px 80px;
@@ -39,6 +36,27 @@ export const scrollListWrap = css`
   }
 `
 
+const AllReadBox = styled.div<{ isDisable?: boolean }>`
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 8px;
+  cursor: ${props => (props.isDisable ? 'inherit' : 'pointer')};
+  color: ${props =>
+    props.isDisable
+      ? 'var(--neutral-n4)!important'
+      : 'var(--auxiliary-text-t2-d1)'};
+  div {
+    font-size: 14px;
+  }
+  .anticon {
+    cursor: ${props => (props.isDisable ? 'inherit' : 'pointer')};
+  }
+  &:hover {
+    color: var(--primary-d1);
+  }
+`
+
 interface ZoomRatioType {
   [MapZoom: string]: string
 }
@@ -49,9 +67,11 @@ const Index = () => {
   const msgType = useRef<any>(undefined)
   const [list, setList] = useState([])
   const [hasMore, setHasMore] = useState(true)
+  const [isClickAll, setIsClickAll] = useState(false)
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { id } = useParams()
+
   const titles: ZoomRatioType = {
     1: t('all_notices'),
     2: t('unread_notifications'),
@@ -137,6 +157,13 @@ const Index = () => {
     fetchMoreData(1)
   }
 
+  // 点击全部已读
+  const onClickAllRead = () => {
+    if (isClickAll) return
+    list.length >= 1 ? setAllRead() : null
+    setIsClickAll(true)
+  }
+
   useEffect(() => {
     msgType.current = undefined
     if (id === '4') {
@@ -158,32 +185,13 @@ const Index = () => {
       <AllSideFilter changeUser={changeUser} changeMsg={changeMsg} />
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '20px 24px',
-          alignItems: 'center',
+          padding: '16px 24px',
         }}
       >
-        <LeftTitle title={titles[id as string]} />
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <CommonButton
-            onClick={() => {
-              dispatch(changeVisibleFilter(true))
-              dispatch(changeVisible(false))
-            }}
-            type="light"
-          >
-            {t('filtering_notifications') as string}
-          </CommonButton>
-          {id !== '3' && (
-            <CommonButton
-              onClick={() => (list.length >= 1 ? setAllRead() : null)}
-              type="light"
-            >
-              {t('all_read') as string}
-            </CommonButton>
-          )}
-        </div>
+        <AllReadBox isDisable={isClickAll} onClick={onClickAllRead}>
+          <div>{t('all_read')}</div>
+          <CommonIconFont type="read" size={16} />
+        </AllReadBox>
       </div>
 
       <div className={scrollListWrap}>

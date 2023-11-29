@@ -1,5 +1,8 @@
 import CommonButton from '@/components/CommonButton'
-import { HaveTabsContentWrap } from '@/components/StyleCommon'
+import {
+  HaveTabsContentWrap,
+  TabsBarExtraButton,
+} from '@/components/StyleCommon'
 import TabsContent from '@/components/TabsContent'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -7,6 +10,10 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import SiteSettingDrawer from './components/SiteSettingDrawer'
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
+import { Space } from 'antd'
+import { useDispatch } from '@store/index'
+import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
+
 const IconWrap = styled.span`
   /* color: var(--neutral-n2); */
   font-size: var(--font14);
@@ -18,6 +25,7 @@ const IconWrap = styled.span`
 `
 const Trends = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [activeKey, setActiveKey] = useState('')
@@ -77,6 +85,7 @@ const Trends = () => {
       setActiveKey(currentRouterKey)
     }
   }, [routerPath])
+
   return (
     <HaveTabsContentWrap>
       <TabsContent
@@ -84,13 +93,21 @@ const Trends = () => {
         tabItems={list}
         activeKey={activeKey}
         tabBarExtraContent={
-          <CommonButton
-            type="secondaryText"
-            icon="settings"
-            onClick={() => setIsVisible(true)}
-          >
-            {t('notificationSettings')}
-          </CommonButton>
+          <Space size={16}>
+            <TabsBarExtraButton
+              onClick={() => {
+                dispatch(changeVisibleFilter(true))
+                dispatch(changeVisible(false))
+              }}
+            >
+              <CommonIconFont type="filter" />
+              <div>{t('filtering_notifications')}</div>
+            </TabsBarExtraButton>
+            <TabsBarExtraButton onClick={() => setIsVisible(true)}>
+              <CommonIconFont type="settings" />
+              <div>{t('notificationSettings')}</div>
+            </TabsBarExtraButton>
+          </Space>
         }
       />
       <SiteSettingDrawer
