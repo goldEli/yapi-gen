@@ -414,24 +414,6 @@ const Iteration = (props: Props) => {
       )}
       <HeaderRow>
         <Space size={16}>
-          <View
-            onChange={(name, id, type) => props.onChange(name, id, type)}
-            value={props.value}
-            viewDataList={props.viewDataList}
-            onCreateView={props.onCreateView}
-            onDelView={props.onDelView}
-            defalutConfig={props.defalutConfig}
-            onSetDefaulut={props.onSetDefaulut}
-          />
-          <Text onClick={() => setIsVisibleView(true)}>
-            {t('performance.save1')}
-          </Text>
-          {/* 保存需要人员，项目选择和时间修改后 */}
-          {save && viewType !== 2 ? (
-            <Text onClick={props.onEdit}>{t('performance.save')}</Text>
-          ) : null}
-        </Space>
-        <Space size={16}>
           {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
           {props.homeType === 'all' && (
             <Select
@@ -580,6 +562,24 @@ const Iteration = (props: Props) => {
               style={{ width: '283px' }}
             />
           )}
+        </Space>
+        <Space size={16}>
+          <View
+            onChange={(name, id, type) => props.onChange(name, id, type)}
+            value={props.value}
+            viewDataList={props.viewDataList}
+            onCreateView={props.onCreateView}
+            onDelView={props.onDelView}
+            defalutConfig={props.defalutConfig}
+            onSetDefaulut={props.onSetDefaulut}
+          />
+          <Text onClick={() => setIsVisibleView(true)}>
+            {t('performance.save1')}
+          </Text>
+          {/* 保存需要人员，项目选择和时间修改后 */}
+          {save && viewType !== 2 ? (
+            <Text onClick={props.onEdit}>{t('performance.save')}</Text>
+          ) : null}
         </Space>
         {props.homeType === 'all' ? (
           <NewAddUserModalForTandD
