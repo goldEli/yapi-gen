@@ -460,6 +460,7 @@ export const getAffairsInfo = async (
     parent: [
       { value: response.data.parent?.id, label: response.data.parent?.name },
     ],
+    work_hours: response?.data?.work_hours / 3600,
   }
 }
 
