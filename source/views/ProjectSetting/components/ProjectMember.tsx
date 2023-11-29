@@ -65,6 +65,8 @@ import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
 import { getAllDepartment, getAllPosition } from '@store/user/user.thunk'
 import UpdateUserDepartment from '@/components/UpdateUserDepartment'
 import UpdateUserPosition from '@/components/UpdateUserPosition'
+import BatchSetDepartment from './BatchSetDepartment'
+import BatchSetPosition from './BatchSetPosition'
 const Wrap = styled.div({
   padding: '24px 24px 0',
   display: 'flex',
@@ -146,6 +148,8 @@ const ProjectMember = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [batchEditVisible, setBatchEditVisible] = useState(false)
+  const [batchDepartmentVisible, setBatchDepartmentVisible] = useState(false)
+  const [batchPositionVisible, setBatchPositionVisible] = useState(false)
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
@@ -325,24 +329,24 @@ const ProjectMember = () => {
   // 更新部门
   const _updateUserDepartment = async ({ data, record }: any) => {
     const params = {
-      user_id: record?.id,
+      user_ids: selectedRowKeys.length ? selectedRowKeys : [record?.id],
       department_id: data?.id,
       project_id: projectId,
     }
-    const res = await updateUserDepartment(params)
+    await updateUserDepartment(params)
+    setBatchDepartmentVisible(false)
     getList(order, { page: 1, size: pageObj.size })
-    console.log(params)
   }
   // 更新职务
   const _updateUserPosition = async ({ data, record }: any) => {
     const params = {
-      user_id: record?.id,
+      user_ids: selectedRowKeys.length ? selectedRowKeys : [record?.id],
       id: data?.id,
       project_id: projectId,
     }
-    const res = await updateUserPosition(params)
+    await updateUserPosition(params)
+    setBatchPositionVisible(false)
     getList(order, { page: 1, size: pageObj.size })
-    console.log(params)
   }
   const onOperationCheckbox = (keys: number[]) => {
     const redClassElements = document.getElementsByClassName(
@@ -435,7 +439,6 @@ const ProjectMember = () => {
             roleName={text}
             callBack={data => {
               _updateUserDepartment({ data, record })
-              console.log('data---', data, record)
             }}
           />
         )
@@ -789,6 +792,28 @@ const ProjectMember = () => {
           projectId={projectId}
           onConfirm={onConfirmBatchEdit}
         />
+        <BatchSetDepartment
+          isVisible={batchDepartmentVisible}
+          onClose={() => {
+            setBatchDepartmentVisible(false)
+          }}
+          projectState
+          projectId={projectId}
+          onConfirm={id => {
+            _updateUserDepartment({ data: { id: id } })
+          }}
+        />
+        <BatchSetPosition
+          isVisible={batchPositionVisible}
+          onClose={() => {
+            setBatchPositionVisible(false)
+          }}
+          projectState
+          projectId={projectId}
+          onConfirm={id => {
+            _updateUserPosition({ data: { id: id } })
+          }}
+        />
         <DeleteConfirmModal />
         <NewAddUserModalForTandD
           isPermisGroup
@@ -811,7 +836,10 @@ const ProjectMember = () => {
             getPopupContainer={node => node}
             title="职位"
           >
-            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+            <div
+              className={boxItem}
+              onClick={() => setBatchPositionVisible(true)}
+            >
               <IconFont type="position" />
             </div>
           </Tooltip>
@@ -820,7 +848,10 @@ const ProjectMember = () => {
             getPopupContainer={node => node}
             title="部门"
           >
-            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+            <div
+              className={boxItem}
+              onClick={() => setBatchDepartmentVisible(true)}
+            >
               <IconFont type="apartment02" />
             </div>
           </Tooltip>

@@ -1038,11 +1038,11 @@ const ProgressComparison = (props: Props) => {
           headerParmas={props.headerParmas}
         />
         {/* 表格 */}
-        <Col style={{ marginLeft: 32 }}>
+        <Col style={{ marginLeft: 12 }}>
           <TitleCss>{props.title}</TitleCss>
         </Col>
         <div
-          style={{ display: 'flex', alignItems: 'center', padding: '0 48px' }}
+          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
         >
           {work?.map((el, index) => (
             <>

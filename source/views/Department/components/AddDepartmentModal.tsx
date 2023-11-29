@@ -42,7 +42,7 @@ const AddDepartmentModal = (props: IProps) => {
   return (
     <CommonModal
       isVisible={isVisible}
-      title="创建部门"
+      title={rowData ? '编辑部门' : '创建部门'}
       onClose={onClose}
       width={528}
       onConfirm={onFinish}

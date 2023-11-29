@@ -1,5 +1,7 @@
 import React from 'react'
 import dayjs from 'dayjs'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 const usePanelData = (data: any[], array: any[]) => {
   //   if (!data) {
   //     return
@@ -37,10 +39,14 @@ const usePanelData = (data: any[], array: any[]) => {
     }, {})
     return result
   }
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { id } = paramsData
   return {
     columns,
     map,
     reduceMonth,
+    projectId: id,
   }
 }
 export default usePanelData

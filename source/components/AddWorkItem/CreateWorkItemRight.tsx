@@ -240,6 +240,8 @@ const CreateDemandRight = (props: Props) => {
 
         // 解决办法
         solution: props.detail.solution || '',
+        //工时
+        work_hours: props.detail?.work_hours,
       })
     } else {
       form.setFieldsValue({

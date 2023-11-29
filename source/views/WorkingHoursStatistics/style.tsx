@@ -295,3 +295,9 @@ export const InputStyle = styled(Input.TextArea)({
   minHeight: '148px',
   marginLeft: '24px',
 })
+export const MemberTipBOX = styled.div`
+  color: var(--neutral-white-d7);
+  font-size: var(--font14);
+  height: 22px;
+  margin-top: 4px;
+`

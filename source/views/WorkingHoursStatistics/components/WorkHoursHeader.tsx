@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-handler-names */
 import styled from '@emotion/styled'
-import { Form } from 'antd'
+import { Form, Input } from 'antd'
 import MoreSelect from '@/components/MoreSelect'
 import moment from 'moment'
 import RangePicker from '@/components/RangePicker'
@@ -12,7 +12,9 @@ import { useEffect, useState, useLayoutEffect } from 'react'
 import Export from '@/components/Export'
 import { getProjectMember } from '@/services/project'
 import { cos } from '@/services'
-
+import CommonInput from '@/components/CommonInput'
+import InputSearch from '@/components/InputSearch'
+import CommonIconFont from '@/components/CommonIconFont'
 const WorkHoursHeaderWrap = styled.div`
   padding: 20px 0px 0px 0;
   margin-left: 24px;
@@ -276,6 +278,28 @@ const WorkHoursHeader = (props: {
       <WorkHoursHeaderWrap>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <LeftWrap>
+            <div style={{ margin: '0 16px 20px 0px' }}>
+              <Form.Item name="keyword">
+                <Input
+                  placeholder={t('search_for_transaction_name_or_number')}
+                  onPressEnter={confirm}
+                  allowClear
+                  onChange={e => {
+                    console.log('11', e.target.value)
+                    if (!e.target.value) {
+                      confirm()
+                    }
+                  }}
+                  prefix={
+                    <CommonIconFont
+                      type="search"
+                      size={16}
+                      color="var(--neutral-n4)"
+                    />
+                  }
+                ></Input>
+              </Form.Item>
+            </div>
             <SelectWrapBedeck style={{ marginBottom: 20 }} id="SelectWrap">
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('personnel')}

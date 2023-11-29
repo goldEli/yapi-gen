@@ -46,7 +46,7 @@ const AddPositionModal = (props: IProps) => {
   return (
     <CommonModal
       isVisible={isVisible}
-      title="创建职位"
+      title={rowData ? '编辑职位' : '创建职位'}
       onClose={onClose}
       width={528}
       onConfirm={onFinish}

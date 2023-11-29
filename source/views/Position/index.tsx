@@ -4,7 +4,11 @@ import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
-import { getPositionList, delPosition } from '@/services/department'
+import {
+  getPositionList,
+  delPosition,
+  updateUserPositionStatus,
+} from '@/services/department'
 import {
   Wrap,
   HeaderWrap,
@@ -154,8 +158,20 @@ const Index = () => {
       ),
       dataIndex: 'status',
       width: 200,
-      render: (text: any) => {
-        return <SwitchWrap checked={text === 1}></SwitchWrap>
+      render: (text: any, record: any) => {
+        return (
+          <SwitchWrap
+            checked={text === 1}
+            onChange={async value => {
+              console.log(value)
+              await updateUserPositionStatus({
+                project_id: projectId,
+                status: value ? 1 : 2,
+                id: record.id,
+              })
+            }}
+          ></SwitchWrap>
+        )
       },
     },
     {

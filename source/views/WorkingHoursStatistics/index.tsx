@@ -18,6 +18,7 @@ import PaginationBox from '@/components/TablePagination'
 import { getMessage } from '@/components/Message'
 import { Spin } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonInput from '@/components/CommonInput'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
   const panelRef = useRef<any>()
@@ -89,7 +90,7 @@ const WorkHours: React.FC<IProps> = props => {
           : '',
       page: page ? page : pageObj.currentPage,
       pagesize: pageSize ? pageSize : pageObj.pageSize,
-      keyword: keyVal,
+      keyword: val.keyword,
       style: val?.style,
     }
     const res = await workTimeList(parmas)
@@ -151,10 +152,10 @@ const WorkHours: React.FC<IProps> = props => {
   }
   return (
     <WorkHoursWrap>
-      <ProjectCommonOperation
+      {/* <ProjectCommonOperation
         onInputSearch={onInputSearch}
         title={t('search_for_transaction_name_or_number')}
-      />
+      /> */}
       <Spin spinning={spinning}>
         <WorkHoursHeader
           id={paramsData.id}
