@@ -1,15 +1,7 @@
 /* eslint-disable react/jsx-handler-names */
 // 全局的头部
 import Export from '@/components/Export'
-import {
-  HeaderRowBox,
-  Back,
-  RightRow,
-  PersonText,
-  Line,
-  DivStyle,
-  Btn1,
-} from '../Header/Style'
+import { HeaderRowBox, Back, RightRow, DivStyle, Btn1 } from '../Header/Style'
 import { useEffect, useState, useLayoutEffect } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from './Select'
@@ -34,7 +26,7 @@ import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModa
 import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 
 const SelectWrapForList = styled(SelectWrapBedeck)`
-  margin-left: 16px;
+  // margin-left: 16px;
   .ant-select-focused:not(.ant-select-disabled).ant-select:not(
       .ant-select-customize-input
     )
@@ -242,16 +234,11 @@ const HeaderAll = (props: HaderProps) => {
   return (
     <>
       <HeaderRowBox>
-        <Back onClick={() => onBack()}>
-          <CommonIconFont type="left-md" size={16} />
-          <span className="text">{t('performance.back')}</span>
-        </Back>
         {props.state === 'hidden' ? null : (
           <RightRow>
             {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
             {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
         //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
-
             <div style={{ marginRight: '16px' }}>
               <SelectWrapForList id="SelectWrap">
                 <span style={{ margin: '0px 0px 0px 12px', fontSize: '14px' }}>
@@ -380,29 +367,39 @@ const HeaderAll = (props: HaderProps) => {
                 onClose={() => setIsVisible(false)}
               />
             )}
-            <Back
-              onClick={() =>
-                open({
-                  onOk: () => {
-                    return Promise.resolve()
-                  },
-                })
-              }
-              style={{ margin: '0 16px 0 24px' }}
-            >
-              <CommonIconFont type="share" size={16} />
-              <span className="text">{t('performance.share')}</span>
-            </Back>
-            <CommonButton
-              isDisable={props?.tableList && props?.tableList?.length < 1}
-              type="primary"
-              onClick={() => setIsOpen(true)}
-            >
-              <CommonIconFont type="export" size={16} />
-              {t('performance.export')}
-            </CommonButton>
           </RightRow>
         )}
+        <RightRow>
+          <Back onClick={() => onBack()}>
+            <CommonIconFont type="left-md" size={16} />
+            <span className="text">{t('performance.back')}</span>
+          </Back>
+          {props.state === 'hidden' ? null : (
+            <>
+              <Back
+                onClick={() =>
+                  open({
+                    onOk: () => {
+                      return Promise.resolve()
+                    },
+                  })
+                }
+                style={{ margin: '0 16px 0 24px' }}
+              >
+                <CommonIconFont type="share" size={16} />
+                <span className="text">{t('performance.share')}</span>
+              </Back>
+              <CommonButton
+                isDisable={props?.tableList && props?.tableList?.length < 1}
+                type="primary"
+                onClick={() => setIsOpen(true)}
+              >
+                <CommonIconFont type="export" size={16} />
+                {t('performance.export')}
+              </CommonButton>
+            </>
+          )}
+        </RightRow>
       </HeaderRowBox>
       {/* 分享  save代表是否保存的值*/}
       <ShareModal
