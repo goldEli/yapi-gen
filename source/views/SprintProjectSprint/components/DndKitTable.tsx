@@ -197,6 +197,7 @@ const DndKitTable = (props: any) => {
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     sessionStorage.setItem('noRefresh', 'true')
     dispatch(setSprintRefresh(1))
+    props.callback()
   }
 
   // 解除关联长故事

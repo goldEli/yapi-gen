@@ -82,6 +82,7 @@ const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
     cursor: pointer;
     .controlMaxWidth {
       border-bottom: 1px solid transparent;
+      max-width: 386px;
     }
     &:hover {
       .controlMaxWidth {
@@ -140,9 +141,6 @@ const MainTable = (props: Props) => {
     props.onChangePageNavigation({ page, size })
   }
 
-  // 点击跳转项目详情
-  const onClickItem = (row: any) => {}
-
   const columns = [
     {
       dataIndex: 'name',
@@ -172,11 +170,7 @@ const MainTable = (props: Props) => {
               <Tags type={2}> {t('sprint2')}</Tags>
             )}
             <Tooltip title={`${text}-【${record.prefix}】`}>
-              <ListNameWrap
-                isName
-                isClose={record.status === 2}
-                onClick={() => onClickItem(record)}
-              >
+              <ListNameWrap isName isClose={record.status === 2}>
                 <span className="controlMaxWidth">
                   {text}-【{record.prefix}】
                 </span>
@@ -458,6 +452,7 @@ const MainTable = (props: Props) => {
             ref={dataWrapRef}
           >
             <DragTable
+              isProject
               filterParams={props.filterParams}
               columns={columns}
               dataSource={{

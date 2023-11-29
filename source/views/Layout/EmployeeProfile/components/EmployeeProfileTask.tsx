@@ -48,25 +48,25 @@ const TaskItemContent = (props: TaskItemContentProps) => {
       key: 2,
       name: t('completed'),
       bgColor: 'rgba(246, 247, 249, 1)',
-      brderColor:'rgba(150, 151, 153, 1)'
+      brderColor: 'rgba(150, 151, 153, 1)',
     },
     {
       key: 3,
       name: t('toBePlanned'),
       bgColor: 'rgba(102, 136, 255, 0.20)',
-      brderColor:'rgba(102, 136, 255, 1)'
+      brderColor: 'rgba(102, 136, 255, 1)',
     },
     {
       key: 4,
       name: t('inProgress'),
       bgColor: 'rgba(67, 186, 154, 0.20)',
-      brderColor:'rgba(67, 186, 154, 1)'
+      brderColor: 'rgba(67, 186, 154, 1)',
     },
     {
       key: 5,
       name: t('overdue'),
       bgColor: 'rgba(250,151,70,0.2)',
-      brderColor:'rgba(250, 151, 70, 1)'
+      brderColor: 'rgba(250, 151, 70, 1)',
     },
   ]
 
@@ -106,12 +106,13 @@ const TaskItemContent = (props: TaskItemContentProps) => {
         ref={tagRef}
         style={{
           background: currentStatus?.bgColor,
-          border:`1px solid ${currentStatus?.brderColor}`
+          border: `1px solid ${currentStatus?.brderColor}`,
         }}
       >
         {row.status === 5
           ? t('overdueTime', { day: Math.ceil(row.overdue_time / 86400) })
-          : currentStatus?.name}11
+          : currentStatus?.name}
+        11
       </TagWrap>
       <TaskContent style={{ width: `calc(100% - ${tagWidth}px)` }}>
         <div className="nameBox" onClick={() => onToDetail(row)}>
@@ -277,7 +278,7 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
       //调用任务接口
       getTaskList()
     }
-  }, [props.filterParams])
+  }, [JSON.stringify(props.filterParams)])
 
   useEffect(() => {
     if (taskDrawerUpdate.id) {

@@ -417,7 +417,7 @@ const AffairsDetail = () => {
   }
 
   useEffect(() => {
-    if (visible) {
+    if (visible && params?.sprintId) {
       dispatch(
         getAffairsInfo({
           projectId: params.id,
@@ -454,7 +454,10 @@ const AffairsDetail = () => {
   useEffect(() => {
     if (isUpdateAddWorkItem && visible) {
       dispatch(
-        getAffairsInfo({ projectId: params.id, sprintId: affairsInfo.id }),
+        getAffairsInfo({
+          projectId: params.id,
+          sprintId: params?.sprintId || 0,
+        }),
       )
       dispatch(
         getAffairsCommentList({

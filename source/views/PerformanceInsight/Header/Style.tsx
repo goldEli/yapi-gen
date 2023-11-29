@@ -284,7 +284,7 @@ export const HeaderRowBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 48px;
+  margin: 0 24px;
   height: 80px;
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
@@ -376,7 +376,7 @@ export const TitleCss = styled.div`
   }
 `
 export const TableStyle = styled.div`
-  padding: 24px 48px 0 48px;
+  padding: 24px 24px 0 24px;
   height: calc(100vh - 256px);
 `
 export const Btn1 = styled.div`

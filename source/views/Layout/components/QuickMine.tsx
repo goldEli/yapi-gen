@@ -35,6 +35,7 @@ import { Skeleton } from 'antd'
 import _ from 'lodash'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 interface GroupItemsProps {
   row: any
@@ -81,16 +82,19 @@ const GroupItems = (props: GroupItemsProps) => {
             <StatusBox
               style={{
                 background:
-                  i.status?.is_start === 1 && i.status?.is_end === 2
+                  i.category_status?.is_start === 1 &&
+                  i.category_status?.is_end === 2
                     ? 'var(--primary-d2)'
-                    : i.status?.is_end === 1 && i.status?.is_start === 2
+                    : i.category_status?.is_end === 1 &&
+                      i.category_status?.is_start === 2
                     ? 'var(--neutral-n7)'
-                    : i.status?.is_start === 2 && i.status?.is_end === 2
+                    : i.category_status?.is_start === 2 &&
+                      i.category_status?.is_end === 2
                     ? 'var(--function-success)'
                     : '',
               }}
             >
-              {i.status?.status?.content}
+              {i.category_status?.status?.content}
             </StatusBox>
           )}
         </TaskItem>
@@ -276,6 +280,7 @@ const QuickMine = (props: QuickMineProps) => {
   // 点击跳转详情
   const onClickItem = async (row: any) => {
     props.onClose()
+    dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({
         id: row.project_id,
@@ -291,19 +296,21 @@ const QuickMine = (props: QuickMineProps) => {
       }),
     )
 
-    navigate(
-      `${
-        row.defaultHomeMenu
-          ? row.defaultHomeMenu
-          : `/ProjectDetail/${
-              row.project_type === 2
-                ? 'Affair'
-                : row.is_bug === 2
-                ? 'Demand'
-                : 'Defect'
-            }`
-      }?data=${params}`,
-    )
+    setTimeout(() => {
+      navigate(
+        `${
+          row.defaultHomeMenu
+            ? row.defaultHomeMenu
+            : `/ProjectDetail/${
+                row.project_type === 2
+                  ? 'Affair'
+                  : row.is_bug === 2
+                  ? 'Demand'
+                  : 'Defect'
+              }`
+        }?data=${params}`,
+      )
+    }, 2)
   }
 
   // 点击打开审核弹窗
