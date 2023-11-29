@@ -401,6 +401,7 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
     parent: [
       { value: response.data.parent?.id, label: response.data.parent?.name },
     ],
+    work_hours: response.data?.work_hours / 3600,
   }
 }
 
@@ -436,6 +437,7 @@ export const addFlaw: any = async (params: any) => {
     solution: params.solution,
     severity: params.severity || 0,
     discovery_version: params.discovery_version,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -478,6 +480,7 @@ export const updateFlaw: any = async (params: any) => {
     solution: params.solution,
     severity: params.severity || 0,
     discovery_version: params.discovery_version,
+    work_hours: params?.work_hours,
   })
 }
 

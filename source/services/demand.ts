@@ -617,6 +617,7 @@ export const getDemandInfo: any = async (params: any) => {
     parent: [
       { value: response.data.parent?.id, label: response.data.parent?.name },
     ],
+    work_hours: response.data?.work_hours / 3600,
   }
 }
 
@@ -937,6 +938,7 @@ export const addDemand: any = async (params: any) => {
     class_id: params?.class || 0,
     schedule: params?.schedule,
     status: params?.status,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -975,6 +977,7 @@ export const updateDemand: any = async (params: any) => {
     custom_field: params?.customField,
     class_id: params?.class || 0,
     schedule: params?.schedule,
+    work_hours: params?.work_hours,
   })
 }
 

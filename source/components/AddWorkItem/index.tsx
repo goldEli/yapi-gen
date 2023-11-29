@@ -179,6 +179,7 @@ const AddWorkItem = () => {
       await resultMethod?.create({
         projectId,
         ...values,
+        work_hours: values?.work_hours * 3600,
       })
       getMessage({ msg: t('common.createSuccess'), type: 'success' })
     }
