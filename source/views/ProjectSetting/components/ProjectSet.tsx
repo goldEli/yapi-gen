@@ -151,9 +151,9 @@ const OperationWrap = styled.div<{ isZh?: boolean }>`
 `
 
 const GroupWrap = styled.div<{ isZh?: boolean }>`
+  width: ${props => (props.isZh ? 'calc(100% - 180px)' : 'calc(100% - 280px)')};
   display: flex;
   align-items: center;
-  width: ${props => (props.isZh ? 'calc(100% - 180px)' : 'calc(100% - 280px)')};
   .ant-checkbox-group-item: {
     margin: 6px 24px 6px 0;
   }
@@ -250,8 +250,7 @@ export const PermissionItem = (props: ItemProps) => {
               >
                 <span
                   style={{
-                    minWidth: '150px',
-                    width: 'fit-content',
+                    width: language === 'zh' ? '150px' : '220px',
                     display: 'inline-block',
                     marginBottom: '10px',
                     whiteSpace: 'nowrap',

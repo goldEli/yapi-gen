@@ -9,7 +9,7 @@ const GrepBox = styled.div`
   display: flex;
   align-items: center;
   height: 56px;
-  background: var(--hover-d2);
+  background: var(--neutral-n10);
   padding: 16px 24px;
   border-radius: 6px 6px 0 0;
 `

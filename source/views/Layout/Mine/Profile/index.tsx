@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-max-depth */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // 我的模块-我的概况
 
@@ -36,7 +37,6 @@ import PaginationBox from '@/components/TablePagination'
 import { useNavigate } from 'react-router-dom'
 import { getMessage } from '@/components/Message'
 import LineAnimation from '../components/LineAnimation'
-import CommonIconFont from '@/components/CommonIconFont'
 import FullScreenContainer from '@/views/KanBanBoard/FullScreenContainer'
 import { useFullScreenHandle } from 'react-full-screen'
 import { setFullScreen } from '@store/kanBan'
@@ -52,6 +52,7 @@ const Mygante = styled(Gantt)`
   }
 `
 const hov = css`
+  color: var(--neutral-n3);
   &:hover {
     color: rgba(40, 119, 255, 1);
   }
@@ -66,7 +67,7 @@ const titleWrap = css`
   justify-content: space-between;
   justify-content: center;
   align-items: center;
-  margin-bottom: 16px;
+  margin-right: 24px;
 `
 const timeChoose = css`
   margin: 0 8px;
@@ -102,7 +103,7 @@ export const FullScreenDiv = styled.div<{ isScreen: boolean }>`
 
 const Head = styled.div`
   box-sizing: border-box;
-  padding: 24px ;
+  padding: 24px;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
   display: flex;
@@ -112,45 +113,40 @@ const Head = styled.div`
   flex: 8;
 `
 const Center = styled.div`
-  padding: 0 24px;
   display: flex;
-  gap: 24px;
-  flex: 7;
+  gap: 32px;
+`
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `
 
 const CenterRight = styled.div`
-  box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
   border-radius: 6px 6px 6px 6px;
   box-sizing: border-box;
   padding: 24px;
   flex: 1;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
+  margin-top: 16px;
 `
 const InnerWrap = styled.div`
-  // margin-top: 16px;
   min-height: 88px;
   background: rgba(255, 255, 255, 1);
   background-blend-mode: normal;
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   box-sizing: border-box;
-  // padding: 26px 24px 26px 24px;
   border-radius: 6px;
-  text-align: center;
-  // box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
+  align-items: center;
 `
 
 const TimeLineWrap = styled.div`
   border-radius: 6px;
   box-sizing: border-box;
-  padding: 10px 0 10px 10px;
-  /* margin-top: 16px; */
-  /* overflow-y: scroll; */
-  /* overflow-x: hidden; */
-  height: 320px;
-  padding-top: 10px;
-  padding-left: 16px;
+  height: 400px;
 `
 const LineItem = styled.div`
   display: flex;
@@ -164,6 +160,13 @@ const GatteWrap = styled.div`
   margin: 0 16px;
   border-radius: 6px;
 `
+
+const Content = styled.div`
+  padding: 16px;
+  background: var(--neutral-n8);
+  border-radius: 6px;
+`
+
 const Profile = () => {
   const handle = useFullScreenHandle()
   const asyncSetTtile = useSetTitle()
@@ -391,163 +394,191 @@ const Profile = () => {
         background: 'var(--neutral-white-d1)',
       }}
     >
-      <div>
-        <Head>
-          <div>
-            <InnerWrap>
-              <ChartsItem1 background="rgba(102,136,255,0.08)">
-                <span className={titleNumberCss}>{data?.project_count}</span>
-                <span className={titleTextCss}>{t('mine.totalProject')}</span>
-              </ChartsItem1>
-              <ChartsItem1 background="rgba(250,151,70,0.08)">
-                <span className={titleNumberCss}>{data?.story_count}</span>
-                <span className={titleTextCss}>
-                  {t('accumulated_work_items')}
-                </span>
-              </ChartsItem1>
+      <Head>
+        <InnerWrap>
+          <ChartsItem1 background="rgba(102,136,255,0.08)">
+            <span className={titleNumberCss}>{data?.project_count}</span>
+            <span className={titleTextCss}>{t('mine.totalProject')}</span>
+          </ChartsItem1>
+          <ChartsItem1 background="rgba(250,151,70,0.08)">
+            <span className={titleNumberCss}>{data?.story_count}</span>
+            <span className={titleTextCss}>{t('accumulated_work_items')}</span>
+          </ChartsItem1>
+          <div
+            style={{
+              width: '1px',
+              height: '56px',
+              background: 'var(--neutral-n6-d1)',
+            }}
+          ></div>
+          <ChartsItem onClick={() => changeActive('/Mine/Carbon')}>
+            <span className={titleNumberCss3}>{data?.abeyance_count}</span>
+            <span className={titleTextCss}>{t('todo_work_items')}</span>
+          </ChartsItem>
+          <ChartsItem onClick={() => changeActive('/Mine/Finished')}>
+            <span className={titleNumberCss3}>{data?.finish_count}</span>
+            <span className={titleTextCss}>{t('completed_work_items')}</span>
+          </ChartsItem>
+          <ChartsItem onClick={() => changeActive('/Mine/Create')}>
+            <span className={titleNumberCss3}>{data?.create_count}</span>
+            <span className={titleTextCss}>{t('my_created_work_items')}</span>
+          </ChartsItem>
+          <ChartsItem onClick={() => changeActive('/Mine/Agenda')}>
+            <span className={titleNumberCss3}>{data?.copy_me_count}</span>
+            <span className={titleTextCss}>{t('cc_to_me_work_items')}</span>
+          </ChartsItem>
+          <ChartsItem onClick={() => changeActive('/Mine/Examine')}>
+            <span className={titleNumberCss3}>{data?.approving_count}</span>
+            <span className={titleTextCss}>
+              {t('pending_approval_work_items')}
+            </span>
+          </ChartsItem>
+        </InnerWrap>
+      </Head>
+      <div style={{ padding: '0 24px' }}>
+        <Content>
+          <Center>
+            <Box>
               <div
                 style={{
-                  width: '0px',
-                  borderLeft: '1px solid var(--neutral-n6-d1)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
-              ></div>
-              <ChartsItem onClick={() => changeActive('/Mine/Carbon')}>
-                <span className={titleNumberCss3}>{data?.abeyance_count}</span>
-                <span className={titleTextCss}>{t('todo_work_items')}</span>
-              </ChartsItem>
-              <ChartsItem onClick={() => changeActive('/Mine/Finished')}>
-                <span className={titleNumberCss3}>{data?.finish_count}</span>
-                <span className={titleTextCss}>
-                  {t('completed_work_items')}
-                </span>
-              </ChartsItem>
-              <ChartsItem onClick={() => changeActive('/Mine/Create')}>
-                <span className={titleNumberCss3}>{data?.create_count}</span>
-                <span className={titleTextCss}>
-                  {t('my_created_work_items')}
-                </span>
-              </ChartsItem>
-              <ChartsItem onClick={() => changeActive('/Mine/Agenda')}>
-                <span className={titleNumberCss3}>{data?.copy_me_count}</span>
-                <span className={titleTextCss}>{t('cc_to_me_work_items')}</span>
-              </ChartsItem>
-              <ChartsItem onClick={() => changeActive('/Mine/Examine')}>
-                <span className={titleNumberCss3}>{data?.approving_count}</span>
-                <span className={titleTextCss}>
-                  {t('pending_approval_work_items')}
-                </span>
-              </ChartsItem>
-              {/* <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondFinish}</span>
-                <span className={titleTextCss}>{t('mine.finishOn')}</span>
-              </ChartsItem>
-              <ChartsItem>
-                <span className={titleNumberCss2}>{data?.secondOutFinish}</span>
-                <span className={titleTextCss}>{t('mine.finishOver')}</span>
-              </ChartsItem> */}
-            </InnerWrap>
-          </div>
-        </Head>
-        <Center>
-          <CenterRight>
+              >
+                <SecondTitle>
+                  {t('workItemReceptionAndProcessingStatus')}
+                </SecondTitle>
+                <Select
+                  onChange={handleChange}
+                  defaultValue={nowYear}
+                  style={{ width: 120 }}
+                  options={nowYearOptions}
+                />
+              </div>
+              <CenterRight>
+                <LineAnimation data={chartData} />
+              </CenterRight>
+            </Box>
+            <Box>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: 32,
+                }}
+              >
+                <SecondTitle>{t('mine.mineNews')}</SecondTitle>
+              </div>
+
+              <CenterRight>
+                {lineData.length < 1 ? (
+                  <NoData />
+                ) : (
+                  <TimeLineWrap>
+                    <Timeline
+                      style={{
+                        overflowY: 'scroll',
+                        height: '400px',
+                        overflowX: 'hidden',
+                        padding: '10px 10px 0 0',
+                      }}
+                    >
+                      {lineData.map((item: any) => (
+                        <Timeline.Item key={item.id}>
+                          <LineItem>
+                            <span>{item.created_at}</span>
+                            <span>{item.content}</span>
+                          </LineItem>
+                          <LineItem>
+                            <HiddenText>
+                              <OmitText
+                                width={200}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
+                                {item.feedable?.project?.name ?? '--'}
+                              </OmitText>
+                            </HiddenText>
+                            <HiddenText>
+                              <OmitText
+                                width={300}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
+                                <span
+                                  onClick={() =>
+                                    item.feedable?.project.user_ismember
+                                      ? onToDetail(item)
+                                      : null
+                                  }
+                                  style={{
+                                    color: item.feedable?.project.user_ismember
+                                      ? 'var(--primary-d1)'
+                                      : 'var(--neutral-n2)',
+                                    cursor: 'pointer',
+                                    textDecoration: item.feedable?.project
+                                      .user_ismember
+                                      ? 'underline'
+                                      : 'none',
+                                  }}
+                                >
+                                  {item.feedable?.name ?? '--'}
+                                  {/* {String(item.feedable?.project.user_ismember)} */}
+                                </span>
+                              </OmitText>
+                            </HiddenText>
+                          </LineItem>
+                        </Timeline.Item>
+                      ))}
+                    </Timeline>
+                  </TimeLineWrap>
+                )}
+              </CenterRight>
+            </Box>
+          </Center>
+          <FullScreenContainer isScreen={fullScreen}>
             <div
               style={{
+                marginBottom: 16,
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center',
               }}
             >
-              <SecondTitle>{t('work_item_receiving_processing')}</SecondTitle>
-              <Select
-                onChange={handleChange}
-                defaultValue={nowYear}
-                style={{ width: 120 }}
-                options={nowYearOptions}
-              />
-            </div>
-
-            <LineAnimation data={chartData} />
-          </CenterRight>
-          <CenterRight>
-            <SecondTitle>{t('mine.mineNews')}</SecondTitle>
-            {lineData.length < 1 ? (
-              <NoData />
-            ) : (
-              <TimeLineWrap>
-                <Timeline
-                  style={{
-                    overflowY: 'scroll',
-                    height: '367px',
-                    overflowX: 'hidden',
-                    padding: '10px 10px 0 0',
-                  }}
-                >
-                  {lineData.map((item: any) => (
-                    <Timeline.Item key={item.id}>
-                      <LineItem>
-                        <span>{item.created_at}</span>
-                        <span>{item.content}</span>
-                      </LineItem>
-                      <LineItem>
-                        <HiddenText>
-                          <OmitText
-                            width={200}
-                            tipProps={{
-                              getPopupContainer: node => node,
-                            }}
-                          >
-                            {item.feedable?.project?.name ?? '--'}
-                          </OmitText>
-                        </HiddenText>
-                        <HiddenText>
-                          <OmitText
-                            width={300}
-                            tipProps={{
-                              getPopupContainer: node => node,
-                            }}
-                          >
-                            <span
-                              onClick={() =>
-                                item.feedable?.project.user_ismember
-                                  ? onToDetail(item)
-                                  : null
-                              }
-                              style={{
-                                color: item.feedable?.project.user_ismember
-                                  ? 'var(--primary-d1)'
-                                  : 'var(--neutral-n2)',
-                                cursor: 'pointer',
-                                textDecoration: item.feedable?.project
-                                  .user_ismember
-                                  ? 'underline'
-                                  : 'none',
-                              }}
-                            >
-                              {item.feedable?.name ?? '--'}
-                              {/* {String(item.feedable?.project.user_ismember)} */}
-                            </span>
-                          </OmitText>
-                        </HiddenText>
-                      </LineItem>
-                    </Timeline.Item>
-                  ))}
-                </Timeline>
-              </TimeLineWrap>
-            )}
-          </CenterRight>
-        </Center>
-      </div>
-      <FullScreenContainer>
-        <FullScreenDiv isScreen={fullScreen}>
-          <GatteWrap>
-            <div style={{ padding: '28px 24px 0' }}>
+              <SecondTitle>
+                {t('dateDistributionOfCompletedWorkItems')}
+              </SecondTitle>
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                 }}
               >
-                <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
+                <div className={titleWrap}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span onClick={nextMonth}>
+                      <IconFont
+                        className={hov}
+                        type="left
+              "
+                        style={{ fontSize: 16, cursor: 'pointer' }}
+                      />
+                    </span>
+
+                    <span className={timeChoose}>{forMateMonth}</span>
+                    <span onClick={prevMonth}>
+                      <IconFont
+                        className={hov}
+                        type="right
+              "
+                        style={{ fontSize: 16, cursor: 'pointer' }}
+                      />
+                    </span>
+                  </div>
+                </div>
                 <ScreenMinHover
                   label={fullScreen ? t('exit_full_screen') : t('full_screen')}
                   icon={fullScreen ? 'fewer-screen' : 'full-screen'}
@@ -555,84 +586,44 @@ const Profile = () => {
                     fullScreen ? handle.enter() : dispatch(setFullScreen(true))
                   }
                 />
-                {/* <BBQdiv
-                  onClick={() =>
-                    fullScreen ? handle.enter() : dispatch(setFullScreen(true))
-                  }
+              </div>
+            </div>
+            <FullScreenDiv isScreen={fullScreen}>
+              <GatteWrap>
+                <div
                   style={{
-                    // width: '98px',
-                    height: '32px',
                     display: 'flex',
-                    alignItems: 'center',
+                    flexDirection: 'column',
                     justifyContent: 'space-between',
-                    padding: '8px',
-                    cursor: 'pointer',
+                    height: fullScreen ? 'calc(100vh - 68px)' : '',
                   }}
                 >
-                  <CommonIconFont
-                    type={fullScreen ? 'fewer-screen' : 'full-screen'}
-                  />
-                  <span style={{ marginLeft: '10px' }}>
-                    {fullScreen ? t('exit_full_screen') : t('full_screen')}
-                  </span>
-                </BBQdiv> */}
-              </div>
-
-              <div className={titleWrap}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span onClick={nextMonth}>
-                    <IconFont
-                      className={hov}
-                      type="left
-              "
-                      style={{ fontSize: 15, cursor: 'pointer' }}
+                  {gatteData.length >= 1 && (
+                    <Mygante
+                      data={gatteData}
+                      minHeight={fullScreen ? '89vh' : 380}
                     />
-                  </span>
+                  )}
+                  {gatteData.length < 1 && (
+                    <div style={{ height: 'calc(100vh - 508px)' }}>
+                      <NoData />
+                    </div>
+                  )}
 
-                  <span className={timeChoose}>{forMateMonth}</span>
-                  <span onClick={prevMonth}>
-                    <IconFont
-                      className={hov}
-                      type="right
-              "
-                      style={{ fontSize: 15, cursor: 'pointer' }}
+                  {gatteData.length >= 1 && (
+                    <PaginationBox
+                      total={total}
+                      pageSize={pageObj.size}
+                      currentPage={pageObj.page}
+                      onChange={onChangePage}
                     />
-                  </span>
+                  )}
                 </div>
-              </div>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: fullScreen ? '90vh' : '',
-              }}
-            >
-              {gatteData.length >= 1 && (
-                <Mygante
-                  data={gatteData}
-                  minHeight={fullScreen ? '85vh' : 380}
-                />
-              )}
-              {gatteData.length < 1 && (
-                <div style={{ height: 'calc(100vh - 508px)' }}>
-                  <NoData />
-                </div>
-              )}
-
-              {gatteData.length >= 1 && (
-                <PaginationBox
-                  total={total}
-                  pageSize={pageObj.size}
-                  currentPage={pageObj.page}
-                  onChange={onChangePage}
-                />
-              )}
-            </div>
-          </GatteWrap>
-        </FullScreenDiv>
-      </FullScreenContainer>
+              </GatteWrap>
+            </FullScreenDiv>
+          </FullScreenContainer>
+        </Content>
+      </div>
     </div>
   )
 }
