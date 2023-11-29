@@ -23,6 +23,7 @@ const Triangle = styled.div`
 `
 const Warp = styled.div<{ show?: boolean }>(
   {
+    overflow: 'hidden',
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
@@ -31,19 +32,20 @@ const Warp = styled.div<{ show?: boolean }>(
     height: 64,
     width: 200,
     transition: 'all .3s',
-    background: 'var(--neutral-white-d2)',
     cursor: 'pointer',
+    background: 'var(--neutral-white-d2)',
     '&: hover': {
-      border: '1px solid var(--primary-d1) !important',
+      borderTop: '2px solid var(--primary-d1) !important',
       [DropdownWrap.toString()]: {
         display: 'block',
       },
     },
   },
+
   ({ show }) => ({
-    border: show
-      ? '1px solid var(--primary-d1) !important'
-      : '1px solid var(--neutral-n6-d1)',
+    borderTop: show
+      ? '2px solid var(--primary-d1) !important'
+      : '2px solid var(--neutral-white-d2)',
     [Triangle.toString()]: {
       visibility: show ? 'visible' : 'hidden',
     },
