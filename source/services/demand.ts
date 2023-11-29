@@ -301,7 +301,10 @@ export const getShapeRight = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
-    } else if (item.title.includes('需求进度') && !item.attr) {
+    } else if (
+      (item.title.includes('需求进度') && !item.attr) ||
+      (item.content.includes('work_hours') && !item.attr)
+    ) {
       return {
         ...item,
         id: item.id,
@@ -617,7 +620,7 @@ export const getDemandInfo: any = async (params: any) => {
     parent: [
       { value: response.data.parent?.id, label: response.data.parent?.name },
     ],
-    work_hours: response.data?.work_hours / 3600,
+    work_hours: response.data?.work_hours,
   }
 }
 

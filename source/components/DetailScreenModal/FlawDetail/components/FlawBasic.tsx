@@ -127,7 +127,7 @@ const FlawBasic = (props: Props) => {
       id: props.detail.id,
       projectId: props.detail.projectId,
       otherParams: {
-        work_hours: workHoursValue * 3600,
+        work_hours: workHoursValue,
       },
     })
     getMessage({ msg: t('successfullyModified'), type: 'success' })

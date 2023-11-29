@@ -1059,7 +1059,7 @@ export const updateWorkTime: any = async (params: any) => {
 // 获取工时详情
 export const getWorkTimeInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getWorkTimeInfo', params)
-  return response
+  return response?.data
 }
 // 更新需求感悟
 export const updateStoryPerception = async (params: {

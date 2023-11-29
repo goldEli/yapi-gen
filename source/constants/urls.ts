@@ -622,6 +622,8 @@ const urls = {
   delPosition: '/b/project/position/batch_del',
   // 设置员工职位
   updateUserPosition: '/b/project/position/member_set',
+  // 设置员工职位状态
+  updateUserPositionStatus: '/b/project/position/on_off',
 }
 export default urls
 

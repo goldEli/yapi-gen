@@ -16,6 +16,7 @@ import {
   lastDay,
   UpdateTask,
   HeaderWrap,
+  MemberTipBOX,
 } from '../style'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
@@ -48,10 +49,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [scrollWidth, setScrollWidth] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
-  const { columns, map, reduceMonth } = usePanelData(
+  const { columns, map, reduceMonth, projectId } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
   )
+  const [memberToolTip, setMemberToolTip] = useState(<div></div>)
   useEffect(() => {
     setWeekdayString({
       1: t('onMonday'),
@@ -259,15 +261,28 @@ const WorkHoursPanel = (props: any, ref: any) => {
                     <Tooltip
                       open={col.id === id && item === record.date}
                       placement="bottom"
-                      title="Prompt Text"
-                      trigger="click"
-                      onOpenChange={open => {
-                        console.log('open', open)
-                        getWorkTimeInfo({
-                          project_id: 486,
-                          date: '2023-11-02',
-                          user_id: id,
-                        })
+                      title={memberToolTip}
+                      trigger={['click']}
+                      color="#585859"
+                      onOpenChange={async open => {
+                        console.log(open)
+                        if (open) {
+                          const res = await getWorkTimeInfo({
+                            project_id: projectId,
+                            date: item,
+                            user_id: col.id,
+                          })
+                          const { list } = res
+                          const box = list.map((item: any, index: number) => (
+                            <MemberTipBOX key={item.id}>
+                              {index + 1}. {item.story?.name}(
+                              {item.schedule?.schedule}%{' '}
+                              {item.total_time / 3600}h)
+                            </MemberTipBOX>
+                          ))
+                          setMemberToolTip(box)
+                          console.log(res, box)
+                        }
                       }}
                     >
                       <WorkHourLabel

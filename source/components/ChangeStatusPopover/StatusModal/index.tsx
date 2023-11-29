@@ -28,6 +28,7 @@ import { getShapeFlawRight } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
 import MoreSelect from '@/components/MoreSelect'
 import { getProjectIdByUrl } from '@/tools'
+import { CodeSandboxCircleFilled } from '@ant-design/icons'
 
 interface StatusModalProps {
   // 弹窗显示状态
@@ -146,6 +147,7 @@ const TagSelect = (props: any) => {
   )
 }
 const NumericInput = (props: any) => {
+  console.log('-----', props)
   const [t] = useTranslation()
   const { value, onChange, onPress, type } = props
   const enter = (e: any) => {
@@ -353,6 +355,7 @@ const StatusModal = (props: StatusModalProps) => {
       setConfigData(res)
     }
     form.setFieldsValue(setValue(res))
+    console.log('-----', form.getFieldsValue(), setValue(res))
   }
 
   // 关闭弹窗
@@ -414,6 +417,7 @@ const StatusModal = (props: StatusModalProps) => {
   }
 
   useEffect(() => {
+    console.log('configData', configData?.fields)
     if (props.isVisible && props.checkStatusItem?.id) {
       getConfig()
     }
@@ -641,7 +645,7 @@ const StatusModal = (props: StatusModalProps) => {
                       },
                     ]}
                   >
-                    <NumericInput type={i.value[0]} />
+                    <NumericInput type={i.value ? i.value[0] : ''} />
                   </Form.Item>
                 )}
                 {i.type === 'tree' && (
