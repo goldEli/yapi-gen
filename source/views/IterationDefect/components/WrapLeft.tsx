@@ -31,12 +31,6 @@ import { getMessage } from '@/components/Message'
 import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
 import { TreeContextDefect } from '..'
 
-const Left = styled.div`
-  height: calc(100vh - 150px);
-  background-color: var(--neutral-white-d2);
-  position: relative;
-`
-
 const TitleWrap = styled.div({
   paddingLeft: '15px',
   whiteSpace: 'nowrap',
@@ -359,8 +353,10 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContextDefect)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { projectInfoValues } = useSelector(store => store.project)
-  const { isUpdateAddWorkItem } = useSelector(store => store.project)
+  const { projectInfoValues, isUpdateAddWorkItem } = useSelector(
+    store => store.project,
+  )
+  const { isRefresh } = useSelector(store => store.user)
 
   // 重组为下拉筛选格式
   const computedChildren = (array: any) => {
@@ -488,10 +484,10 @@ const WrapLeft = (props: any, ref: any) => {
   }
 
   useEffect(() => {
-    if (isUpdateAddWorkItem) {
+    if (isUpdateAddWorkItem || isRefresh) {
       init(false, false)
     }
-  }, [isUpdateAddWorkItem])
+  }, [isUpdateAddWorkItem, isRefresh])
 
   useEffect(() => {
     if (props.isShowLeft) {
