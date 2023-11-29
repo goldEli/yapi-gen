@@ -937,6 +937,7 @@ export const addDemand: any = async (params: any) => {
     class_id: params?.class || 0,
     schedule: params?.schedule,
     status: params?.status,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -975,6 +976,7 @@ export const updateDemand: any = async (params: any) => {
     custom_field: params?.customField,
     class_id: params?.class || 0,
     schedule: params?.schedule,
+    work_hours: params?.work_hours,
   })
 }
 

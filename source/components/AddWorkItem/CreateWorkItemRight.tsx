@@ -5,7 +5,15 @@ import { getTypeComponent, removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { Checkbox, DatePicker, Form, Input, Select, TreeSelect } from 'antd'
+import {
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  Select,
+  TreeSelect,
+  InputNumber,
+} from 'antd'
 import moment from 'moment'
 import { useState, useEffect, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -529,6 +537,7 @@ const CreateDemandRight = (props: Props) => {
 
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {
+    console.log('------', item, item.title, item.content)
     let nodeComponent
 
     // 下拉多选 抄送人，处理人，迭代,发现版本
@@ -691,6 +700,16 @@ const CreateDemandRight = (props: Props) => {
           placeholder={t('common.pleaseEnter')}
           allowClear
           autoComplete="off"
+        />
+      )
+    } else if (item.content === 'work_hours') {
+      // 工时统计
+      nodeComponent = (
+        <InputNumber
+          placeholder={t('common.pleaseEnter')}
+          autoComplete="off"
+          style={{ width: '100%' }}
+          min={1}
         />
       )
     } else {

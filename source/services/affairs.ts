@@ -495,6 +495,7 @@ export const addAffairs: any = async (params: any) => {
     solution: params.solution,
     severity: params.severity || 0,
     discovery_version: params.discovery_version,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -537,6 +538,7 @@ export const updateAffairs: any = async (params: any) => {
     solution: params.solution,
     severity: params.severity || 0,
     discovery_version: params.discovery_version,
+    work_hours: params?.work_hours,
   })
 }
 
