@@ -743,6 +743,7 @@ export const getDemandList: any = async (params: any) => {
         id: k.status_id,
         isStart: k.is_start,
         isEnd: k.is_end,
+        work_hours: k.work_hours,
       })),
     }
   } else if (params.all) {
@@ -770,6 +771,7 @@ export const getDemandList: any = async (params: any) => {
       copy_send_users: i.copy_send_users,
       // 父需求列表
       parent: [{ value: i.id, label: i.name }],
+      work_hours: i.work_hours,
     }))
   } else if (params?.isChildren) {
     return {
@@ -827,6 +829,7 @@ export const getDemandList: any = async (params: any) => {
         copy_send_users: i.copy_send_users,
         // 父需求列表
         parent: [{ value: i.id, label: i.name }],
+        work_hours: i.work_hours,
       })),
     }
   }
