@@ -2637,5 +2637,7 @@
   "searchForRequirementNameOrNumber": "Search for requirement name or number",
   "pleaseEnterTheTemplateTitle": "Please enter the template title",
   "application": "Application",
-  "notificationItems": "Notification items"
+  "notificationItems": "Notification items",
+  "workItemReceptionAndProcessingStatus": "Work item reception and processing status",
+  "dateDistributionOfCompletedWorkItems": "Date distribution of completed work items"
 }

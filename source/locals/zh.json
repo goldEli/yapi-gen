@@ -2637,5 +2637,7 @@
   "searchForRequirementNameOrNumber": "搜索需求名称或编号",
   "pleaseEnterTheTemplateTitle": "请输入模板标题",
   "application": "应用",
-  "notificationItems": "通知项"
+  "notificationItems": "通知项",
+  "workItemReceptionAndProcessingStatus": "工作项接收处理情况",
+  "dateDistributionOfCompletedWorkItems": "已办工作项日期分布"
 }
