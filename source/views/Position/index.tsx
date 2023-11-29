@@ -169,6 +169,7 @@ const Index = () => {
                 status: value ? 1 : 2,
                 id: record.id,
               })
+              _getList()
             }}
           ></SwitchWrap>
         )

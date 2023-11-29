@@ -69,6 +69,9 @@ export const updateUserPosition = async (params: any) => {
 
 // 员工状态
 export const updateUserPositionStatus = async (params: any) => {
-  const response: any = await http.post<any, any>('updateUserPosition', params)
+  const response: any = await http.put<any, any>(
+    'updateUserPositionStatus',
+    params,
+  )
   return response
 }
