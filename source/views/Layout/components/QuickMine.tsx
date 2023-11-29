@@ -35,6 +35,7 @@ import { Skeleton } from 'antd'
 import _ from 'lodash'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 interface GroupItemsProps {
   row: any
@@ -279,6 +280,7 @@ const QuickMine = (props: QuickMineProps) => {
   // 点击跳转详情
   const onClickItem = async (row: any) => {
     props.onClose()
+    dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({
         id: row.project_id,
@@ -294,19 +296,21 @@ const QuickMine = (props: QuickMineProps) => {
       }),
     )
 
-    navigate(
-      `${
-        row.defaultHomeMenu
-          ? row.defaultHomeMenu
-          : `/ProjectDetail/${
-              row.project_type === 2
-                ? 'Affair'
-                : row.is_bug === 2
-                ? 'Demand'
-                : 'Defect'
-            }`
-      }?data=${params}`,
-    )
+    setTimeout(() => {
+      navigate(
+        `${
+          row.defaultHomeMenu
+            ? row.defaultHomeMenu
+            : `/ProjectDetail/${
+                row.project_type === 2
+                  ? 'Affair'
+                  : row.is_bug === 2
+                  ? 'Demand'
+                  : 'Defect'
+              }`
+        }?data=${params}`,
+      )
+    }, 2)
   }
 
   // 点击打开审核弹窗
