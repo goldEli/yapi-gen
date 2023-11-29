@@ -131,6 +131,7 @@ const Circulation = (props: Props) => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { flawInfo } = useSelector(store => store.flaw)
+  const { language } = useSelector(store => store.global)
 
   const getLogs = async (state: boolean) => {
     if (state) {
@@ -259,7 +260,8 @@ const Circulation = (props: Props) => {
                               {i.fields[m]?.value
                                 ? i.fields[m]?.value
                                 : m === 'class'
-                                ? i.fields[m]?.value || '未分类'
+                                ? i.fields[m]?.value ||
+                                  t('newlyAdd.unclassified')
                                 : '--'}
                             </ContentWrap>
                           )}

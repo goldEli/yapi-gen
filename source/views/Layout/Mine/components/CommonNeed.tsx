@@ -98,6 +98,19 @@ const SearchWrap = styled.div({
   justifyContent: 'flex-end',
 })
 
+const LabelBox = styled.div`
+  height: 32px;
+  border-radius: 4px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--neutral-white-d1);
+  font-family: SiYuanMedium;
+  background: var(--neutral-n2);
+  margin-left: 24px;
+`
+
 interface MoreWrapProps {
   record: any
   onShowDel(record: any): void
@@ -728,10 +741,9 @@ const CommonNeed = (props: any) => {
       <DeleteConfirmModal />
       <div
         style={{
-          margin: `0 24px ${isShowSearch ? 0 : 16}px 24px`,
+          margin: `20px 24px ${isShowSearch ? 0 : 16}px 24px`,
           justifyContent: 'space-between',
           display: 'flex',
-          borderBottom: '1px solid var(--neutral-n6-d1)',
         }}
       >
         <div
@@ -740,18 +752,6 @@ const CommonNeed = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginRight: 24,
-            }}
-          >
-            <TabsItem isActive>
-              <div>{props?.subTitle}</div>
-            </TabsItem>
-            <LabNumber isActive>{total ?? 0}</LabNumber>
-          </div>
           <InputSearch
             placeholder={t('searchForRequirementNameOrNumber')}
             onChangeSearch={onPressEnter}
@@ -759,6 +759,9 @@ const CommonNeed = (props: any) => {
             defaultValue={keyword}
             width={184}
           />
+          <LabelBox>
+            {props?.subTitle}（{total ?? 0}）
+          </LabelBox>
         </div>
 
         <SearchWrap>
@@ -784,7 +787,6 @@ const CommonNeed = (props: any) => {
 
             {props.id !== 0 && (
               <>
-                {/* <DividerWrap type="vertical" /> */}
                 <ScreenMinHover
                   label={t('common.search')}
                   icon="filter"

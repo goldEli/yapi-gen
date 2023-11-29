@@ -206,7 +206,8 @@ const EditExamine = (props: Props) => {
                       {verifyInfo.fields[m]?.value
                         ? verifyInfo.fields[m]?.value
                         : m === 'class'
-                        ? verifyInfo.fields[m]?.value || '未分类'
+                        ? verifyInfo.fields[m]?.value ||
+                          t('newlyAdd.unclassified')
                         : '--'}
                     </ContentWrap>
                   )}

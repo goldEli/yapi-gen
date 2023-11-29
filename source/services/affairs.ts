@@ -1142,6 +1142,7 @@ export const getShapeAffairsLeft = async (params: any) => {
 
 // 可流转状态配置
 export const getShapeAffairsRight = async (params: any) => {
+  const language = localStorage.getItem('language') || 'zh'
   const res = await http.get('getShapeAffairsRight', {
     project_id: params.id,
     story_id: params.nId,
@@ -1165,12 +1166,11 @@ export const getShapeAffairsRight = async (params: any) => {
     .filter((item: any) => item.status === 2)
     .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
   const filterMemberList = [...selectMember, ...removeMember]
-  console.log(selectMember, removeMember)
   // 分类
 
   const treeData = [
     {
-      name: '全部分类',
+      name: language === 'zh' ? '全部分类' : 'All categories',
       key: 0,
       id: 0,
       pid: 1,
@@ -1179,7 +1179,7 @@ export const getShapeAffairsRight = async (params: any) => {
       children: [
         {
           key: -1,
-          name: '未分类',
+          name: language === 'zh' ? '默认分类' : 'Default classification',
           pid: 0,
           id: -1,
           story_count: res.data[1]?.story_count,

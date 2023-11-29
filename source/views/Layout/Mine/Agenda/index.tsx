@@ -12,7 +12,7 @@ const CopySend = () => {
     <MainIndex
       title={t('mine.mineCopySend')}
       type="copysend"
-      subTitle={t('mine.copyDemand')}
+      subTitle={t('ccTask')}
     />
   )
 }

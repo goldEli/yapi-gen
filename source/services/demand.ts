@@ -185,7 +185,7 @@ export const getShapeRight = async (params: any) => {
       children: [
         {
           key: -1,
-          name: '未分类',
+          name: '默认分类',
           pid: 0,
           id: -1,
           story_count: res.data[1]?.story_count,
@@ -434,6 +434,7 @@ export const getShapeRight = async (params: any) => {
 }
 
 export const getTreeList = async (params: any) => {
+  const language = localStorage.getItem('language') || 'zh'
   const res = await http.get('getNeedTreeList', {
     project_id: params.id,
     is_tree: params.isTree ?? 2,
@@ -447,7 +448,7 @@ export const getTreeList = async (params: any) => {
   })
   const treeData = [
     {
-      name: '全部分类',
+      name: language === 'zh' ? '全部分类' : 'All categories',
       key: 0,
       id: 0,
       pid: 1,
@@ -456,7 +457,7 @@ export const getTreeList = async (params: any) => {
       children: [
         {
           key: -1,
-          name: '未分类',
+          name: language === 'zh' ? '默认分类' : 'Default classification',
           pid: 0,
           id: -1,
           story_count: res.data[1]?.story_count,

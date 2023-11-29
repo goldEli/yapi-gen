@@ -574,7 +574,7 @@
     "number": "数值型",
     "demandProgress": "需求进度",
     "underReview": "该需求正在审核中，现在不能流转操作！",
-    "unclassified": "未分类",
+    "unclassified": "默认分类",
     "demandClass": "需求分类",
     "pleaseClass": "请选择需求分类",
     "open": "展开",
@@ -2639,5 +2639,9 @@
   "application": "应用",
   "notificationItems": "通知项",
   "workItemReceptionAndProcessingStatus": "工作项接收处理情况",
-  "dateDistributionOfCompletedWorkItems": "已办工作项日期分布"
+  "dateDistributionOfCompletedWorkItems": "已办工作项日期分布",
+  "completedTasks": "已办任务",
+  "createTask": "创建任务",
+  "toDoTasks": "待办任务",
+  "ccTask": "抄送任务"
 }

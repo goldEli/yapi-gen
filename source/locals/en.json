@@ -575,7 +575,7 @@
     "number": "Numerical",
     "demandProgress": "Demand progress",
     "underReview": "This requirement is under review and cannot be transferred now!",
-    "unclassified": "Uncategorized",
+    "unclassified": "Default classification",
     "demandClass": "Demand Classification",
     "pleaseClass": "Please select a Demand Classification",
     "open": "Expand",
@@ -2639,5 +2639,9 @@
   "application": "Application",
   "notificationItems": "Notification items",
   "workItemReceptionAndProcessingStatus": "Work item reception and processing status",
-  "dateDistributionOfCompletedWorkItems": "Date distribution of completed work items"
+  "dateDistributionOfCompletedWorkItems": "Date distribution of completed work items",
+  "completedTasks": "Completed tasks",
+  "createTask": "Create Task",
+  "toDoTasks": "To Do Tasks",
+  "ccTask": "CC Task"
 }

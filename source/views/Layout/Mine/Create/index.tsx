@@ -12,7 +12,7 @@ const Create = () => {
     <MainIndex
       title={t('mine.mineCreate')}
       type="create"
-      subTitle={t('common.createDemand')}
+      subTitle={t('createTask')}
     />
   )
 }
