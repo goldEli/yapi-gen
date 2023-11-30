@@ -98,8 +98,8 @@ const WorkTimeConfig = (props: any) => {
     return arr
   }
   return (
-    <WorkTimeWrap>
-      <HeaderWrap>
+    <div>
+      <HeaderWrap style={{ padding: '24px' }}>
         <div>工作时间配置</div>
         <div className="btns">
           <CommonButton
@@ -127,239 +127,241 @@ const WorkTimeConfig = (props: any) => {
           </CommonButton>
         </div>
       </HeaderWrap>
-      <SubtitleWrap>更改时间</SubtitleWrap>
-      <Checkbox
-        checked={timeData?.config?.is_holiday === 1}
-        onChange={(e: any) => {
-          setTimeData({
-            ...timeData,
-            config: {
-              ...timeData.config,
-              is_holiday: e?.target?.checked ? 1 : 2,
-            },
-          })
-        }}
-      >
-        跟随中国法定节假日自动调整
-      </Checkbox>
-      <div className="group">
-        <Checkbox.Group
-          options={options}
-          value={timeData?.config?.day}
-          onChange={(val: any) => {
+      <WorkTimeWrap>
+        <SubtitleWrap>更改时间</SubtitleWrap>
+        <Checkbox
+          checked={timeData?.config?.is_holiday === 1}
+          onChange={(e: any) => {
             setTimeData({
               ...timeData,
               config: {
                 ...timeData.config,
-                day: val,
+                is_holiday: e?.target?.checked ? 1 : 2,
               },
             })
           }}
-        />
-      </div>
-      <div className="timeBox">
-        <span className="total">共计 {totalHour ?? 0} 工时</span>
-        <div className="timeList">
-          <div className="item">
-            <span>上午</span>
-            <TimePicker.RangePicker
-              onChange={(time: any, timeString: string[]) => {
-                if (timeString[0] === timeString[1]) {
-                  return
-                }
-                setTimeData({
-                  ...timeData,
-                  day_config: {
-                    ...timeData?.day_config,
-                    morning: {
-                      begin: timeString[0],
-                      end: timeString[1],
-                    },
-                  },
-                })
-                setTotalHour(
-                  totalWorkHours(
-                    timeString,
-                    [
-                      timeData.day_config?.afternoon?.begin,
-                      timeData.day_config?.afternoon?.end,
-                    ],
-                    timeData.day_config?.night?.begin
-                      ? [
-                          timeData.day_config?.night?.begin,
-                          timeData.day_config?.night?.end,
-                        ]
-                      : [],
-                  ),
-                )
-              }}
-              disabledTime={() => {
-                return {
-                  disabledHours: () => [
-                    13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-                  ],
-                  disabledMinutes: hours => {
-                    if (hours === 12) {
-                      return getDisableTime()
-                    }
-                    return []
-                  },
-                }
-              }}
-              value={
-                timeData?.day_config?.morning?.begin
-                  ? [
-                      moment(timeData?.day_config?.morning?.begin, 'HH:mm'),
-                      moment(timeData?.day_config?.morning?.end, 'HH:mm'),
-                    ]
-                  : null
-              }
-              format="HH:mm"
-            />
-          </div>
-          <div className="item">
-            <span>下午</span>
-            <TimePicker.RangePicker
-              onChange={(time: any, timeString: string[]) => {
-                if (timeString[0] === timeString[1]) {
-                  return
-                }
-                setTimeData({
-                  ...timeData,
-                  day_config: {
-                    ...timeData?.day_config,
-                    afternoon: {
-                      begin: timeString[0],
-                      end: timeString[1],
-                    },
-                  },
-                })
-                setTotalHour(
-                  totalWorkHours(
-                    [
-                      timeData.day_config?.morning?.begin,
-                      timeData.day_config?.morning?.end,
-                    ],
-                    timeString,
-                    timeData.day_config?.night?.begin
-                      ? [
-                          timeData.day_config?.night?.begin,
-                          timeData.day_config?.night?.end,
-                        ]
-                      : [],
-                  ),
-                )
-              }}
-              disabledTime={() => {
-                return {
-                  disabledHours: () => [
-                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 22, 23,
-                  ],
-                  disabledMinutes: hours => {
-                    if (hours === 12) {
-                      return [0]
-                    }
-                    if (hours === 20) {
-                      return getDisableTime()
-                    }
-                    return []
-                  },
-                }
-              }}
-              value={
-                timeData?.day_config?.afternoon?.begin
-                  ? [
-                      moment(timeData?.day_config?.afternoon?.begin, 'HH:mm'),
-                      moment(timeData?.day_config?.afternoon?.end, 'HH:mm'),
-                    ]
-                  : null
-              }
-              format="HH:mm"
-            />
-          </div>
-          <div className="item">
-            <span>晚上</span>
-            <TimePicker.RangePicker
-              onChange={(time: any, timeString: string[]) => {
-                if (
-                  timeString[0] === timeString[1] &&
-                  timeString[0] &&
-                  timeString[1]
-                ) {
-                  return
-                }
-                setTimeData({
-                  ...timeData,
-                  day_config: {
-                    ...timeData?.day_config,
-                    night: {
-                      begin: timeString[0],
-                      end: timeString[1],
-                    },
-                  },
-                })
-                setTotalHour(
-                  totalWorkHours(
-                    [
-                      timeData.day_config?.morning?.begin,
-                      timeData.day_config?.morning?.end,
-                    ],
-                    [
-                      timeData.day_config?.afternoon?.begin,
-                      timeData.day_config?.afternoon?.end,
-                    ],
-                    timeString,
-                  ),
-                )
-              }}
-              disabledTime={() => {
-                return {
-                  disabledHours: () => [
-                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-                    17, 18, 19,
-                  ],
-                  disabledMinutes: hours => {
-                    if (hours === 20) {
-                      return [0]
-                    }
-                    return []
-                  },
-                }
-              }}
-              value={
-                timeData?.day_config?.night?.begin
-                  ? [
-                      moment(timeData?.day_config?.night?.begin, 'HH:mm'),
-                      moment(timeData?.day_config?.night?.end, 'HH:mm'),
-                    ]
-                  : null
-              }
-              format="HH:mm"
-            />
-          </div>
-        </div>
-      </div>
-      <OtherDateBox>
-        <SubtitleWrap>例外日期</SubtitleWrap>
-        <div>
-          <CommonButton
-            type="primaryText"
-            icon="plus"
-            onClick={() => {
-              console.log(tableRef.current)
-              tableRef.current?.handleAdd()
+        >
+          跟随中国法定节假日自动调整
+        </Checkbox>
+        <div className="group">
+          <Checkbox.Group
+            options={options}
+            value={timeData?.config?.day}
+            onChange={(val: any) => {
+              setTimeData({
+                ...timeData,
+                config: {
+                  ...timeData.config,
+                  day: val,
+                },
+              })
             }}
-          >
-            添加例外
-          </CommonButton>
+          />
         </div>
-      </OtherDateBox>
-      <div className="tableBox">
-        {/* <div className="title"></div> */}
-        <EditTable ref={tableRef} />
-      </div>
-      <DeleteConfirmModal></DeleteConfirmModal>
-    </WorkTimeWrap>
+        <div className="timeBox">
+          <span className="total">共计 {totalHour ?? 0} 工时</span>
+          <div className="timeList">
+            <div className="item">
+              <span>上午</span>
+              <TimePicker.RangePicker
+                onChange={(time: any, timeString: string[]) => {
+                  if (timeString[0] === timeString[1]) {
+                    return
+                  }
+                  setTimeData({
+                    ...timeData,
+                    day_config: {
+                      ...timeData?.day_config,
+                      morning: {
+                        begin: timeString[0],
+                        end: timeString[1],
+                      },
+                    },
+                  })
+                  setTotalHour(
+                    totalWorkHours(
+                      timeString,
+                      [
+                        timeData.day_config?.afternoon?.begin,
+                        timeData.day_config?.afternoon?.end,
+                      ],
+                      timeData.day_config?.night?.begin
+                        ? [
+                            timeData.day_config?.night?.begin,
+                            timeData.day_config?.night?.end,
+                          ]
+                        : [],
+                    ),
+                  )
+                }}
+                disabledTime={() => {
+                  return {
+                    disabledHours: () => [
+                      13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+                    ],
+                    disabledMinutes: hours => {
+                      if (hours === 12) {
+                        return getDisableTime()
+                      }
+                      return []
+                    },
+                  }
+                }}
+                value={
+                  timeData?.day_config?.morning?.begin
+                    ? [
+                        moment(timeData?.day_config?.morning?.begin, 'HH:mm'),
+                        moment(timeData?.day_config?.morning?.end, 'HH:mm'),
+                      ]
+                    : null
+                }
+                format="HH:mm"
+              />
+            </div>
+            <div className="item">
+              <span>下午</span>
+              <TimePicker.RangePicker
+                onChange={(time: any, timeString: string[]) => {
+                  if (timeString[0] === timeString[1]) {
+                    return
+                  }
+                  setTimeData({
+                    ...timeData,
+                    day_config: {
+                      ...timeData?.day_config,
+                      afternoon: {
+                        begin: timeString[0],
+                        end: timeString[1],
+                      },
+                    },
+                  })
+                  setTotalHour(
+                    totalWorkHours(
+                      [
+                        timeData.day_config?.morning?.begin,
+                        timeData.day_config?.morning?.end,
+                      ],
+                      timeString,
+                      timeData.day_config?.night?.begin
+                        ? [
+                            timeData.day_config?.night?.begin,
+                            timeData.day_config?.night?.end,
+                          ]
+                        : [],
+                    ),
+                  )
+                }}
+                disabledTime={() => {
+                  return {
+                    disabledHours: () => [
+                      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 21, 22, 23,
+                    ],
+                    disabledMinutes: hours => {
+                      if (hours === 12) {
+                        return [0]
+                      }
+                      if (hours === 20) {
+                        return getDisableTime()
+                      }
+                      return []
+                    },
+                  }
+                }}
+                value={
+                  timeData?.day_config?.afternoon?.begin
+                    ? [
+                        moment(timeData?.day_config?.afternoon?.begin, 'HH:mm'),
+                        moment(timeData?.day_config?.afternoon?.end, 'HH:mm'),
+                      ]
+                    : null
+                }
+                format="HH:mm"
+              />
+            </div>
+            <div className="item">
+              <span>晚上</span>
+              <TimePicker.RangePicker
+                onChange={(time: any, timeString: string[]) => {
+                  if (
+                    timeString[0] === timeString[1] &&
+                    timeString[0] &&
+                    timeString[1]
+                  ) {
+                    return
+                  }
+                  setTimeData({
+                    ...timeData,
+                    day_config: {
+                      ...timeData?.day_config,
+                      night: {
+                        begin: timeString[0],
+                        end: timeString[1],
+                      },
+                    },
+                  })
+                  setTotalHour(
+                    totalWorkHours(
+                      [
+                        timeData.day_config?.morning?.begin,
+                        timeData.day_config?.morning?.end,
+                      ],
+                      [
+                        timeData.day_config?.afternoon?.begin,
+                        timeData.day_config?.afternoon?.end,
+                      ],
+                      timeString,
+                    ),
+                  )
+                }}
+                disabledTime={() => {
+                  return {
+                    disabledHours: () => [
+                      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+                      17, 18, 19,
+                    ],
+                    disabledMinutes: hours => {
+                      if (hours === 20) {
+                        return [0]
+                      }
+                      return []
+                    },
+                  }
+                }}
+                value={
+                  timeData?.day_config?.night?.begin
+                    ? [
+                        moment(timeData?.day_config?.night?.begin, 'HH:mm'),
+                        moment(timeData?.day_config?.night?.end, 'HH:mm'),
+                      ]
+                    : null
+                }
+                format="HH:mm"
+              />
+            </div>
+          </div>
+        </div>
+        <OtherDateBox>
+          <SubtitleWrap>例外日期</SubtitleWrap>
+          <div>
+            <CommonButton
+              type="primaryText"
+              icon="plus"
+              onClick={() => {
+                console.log(tableRef.current)
+                tableRef.current?.handleAdd()
+              }}
+            >
+              添加例外
+            </CommonButton>
+          </div>
+        </OtherDateBox>
+        <div className="tableBox">
+          {/* <div className="title"></div> */}
+          <EditTable ref={tableRef} />
+        </div>
+        <DeleteConfirmModal></DeleteConfirmModal>
+      </WorkTimeWrap>
+    </div>
   )
 }
 export default WorkTimeConfig

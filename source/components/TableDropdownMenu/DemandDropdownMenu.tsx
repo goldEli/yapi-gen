@@ -57,8 +57,8 @@ export const DemandOperationDropdownMenu = (props: Props) => {
   const onCopyId = () => {
     copyLink(
       `${props?.record.storyPrefixKey}`,
-      t('copy_requirement_number_successfully'),
-      t('copy_requirement_number_failed'),
+      t('copysuccess'),
+      t('copyfailed'),
     )
   }
 

@@ -14,8 +14,8 @@ const Wrap = styled.div`
 const Title = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font14);
-  font-weight:500;
-  font-family: siyuanmedium;
+  font-weight: 500;
+  font-family: SiYuanMedium;
 `
 const SubTitle = styled.div`
   color: var(--neutral-n3);

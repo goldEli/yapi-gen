@@ -15,7 +15,6 @@ import * as services from '@/services'
 import { companyTeamsList } from '@store/teams/thunk'
 import { addTeams, dismissTeams, editTeams } from '@/services/setting'
 import { setActiveTeam } from '@store/teams/index'
-import { CloseWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
 import CommonButton from '@/components/CommonButton'
 import {
@@ -176,7 +175,7 @@ const UploadTitle = styled.div`
 `
 
 const Content = styled.div`
-  padding:0 16px;
+  padding: 0 16px;
   height: 100%;
 `
 
@@ -276,7 +275,7 @@ const LeftSide = (props: any) => {
     minWidth: '200px',
     height: '44px',
     hoverColor: 'var(--hover-d2)',
-    activeColor: 'var(--gradient-left)',
+    activeColor: 'var(--selected)',
     activeTextColor: 'var(--primary-d2)',
     textColor: 'var(--neutral-n1-d1)',
   }

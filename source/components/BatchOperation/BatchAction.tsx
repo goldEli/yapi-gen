@@ -28,12 +28,12 @@ export const boxItem = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 12px;
+  align-items: center;
   width: 52px;
-  height: 52px;
+  height: 32px;
   cursor: pointer;
   color: white;
-  border-radius: 12px;
+  border-radius: 4px;
   div {
     font-size: 12px;
     font-weight: 400;
