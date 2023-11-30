@@ -298,7 +298,7 @@ const Index = () => {
             </CommonButton>
           </OperateWrap>
         </HeaderWrap>
-        <TableWrap>
+        <TableWrap style={{height:'calc(100% - 90px)'}}>
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="calc(100% - 48px)"
@@ -312,7 +312,6 @@ const Index = () => {
             currentPage={page}
             pageSize={pageSize}
             onChange={(p, size) => {
-              console.log('----', p)
               setPage(p)
               setPageSize(size)
               _getList(p, size)
@@ -351,7 +350,7 @@ const Index = () => {
               })
             }
           >
-            <IconFont type="delete" />
+            删除
           </div>
         </Tooltip>
       </BatchAction>
