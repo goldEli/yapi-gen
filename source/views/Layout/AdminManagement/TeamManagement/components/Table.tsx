@@ -166,6 +166,7 @@ const Table = (props: any) => {
       title: t('newlyAdd.operation'),
       width: 220,
       dataIndex: 'action',
+      fixed: 'right',
       render: (text: string, record: any) => (
         <OperationWrap>
           <span onClick={() => props.onEditRow(record, 'edit')}>

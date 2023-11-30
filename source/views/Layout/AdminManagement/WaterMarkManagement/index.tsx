@@ -30,6 +30,7 @@ const Text = styled.div`
     font-weight: 400;
     color: var(--neutral-n1-d1);
     margin-bottom: 4px;
+    font-family: SiYuanMedium;
   }
   > div:nth-of-type(2) {
     font-size: 12px;
@@ -41,17 +42,21 @@ const Text = styled.div`
 const RadioBgcWrap = styled(Radio.Group)`
   display: flex;
 `
-const Col = styled.div<{ margin?: boolean ,state:boolean}>`
+const Col = styled.div<{ margin?: boolean; state: boolean }>`
   display: flex;
   width: 284px;
   border-radius: 8px;
-  border: ${props => (props.state ? '1px solid var(--primary-d1)' : '1px solid var(--neutral-n6-d1)')} ;
+  border: ${props =>
+    props.state
+      ? '1px solid var(--primary-d1)'
+      : '1px solid var(--neutral-n6-d1)'};
   margin-left: ${props => (props.margin ? '48px' : '0')};
   padding: 12px;
   flex-direction: column;
+  cursor: pointer;
   img {
     width: 100%;
-    margin-bottom:12px;
+    margin-bottom: 12px;
   }
   &:hover {
     border: 1px solid var(--primary-d1);
@@ -64,7 +69,7 @@ const WaterMarkManagement = () => {
 
   const { value: checked } = useSelector(store => store.water)
   const { menuPermission } = useSelector(store => store.user)
-  const [val,setVal]= useState(checked ? 1 : 2)
+  const [val, setVal] = useState(checked ? 1 : 2)
   const dispatch = useDispatch()
   const onChange = async (e: any) => {
     setVal(e.target.value)
@@ -72,6 +77,14 @@ const WaterMarkManagement = () => {
     const res2 = await changeWater({ id: res.id, status: e.target.value })
     if (res2.code === 0) {
       dispatch(changeWaterStatus(e.target.value === 1))
+    }
+  }
+  const cardChange = async (value: number) => {
+    setVal(value)
+    const res = await getWater()
+    const res2 = await changeWater({ id: res.id, status: value })
+    if (res2.code === 0) {
+      dispatch(changeWaterStatus(value === 1))
     }
   }
   const configList = [
@@ -104,11 +117,11 @@ const WaterMarkManagement = () => {
             </SwitchWrap>
           ))}
           <RadioBgcWrap onChange={onChange} value={val}>
-            <Col state={val === 2}>
+            <Col state={val === 2} onClick={() => cardChange(2)}>
               <img src="/bgc/nor.png" />
               <Radio value={2}>无水印</Radio>
             </Col>
-            <Col margin state={val === 1}>
+            <Col margin state={val === 1} onClick={() => cardChange(1)}>
               <img src="/bgc/sel.png" />
               <Radio value={1}>有水印</Radio>
             </Col>
