@@ -265,12 +265,13 @@ const WorkHoursPanel = (props: any, ref: any) => {
                       trigger={['click']}
                       color="#585859"
                       onOpenChange={async open => {
-                        console.log(open)
+                        console.log(open, props)
                         if (open) {
                           const res = await getWorkTimeInfo({
                             project_id: projectId,
                             date: item,
                             user_id: col.id,
+                            is_overdue: props.is_overdue,
                           })
                           const { list } = res
                           if (list?.length === 0) {

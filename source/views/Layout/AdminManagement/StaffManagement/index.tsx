@@ -222,8 +222,6 @@ const StaffManagement = () => {
     updateOrderkey,
   })
 
- 
-
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
       navigate('/Mine/Profile')
@@ -280,7 +278,7 @@ const StaffManagement = () => {
         title: t('newlyAdd.operation'),
         dataIndex: 'action',
         fixed: 'right',
-        width:320,
+        width: 320,
         render: (_text: string, record: any) => {
           return (
             <>
@@ -304,10 +302,10 @@ const StaffManagement = () => {
                       {record.handover_status === 1 ? (
                         <>
                           <span
-                           onClick={() => controlStaffPersonalVisible(record)}
+                            onClick={() => controlStaffPersonalVisible(record)}
                             style={{
                               fontSize: 14,
-                              marginLeft:' 16px',
+                              marginLeft: ' 16px',
                               color: 'var(--primary-d2)',
                               cursor: 'pointer',
                               whiteSpace: 'nowrap',
@@ -316,28 +314,28 @@ const StaffManagement = () => {
                             {t('staff.setPermission')}
                           </span>
                           <span
-                          onClick={() => controlStaffPersonalVisibleA(record)}
+                            onClick={() => controlStaffPersonalVisibleA(record)}
                             style={{
-                              marginLeft:' 16px',
+                              marginLeft: ' 16px',
                               fontSize: 14,
                               color: 'var(--primary-d2)',
                               cursor: 'pointer',
                               whiteSpace: 'nowrap',
                             }}
                           >
-                             {t('quitAndHandover')}
+                            {t('quitAndHandover')}
                           </span>
                         </>
                       ) : (
                         <span
-                        style={{
-                          fontSize: 14,
-                          marginLeft:' 16px',
-                          color: 'var(--primary-d2)',
-                          cursor: 'pointer',
-                          whiteSpace: 'nowrap',
-                        }}
-                        onClick={() => controlStaffPersonalVisibleC(record)}
+                          style={{
+                            fontSize: 14,
+                            marginLeft: ' 16px',
+                            color: 'var(--primary-d2)',
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                          }}
+                          onClick={() => controlStaffPersonalVisibleC(record)}
                         >
                           {t('the_handover_state_is_restored')}
                         </span>
@@ -353,7 +351,7 @@ const StaffManagement = () => {
     ]
 
     const resultLast = isHaveCheck ? lastList : []
-    return [ ...newList, ...resultLast]
+    return [...newList, ...resultLast]
   }, [titleList, titleList2, columns])
 
   const showModal = () => {
@@ -460,26 +458,17 @@ const StaffManagement = () => {
             padding: '0 24px',
           }}
         >
-          <div
-            style={{
-              fontSize: '16px',
-              fontFamily: 'SiYuanMedium',
-              color: 'var(--neutral-n1-d1)',
-            }}
-          >
-            {t('staff.companyStaff')}
-          </div>
-
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div className={inputSearch}>
               <InputSearch
                 leftIcon
-                width={184}
+                width={220}
                 placeholder={t('staff.pleaseKey')}
                 onChangeSearch={onPressEnter}
               />
             </div>
-
+          </div>
+          <div style={{ display: 'flex' }}>
             <ScreenMinHover
               label={t('common.search')}
               icon="filter"
@@ -487,7 +476,6 @@ const StaffManagement = () => {
               isActive={isShow}
               style={{ margin: '0 8px' }}
             />
-
             <DividerWrap type="vertical" />
 
             <ScreenMinHover
@@ -608,7 +596,10 @@ const StaffManagement = () => {
             getPopupContainer={node => node}
             title={t('common.permissionGroup')}
           >
-            <div style={{color:'var(--neutral-white-d7)'}} onClick={() => setBatchEditVisible(true)}>
+            <div
+              style={{ color: 'var(--neutral-white-d7)' }}
+              onClick={() => setBatchEditVisible(true)}
+            >
               权限
             </div>
           </Tooltip>

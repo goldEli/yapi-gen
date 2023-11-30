@@ -12,6 +12,7 @@ import {
   Divider,
   Form,
   Input,
+  InputNumber,
   Select,
   Tooltip,
   TreeSelect,
@@ -645,7 +646,17 @@ const StatusModal = (props: StatusModalProps) => {
                       },
                     ]}
                   >
-                    <NumericInput type={i.value ? i.value[0] : ''} />
+                    {i.content === 'work_hours' ? (
+                      <InputNumber
+                        placeholder={t('common.pleaseEnter')}
+                        autoComplete="off"
+                        style={{ width: '100%' }}
+                        min={1}
+                        precision={1}
+                      />
+                    ) : (
+                      <NumericInput type={i.value ? i.value[0] : ''} />
+                    )}
                   </Form.Item>
                 )}
                 {i.type === 'tree' && (

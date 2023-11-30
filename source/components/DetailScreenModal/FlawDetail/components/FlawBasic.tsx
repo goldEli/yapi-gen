@@ -394,6 +394,7 @@ const FlawBasic = (props: Props) => {
           onChange={e => {
             setWorkHoursValue(e)
           }}
+          precision={1}
         />
       )
     }
