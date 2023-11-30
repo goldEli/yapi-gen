@@ -49,7 +49,7 @@ const IconfontWrap = styled(IconFont)({
   },
 })
 
-const StepPageTwo = () => {
+const StepPageTwo = (props: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -143,7 +143,9 @@ const StepPageTwo = () => {
       setOperationObj({})
     }, 100)
   }
-
+  const onCancel = () => {
+    props.onCancel()
+  }
   return (
     <>
       <ContWrap>
@@ -175,6 +177,9 @@ const StepPageTwo = () => {
       </ContWrap>
 
       <Space size={16} style={{ position: 'absolute', top: 68, right: 24 }}>
+        <CommonButton type="secondaryText1" onClick={onCancel}>
+          {t('cancel')}
+        </CommonButton>
         <CommonButton type="primary" onClick={onSave}>
           {t('common.save')}
         </CommonButton>

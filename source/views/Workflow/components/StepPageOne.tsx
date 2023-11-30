@@ -98,7 +98,7 @@ const StepPageOne = (propsOne: Props) => {
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
     })
-    console.log(result, result)
+    
     dispatch(setWorkList(result))
     setDataSource(result)
     setNowDataSourceList(result.list)
@@ -142,6 +142,18 @@ const StepPageOne = (propsOne: Props) => {
       getList(isUpdateList)
     }
   }
+  // 比较两个数据的变化
+  const compareArrays = (arr1: any, arr2: any) => {
+    if (arr1.length !== arr2.length) {
+      return false
+    }
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false
+      }
+    }
+    return true
+  }
 
   const onSave = (str?: string) => {
     if (!dataSource?.list?.length) {
@@ -149,19 +161,27 @@ const StepPageOne = (propsOne: Props) => {
       return
     }
     try {
-      onSaveMethod()
-      getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
+      // 点击取消的保存
       if (str === 'cancel') {
         const routerParams = {
           id: paramsData.id,
           categoryItem: categoryItem,
         }
+        onSaveMethod()
+        getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
         navigate(
           `/ProjectDetail/Setting/TypeConfiguration?data=${encryptPhp(
             JSON.stringify(routerParams),
           )}`,
         )
         return
+      }
+      const nowList = nowDataSourceList.map((el: { id: any }) => el.id)
+      const newList = dataSource?.list.map((el: { id: any }) => el.id)
+      // 如果没有操作不走保存接口
+      if (!compareArrays(nowList, newList)) {
+        onSaveMethod()
+        getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
       }
       propsOne?.onChangeStep(2)
     } catch (error) {
@@ -367,17 +387,6 @@ const StepPageOne = (propsOne: Props) => {
   const onUpdateEdit = () => {
     onSaveMethod()
   }
-  const compareArrays = (arr1: any, arr2: any) => {
-    if (arr1.length !== arr2.length) {
-      return false
-    }
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) {
-        return false
-      }
-    }
-    return true
-  }
 
   const onCancel = () => {
     const nowList = nowDataSourceList.map((el: { id: any }) => el.id)
@@ -412,7 +421,8 @@ const StepPageOne = (propsOne: Props) => {
             `/ProjectDetail/Setting/TypeConfiguration?data=${encryptPhp(
               JSON.stringify(routerParams),
             )}`,
-          ), setIsSaveVisible(false)
+          ),
+            setIsSaveVisible(false)
         }}
         onConfirm={() => {
           onSave('cancel'), setIsSaveVisible(false)
