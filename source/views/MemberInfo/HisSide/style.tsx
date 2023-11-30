@@ -15,6 +15,8 @@ const InfoWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   paddingLeft: '16px',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
+  paddingBottom: '16px',
 })
 
 const NameWrap = styled.div({

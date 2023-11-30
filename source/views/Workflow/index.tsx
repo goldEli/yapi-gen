@@ -129,7 +129,7 @@ const Workflow = () => {
           {step === 1 ? (
             <StepPageOne onRef={ChildRef} onChangeStep={onChangeStep} />
           ) : (
-            <StepPageTwo onCancel={()=>setStep(1)}/>
+            <StepPageTwo onCancel={() => setStep(1)} />
           )}
         </ContentWrap>
       </Wrap>

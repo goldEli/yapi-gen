@@ -56,7 +56,9 @@ const StepPageTwo = (props: any) => {
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
   const [isSaveVisible, setIsSaveVisible] = useState(false)
-  const { workList } = useSelector((store: { project: CounterState }) => store.project)
+  const { workList } = useSelector(
+    (store: { project: CounterState }) => store.project,
+  )
   const [nowWorkList, setNowWorkList] = useState<any>()
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})

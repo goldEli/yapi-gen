@@ -98,7 +98,7 @@ const StepPageOne = (propsOne: Props) => {
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
     })
-    
+
     dispatch(setWorkList(result))
     setDataSource(result)
     setNowDataSourceList(result.list)

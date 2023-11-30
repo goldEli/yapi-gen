@@ -93,20 +93,13 @@ const HisSide = () => {
 
   return (
     <Side>
-      <InfoWrap>
-        <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
-        <InfoItem>
-          <div>{mainInfo?.name}</div>
-          <span>{mainInfo?.phone}</span>
-        </InfoItem>
-      </InfoWrap>
       <MyDiv
         onClick={onGoBack}
         style={{
-          height: '48px',
+          height: '34px',
           display: 'flex',
           alignItems: 'center',
-          borderBottom: '1px solid var(--neutral-n6-d1)',
+
           margin: ' 0 16px',
           cursor: 'pointer',
         }}
@@ -129,6 +122,14 @@ const HisSide = () => {
           {t('back')}
         </span>
       </MyDiv>
+      <InfoWrap>
+        <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
+        <InfoItem>
+          <div>{mainInfo?.name}</div>
+          <span>{mainInfo?.phone}</span>
+        </InfoItem>
+      </InfoWrap>
+
       <Menu>
         {menuList.map(item => (
           <MenuItem

@@ -30,6 +30,7 @@ const Text = styled.div`
     font-weight: 400;
     color: var(--neutral-n1-d1);
     margin-bottom: 4px;
+    font-family: SiYuanMedium;
   }
   > div:nth-of-type(2) {
     font-size: 12px;
@@ -74,6 +75,14 @@ const WaterMarkManagement = () => {
 
   const onChange = async (value: any) => {
     console.log(value, '=11')
+    setVal(value)
+    const res = await getWater()
+    const res2 = await changeWater({ id: res.id, status: value })
+    if (res2.code === 0) {
+      dispatch(changeWaterStatus(value === 1))
+    }
+  }
+  const cardChange = async (value: number) => {
     setVal(value)
     const res = await getWater()
     const res2 = await changeWater({ id: res.id, status: value })
