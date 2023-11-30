@@ -255,7 +255,6 @@ export const PermissionItem = (props: ItemProps) => {
                   style={{
                     width: language === 'zh' ? '150px' : '220px',
                     display: 'inline-block',
-                    // marginBottom: '10px',
                     whiteSpace: 'nowrap',
                   }}
                 >
