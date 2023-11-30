@@ -1,9 +1,8 @@
 import styled from '@emotion/styled'
 
 export const WorkTimeWrap = styled.div`
-  padding: 8px 22px 0px 22px;
+  padding: 0px 22px 24px 22px;
   max-height: calc(90vh - 136px);
-  min-height: 484px;
   overflow: scroll;
   .group {
     margin-top: 8px;
@@ -43,8 +42,6 @@ export const HeaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  margin-top: 8px;
   > div:nth-child(1) {
     color: var(--neutral-n1-d1);
     font-size: var(--font16);

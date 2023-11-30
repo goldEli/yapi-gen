@@ -98,8 +98,8 @@ const WorkTimeConfig = (props: any) => {
     return arr
   }
   return (
-    <WorkTimeWrap>
-      <HeaderWrap>
+    <div>
+       <HeaderWrap style={{padding:'24px'}}>
         <div>工作时间配置</div>
         <div className="btns">
           <CommonButton
@@ -127,6 +127,8 @@ const WorkTimeConfig = (props: any) => {
           </CommonButton>
         </div>
       </HeaderWrap>
+    <WorkTimeWrap>
+     
       <SubtitleWrap>更改时间</SubtitleWrap>
       <Checkbox
         checked={timeData?.config?.is_holiday === 1}
@@ -360,6 +362,7 @@ const WorkTimeConfig = (props: any) => {
       </div>
       <DeleteConfirmModal></DeleteConfirmModal>
     </WorkTimeWrap>
+    </div>
   )
 }
 export default WorkTimeConfig
