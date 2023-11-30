@@ -224,8 +224,8 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       params = userKeys?.map((item: any) => {
         const [project_id, user_id] = item.split('_')
         return {
-          project_id,
-          user_id,
+          project_id: parseInt(project_id, 10),
+          user_id: parseInt(user_id, 10),
         }
       })
     }
@@ -254,7 +254,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
     )
   }
   const projectEle = (
-    <div>
+    <div style={{ height: '100%' }}>
       <CheckboxAll
         checked={checkAll}
         indeterminate={indeterminate}

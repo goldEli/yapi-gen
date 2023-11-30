@@ -42,7 +42,7 @@ const Index = (props: any) => {
           {null ?? 'XXX'}
         </CardRightSecond>
         <CardRightSecond>
-          {t('keyM') as string}
+          {t('serial_number') as string}
           {null ?? 'XXXXX'}
         </CardRightSecond>
         <TransformWrap>

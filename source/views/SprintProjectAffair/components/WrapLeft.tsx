@@ -42,12 +42,6 @@ import {
   SprintDetailMouseDom,
 } from '@/components/DetailScreenModal/DemandDetail/style'
 
-const Left = styled.div`
-  height: calc(100vh - 150px);
-  background-color: var(--neutral-white-d2);
-  position: relative;
-`
-
 const TitleWrap = styled.div({
   paddingLeft: '15px',
   whiteSpace: 'nowrap',
@@ -363,7 +357,9 @@ const WrapLeft = (props: any, ref: any) => {
   const [focus, setFocus] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { isUpdateAddWorkItem } = useSelector(store => store.project)
+  const { isUpdateAddWorkItem, projectInfoValues } = useSelector(
+    store => store.project,
+  )
   const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
@@ -371,7 +367,7 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { isRefresh } = useSelector(store => store.user)
   const [leftWidth, setLeftWidth] = useState(400)
   // 重组为下拉筛选格式
   const computedChildren = (array: any) => {
@@ -532,10 +528,11 @@ const WrapLeft = (props: any, ref: any) => {
     }
   }
   useEffect(() => {
-    if (isUpdateAddWorkItem) {
+    if (isUpdateAddWorkItem || isRefresh) {
       init(false, false)
     }
-  }, [isUpdateAddWorkItem])
+  }, [isUpdateAddWorkItem, isRefresh])
+
   if (props.isShowLeft) {
     return (
       <div

@@ -273,7 +273,7 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
       //调用任务接口
       getTaskList()
     }
-  }, [props.filterParams])
+  }, [JSON.stringify(props.filterParams)])
 
   useEffect(() => {
     if (taskDrawerUpdate.id) {

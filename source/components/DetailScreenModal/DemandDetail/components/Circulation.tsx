@@ -255,7 +255,8 @@ const Circulation = (props: Props) => {
                               {i.fields[m]?.value
                                 ? i.fields[m]?.value
                                 : m === 'class'
-                                ? i.fields[m]?.value || '未分类'
+                                ? i.fields[m]?.value ||
+                                  t('newlyAdd.unclassified')
                                 : '--'}
                             </ContentWrap>
                           )}

@@ -61,6 +61,17 @@ const Setting = () => {
     )
   }
 
+  // 选中key
+  const onChangeKey = (list: any) => {
+    //   获取当前路由的key
+    const currentRouter = list?.filter(
+      (i: any) => i.url === routerPath?.pathname,
+    )
+    const resultKey =
+      currentRouter?.length > 0 ? currentRouter[0]?.key : list[0]?.key
+    setActiveKey(resultKey)
+  }
+
   useEffect(() => {
     if (projectInfo?.id && currentMenu?.id) {
       const list = [
@@ -144,30 +155,15 @@ const Setting = () => {
         },
       ]
       setResultTabList(list?.filter((i: any) => i.isPermission))
-      // //   获取当前路由的key
-      // const currentRouter = list?.filter(
-      //   (i: any) => i.url === routerPath?.pathname,
-      // )
-      // const resultKey =
-      //   currentRouter?.length > 0 ? currentRouter[0]?.key : list[0].key
-      // //   拼接三级菜单路由
-      // navigate(
-      //   `${
-      //     list?.filter((i: any) => i.key === resultKey)[0]?.url
-      //   }?data=${encryptPhp(JSON.stringify({ id: paramsData?.id }))}`,
-      // )
+      onChangeKey(list?.filter((i: any) => i.isPermission))
     }
   }, [projectInfo, currentMenu])
 
   useEffect(() => {
-    //   获取当前路由的key
-    const currentRouter = resultTabList?.filter(
-      (i: any) => i.url === routerPath?.pathname,
-    )
-    const resultKey =
-      currentRouter?.length > 0 ? currentRouter[0]?.key : resultTabList?.[0].key
-    setActiveKey(resultKey)
-  }, [routerPath])
+    if (resultTabList?.length > 0) {
+      onChangeKey(resultTabList)
+    }
+  }, [routerPath, resultTabList])
 
   useEffect(() => {
     dispatch(getProjectRoleList({ project_id: paramsData.id }))
