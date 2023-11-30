@@ -14,7 +14,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
-import { setWorkList } from '@store/project'
+import { CounterState, setWorkList } from '@store/project'
 import { saveWorkflowStatus } from '@/services/project'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
@@ -56,7 +56,7 @@ const StepPageTwo = (props: any) => {
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
   const [isSaveVisible, setIsSaveVisible] = useState(false)
-  const { workList } = useSelector(store => store.project)
+  const { workList } = useSelector((store: { project: CounterState }) => store.project)
   const [nowWorkList, setNowWorkList] = useState<any>()
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
@@ -127,7 +127,6 @@ const StepPageTwo = (props: any) => {
   }, [workList])
 
   const onSave = async (str?: string) => {
-    console.log(workList?.list, '88')
     try {
       if (!compareArrays(nowWorkList, workList?.list)) {
         await saveWorkflowStatus({
