@@ -44,13 +44,16 @@ const HeaderSearch = (props: {
           )}
           <span>{activeTeam?.name}</span>
         </TitleWrap>
-        <CommonButton type="secondaryText1" onClick={props.onShowAddMemberModal}>
+        <CommonButton
+          type="secondaryText1"
+          onClick={props.onShowAddMemberModal}
+        >
           {t('add_a_member') as string}
         </CommonButton>
       </HeaderWrap>
       <HeaderWrap>
         <InputSearch
-          width={202}
+          width={210}
           bgColor="var(--neutral-white-d4)"
           length={12}
           placeholder={t('please_enter_your_nickname_name_email_phone_number')}

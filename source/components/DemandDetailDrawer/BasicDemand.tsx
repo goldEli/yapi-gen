@@ -319,6 +319,7 @@ const BasicDemand = (props: Props) => {
           onChange={e => {
             setWorkHoursValue(e)
           }}
+          precision={1}
         />
       )
     }
