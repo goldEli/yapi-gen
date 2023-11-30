@@ -259,6 +259,15 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
+      title: <NewSort fixedKey="work_hours">工时</NewSort>,
+      dataIndex: 'work_hours',
+      key: 'work_hours',
+      width: 160,
+      render: (text: any, record: Record<string, string | number>) => {
+        return <div>{text}</div>
+      },
+    },
+    {
       title: (
         <NewSort fixedKey="child_story_count">
           {projectInfo.projectType === 2

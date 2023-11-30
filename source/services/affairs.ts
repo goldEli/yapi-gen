@@ -250,6 +250,7 @@ export const getAffairsList = async (
       copy_send_users: i.copy_send_users,
       // 父需求列表
       parent: [{ value: i.id, label: i.name }],
+      work_hours: i.work_hours,
     })),
   }
 }
