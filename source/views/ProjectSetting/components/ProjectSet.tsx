@@ -33,7 +33,7 @@ import { getMessage } from '@/components/Message'
 
 const Warp = styled.div({
   height: '100%',
-  padding: '24px',
+  padding: '20px 16px',
 })
 
 const SetMain = styled.div({
@@ -79,7 +79,7 @@ const BtnHeader = styled.div`
   top: -59px;
 `
 const MenuItems = styled.div({
-  padding: '0 16px',
+  // padding: '0 16px',
   maxHeight: 'calc(100vh - 184px)',
   overflowY: 'auto',
 })
@@ -137,7 +137,7 @@ const CheckboxWrap = styled.div<{ isZh?: boolean }>`
   width: ${props => (props.isZh ? 80 : 100)}px;
   position: relative;
   .provider {
-    height: 16px;
+    height:100%;
     width: 1px;
     background: var(--neutral-n5);
     position: absolute;
@@ -161,10 +161,12 @@ const GroupWrap = styled.div<{ isZh?: boolean }>`
 
 const TitleGroup = styled.div<{ isZh?: boolean }>({
   display: 'flex',
+  borderBottom:'1px solid var(--neutral-n6-d1)',
   alignItems: 'center',
-  color: 'var(--neutral-n2)',
+  color: 'var(--neutral-n3)',
   fontSize: 12,
   fontFamily: 'SiYuanMedium',
+  paddingBottom:8
 })
 
 export const MainWrap = styled.div({
@@ -187,6 +189,7 @@ const MainWrapItem = styled.div({
 
   '.ant-checkbox-wrapper': {
     margin: '0 !important',
+    lineHeight:'32px'
   },
 })
 
@@ -252,7 +255,7 @@ export const PermissionItem = (props: ItemProps) => {
                   style={{
                     width: language === 'zh' ? '150px' : '220px',
                     display: 'inline-block',
-                    marginBottom: '10px',
+                    // marginBottom: '10px',
                     whiteSpace: 'nowrap',
                   }}
                 >
