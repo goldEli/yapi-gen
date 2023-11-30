@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import { Table, Space, Checkbox, message } from 'antd'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import SetConfig from './SetConfig'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
@@ -18,6 +18,7 @@ import { setWorkList } from '@store/project'
 import { saveWorkflowStatus } from '@/services/project'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -54,7 +55,9 @@ const StepPageTwo = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
+  const [isSaveVisible, setIsSaveVisible] = useState(false)
   const { workList } = useSelector(store => store.project)
+  const [nowWorkList, setNowWorkList] = useState<any>()
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const dispatch = useDispatch()
@@ -77,7 +80,9 @@ const StepPageTwo = (props: any) => {
     }
     dispatch(setWorkList({ list: arr }))
   }
-
+  useEffect(() => {
+    setNowWorkList(workList.list)
+  }, [])
   const setColumns: any = useMemo(() => {
     const arr = [
       {
@@ -121,22 +126,38 @@ const StepPageTwo = (props: any) => {
     return arr
   }, [workList])
 
-  const onSave = async () => {
+  const onSave = async (str?: string) => {
+    console.log(workList?.list, '88')
     try {
-      await saveWorkflowStatus({
-        projectId: paramsData.id,
-        categoryId: categoryItem?.id,
-        canChanges: workList?.list?.map((k: any) => ({
-          id: k.id,
-          can_changes_category_status: k.canChange,
-        })),
-      })
-      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+      if (!compareArrays(nowWorkList, workList?.list)) {
+        await saveWorkflowStatus({
+          projectId: paramsData.id,
+          categoryId: categoryItem?.id,
+          canChanges: workList?.list?.map((k: any) => ({
+            id: k.id,
+            can_changes_category_status: k.canChange,
+          })),
+        })
+        setNowWorkList([...workList?.list])
+        getMessage({ msg: t('common.saveSuccess'), type: 'success' })
+      }
+      str === 'cancel' && props.onCancel()
     } catch (error) {
       //
     }
   }
-
+  // 比较两个数据的变化
+  const compareArrays = (arr1: any, arr2: any) => {
+    if (arr1.length !== arr2.length) {
+      return false
+    }
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i].canChange.length !== arr2[i].canChange.length) {
+        return false
+      }
+    }
+    return true
+  }
   const onClose = () => {
     setIsVisible(false)
     setTimeout(() => {
@@ -144,10 +165,25 @@ const StepPageTwo = (props: any) => {
     }, 100)
   }
   const onCancel = () => {
+    if (!compareArrays(nowWorkList, workList?.list)) {
+      setIsSaveVisible(true)
+      return
+    }
     props.onCancel()
   }
   return (
     <>
+      <DeleteConfirm
+        text={t('other.isSave')}
+        title={t('sprintProject.confirmCancel')}
+        isVisible={isSaveVisible}
+        onChangeVisible={() => {
+          props.onCancel()
+        }}
+        onConfirm={() => {
+          onSave('cancel'), setIsSaveVisible(false)
+        }}
+      />
       <ContWrap>
         <SetConfig
           isVisible={isVisible}
