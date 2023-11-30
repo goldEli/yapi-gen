@@ -140,7 +140,7 @@ const SearchList = (props: Props) => {
               cursor: 'pointer',
             }}
           >
-            {t('common.clearForm')}
+            {t('reset')}
           </span>
         </ClearForm>
       </FormWrap>

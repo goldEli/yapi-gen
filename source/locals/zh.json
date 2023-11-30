@@ -2643,5 +2643,8 @@
   "completedTasks": "已办任务",
   "createTask": "创建任务",
   "toDoTasks": "待办任务",
-  "ccTask": "抄送任务"
+  "ccTask": "抄送任务",
+  "deleteTableToast": "当前项目有删除权限才能进行删除",
+  "updateProgressToast": "当前任务处理人包含自己才能更新进度",
+  "notVerify": "已经审核过的任务不能再次审核"
 }

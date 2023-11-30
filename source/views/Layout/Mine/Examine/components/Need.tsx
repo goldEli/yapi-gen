@@ -1,12 +1,6 @@
-// 审核列表
-
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable max-params */
-/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable complexity */
 /* eslint-disable no-undefined */
-/* eslint-disable @typescript-eslint/naming-convention */
+// 审核列表
 import { useEffect, useMemo, useState } from 'react'
 import {
   TabsItem,
@@ -14,9 +8,11 @@ import {
   ShowWrap,
   HoverWrap,
   DividerWrap,
+  TableActionWrap,
+  TableActionItem,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Button, Spin, Table } from 'antd'
+import { Button, Spin, Tooltip } from 'antd'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -46,6 +42,22 @@ const SearchWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'flex-end',
 })
+
+const LabelBox = styled.div<{ isActive?: boolean }>`
+  height: 32px;
+  border-radius: 4px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: ${props =>
+    props.isActive ? 'var(--neutral-white-d1)' : 'var(--neutral-n2)'};
+  font-family: ${props => (props.isActive ? 'SiYuanMedium' : '')};
+  background: ${props =>
+    props.isActive ? 'var(--neutral-n2)' : 'var(--neutral-n7)'};
+  margin-left: 24px;
+  cursor: pointer;
+`
 
 const Need = (props: any) => {
   const [t] = useTranslation()
@@ -192,68 +204,58 @@ const Need = (props: any) => {
     onUpdate()
   }
 
+  // 取消审核
+  const onCancelVerify = (record: any) => {
+    setDelIsVisible(true)
+    setCurrentItem(record)
+  }
+
   const selectColum: any = useMemo(() => {
     return columns.concat([
       {
         title: <>{t('newlyAdd.operation')}</>,
         dataIndex: 'action',
         key: 'action',
-        width: 200,
+        width: activeTab ? 200 : 80,
         fixed: 'right',
         render: (_: string, record: any) => {
           return (
-            <>
-              {record.status === 1 ? (
-                <>
-                  <Button
-                    style={{ marginRight: '12px',padding:0 }}
-                    type="link"
+            <TableActionWrap>
+              {activeTab === 0 && (
+                <Tooltip title={record.status === 1 ? null : t('notVerify')}>
+                  <TableActionItem
+                    isDisable={record.status !== 1}
                     onClick={() => {
-                      onChangeOperation(record)
+                      record.status === 1 ? onChangeOperation(record) : void 0
                     }}
                   >
-                   {t('common.info')}
-                  </Button>
-                  {activeTab === 1 && (
-                    <Button
-                      type="link"
-                      style={{ padding: 0 }}
+                    {t('newlyAdd.examine')}
+                  </TableActionItem>
+                </Tooltip>
+              )}
+              {activeTab === 1 && (
+                <>
+                  <TableActionItem onClick={() => onChangeOperation(record)}>
+                    {t('common.info')}
+                  </TableActionItem>
+                  <Tooltip title={record.status === 1 ? null : t('notVerify')}>
+                    <TableActionItem
+                      isDisable={record.status !== 1}
                       onClick={() => {
-                        setDelIsVisible(true)
-                        setCurrentItem(record)
+                        record.status === 1 ? onCancelVerify(record) : void 0
                       }}
                     >
                       {t('newlyAdd.cancelExamine')}
-                    </Button>
-                  )}
+                    </TableActionItem>
+                  </Tooltip>
                 </>
-              ):(
-                <>
-                  <Button
-                    style={{ marginRight: '12px',padding:0 }}
-                    type="link"
-                    disabled
-                  >
-                    {t('common.info')}
-                  </Button>
-                  {activeTab === 1 && (
-                    <Button
-                      type="link"
-                      style={{ padding: 0 }}
-                      disabled
-                    >
-                      {t('newlyAdd.cancelExamine')}
-                    </Button>
-                  )}
-                </>
-              )
-            }
-            </>
+              )}
+            </TableActionWrap>
           )
         },
       },
     ])
-  }, [columns])
+  }, [columns, activeTab])
 
   const onChangeTab = (val: number) => {
     props?.onChangeType(val ? 'verify_submit' : 'verify')
@@ -292,8 +294,7 @@ const Need = (props: any) => {
           display: 'flex',
           width: 'calc(100% - 48px)',
           justifyContent: 'space-between',
-          borderBottom: '1px solid var(--neutral-n6-d1)',
-          margin: '0 24px',
+          margin: '20px 24px',
         }}
       >
         <div
@@ -302,27 +303,6 @@ const Need = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginRight: 24,
-            }}
-          >
-            <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
-              <div>{t('newlyAdd.needMineExamine')}</div>
-            </TabsItem>
-            <LabNumber isActive={!activeTab}>{count?.verifyUser}</LabNumber>
-
-            <TabsItem
-              isActive={activeTab === 1}
-              style={{ marginLeft: 32 }}
-              onClick={() => onChangeTab(1)}
-            >
-              <div>{t('newlyAdd.mineSubmit')}</div>
-            </TabsItem>
-            <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
-          </div>
           <InputSearch
             placeholder={t('searchForRequirementNameOrNumber')}
             onChangeSearch={onPressEnter}
@@ -330,6 +310,12 @@ const Need = (props: any) => {
             width={184}
             defaultValue={keyword}
           />
+          <LabelBox isActive={!activeTab} onClick={() => onChangeTab(0)}>
+            {t('newlyAdd.needMineExamine')}（{count?.verifyUser ?? 0}）
+          </LabelBox>
+          <LabelBox isActive={activeTab === 1} onClick={() => onChangeTab(1)}>
+            {t('newlyAdd.mineSubmit')}（{count?.verify ?? 0}）
+          </LabelBox>
         </div>
 
         <SearchWrap>
@@ -356,12 +342,12 @@ const Need = (props: any) => {
         <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
       )}
 
-      <div style={{ height: 'calc(100vh - 295px)' }}>
+      <div style={{ height: 'calc(100vh - 304px)' }}>
         <LoadingSpin spinning={isSpin}>
           <div style={{ padding: '0 24px' }}>
             <ResizeTable
               isSpinning={false}
-              dataWrapNormalHeight="calc(100vh - 295px)"
+              dataWrapNormalHeight="calc(100vh - 304px)"
               col={selectColum}
               dataSource={listData?.list}
               noData={<NoData />}

@@ -16,18 +16,6 @@ const CircleWrap = styled.div({
   marginRight: 8,
 })
 
-const CanClick = styled.div({
-  height: 24,
-  borderRadius: 6,
-  padding: '0 8px',
-  cursor: 'pointer',
-  color: 'white',
-  fontSize: 12,
-  background: 'var(--primary-d2)',
-  lineHeight: '24px',
-  width: 'fit-content',
-})
-
 const StatusWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -98,7 +86,7 @@ export const useDynamicColumns = (state: any) => {
               />
             </Tooltip>
             <ClickWrap
-              className="canClickDetail"
+              className="canClickDetail "
               onClick={() => state.onClickItem(record)}
             >
               <OmitText
@@ -107,7 +95,7 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {text}
+                <span className="controlMaxWidth">{text}</span>
               </OmitText>
             </ClickWrap>
             {record.is_handover === 1 && (
@@ -172,7 +160,7 @@ export const useDynamicColumns = (state: any) => {
       title: t('newlyAdd.reviewStatus'),
       dataIndex: 'statusFromTo',
       key: 'status_from_to',
-      width:300,
+      width: 300,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -185,23 +173,23 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'status',
       key: 'verify_status',
-      render: (text: any) => {
+      render: (text: any, record: any) => {
         return (
-          <div>
-              <StatusWrap>
-                <CircleWrap
-                  style={{
-                    background: statusColor[text - 1],
-                  }}
-                />
-                <ClickWrap colorState={text === 1} style={{ display: 'inline' }}>
-                  {text === 1
-                    ? t('newlyAdd.waitExamine')
-                    : text === 2
-                    ? t('newlyAdd.passed')
-                    : t('newlyAdd.notPass')}
-                </ClickWrap>
-              </StatusWrap>
+          <div onClick={() => state.onChangeOperation(record)}>
+            <StatusWrap>
+              <CircleWrap
+                style={{
+                  background: statusColor[text - 1],
+                }}
+              />
+              <ClickWrap colorState={text === 1} style={{ display: 'inline' }}>
+                {text === 1
+                  ? t('newlyAdd.waitExamine')
+                  : text === 2
+                  ? t('newlyAdd.passed')
+                  : t('newlyAdd.notPass')}
+              </ClickWrap>
+            </StatusWrap>
           </div>
         )
       },
@@ -212,7 +200,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'verifyTime',
       key: 'verify_at',
-      width:220,
+      width: 220,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
