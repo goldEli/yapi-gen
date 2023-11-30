@@ -26,7 +26,7 @@ const BatchSetDepartment = (props: {
 
   const onConfirm = async () => {
     await form.validateFields()
-    await props.onConfirm(form.getFieldsValue().user_ids)
+    await props.onConfirm(form.getFieldsValue().department_id)
   }
   useEffect(() => {}, [props.isVisible])
 
@@ -46,7 +46,7 @@ const BatchSetDepartment = (props: {
       >
         <Form.Item
           label="部门"
-          name="user_ids"
+          name="department_id"
           rules={[
             { required: true, message: String(t('project.pleasePermission')) },
           ]}

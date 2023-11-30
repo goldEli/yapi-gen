@@ -712,6 +712,7 @@ const CreateDemandRight = (props: Props) => {
           autoComplete="off"
           style={{ width: '100%' }}
           min={1}
+          precision={1}
         />
       )
     } else {

@@ -25,7 +25,7 @@ const BatchSetPosition = (props: {
 
   const onConfirm = async () => {
     await form.validateFields()
-    await props.onConfirm(form.getFieldsValue().userGroupId)
+    await props.onConfirm(form.getFieldsValue().id)
   }
   useEffect(() => {}, [props.isVisible])
 
@@ -45,7 +45,7 @@ const BatchSetPosition = (props: {
       >
         <Form.Item
           label="职位"
-          name="user_ids"
+          name="id"
           rules={[
             { required: true, message: String(t('project.pleasePermission')) },
           ]}

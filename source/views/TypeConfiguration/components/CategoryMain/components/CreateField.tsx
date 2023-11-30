@@ -269,7 +269,7 @@ const CreateField = () => {
           size={14}
           color="var(--neutral-n3)"
         />
-        <span style={{ marginLeft: '4px', fontFamily: 'SiYuanMedium' }}>
+        <span style={{ marginLeft: '4px', display: 'inline-block',minWidth:localStorage.getItem('language') === 'zh' ?'50px' :'90px', fontFamily: 'SiYuanMedium' }}>
           {t('creating_fields')}
         </span>
         <span

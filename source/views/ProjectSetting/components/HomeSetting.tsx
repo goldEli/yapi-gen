@@ -14,6 +14,8 @@ const Wrap = styled.div`
 const Title = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font14);
+  font-weight:500;
+  font-family: SiYuanMedium;
 `
 const SubTitle = styled.div`
   color: var(--neutral-n3);
@@ -21,7 +23,7 @@ const SubTitle = styled.div`
   margin-top: 4px;
 `
 const RadioWrap = styled.div`
-  margin-top: 16px;
+  margin-top: 24px;
   .ant-radio-wrapper {
     color: var(--neutral-n1-d1) !important;
     font-size: var(--font14) !important;
@@ -141,7 +143,7 @@ const HomeSetting: React.FC<IProps> = props => {
       <Title>{t('sprintProject.projectHomeConfiguration')}</Title>
       <SubTitle>{t('sprintProject.defineProjectDefaultHomeLocation')}</SubTitle>
       <RadioWrap />
-      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
         {(projectInfo?.projectType === 1 ? urls : urlsSprint).map(item => (
           <div
             className={hov}

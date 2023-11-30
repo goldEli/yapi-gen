@@ -405,6 +405,7 @@ const BasicDemand = (props: Props) => {
           min={1}
           value={workHoursValue}
           onBlur={updateWorkHours}
+          precision={1}
           onChange={e => {
             setWorkHoursValue(e)
           }}

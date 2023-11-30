@@ -38,6 +38,7 @@ const WorkHours: React.FC<IProps> = props => {
   const [key, setKey] = useState<any>('')
   const [type, setType] = useState<any>(1)
   const [hoverStyle, setHoverStyle] = useState<boolean>(false)
+  const [isOverdue, setIsOverdue] = useState(0)
   // eslint-disable-next-line react/hook-use-state
   const [stat, setStat] = useState<any>({
     report: 0,
@@ -74,6 +75,7 @@ const WorkHours: React.FC<IProps> = props => {
     setFormVal(val)
     setType(type)
     setSpinning(true)
+    setIsOverdue(val.state)
     const start_at = val.time ? val.time[0] : val.date[0]
     const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
@@ -213,6 +215,7 @@ const WorkHours: React.FC<IProps> = props => {
               }}
               type={type}
               status={formVal?.style}
+              is_overdue={isOverdue}
             />
           </div>
         </MianWrap>

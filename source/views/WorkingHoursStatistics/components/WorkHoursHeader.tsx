@@ -56,6 +56,7 @@ const WorkHoursHeader = (props: {
   const [open, setOpen] = useState(false)
   const [time, setTime] = useState<any>([])
   const [dateType, setDateType] = useState<any>(1)
+  const [dateTypeStyle, setDateTypeStyle] = useState<any>(1)
   const [state, setState] = useState<any>(0)
   const [state1, setState1] = useState<any>(3)
   const [memberList, setMemberList] = useState<any>([])
@@ -351,10 +352,10 @@ const WorkHoursHeader = (props: {
             <SelectWrapBedeck
               style={{ marginLeft: 16, marginBottom: 20, border: 'none' }}
             >
-              <Form.Item name={'style'}>
+              <Form.Item name="style">
                 <Tabs
                   tabsValue={tabsValuePersonAndTask}
-                  active={dateType}
+                  active={dateTypeStyle}
                   onChange={onChangeMode}
                 />
               </Form.Item>

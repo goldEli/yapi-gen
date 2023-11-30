@@ -127,9 +127,7 @@ const ProjectMember = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const [isVisible, setIsVisible] = useState(true)
   const [isAddVisible, setIsAddVisible] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
   const [memberList, setMemberList] = useState<any>({
     list: undefined,
@@ -152,7 +150,6 @@ const ProjectMember = () => {
   const [batchPositionVisible, setBatchPositionVisible] = useState(false)
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
-  const [userDataList, setUserDataList] = useState<any[]>([])
   const [popoverOpen, setPopoverOpen] = useState(false)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
@@ -260,49 +257,6 @@ const ProjectMember = () => {
     getList(order, { page: 1, size: pageObj.size })
   }
 
-  const onValuesChange = () => {
-    getList(order, { page: 1, size: pageObj.size })
-  }
-
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label: (
-          <div onClick={() => onOperationMember(item, 'edit')}>
-            {t('common.edit')}
-          </div>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={() => onOperationMember(item, 'del')}>
-            {t('common.move')}
-          </div>
-        ),
-      },
-    ]
-
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    const hasUser = memberList?.list?.filter(
-      (i: any) => i.roleName === '管理员',
-    ).length
-
-    if (hasUser === 1 && item.roleName === '管理员') {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu items={menuItems} />
-  }
-
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     getList(
@@ -364,12 +318,11 @@ const ProjectMember = () => {
       }
     }
   }
-
   const onSelectChange = (keys: number[]) => {
     setSelectedRowKeys(keys)
     onOperationCheckbox(keys)
   }
-
+  // 新加操作移除和编辑，去掉点点
   const columns = [
     {
       title: (
@@ -464,7 +417,6 @@ const ProjectMember = () => {
             roleName={text}
             callBack={data => {
               _updateUserPosition({ data, record })
-              console.log('data---', data, record)
             }}
           />
         )
@@ -542,27 +494,92 @@ const ProjectMember = () => {
       fixed: 'right',
       render: (text: string, record: any) => {
         return (
-          <>
-            {hasCheck ? (
-              '--'
-            ) : (
-              <span
-                onClick={() => onToDetail(record)}
-                style={{
-                  fontSize: 14,
-                  color: 'var(--primary-d2)',
-                  cursor: 'pointer',
-                }}
-              >
-                {t('project.checkInfo')}
-              </span>
-            )}
-          </>
+          <div style={{ display: 'flex' }}>
+            <Space size={12}>
+              {hasCheck ? (
+                '--'
+              ) : (
+                <span
+                  onClick={() => onToDetail(record)}
+                  style={{
+                    fontSize: 14,
+                    color: 'var(--primary-d2)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {t('project.checkInfo')}
+                </span>
+              )}
+
+              {/* 编辑权限 */}
+              <>
+                {(hasDel && hasEdit) || record.is_super_admin === 1
+                  ? null
+                  : hasAmdin(record)?.map(
+                      (el: { name: string; key: string }) => (
+                        <div key={el.name}>
+                          {el.key === '1' ? (
+                            <span
+                              style={{
+                                fontSize: 14,
+                                color: 'var(--primary-d2)',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => onOperationMember(record, 'edit')}
+                            >
+                              {el.name}
+                            </span>
+                          ) : (
+                            <span
+                              style={{
+                                fontSize: 14,
+                                color: 'var(--primary-d2)',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => onOperationMember(record, 'del')}
+                            >
+                              {el.name}
+                            </span>
+                          )}
+                        </div>
+                      ),
+                    )}
+              </>
+            </Space>
+          </div>
         )
       },
     },
   ]
+  // 权限
+  const hasAmdin = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        name: t('common.edit'),
+      },
+      {
+        key: '2',
+        name: t('common.move'),
+      },
+    ]
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
 
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    const hasUser = memberList?.list?.filter(
+      (i: any) => i.roleName === '管理员',
+    ).length
+
+    if (hasUser === 1 && item.roleName === '管理员') {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+    return menuItems
+  }
   // 修改角色权限
   const setProjectClick = async (data: any, record: any) => {
     try {
@@ -579,19 +596,7 @@ const ProjectMember = () => {
   }
 
   const selectColumns: any = useMemo(() => {
-    const initColumns = [
-      {
-        width: 40,
-        render: (text: string, record: any) => {
-          // 超管不允许编辑权限
-          return (hasDel && hasEdit) || record.is_super_admin === 1 ? null : (
-            <MoreDropdown menu={menu(record)} />
-          )
-        },
-      },
-    ]
-    initColumns.push(Table.SELECTION_COLUMN as any)
-    return [...initColumns, ...columns]
+    return [ ...columns]
   }, [columns])
 
   const onChangeUpdate = () => {
@@ -606,7 +611,6 @@ const ProjectMember = () => {
 
   const init = async () => {
     const res2 = await getAddDepartMember(projectId)
-
     const arr = res2.companyList.map((i: any) => {
       return {
         id: i.id,
@@ -689,7 +693,6 @@ const ProjectMember = () => {
     }
     await addMember(params)
     getMessage({ msg: t('common.addSuccess') as string, type: 'success' })
-    setUserDataList([])
     getList(order, pageObj)
     setIsAddVisible(false)
     setTimeout(() => {
@@ -840,7 +843,7 @@ const ProjectMember = () => {
               className={boxItem}
               onClick={() => setBatchPositionVisible(true)}
             >
-              <IconFont type="position" />
+              职位
             </div>
           </Tooltip>
           <Tooltip
@@ -852,7 +855,7 @@ const ProjectMember = () => {
               className={boxItem}
               onClick={() => setBatchDepartmentVisible(true)}
             >
-              <IconFont type="apartment02" />
+              部门
             </div>
           </Tooltip>
           <Tooltip
@@ -861,7 +864,7 @@ const ProjectMember = () => {
             title={t('common.permissionGroup')}
           >
             <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
-              <IconFont type="lock" />
+            权限
             </div>
           </Tooltip>
           <Tooltip
@@ -893,7 +896,7 @@ const ProjectMember = () => {
                 })
               }
             >
-              <IconFont type="delete" />
+             移除
             </div>
           </Tooltip>
         </BatchAction>
@@ -948,11 +951,15 @@ const ProjectMember = () => {
               }}
               onClick={onReset}
             >
-              {t('common.clearForm')}
+              {t('reset')}
             </div>
           </SearchWrap>
-
           <Space size={16}>
+            <ScreenMinHover
+              label={t('common.refresh')}
+              icon="sync"
+              onClick={refresh}
+            />
             <Popover
               content={content}
               placement="bottom"
@@ -970,11 +977,6 @@ const ProjectMember = () => {
                 </CommonButton>
               </div>
             </Popover>
-            <ScreenMinHover
-              label={t('common.refresh')}
-              icon="sync"
-              onClick={refresh}
-            />
             {!hasAdd && (
               <CommonButton
                 type="primary"

@@ -13,11 +13,7 @@ import EditCategory from './EditCategory'
 import {
   AllWrap,
   MenuBox,
-  Provider,
-  SideInfo,
-  SideTop,
   WrapSet,
-  BackStyle,
   AffairTypeWrap,
   AffairTypeHeader,
   AffairTypeText,
@@ -43,12 +39,11 @@ import { CloseWrap } from '@/components/StyleCommon'
 const Tabs = styled.div`
   height: 24px;
   border-radius: 4px;
-  margin: 16px;
+  margin: 16px 24px;
   font-size: 12px;
   font-weight: 400;
   color: var(--neutral-n3);
   background-color: var(--hover-d1);
-  margin: 16px;
   span {
     display: inline-block;
     width: 50%;
@@ -75,6 +70,7 @@ const toggleDropUp = css`
 `
 const toggleDropDown = css`
   max-height: 30vh;
+  padding:0 16px;
   transition: all 0.5s;
 `
 const CategoryList = () => {
@@ -315,7 +311,7 @@ const CategoryList = () => {
                     setAffairType([...affairType])
                   }}
                 >
-                  <div style={{ cursor: 'pointer' }}>
+                  <div style={{ cursor: 'pointer' ,display:'flex',alignItems:'center',overflow:'hidden'}}>
                     <IconFont
                       style={{ fontSize: 12, color: 'var(--neutral-n3)' }}
                       type={

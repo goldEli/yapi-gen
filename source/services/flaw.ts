@@ -188,6 +188,7 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       copy_send_users: i.copy_send_users,
       // 父需求列表
       parent: [{ value: i.id, label: i.name }],
+      work_hours: i.work_hours,
     })),
   }
 }
@@ -1072,7 +1073,10 @@ export const getShapeFlawRight = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
-    } else if (item.title.includes('需求进度') && !item.attr) {
+    } else if (
+      (item.title.includes('需求进度') && !item.attr) ||
+      (item.content.includes('work_hours') && !item.attr)
+    ) {
       return {
         ...item,
         id: item.id,
