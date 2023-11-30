@@ -231,11 +231,12 @@ export const AffairTypeWrap = styled.div`
   margin-top: 16px;
 `
 export const AffairTypeHeader = styled.div`
+  width: 100%;
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 16px;
+  padding: 0px 24px;
   margin-bottom: 4px;
   > span {
     padding: 2px;
@@ -251,8 +252,10 @@ export const AffairTypeList = styled.div`
   cursor: pointer;
 `
 export const AffairTypeText = styled.div`
+  width: calc(100% - 20px);
   font-size: var(--font12);
   color: var(--neutral-n3);
   margin-left: 8px;
-  display: inline-block;
+  display: flex;
+  flex-wrap: nowrap;
 `

@@ -83,8 +83,9 @@ const ListMsg = styled.div`
   }
 `
 const RightOperate = styled.div`
-  position: absolute;
-  right: 24px;
+  min-width:220px;
+  display:flex;
+  align-items:center;
   font-size: 14px;
 `
 const Text = styled.span`
@@ -342,15 +343,16 @@ const Sortable = (props: any, refs: any) => {
                           )?.label
                         }
                       </div>
-                      <div
+                      
+                    </div>
+                    <RightOperate>
+                    <div
                         style={{ flex: 1, height: '40px', lineHeight: '40px' }}
                       >
                         {child?.isCustomize === 2
                           ? t('sprintProject.systemField')
                           : t('sprintProject.customField')}
                       </div>
-                    </div>
-                    <RightOperate>
                       {child?.content === 'users_name' ||
                       child?.content === 'user_name' ||
                       child?.content === 'finish_at' ||
