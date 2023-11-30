@@ -2646,5 +2646,7 @@
   "ccTask": "CC Task",
   "deleteTableToast": "The current project can only be deleted with deletion permission",
   "updateProgressToast": "The current task handler must include themselves in order to update the progress",
-  "notVerify": "Tasks that have already been reviewed cannot be reviewed again"
+  "notVerify": "Tasks that have already been reviewed cannot be reviewed again",
+  "haveWater": "With watermark",
+  "notHaveWater": "No watermark"
 }

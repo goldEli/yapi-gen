@@ -38,20 +38,25 @@ const Text = styled.div`
     margin-bottom: 24px;
   }
 `
-const RadioBgcWrap = styled(Radio.Group)`
+const RadioBgcWrap = styled.div`
   display: flex;
+  gap: 48px;
 `
-const Col = styled.div<{ margin?: boolean ,state:boolean}>`
+
+const Col = styled.div<{ state: boolean }>`
   display: flex;
   width: 284px;
   border-radius: 8px;
-  border: ${props => (props.state ? '1px solid var(--primary-d1)' : '1px solid var(--neutral-n6-d1)')} ;
-  margin-left: ${props => (props.margin ? '48px' : '0')};
+  border: ${props =>
+    props.state
+      ? '1px solid var(--primary-d1)'
+      : '1px solid var(--neutral-n6-d1)'};
   padding: 12px;
   flex-direction: column;
+  cursor: pointer;
   img {
     width: 100%;
-    margin-bottom:12px;
+    margin-bottom: 12px;
   }
   &:hover {
     border: 1px solid var(--primary-d1);
@@ -64,14 +69,16 @@ const WaterMarkManagement = () => {
 
   const { value: checked } = useSelector(store => store.water)
   const { menuPermission } = useSelector(store => store.user)
-  const [val,setVal]= useState(checked ? 1 : 2)
+  const [val, setVal] = useState(checked ? 1 : 2)
   const dispatch = useDispatch()
-  const onChange = async (e: any) => {
-    setVal(e.target.value)
+
+  const onChange = async (value: any) => {
+    console.log(value, '=11')
+    setVal(value)
     const res = await getWater()
-    const res2 = await changeWater({ id: res.id, status: e.target.value })
+    const res2 = await changeWater({ id: res.id, status: value })
     if (res2.code === 0) {
-      dispatch(changeWaterStatus(e.target.value === 1))
+      dispatch(changeWaterStatus(value === 1))
     }
   }
   const configList = [
@@ -103,14 +110,18 @@ const WaterMarkManagement = () => {
               </Text>
             </SwitchWrap>
           ))}
-          <RadioBgcWrap onChange={onChange} value={val}>
-            <Col state={val === 2}>
+          <RadioBgcWrap>
+            <Col state={val === 2} onClick={() => onChange(2)}>
               <img src="/bgc/nor.png" />
-              <Radio value={2}>无水印</Radio>
+              <Radio value={2} checked={val === 2}>
+                {t('notHaveWater')}
+              </Radio>
             </Col>
-            <Col margin state={val === 1}>
+            <Col state={val === 1} onClick={() => onChange(1)}>
               <img src="/bgc/sel.png" />
-              <Radio value={1}>有水印</Radio>
+              <Radio value={1} checked={val === 1}>
+                {t('haveWater')}
+              </Radio>
             </Col>
           </RadioBgcWrap>
         </Content>
