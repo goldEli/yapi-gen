@@ -417,7 +417,6 @@ const StatusModal = (props: StatusModalProps) => {
   }
 
   useEffect(() => {
-    console.log('configData', configData?.fields)
     if (props.isVisible && props.checkStatusItem?.id) {
       getConfig()
     }
