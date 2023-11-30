@@ -24,6 +24,8 @@ import { getUserIntroList } from '@/services/user'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import PeopleCard from './components/PeopleCard'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 interface MultipleAvatarProps {
   list: {
     id?: number
@@ -36,6 +38,9 @@ interface MultipleAvatarProps {
 }
 
 const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams) ?? {}
+  const projectId = paramsData.id
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const [items, setItems] = useState(
@@ -72,7 +77,10 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
   // 查询人员信息
   const getUserIntroListApi = async () => {
     const ids = props.list.map(el => el.id)
-    const res = await getUserIntroList({ ids: ids.join(',') })
+    const res = await getUserIntroList({
+      ids: ids.join(','),
+      project_id: projectId,
+    })
 
     labelContent(res.list)
   }

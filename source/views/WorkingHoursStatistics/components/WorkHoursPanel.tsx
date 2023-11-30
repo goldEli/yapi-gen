@@ -273,6 +273,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
                             user_id: col.id,
                           })
                           const { list } = res
+                          if (list?.length === 0) {
+                            setId('')
+                            setMemberToolTip(<div></div>)
+                            return
+                          }
                           const box = list.map((item: any, index: number) => (
                             <MemberTipBOX key={item.id}>
                               {index + 1}. {item.story?.name}(

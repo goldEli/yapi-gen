@@ -1296,7 +1296,10 @@ export const getShapeAffairsRight = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
-    } else if (item.title.includes('需求进度') && !item.attr) {
+    } else if (
+      (item.title.includes('需求进度') && !item.attr) ||
+      (item.content.includes('work_hours') && !item.attr)
+    ) {
       return {
         ...item,
         id: item.id,
