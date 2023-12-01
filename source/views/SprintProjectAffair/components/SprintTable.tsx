@@ -31,6 +31,7 @@ import {
 } from '@/services/affairs'
 import CommonIconFont from '@/components/CommonIconFont'
 import { TableActionItem } from '@/components/StyleCommon'
+import TableMoreDropdown from '@/components/TableMoreDropdown'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -326,31 +327,11 @@ const SprintTable = (props: Props) => {
                   </TableActionItem>
                 )}
                 {hasEdit && hasCreate ? null : (
-                  <DropdownWrap
-                    destroyPopupOnHide
-                    overlay={
-                      selectedRowKeys
-                        ?.map((i: any) => i.id)
-                        .includes(record.id) ? (
-                        menuBatch()
-                      ) : (
-                        <SprintDropdownMenu
-                          str='noDel'
-                          onDeleteChange={onDeleteChange}
-                          onCreateChild={onCreateChild}
-                          onEditChange={onEditChange}
-                          record={record}
-                        />
-                      )
-                    }
-                    trigger={['click']}
-                    placement="bottomRight"
-                    getPopupContainer={node => document.body}
-                  >
-                    <div>
-                      <CommonIconFont type="more-01" size={16} />
-                    </div>
-                  </DropdownWrap>
+                  <TableMoreDropdown
+                    record={record}
+                    onEditChange={onEditChange}
+                    onCreateChild={onCreateChild}
+                  />
                 )}
               </Space>
             </div>
