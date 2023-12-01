@@ -26,22 +26,11 @@ import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Header = styled.div({
-  height: 'auto',
   background: 'var(--neutral-white-d1)',
-  position: 'sticky',
-  top: 0,
-  zIndex: 9,
-  padding: '20px 24px 24px 24px',
-  '.title-bar': {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    '.title-text': {
-      fontSize: 16,
-      fontFamily: 'SiYuanMedium',
-      color: 'var(--neutral-n1-d1)',
-    },
-  },
+  padding: '24px 24px 20px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 })
 
 const SearchWrap = styled(Space)({
