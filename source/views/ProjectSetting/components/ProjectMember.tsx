@@ -834,71 +834,47 @@ const ProjectMember = () => {
           open={selectedRowKeys.length > 0}
           onCancel={() => setSelectedRowKeys([])}
         >
-          <Tooltip
-            placement="top"
-            getPopupContainer={node => node}
-            title="职位"
+          <div
+            className={boxItem}
+            onClick={() => setBatchPositionVisible(true)}
           >
-            <div
-              className={boxItem}
-              onClick={() => setBatchPositionVisible(true)}
-            >
-              职位
-            </div>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            getPopupContainer={node => node}
-            title="部门"
+            职位
+          </div>
+          <div
+            className={boxItem}
+            onClick={() => setBatchDepartmentVisible(true)}
           >
-            <div
-              className={boxItem}
-              onClick={() => setBatchDepartmentVisible(true)}
-            >
-              部门
-            </div>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            getPopupContainer={node => node}
-            title={t('common.permissionGroup')}
-          >
-            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
-              权限
-            </div>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            getPopupContainer={node => node}
-            title={t('removeProjectMembersInBatches')}
-          >
-            <div
-              className={boxItem}
-              onClick={() =>
-                open({
-                  title: t('removeEmployee'),
-                  text: t(
-                    'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
-                  ),
-                  async onConfirm() {
-                    await confirmProjectHandAll({
-                      id: selectedRowKeys,
-                      project_id: projectId,
-                    })
-                    getList(order, { ...pageObj, page: 1 })
-                    getMessage({
-                      msg: t('removedSuccessfully'),
-                      type: 'success',
-                    })
+            部门
+          </div>
+          <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+            权限
+          </div>
+          <div
+            className={boxItem}
+            onClick={() =>
+              open({
+                title: t('removeEmployee'),
+                text: t(
+                  'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
+                ),
+                async onConfirm() {
+                  await confirmProjectHandAll({
+                    id: selectedRowKeys,
+                    project_id: projectId,
+                  })
+                  getList(order, { ...pageObj, page: 1 })
+                  getMessage({
+                    msg: t('removedSuccessfully'),
+                    type: 'success',
+                  })
 
-                    return Promise.resolve()
-                  },
-                })
-              }
-            >
-              移除
-            </div>
-          </Tooltip>
+                  return Promise.resolve()
+                },
+              })
+            }
+          >
+            移除
+          </div>
         </BatchAction>
 
         <Header>

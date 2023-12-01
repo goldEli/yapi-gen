@@ -29,8 +29,7 @@ export const boxItem = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 52px;
-  height: 32px;
+  padding: 4px 12px;
   cursor: pointer;
   color: white;
   border-radius: 4px;

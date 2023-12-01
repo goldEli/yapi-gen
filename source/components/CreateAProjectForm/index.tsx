@@ -69,8 +69,8 @@ const Text = styled.div<{ bgc: any }>(
   {
     padding: '0 24px 0 0',
     minWidth: '99px',
-    height: '32px',
-    lineHeight: '32px',
+    height: '28px',
+    lineHeight: '28px',
     textAlign: 'center',
     fontSize: '14px',
     whiteSpace: 'nowrap',
