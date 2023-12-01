@@ -42,6 +42,7 @@ interface Props {
   notView?: boolean
   onChangeFieldVisible(): void
   isGrid?: 1 | 2
+  onChangeView?(type?: number): void
 }
 
 const SetShowField = (props: Props) => {
@@ -235,11 +236,27 @@ const SetShowField = (props: Props) => {
         },
         {
           key: '5',
-          label: <div>创建视图</div>,
+          label: (
+            <div
+              onClick={() => {
+                props.onChangeView && props.onChangeView(1)
+              }}
+            >
+              创建视图
+            </div>
+          ),
         },
         {
           key: '6',
-          label: <div>管理视图</div>,
+          label: (
+            <div
+              onClick={() => {
+                props.onChangeView && props.onChangeView(2)
+              }}
+            >
+              管理视图
+            </div>
+          ),
         },
       ],
     },
