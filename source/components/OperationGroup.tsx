@@ -119,7 +119,7 @@ const OperationGroup = (props: Props) => {
       {(location.pathname.includes('Demand') ||
         location.pathname.includes('Affair') ||
         location.pathname.includes('Defect')) && (
-        <>
+        <div style={{ visibility: 'hidden' }}>
           <ViewPort
             pid={projectId}
             type={1}
@@ -129,7 +129,7 @@ const OperationGroup = (props: Props) => {
             ref={ViewPortRef}
           />
           <DividerWrap type="vertical" />
-        </>
+        </div>
       )}
 
       {!props.notGrid && (
