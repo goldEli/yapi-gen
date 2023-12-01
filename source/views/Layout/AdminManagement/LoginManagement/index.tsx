@@ -31,7 +31,7 @@ const Header = styled.div({
   position: 'sticky',
   top: 0,
   zIndex: 9,
-  padding: '24px 24px 20px',
+  padding: '20px 24px 24px 24px',
   '.title-bar': {
     display: 'flex',
     justifyContent: 'space-between',
@@ -398,7 +398,7 @@ const LoginManagement = () => {
               }}
               onClick={onReset}
             >
-              {t('common.clearForm')}
+              {t('reset')}
             </div>
           </SearchWrap>
         </Header>
