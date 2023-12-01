@@ -23,13 +23,11 @@ import { getMessage } from '@/components/Message'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
-import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
 import {
   updateAffairsPriority,
   updateAffairsStatus,
   updateAffairsTableParams,
 } from '@/services/affairs'
-import CommonIconFont from '@/components/CommonIconFont'
 import { TableActionItem } from '@/components/StyleCommon'
 import TableMoreDropdown from '@/components/TableMoreDropdown'
 
@@ -165,12 +163,6 @@ const SprintTable = (props: Props) => {
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  // 点击删除
-  const onDeleteChange = (item: any) => {
-    setIsShowMore(false)
-    props.onDelete(item)
-  }
-
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setIsShowMore(false)
@@ -267,38 +259,6 @@ const SprintTable = (props: Props) => {
     }
   }
 
-  const menuBatch = () => {
-    const batchItems = [
-      {
-        key: '0',
-        disabled: true,
-        label: (
-          <div>
-            {t('version2.checked', {
-              count: selectedRowKeys?.map((i: any) => i.id)?.length,
-            })}
-          </div>
-        ),
-      },
-      {
-        key: '1',
-        label: (
-          <div onClick={e => onClickBatch(e, 'edit')}>
-            {t('version2.batchEdit')}
-          </div>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <div onClick={e => onClickBatch(e, 'copy')}>
-            {t('version2.batchCopyLink')}
-          </div>
-        ),
-      },
-    ]
-    return <Menu style={{ minWidth: 56 }} items={batchItems} />
-  }
   const selectColum: any = useMemo(() => {
     const arr = props.allTitleList
     const newList = []
@@ -339,9 +299,6 @@ const SprintTable = (props: Props) => {
         },
       },
     ]
-    // if (!hasBatch) {
-    //   arrList.push(Table.SELECTION_COLUMN as any)
-    // }
     return [...newList, ...arrList]
   }, [
     props.titleList,

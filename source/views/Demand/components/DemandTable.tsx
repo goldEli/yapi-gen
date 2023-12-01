@@ -4,13 +4,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import { createRef, useEffect, useMemo, useState } from 'react'
-import { Menu, Table } from 'antd'
+import { Menu, Space, Table } from 'antd'
 import { useSearchParams } from 'react-router-dom'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData } from '@/tools'
-import MoreDropdown from '@/components/MoreDropdown'
+import TableMoreDropdown from '@/components/TableMoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
@@ -19,11 +19,11 @@ import PaginationBox from '@/components/TablePagination'
 import { saveSort } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
-import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { TableContent } from '../style'
+import { TableActionItem } from '@/components/StyleCommon'
 
 interface Props {
   data: any
@@ -221,46 +221,7 @@ const DemandTable = (props: Props) => {
     }
   }
 
-  const menuBatch = () => {
-    const batchItems = [
-      {
-        key: '0',
-        disabled: true,
-        label: (
-          <div>
-            {t('version2.checked', {
-              count: selectedRowKeys?.map((i: any) => i.id)?.length,
-            })}
-          </div>
-        ),
-      },
-      {
-        key: '1',
-        label: (
-          <div onClick={e => onClickBatch(e, 'edit')}>
-            {t('version2.batchEdit')}
-          </div>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={e => onClickBatch(e, 'delete')}>
-            {t('version2.batchDelete')}
-          </div>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <div onClick={e => onClickBatch(e, 'copy')}>
-            {t('version2.batchCopyLink')}
-          </div>
-        ),
-      },
-    ]
-    return <Menu style={{ minWidth: 56 }} items={batchItems} />
-  }
+ 
 
   const selectColum: any = useMemo(() => {
     const arr = props.allTitleList
@@ -275,38 +236,35 @@ const DemandTable = (props: Props) => {
 
     const arrList = [
       {
+        title: '操作',
+        dataIndex: 'action',
+        width: 200,
+        fixed: 'right',
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel && hasCreate ? null : (
-                <MoreDropdown
-                  isMoreVisible={isShowMore}
-                  menu={
-                    selectedRowKeys
-                      ?.map((i: any) => i.id)
-                      .includes(record.id) ? (
-                      menuBatch()
-                    ) : (
-                      <DemandOperationDropdownMenu
-                        onEditChange={onEditChange}
-                        onDeleteChange={onDeleteChange}
-                        onCreateChild={onCreateChild}
-                        record={record}
-                      />
-                    )
-                  }
-                  onChangeVisible={setIsShowMore}
-                />
-              )}
+              <Space size={16}>
+                <TableActionItem>进度</TableActionItem>
+                {!hasDel && (
+                  <TableActionItem onClick={e => onClickBatch(e, 'delete')}>
+                    删除
+                  </TableActionItem>
+                )}
+                {hasEdit && hasCreate ? null : (
+                  <TableMoreDropdown
+                    record={record}
+                    onEditChange={onEditChange}
+                    onCreateChild={onCreateChild}
+                  />
+                )}
+              </Space>
             </div>
           )
         },
       },
     ]
-    if (!hasBatch) {
-      arrList.push(Table.SELECTION_COLUMN as any)
-    }
-    return [...arrList, ...newList]
+
+    return [ ...newList,...arrList]
   }, [
     props.titleList,
     props.titleList2,
