@@ -118,6 +118,7 @@ interface Props {
   dataLength: any
   pid: any
   statistics?: any
+  onInputSearch?(value?: string): void
 }
 
 const Operation = (props: Props, ref: any) => {
@@ -239,7 +240,7 @@ const Operation = (props: Props, ref: any) => {
       expectedendat: e.expected_end_at,
       updatedat: e.updated_at,
       finishAt: e.finish_at,
-      searchValue: searchVal,
+      searchValue: e.searchVal ?? searchVal,
       class_ids: e.class,
       category_id: e.category,
       schedule_start: e.schedule?.start,
@@ -525,7 +526,13 @@ const Operation = (props: Props, ref: any) => {
               </StatusItems>
             ))}
           </StatusGroup>
-          <InputSearch placeholder="搜索事务名称或编号"></InputSearch>
+          <InputSearch
+            placeholder="搜索事务名称或编号"
+            onChangeSearch={(value: any) => {
+              console.log(value)
+              props.onInputSearch && props.onInputSearch(value)
+            }}
+          ></InputSearch>
           <SelectWrapBedeck
             key="users_name"
             datatype="users_name"

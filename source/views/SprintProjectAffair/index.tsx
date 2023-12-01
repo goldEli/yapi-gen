@@ -581,6 +581,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                 onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
                 onRefresh={refresh}
                 onSearch={onSearch}
+                onInputSearch={onInputSearch}
                 settingState={isSettingState}
                 onChangeSetting={setIsSettingState}
                 isShowLeft={isShowLeft}
