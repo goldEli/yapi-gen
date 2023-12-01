@@ -7,7 +7,13 @@
 import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+  forwardRef,
+} from 'react'
 import { getIsPermission, getProjectIdByUrl } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
@@ -17,7 +23,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
-import { OperationWrap } from '../style'
+import { OperationWrap, StatusGroup, StatusItems } from '../style'
 import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import CommonImport from '@/components/CommonImport'
@@ -31,6 +37,7 @@ import {
 } from '@/services/affairs'
 import CommonExport from '@/components/CommonExport'
 import useShortcutC from '@/hooks/useShortcutC'
+import InputSearch from '@/components/InputSearch'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -105,9 +112,10 @@ interface Props {
   otherParams: any
   dataLength: any
   pid: any
+  statistics?: any
 }
 
-const Operation = (props: Props) => {
+const Operation = (props: Props, ref: any) => {
   const [t, i18n] = useTranslation()
   const [isShow, setIsShow] = useState(false)
   const [isShow2, setIsShow2] = useState(false)
@@ -125,6 +133,7 @@ const Operation = (props: Props) => {
   )
   // const { filterParams } = useSelector(store => store.demand)
   const { searchChoose } = useSelector(store => store.view)
+  const { userInfo } = useSelector(store => store.user)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -145,6 +154,7 @@ const Operation = (props: Props) => {
     finishAt: [],
     searchValue: '',
   })
+  const [activityIndex, setActivityIndex] = useState(0)
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
 
@@ -260,7 +270,18 @@ const Operation = (props: Props) => {
     setIsShowExport(true)
     setIsVisibleMore(false)
   }
-
+  useImperativeHandle(ref, () => {
+    return {
+      onImportClick,
+      onExportClick,
+    }
+  })
+  //   状态类型列表
+  const statusList = [
+    { name: '全部', key: 0, field: '' },
+    { name: '指派我的', key: 1, field: 'users_name', type: 'handler_count' },
+    { name: '我创建的', key: 2, field: 'user_name', type: 'user_create_count' },
+  ]
   const moreOperation = (
     <div
       style={{
@@ -424,7 +445,27 @@ const Operation = (props: Props) => {
               <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
-          {getIsPermission(
+          <StatusGroup>
+            {statusList?.map((i: any, index: number) => (
+              <StatusItems
+                key={i.key}
+                isActive={i.key === activityIndex}
+                onClick={() => {
+                  console.log(userInfo)
+                  // 处理人users_name 创建人user_name
+                  const { field } = i
+                  const { id } = userInfo
+                  onFilterSearch({ [field]: id }, {})
+                  setActivityIndex(index)
+                }}
+              >
+                {i.name}
+                {i.type ? props?.statistics?.[i.type] : null}
+              </StatusItems>
+            ))}
+          </StatusGroup>
+          <InputSearch placeholder="搜索事务名称或编号"></InputSearch>
+          {/* {getIsPermission(
             projectInfo?.projectPermissions,
             'b/transaction/save',
           ) ? null : (
@@ -448,6 +489,7 @@ const Operation = (props: Props) => {
               </Tooltip>
             </CommonButton>
           )}
+
           {hasExport && hasImport ? null : (
             <Popover
               content={moreOperation}
@@ -465,7 +507,7 @@ const Operation = (props: Props) => {
                 />
               </MoreWrap>
             </Popover>
-          )}
+          )} */}
         </Space>
 
         <OperationGroup
@@ -475,7 +517,12 @@ const Operation = (props: Props) => {
           isGrid={props.isGrid}
           filterState={filterState}
           settingState={props.settingState}
-          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+          onChangeSetting={() => {
+            props.onChangeSetting(!props.settingState)
+          }}
+          onChangeView={() => {
+            console.log(111)
+          }}
         />
       </OperationWrap>
 
@@ -500,4 +547,4 @@ const Operation = (props: Props) => {
   )
 }
 
-export default Operation
+export default forwardRef(Operation)

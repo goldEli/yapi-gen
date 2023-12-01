@@ -162,6 +162,7 @@ const urls = {
   getCompanyUserPreferenceConfig: '/b/preference/config',
   updateCompanyUserPreferenceConfig: '/b/preference/config',
   deleteCommentAttach: '/b/story/comment/delete_att',
+  flowDate: '/b/project/story/flow_date',
   /**
    * 日历管理
    */

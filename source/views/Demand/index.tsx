@@ -446,6 +446,7 @@ const DemandIndex = () => {
                   panel: isGrid,
                 }}
                 dataLength={dataList?.total}
+                statistics={dataList?.statistics}
               />
               <ContentMain>
                 {isGrid === 2 && (

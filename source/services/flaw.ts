@@ -190,6 +190,7 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       parent: [{ value: i.id, label: i.name }],
       work_hours: i.work_hours ? i.work_hours : '',
     })),
+    statistics: response.data?.statistics,
   }
 }
 

@@ -330,6 +330,7 @@ declare namespace API.Flaw {
     }
     type SelectResult = Model.Flaw.ListItem[]
     type Result = {
+      statistics: any
       pager?: {
         page: number
         pagesize: number

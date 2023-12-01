@@ -27,6 +27,7 @@ interface Props {
   onRefresh?(): void
   // 是否有切换模式
   notGrid?: boolean
+  onChangeView?(): void
 }
 
 const SpaceWrap = styled(Space)({
@@ -119,7 +120,13 @@ const OperationGroup = (props: Props) => {
         location.pathname.includes('Affair') ||
         location.pathname.includes('Defect')) && (
         <>
-          <ViewPort pid={projectId} type={1} />
+          <ViewPort
+            pid={projectId}
+            type={1}
+            onChangeView={() => {
+              props.onChangeView && props.onChangeView()
+            }}
+          />
           <DividerWrap type="vertical" />
         </>
       )}

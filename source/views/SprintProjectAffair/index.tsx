@@ -10,7 +10,12 @@ import {
   Wrap,
 } from './style'
 import { useSearchParams } from 'react-router-dom'
-import { getIsPermission, getParamsData, onComputedPermission } from '@/tools'
+import {
+  getIsPermission,
+  getParamsData,
+  getProjectIdByUrl,
+  onComputedPermission,
+} from '@/tools'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 
 import { Checkbox, Popover, Space, Tooltip } from 'antd'
@@ -19,7 +24,11 @@ import styled from '@emotion/styled'
 import SprintTable from './components/SprintTable'
 import SprintTree from './components/SprintTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setFilterKeys, setFilterParams } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setFilterKeys,
+  setFilterParams,
+} from '@store/project'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { deleteAffairs, getAffairsList } from '@/services/affairs'
@@ -36,6 +45,9 @@ import { getMessage } from '@/components/Message'
 import useKeyPress from '@/hooks/useKeyPress'
 import WrapLeft from './components/WrapLeft'
 import { userInfo } from 'os'
+import CommonButton from '@/components/CommonButton'
+import IconFont from '@/components/IconFont'
+import CommonIconFont from '@/components/CommonIconFont'
 
 interface IProps {}
 
@@ -61,7 +73,26 @@ export const MoreWrap = styled.div<{ type?: any }>(
     },
   }),
 )
-
+const MoreItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 32,
+  color: 'var(--neutral-n2)',
+  fontSize: 14,
+  fontWeight: 400,
+  cursor: 'pointer',
+  padding: '0 16px',
+  svg: {
+    color: 'var(--neutral-n3)',
+  },
+  '&: hover': {
+    color: 'var(--neutral-n1-d1)!important',
+    background: 'var(--hover-d3)',
+    svg: {
+      color: 'var(--neutral-n1-d1)!important',
+    },
+  },
+})
 export const TreeContext: any = React.createContext('')
 
 const SprintProjectAffair: React.FC<IProps> = props => {
@@ -105,6 +136,8 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const searchChoose = useSelector(store => store.view.searchChoose)
+  const OperationRef = useRef<any>()
+  const [isVisibleMore, setIsVisibleMore] = useState(false)
   console.log('searchChoose', searchChoose)
   const projectId = paramsData.id
   const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
@@ -386,7 +419,48 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     dispatch(setFilterKeys([]))
     dispatch(onTapSearchChoose(''))
   }, [])
+  const onImportClick = () => {
+    OperationRef.current?.onImportClick()
+  }
 
+  const onExportClick = () => {
+    OperationRef.current?.onExportClick()
+  }
+  const hasImport = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
+  )
+
+  const hasExport = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
+  )
+  const moreOperation = (
+    <div
+      style={{
+        padding: '4px 0',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {hasImport ? null : (
+        <MoreItem onClick={onImportClick}>
+          <CommonIconFont type="export" />
+          <span style={{ marginLeft: 8, whiteSpace: 'nowrap' }}>
+            {t('importTransaction')}
+          </span>
+        </MoreItem>
+      )}
+      {hasExport ? null : (
+        <MoreItem onClick={onExportClick}>
+          <CommonIconFont type="Import" />
+          <span style={{ marginLeft: 8, whiteSpace: 'nowrap' }}>
+            {t('exportTransaction')}
+          </span>
+        </MoreItem>
+      )}
+    </div>
+  )
   // 判断是否详情回来，并且权限是不是有
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
@@ -441,7 +515,51 @@ const SprintProjectAffair: React.FC<IProps> = props => {
           <ProjectCommonOperation
             onInputSearch={onInputSearch}
             title={t('search_for_transaction_name_or_number')}
-          />
+            showSearchInput={false}
+          >
+            {hasExport && hasImport ? null : (
+              <Popover
+                content={moreOperation}
+                placement="bottom"
+                getPopupContainer={node => node}
+                key={isVisibleMore.toString()}
+                visible={isVisibleMore}
+                onVisibleChange={visible => setIsVisibleMore(visible)}
+              >
+                <MoreWrap>
+                  <span>{t('newlyAdd.moreOperation')}</span>
+                  <IconFont
+                    style={{ fontSize: 16, marginLeft: 8 }}
+                    type={isVisibleMore ? 'up' : 'down'}
+                  />
+                </MoreWrap>
+              </Popover>
+            )}
+            {getIsPermission(
+              projectInfo?.projectPermissions,
+              'b/transaction/save',
+            ) ? null : (
+              <CommonButton
+                onClick={() =>
+                  dispatch(
+                    setAddWorkItemModal({
+                      visible: true,
+                      params: {
+                        type: 7,
+                        title: t('createTransaction'),
+                        projectId: getProjectIdByUrl(),
+                      },
+                    }),
+                  )
+                }
+                type="primary"
+              >
+                <Tooltip placement="top" title={`${t('create')} (C)`}>
+                  {t('createTransaction')}
+                </Tooltip>
+              </CommonButton>
+            )}
+          </ProjectCommonOperation>
           <ContentWrap>
             <ContentLeft>
               <WrapLeft
@@ -476,6 +594,8 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                   panel: isGrid,
                 }}
                 dataLength={dataList?.total}
+                statistics={dataList?.statistics}
+                ref={OperationRef}
               />
               <ContentMain>
                 {!isGrid && (
