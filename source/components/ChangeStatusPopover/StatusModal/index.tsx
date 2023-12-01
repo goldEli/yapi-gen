@@ -20,7 +20,7 @@ import {
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FormWrap, MyDiv } from '../style'
+import { FormWrap, MyDiv, StatusTitle } from '../style'
 import Excessive from './Excessive'
 import WanderVerify from './Verify'
 import { getProjectMember } from '@/services/project'
@@ -28,9 +28,9 @@ import { getShapeAffairsRight } from '@/services/affairs'
 import { getShapeFlawRight } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
 import MoreSelect from '@/components/MoreSelect'
-import { getProjectIdByUrl } from '@/tools'
+import { copyLink, getProjectIdByUrl } from '@/tools'
 import { CodeSandboxCircleFilled } from '@ant-design/icons'
-
+import CommonIconFont from '@/components/CommonIconFont'
 interface StatusModalProps {
   // 弹窗显示状态
   isVisible: boolean
@@ -449,6 +449,17 @@ const StatusModal = (props: StatusModalProps) => {
     >
       <div style={{ paddingRight: 4 }}>
         <Excessive checkStatusItem={props.checkStatusItem} />
+        <StatusTitle>
+          <img src={props.record?.category_attachment}></img>
+          {props.record?.name}【{props.record?.storyPrefixKey}】
+          <CommonIconFont
+            type="copy"
+            onClick={() => {
+              const text = `${props.record?.name}【${props.record?.storyPrefixKey}】`
+              copyLink(text, '复制成功', t('common.copyFail'))
+            }}
+          ></CommonIconFont>
+        </StatusTitle>
         <FormWrap>
           <Form
             labelAlign="left"

@@ -7,13 +7,12 @@
 /* eslint-disable no-undefined */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import IconFont from '@/components/IconFont'
-import { Checkbox, Menu, message, Space, Table, Tooltip } from 'antd'
+import { Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
-import { HoverWrap, DividerWrap } from '@/components/StyleCommon'
+import { DividerWrap } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import { getIsPermission } from '@/tools/index'
 import NoData from '@/components/NoData'
@@ -22,7 +21,6 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import DropDownMenu from '@/components/DropDownMenu'
 import {
@@ -45,7 +43,7 @@ import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 import { getMessage } from '@/components/Message'
-import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
+import BatchAction from '@/components/BatchOperation/BatchAction'
 
 export const tableWrapP = css`
   display: flex;
@@ -509,26 +507,14 @@ const StaffManagement = () => {
             padding: '0 24px',
           }}
         >
-          {isShow && (
-            <ResizeTable
-              isSpinning={isSpinning}
-              dataWrapNormalHeight="100%"
-              col={selectColum}
-              rowSelection={rowSelection}
-              dataSource={listData}
-              noData={<NoData />}
-            />
-          )}
-          {!isShow && (
-            <ResizeTable
-              isSpinning={isSpinning}
-              dataWrapNormalHeight="100%"
-              col={selectColum}
-              rowSelection={rowSelection}
-              dataSource={listData}
-              noData={<NoData />}
-            />
-          )}
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="100%"
+            col={selectColum}
+            rowSelection={rowSelection}
+            dataSource={listData}
+            noData={<NoData />}
+          />
         </div>
         <PaginationBox
           total={total}
@@ -597,10 +583,10 @@ const StaffManagement = () => {
             title={t('common.permissionGroup')}
           >
             <div
-              style={{ color: 'var(--neutral-white-d7)' }}
+              style={{ color: 'var(--neutral-white-d7)', cursor: 'pointer' }}
               onClick={() => setBatchEditVisible(true)}
             >
-              权限
+              {t('common.permission')}
             </div>
           </Tooltip>
         </BatchAction>

@@ -57,7 +57,7 @@ const Header = styled.div({
 })
 
 const Content = styled.div({
-  padding: '0 16px',
+  padding: '0 24px',
   // height: 'calc(100% - 64px)',
 })
 
@@ -109,8 +109,9 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     cursor: 'pointer',
     boxSizing: 'border-box',
     position: 'relative',
-    paddingLeft: 24,
+    paddingLeft: 12,
     alignItems: 'self-start',
+    borderRadius: 4,
     '.dropdownIcon': {
       position: 'absolute',
       right: 0,
@@ -133,14 +134,25 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     },
   },
   ({ isActive }) => ({
-    background: isActive ? 'var(--gradient-left) !important' : 'white',
+    background: isActive ? 'var(--selected) !important' : 'white',
     '.name': {
       color: isActive ? 'var(--primary-d1)' : 'var(--neutral-n1-d1)',
     },
   }),
 )
 
-const CheckboxWrap = styled.div({ width: 100, height: 32 })
+const CheckboxWrap = styled.div<{ isZh?: boolean }>`
+  width: ${props => (props.isZh ? 80 : 100)}px;
+  position: relative;
+  .provider {
+    height: 17px;
+    width: 1px;
+    background: var(--neutral-n5);
+    position: absolute;
+    top: 8px;
+    left: ${props => (props.isZh ? 48 : 58)}px;
+  }
+`
 
 const TitleGroup = styled.div({
   display: 'flex',
@@ -161,10 +173,11 @@ const MainWrap = styled.div({
 
 const MainWrapItem = styled.div({
   borderBottom: '1px solid var(--neutral-n6-d1)',
-  padding: '24px 0 12px',
+  padding: '24px 0 ',
   display: 'flex',
   '.ant-checkbox-wrapper': {
     margin: '0 !important',
+    lineHeight: '32px',
   },
 })
 
@@ -175,20 +188,6 @@ const ModalFooter = styled(Space)({
   justifyContent: 'flex-end',
 })
 
-const IconFontStyle = styled(IconFont)`
-  font-size: 18px;
-  color: var(--neutral-n2);
-  border-radius: 6px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    background-color: var(--hover-d1);
-  }
-`
-
 const RowBox = styled.div`
   /* padding-right: 16px; */
   display: flex;
@@ -197,7 +196,7 @@ const RowBox = styled.div`
   /* margin-bottom: 10px; */
 `
 
-const OperationWrap = styled.div({ width: 100 })
+const OperationWrap = styled.div({ width: 110 })
 const MenuItemsTitle = styled.div`
   height: 44px;
   line-height: 44px;
@@ -214,6 +213,7 @@ interface ItemProps {
 }
 
 const PermissionItem = (props: ItemProps) => {
+  const { language } = useSelector(store => store.global)
   const keys =
     props.value?.filter(
       (i: any) => !!props.item.children.find((item: any) => item.value === i),
@@ -232,7 +232,8 @@ const PermissionItem = (props: ItemProps) => {
   }
   return (
     <MainWrapItem>
-      <CheckboxWrap>
+      <OperationWrap>{props.item.name}</OperationWrap>
+      <CheckboxWrap isZh={language === 'zh'}>
         <Checkbox
           disabled={
             props.activeDetail?.type === 1 ||
@@ -246,8 +247,8 @@ const PermissionItem = (props: ItemProps) => {
             keys.length > 0 && keys.length === props.item.children.length
           }
         />
+        <div className="provider" />
       </CheckboxWrap>
-      <OperationWrap>{props.item.name}</OperationWrap>
       <GroupWrap>
         <Checkbox.Group
           value={keys}
@@ -265,7 +266,7 @@ const PermissionItem = (props: ItemProps) => {
                   >
                     <span
                       style={{
-                        width: '150px',
+                        width: language === 'zh' ? '160px' : '220px',
                         display: 'inline-block',
                         marginBottom: '10px',
                       }}
@@ -300,6 +301,7 @@ const PermissionManagement = () => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { menuPermission } = useSelector(store => store.user)
+  const { language } = useSelector(store => store.global)
   const getPermission = async (id: number) => {
     setIsSpinning(true)
     const result = await getRolePermission({ roleId: id })
@@ -543,11 +545,6 @@ const PermissionManagement = () => {
                         isActive={item.id === activeDetail.id}
                       >
                         <div className="name">{item.name}</div>
-                        {/* <span className="subName">
-                          {item.type === 1
-                            ? t('setting.systemGroup')
-                            : t('setting.customGroup')}
-                        </span> */}
                         <MoreDropdown
                           isHidden={item.type === 1}
                           isMoreVisible={isMoreVisible}
@@ -571,11 +568,6 @@ const PermissionManagement = () => {
                         isActive={item.id === activeDetail.id}
                       >
                         <div className="name">{item.name}</div>
-                        {/* <span className="subName">
-                          {item.type === 1
-                            ? t('setting.systemGroup')
-                            : t('setting.customGroup')}
-                        </span> */}
                         <MoreDropdown
                           isHidden={item.type === 1}
                           isMoreVisible={isMoreVisible}
@@ -589,8 +581,10 @@ const PermissionManagement = () => {
               <SetRight>
                 <Title style={{ paddingLeft: 0 }}>{activeDetail.name}</Title>
                 <TitleGroup>
-                  <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
                   <OperationWrap>{t('setting.operationObject')}</OperationWrap>
+                  <CheckboxWrap isZh={language === 'zh'}>
+                    {t('setting.all')}
+                  </CheckboxWrap>
                   <span>{t('common.permission')}</span>
                 </TitleGroup>
                 <MainWrap>

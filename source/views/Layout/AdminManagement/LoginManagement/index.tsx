@@ -47,16 +47,13 @@ const Header = styled.div({
 const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
-  minHeight: 64,
   background: 'var(--neutral-white-d1)',
-  padding: '20px 0',
   flexWrap: 'wrap',
-  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const Content = styled.div({
   padding: '0px 24px 0px',
-  height: 'calc(100% - 197px)',
+  height: 'calc(100% - 124px)',
 })
 
 const StatusWrap = styled.div({
@@ -168,7 +165,6 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'id',
-      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -185,7 +181,6 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'username',
-      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -202,7 +197,6 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'nickname',
-      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -219,7 +213,6 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'time',
-      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -236,7 +229,6 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'loginIp',
-      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -253,7 +245,6 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'client',
-      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -270,7 +261,6 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'system',
-      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -343,14 +333,6 @@ const LoginManagement = () => {
         onValuesChange={onValuesChange}
       >
         <Header>
-          <div className="title-bar">
-            <div className="title-text"> {t('setting.loginLog')} </div>
-            <ScreenMinHover
-              label={t('common.refresh')}
-              icon="sync"
-              onClick={onValuesChange}
-            />
-          </div>
           <SearchWrap size={16}>
             <SelectWrapBedeck className="SelectWrapBedeck" datatype="userIds">
               <span style={{ margin: '0 12px', fontSize: '14px' }}>
@@ -401,6 +383,11 @@ const LoginManagement = () => {
               {t('reset')}
             </div>
           </SearchWrap>
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={onValuesChange}
+          />
         </Header>
         <Content>
           <ResizeTable

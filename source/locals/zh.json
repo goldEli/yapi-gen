@@ -2646,5 +2646,7 @@
   "ccTask": "抄送任务",
   "deleteTableToast": "当前项目有删除权限才能进行删除",
   "updateProgressToast": "当前任务处理人包含自己才能更新进度",
-  "notVerify": "已经审核过的任务不能再次审核"
+  "notVerify": "已经审核过的任务不能再次审核",
+  "haveWater": "有水印",
+  "notHaveWater": "无水印"
 }

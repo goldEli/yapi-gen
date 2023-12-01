@@ -198,3 +198,16 @@ export const TimelineWrap = styled(Timeline)`
     }
   }
 `
+
+export const StatusTitle = styled.div`
+  padding-left: 24px;
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+`

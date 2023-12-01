@@ -70,7 +70,7 @@ const toggleDropUp = css`
 `
 const toggleDropDown = css`
   max-height: 30vh;
-  padding:0 16px;
+  padding: 0 16px;
   transition: all 0.5s;
 `
 const CategoryList = () => {
@@ -311,7 +311,14 @@ const CategoryList = () => {
                     setAffairType([...affairType])
                   }}
                 >
-                  <div style={{ cursor: 'pointer' ,display:'flex',alignItems:'center',overflow:'hidden'}}>
+                  <div
+                    style={{
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      overflow: 'hidden',
+                    }}
+                  >
                     <IconFont
                       style={{ fontSize: 12, color: 'var(--neutral-n3)' }}
                       type={

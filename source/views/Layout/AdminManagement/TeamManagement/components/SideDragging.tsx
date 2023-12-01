@@ -202,6 +202,7 @@ const SliderList = (props: any) => {
         transition: 'transform .2s, box-shadow .2s',
         position: 'relative',
         zIndex: zIndex.toString(),
+        borderRadius: 4,
       }}
     >
       <IconFontStyle type="move" className="icon" style={{ marginRight: 8 }} />

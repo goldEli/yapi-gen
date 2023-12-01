@@ -4,13 +4,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Select, Form, Space } from 'antd'
+import { Form, Space } from 'antd'
 import moment from 'moment'
-import {
-  HoverWrap,
-  SelectWrap,
-  SelectWrapBedeck,
-} from '@/components/StyleCommon'
+import { SelectWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import { useEffect, useState, useLayoutEffect } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
@@ -34,36 +30,21 @@ const Header = styled.div({
   top: 0,
   zIndex: 9,
   padding: '24px 24px 20px',
-  '.title': {
-    fontSize: 16,
-    fontFamily: 'SiYuanMedium',
-    color: 'var(--neutral-n1-d1)',
-  },
-  '.title-bar': {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    '.title-text': {
-      fontSize: 16,
-      fontFamily: 'SiYuanMedium',
-      color: 'var(--neutral-n1-d1)',
-    },
-  },
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 })
 
 const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
-  minHeight: 64,
   background: 'var(--neutral-white-d1)',
-  padding: '20px 0',
   flexWrap: 'wrap',
-  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const Content = styled.div({
   padding: '0px 24px 0px',
-  height: 'calc(100% - 197px)',
+  height: 'calc(100% - 124px)',
 })
 
 const NewSort = (sortProps: any) => {
@@ -167,7 +148,6 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 100,
       render: (text: string, record: any) => (
         <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
       ),
@@ -184,7 +164,6 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'time',
-      width: 200,
     },
     {
       title: (
@@ -198,7 +177,6 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'type',
-      width: 100,
       render: (text: string) => {
         return <div>{typeList.filter(i => i.value === text)[0]?.label}</div>
       },
@@ -254,15 +232,6 @@ const OperationManagement = () => {
         onValuesChange={onValuesChange}
       >
         <Header>
-          <div className="title-bar">
-            <div className="title"> {t('setting.operationLog')}</div>
-            <ScreenMinHover
-              label={t('common.refresh')}
-              icon="sync"
-              onClick={onValuesChange}
-            />
-          </div>
-
           <SearchWrap size={16}>
             <SelectWrapBedeck className="SelectWrapBedeck" datatype="userIds">
               <span style={{ margin: '0 12px', fontSize: '14px' }}>
@@ -334,9 +303,14 @@ const OperationManagement = () => {
               }}
               onClick={onReset}
             >
-              {t('common.clearForm')}
+              {t('reset')}
             </div>
           </SearchWrap>
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={onValuesChange}
+          />
         </Header>
         <Content>
           <ResizeTable

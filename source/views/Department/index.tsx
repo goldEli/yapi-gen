@@ -263,7 +263,7 @@ const Index = () => {
             </CommonButton>
           </OperateWrap>
         </HeaderWrap>
-        <TableWrap style={{height:'calc(100% - 90px)'}}>
+        <TableWrap style={{ height: 'calc(100% - 90px)' }}>
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="calc(100% - 48px)"

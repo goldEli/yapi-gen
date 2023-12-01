@@ -561,7 +561,7 @@ const CommonNeed = (props: any) => {
         },
       },
     ]
-    return [...arrList, ...newList]
+    return [...newList]
   }, [titleList, columns])
 
   const getShowkey = async () => {

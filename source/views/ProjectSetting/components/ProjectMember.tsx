@@ -596,7 +596,7 @@ const ProjectMember = () => {
   }
 
   const selectColumns: any = useMemo(() => {
-    return [ ...columns]
+    return [...columns]
   }, [columns])
 
   const onChangeUpdate = () => {
@@ -864,7 +864,7 @@ const ProjectMember = () => {
             title={t('common.permissionGroup')}
           >
             <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
-            权限
+              权限
             </div>
           </Tooltip>
           <Tooltip
@@ -896,7 +896,7 @@ const ProjectMember = () => {
                 })
               }
             >
-             移除
+              移除
             </div>
           </Tooltip>
         </BatchAction>

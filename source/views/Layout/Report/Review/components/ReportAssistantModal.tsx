@@ -305,7 +305,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   }
 
   useEffect(() => {
-    if (visible && currentProject) {
+    if (visible) {
       getInitDaily()
       getProjectDataList()
     }
