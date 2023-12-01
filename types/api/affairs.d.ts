@@ -295,6 +295,7 @@ declare namespace API.Affairs {
     }
     type SelectResult = Model.Affairs.ListItem[]
     type Result = {
+      statistics: any
       pager?: {
         page: number
         pagesize: number

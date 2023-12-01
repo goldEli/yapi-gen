@@ -8,7 +8,7 @@ import { DividerWrap, HasIconMenu } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 import DropDownMenu from './DropDownMenu'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useSelector } from '@store/index'
 import ViewPort from './ViewPort'
 import { useLocation, useSearchParams } from 'react-router-dom'
@@ -27,6 +27,7 @@ interface Props {
   onRefresh?(): void
   // 是否有切换模式
   notGrid?: boolean
+  onChangeView?(): void
 }
 
 const SpaceWrap = styled(Space)({
@@ -45,7 +46,7 @@ const OperationGroup = (props: Props) => {
   const { projectInfo } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
-
+  const ViewPortRef = useRef<any>()
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/get' : 'b/transaction/get',
@@ -119,7 +120,14 @@ const OperationGroup = (props: Props) => {
         location.pathname.includes('Affair') ||
         location.pathname.includes('Defect')) && (
         <>
-          <ViewPort pid={projectId} type={1} />
+          {/* <ViewPort
+            pid={projectId}
+            type={1}
+            onChangeView={() => {
+              console.log('ViewPortRef-----1', ViewPortRef)
+            }}
+            ref={ViewPortRef}
+          /> */}
           <DividerWrap type="vertical" />
         </>
       )}
@@ -166,6 +174,14 @@ const OperationGroup = (props: Props) => {
         menu={
           <SetShowField
             onChangeFieldVisible={onClickMenuFields}
+            onChangeView={type => {
+              // type 1创建视图  2 管理视图
+              if (type === 1) {
+                ViewPortRef.current?.onChangeCreate()
+                return
+              }
+              ViewPortRef.current?.onChangeView()
+            }}
             isGrid={props.isGrid}
           />
         }

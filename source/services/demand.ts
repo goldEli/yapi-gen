@@ -831,6 +831,7 @@ export const getDemandList: any = async (params: any) => {
         parent: [{ value: i.id, label: i.name }],
         work_hours: i.work_hours,
       })),
+      statistics: response.data?.statistics,
     }
   }
 }
@@ -1319,5 +1320,11 @@ export const addChild = async (params: any) => {
 // 子需求排序
 export const sortChild = async (params: any) => {
   const response = await http.post('sortChild', params)
+  return response.data
+}
+
+// 需求流转获取预计时间
+export const flowDate = async (params: any) => {
+  const response = await http.get('flowDate', params)
   return response.data
 }

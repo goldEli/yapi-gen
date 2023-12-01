@@ -12,6 +12,7 @@ interface Props {
   onInputSearch(value: string): void
   title?: string
   showSearchInput?: boolean
+  children?: React.ReactNode
 }
 
 const ProjectCommonOperation = (props: Props) => {
@@ -33,6 +34,10 @@ const ProjectCommonOperation = (props: Props) => {
         >
           <MyBreadcrumb />
         </div>
+        <div style={{ display: 'flex' }}>
+          {props.children ? props.children : null}
+        </div>
+
         {showSearchInput ? (
           <SearchOrProjectMember size={16}>
             <InputSearch

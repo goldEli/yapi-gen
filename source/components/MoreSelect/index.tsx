@@ -36,8 +36,8 @@ const index = (props: any) => {
     props.onConfirm?.(props.id)
   }
   const handleChange = (values: any) => {
-    props.onChange(values)
-    props.onConfirm?.(props.id)
+    props.onChange && props.onChange(values)
+    props.onConfirm && props.onConfirm?.(props.id)
   }
 
   function getIds(arr: List[]) {

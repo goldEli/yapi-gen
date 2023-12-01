@@ -6,7 +6,7 @@ import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import { ModalFooter } from '@/components/StyleCommon'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
-import { getShapeRight } from '@/services/demand'
+import { getShapeRight, flowDate } from '@/services/demand'
 import {
   DatePicker,
   Divider,
@@ -67,9 +67,15 @@ const LabelComponent = (props: any) => {
 }
 const DateInput = (props: any) => {
   const { onChange: set, type } = props
-
-  const change = (key: any, dates: any) => {
+  const change = async (key: any, dates: any) => {
+    const params = {
+      project_id: props.record?.project_id,
+      story_id: props.record?.id,
+      [props.id]: dates,
+    }
     set(dates)
+    const res = await flowDate(params)
+    props.onChangeCb(res, props.id)
   }
   useEffect(() => {
     set(props.dvalue)
@@ -78,7 +84,7 @@ const DateInput = (props: any) => {
   if (type === 'datetime') {
     return (
       <DatePicker
-        defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
+        value={props.value ? moment(props.value) : moment(props.dvalue)}
         onChange={change}
         style={{ width: '100%' }}
         format="YYYY-MM-DD HH:mm:ss"
@@ -88,7 +94,7 @@ const DateInput = (props: any) => {
   }
   return (
     <DatePicker
-      defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
+      value={props.value ? moment(props.value) : moment(props.dvalue)}
       onChange={change}
       style={{ width: '100%' }}
       format="YYYY-MM-DD"
@@ -196,7 +202,7 @@ const StatusModal = (props: StatusModalProps) => {
   // const [active, setActive] = useState<number>()
   const [form] = Form.useForm()
   const info = useGetloginInfo()
-
+  const [statusData, setStatusData] = useState({})
   const setValue = (res: any) => {
     const form1Obj: any = {}
     for (const key in res?.fields) {
@@ -418,6 +424,7 @@ const StatusModal = (props: StatusModalProps) => {
   }
 
   useEffect(() => {
+    setStatusData(props.record)
     if (props.isVisible && props.checkStatusItem?.id) {
       getConfig()
     }
@@ -628,7 +635,39 @@ const StatusModal = (props: StatusModalProps) => {
                       },
                     ]}
                   >
-                    <DateInput type={i.type} dvalue={i.true_value} />
+                    <DateInput
+                      type={i.type}
+                      dvalue={i.true_value}
+                      record={props.record}
+                      onChangeCb={(res: any, type: any) => {
+                        setConfigData((pre: any) => {
+                          const { fields } = pre
+                          if (type === 'expected_start_at') {
+                            fields.find(
+                              (item: any) => item.content === 'expected_end_at',
+                            ).true_value = res.end_date
+                            fields.find(
+                              (item: any) =>
+                                item.content === 'expected_start_at',
+                            ).true_value = res.start_date
+                          }
+                          if (type === 'expected_end_at') {
+                            fields.find(
+                              (item: any) =>
+                                item.content === 'expected_start_at',
+                            ).true_value = res.start_date
+                            fields.find(
+                              (item: any) => item.content === 'expected_end_at',
+                            ).true_value = res.end_date
+                          }
+                          setTimeout(() => {
+                            form.setFieldsValue(setValue(pre))
+                          })
+                          console.log('pre----', pre, setValue(pre))
+                          return pre
+                        })
+                      }}
+                    />
                   </Form.Item>
                 )}
                 {i.type === 'tag' && (

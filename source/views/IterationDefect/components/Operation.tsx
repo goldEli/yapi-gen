@@ -33,7 +33,7 @@ import {
   getExportFlawExcel,
 } from '@/services/flaw'
 import CommonExport from '@/components/CommonExport'
-import { OperationWrap } from '../style'
+import { OperationWrap, StatusGroup, StatusItems } from '../style'
 import useShortcutC from '@/hooks/useShortcutC'
 
 const StickyWrap = styled.div({
@@ -121,6 +121,7 @@ interface Props {
   dataLength: any
   pid: any
   onCreateDefect(): void
+  statistics: any
 }
 
 const Operation = (props: Props) => {
@@ -164,6 +165,8 @@ const Operation = (props: Props) => {
     finishAt: [],
     searchValue: '',
   })
+  const { userInfo } = useSelector(store => store.user)
+  const [activityIndex, setActivityIndex] = useState(0)
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
 
@@ -308,7 +311,12 @@ const Operation = (props: Props) => {
     setIsShowExport(true)
     setIsVisibleMore(false)
   }
-
+  //   状态类型列表
+  const statusList = [
+    { name: '全部', key: 0, field: '' },
+    { name: '指派我的', key: 1, field: 'users_name', type: 'handler_count' },
+    { name: '我创建的', key: 2, field: 'user_name', type: 'user_create_count' },
+  ]
   const moreOperation = (
     <div
       style={{
@@ -494,6 +502,25 @@ const Operation = (props: Props) => {
               <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
+          <StatusGroup>
+            {statusList?.map((i: any, index: number) => (
+              <StatusItems
+                key={i.key}
+                isActive={i.key === activityIndex}
+                onClick={() => {
+                  console.log(userInfo)
+                  // 处理人users_name 创建人user_name
+                  const { field } = i
+                  const { id } = userInfo
+                  onFilterSearch({ [field]: id }, {})
+                  setActivityIndex(index)
+                }}
+              >
+                {i.name}
+                {i.type ? props?.statistics?.[i.type] : null}
+              </StatusItems>
+            ))}
+          </StatusGroup>
           {getIsPermission(
             projectInfo?.projectPermissions,
             'b/flaw/save',

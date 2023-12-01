@@ -369,6 +369,7 @@ const Index = (props: any) => {
                 }}
                 dataLength={dataList?.total}
                 onCreateDefect={onCreateDefect}
+                statistics={dataList?.statistics}
               />
               <ContentMain>
                 <DefectTable
