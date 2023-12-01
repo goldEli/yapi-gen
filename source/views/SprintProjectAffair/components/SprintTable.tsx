@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import { createRef, useEffect, useMemo, useState } from 'react'
-import { Menu, Table } from 'antd'
+import { Dropdown, Menu, Space, Table } from 'antd'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
@@ -29,12 +29,22 @@ import {
   updateAffairsStatus,
   updateAffairsTableParams,
 } from '@/services/affairs'
+import CommonIconFont from '@/components/CommonIconFont'
+import { TableActionItem } from '@/components/StyleCommon'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
   height: 100%;
 `
-
+const DropdownWrap = styled(Dropdown)({
+  cursor: 'pointer',
+  svg: {
+    color: 'var(--auxiliary-b1)',
+  },
+  '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+    textAlign: 'left',
+  },
+})
 interface Props {
   data: any
   onDelete(item: any): void
@@ -278,14 +288,6 @@ const SprintTable = (props: Props) => {
         ),
       },
       {
-        key: '2',
-        label: (
-          <div onClick={e => onClickBatch(e, 'delete')}>
-            {t('version2.batchDelete')}
-          </div>
-        ),
-      },
-      {
         key: '3',
         label: (
           <div onClick={e => onClickBatch(e, 'copy')}>
@@ -309,39 +311,57 @@ const SprintTable = (props: Props) => {
 
     const arrList = [
       {
-        width: 48,
+        title: '操作',
+        dataIndex: 'action',
+        width: 200,
+        fixed: 'right',
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel && hasCreate ? null : (
-                <MoreDropdown
-                  isMoreVisible={isShowMore}
-                  menu={
-                    selectedRowKeys
-                      ?.map((i: any) => i.id)
-                      .includes(record.id) ? (
-                      menuBatch()
-                    ) : (
-                      <SprintDropdownMenu
-                        onDeleteChange={onDeleteChange}
-                        onCreateChild={onCreateChild}
-                        onEditChange={onEditChange}
-                        record={record}
-                      />
-                    )
-                  }
-                  onChangeVisible={setIsShowMore}
-                />
-              )}
+              <Space size={16}>
+                <TableActionItem>进度</TableActionItem>
+                {!hasDel && (
+                  <TableActionItem onClick={e => onClickBatch(e, 'delete')}>
+                    删除
+                  </TableActionItem>
+                )}
+                {hasEdit && hasCreate ? null : (
+                  <DropdownWrap
+                    destroyPopupOnHide
+                    overlay={
+                      selectedRowKeys
+                        ?.map((i: any) => i.id)
+                        .includes(record.id) ? (
+                        menuBatch()
+                      ) : (
+                        <SprintDropdownMenu
+                          str='noDel'
+                          onDeleteChange={onDeleteChange}
+                          onCreateChild={onCreateChild}
+                          onEditChange={onEditChange}
+                          record={record}
+                        />
+                      )
+                    }
+                    trigger={['click']}
+                    placement="bottomRight"
+                    getPopupContainer={node => document.body}
+                  >
+                    <div>
+                      <CommonIconFont type="more-01" size={16} />
+                    </div>
+                  </DropdownWrap>
+                )}
+              </Space>
             </div>
           )
         },
       },
     ]
-    if (!hasBatch) {
-      arrList.push(Table.SELECTION_COLUMN as any)
-    }
-    return [...arrList, ...newList]
+    // if (!hasBatch) {
+    //   arrList.push(Table.SELECTION_COLUMN as any)
+    // }
+    return [...newList, ...arrList]
   }, [
     props.titleList,
     props.titleList2,

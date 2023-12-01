@@ -488,7 +488,6 @@ const TableFilter = (props: any) => {
   }
 
   const splitArrayByValue = (arr: any) => {
-    // debugger
     let arr1 = arr.filter((x: any) => x.status === 1)
     // 已离职
     let arr2 = arr
@@ -505,8 +504,6 @@ const TableFilter = (props: any) => {
     return [...arr1, ...arr2]
     return arr2.length >= 1 ? [...arr1, b] : [...arr1]
   }
-
-  // console.log(list, '=12121', projectInfo)
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>

@@ -392,7 +392,7 @@ const MainTable = (props: Props) => {
             <DropdownWrap
               destroyPopupOnHide
               menu={{ items: menuData(record) }}
-              trigger={['hover']}
+              trigger={['click']}
               placement="bottomRight"
               getPopupContainer={node => document.body}
             >
