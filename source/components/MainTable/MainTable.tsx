@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Progress, Tooltip } from 'antd'
+import { Dropdown, Progress, Tooltip } from 'antd'
 import {
   ListNameWrap,
   TableActionWrap,
@@ -25,6 +25,7 @@ import CommonButton from '../CommonButton'
 import { Tags } from '../ProjectCard/style'
 import DragTable from '../DragTable'
 import MultipleAvatar from '../MultipleAvatar'
+import CommonIconFont from '../CommonIconFont'
 
 interface Props {
   onChangeOperation(type: string, item: any, e?: any): void
@@ -38,7 +39,15 @@ interface Props {
   onChangeProjectList(value: any, idx?: number): void
   filterParams?: any
 }
-
+const DropdownWrap = styled(Dropdown)({
+  cursor: 'pointer',
+  svg: {
+    color: 'var(--auxiliary-b1)',
+  },
+  '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+    textAlign: 'left',
+  },
+})
 const StatusWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -338,7 +347,11 @@ const MainTable = (props: Props) => {
           !isSuperAdmin && record.leader?.id !== userInfo?.id
 
         return (
-          <TableActionWrap>
+          <TableActionWrap
+            onClick={e => {
+              e.stopPropagation()
+            }}
+          >
             <Tooltip
               title={
                 isRolePermission
@@ -379,32 +392,62 @@ const MainTable = (props: Props) => {
                 {t('closure')}
               </TableActionItem>
             </Tooltip>
-
-            <TableActionItem
-              isDisable={record.team_id === 0 ? hasEdit : record.isTeam}
-              onClick={e => {
-                e.stopPropagation()
-                !(record.team_id === 0 ? hasEdit : record.isTeam) &&
-                  dispatch(editProject({ visible: true, id: record.id }))
-              }}
+            {/* 合并样式 */}
+            <DropdownWrap
+              destroyPopupOnHide
+              menu={{ items: menuData(record) }}
+              placement="bottomRight"
+              getPopupContainer={node => document.body}
             >
-              {t('edit')}
-            </TableActionItem>
-            <TableActionItem
-              isDisable={hasDelete}
-              onClick={e => {
-                e.stopPropagation()
-                hasDelete ? void 0 : props.onChangeOperation('delete', record)
-              }}
-            >
-              {t('common.del')}
-            </TableActionItem>
+              <div>
+                <CommonIconFont type="more-01" size={16} />
+              </div>
+            </DropdownWrap>
           </TableActionWrap>
         )
       },
     },
   ]
+  const menuData = (record: any) => {
+    let menuItems: any = [
+      {
+        key: '1',
+        label: (
+          <TableActionItem
+            onClick={e => {
+              e.stopPropagation()
+              !(record.team_id === 0 ? hasEdit : record.isTeam) &&
+                dispatch(editProject({ visible: true, id: record.id }))
+            }}
+          >
+            {t('edit')}
+          </TableActionItem>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <TableActionItem
+            onClick={e => {
+              e.stopPropagation()
+              hasDelete ? void 0 : props.onChangeOperation('delete', record)
+            }}
+          >
+            {t('common.del')}
+          </TableActionItem>
+        ),
+      },
+    ]
+    // isDisable={record.team_id === 0 ? hasEdit : record.isTeam}
+    if ((hasEdit && record.team_id === 0) || record.isTeam) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+    if (hasDelete) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
 
+    return menuItems
+  }
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight

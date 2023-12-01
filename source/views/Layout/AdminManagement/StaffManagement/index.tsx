@@ -5,9 +5,8 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -47,7 +46,8 @@ import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 import { getMessage } from '@/components/Message'
-import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
+import BatchAction from '@/components/BatchOperation/BatchAction'
+import { Tooltip } from 'antd'
 
 export const tableWrapP = css`
   display: flex;
@@ -55,7 +55,27 @@ export const tableWrapP = css`
   justify-content: space-between;
   overflow: hidden;
 `
-
+const boxItem = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 52px;
+  align-items: center;
+  height: 32px;
+  cursor: pointer;
+  color: white;
+  border-radius: 6px;
+  div {
+    font-size: 12px;
+    font-weight: 400;
+  }
+  svg {
+    font-size: 24px;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+`
 export const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
