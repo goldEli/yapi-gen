@@ -36,12 +36,12 @@ const boxItem = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 12px;
   width: 52px;
-  height: 52px;
+  align-items: center;
+  height: 32px;
   cursor: pointer;
   color: white;
-  border-radius: 12px;
+  border-radius: 6px;
   div {
     font-size: 12px;
     font-weight: 400;
@@ -139,33 +139,16 @@ const FloatBatch = (props: Props) => {
         <div className={batchAllBox}>
           <div className={batchBox}>
             <Space size={8}>
-              <Tooltip
-                placement="top"
-                getPopupContainer={node => node}
-                title={t('common.edit')}
-              >
+             
                 <div className={boxItem} onClick={() => onClickItem('edit')}>
-                  <IconFont type="edit-square" />
-                </div>
-              </Tooltip>
-              <Tooltip
-                placement="top"
-                getPopupContainer={node => node}
-                title={t('common.del')}
-              >
+                {t('common.edit')}
+                </div>             
                 <div className={boxItem} onClick={() => onClickItem('delete')}>
-                  <IconFont type="delete" />
+                {t('common.del')}
                 </div>
-              </Tooltip>
-              <Tooltip
-                placement="top"
-                getPopupContainer={node => node}
-                title={t('version2.link')}
-              >
                 <div className={boxItem} onClick={onCopy}>
-                  <IconFont type="attachment" />
+                {t('version2.link')}
                 </div>
-              </Tooltip>
             </Space>
             <IconFont
               onClick={props.onClose}

@@ -24,11 +24,7 @@ import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Header = styled.div({
-  height: 'auto',
   background: 'var(--neutral-white-d1)',
-  position: 'sticky',
-  top: 0,
-  zIndex: 9,
   padding: '24px 24px 20px',
   display: 'flex',
   justifyContent: 'space-between',

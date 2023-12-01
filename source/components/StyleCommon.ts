@@ -130,6 +130,7 @@ const ChartsItem = styled.div`
   width: 12%;
   height: 88px;
   padding: 16px 0;
+  border-radius: 6px;
   &:hover {
     background: var(--hover-d2);
   }

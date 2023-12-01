@@ -104,6 +104,7 @@ interface MoreWrapProps {
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
+  console.log(props,'props')
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const dispatch = useDispatch()

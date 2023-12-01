@@ -201,7 +201,6 @@ const TableMoreDropdown = (props: Props) => {
 
     return menuItems
   }
-
   return (
     <DropdownWrap
       destroyPopupOnHide

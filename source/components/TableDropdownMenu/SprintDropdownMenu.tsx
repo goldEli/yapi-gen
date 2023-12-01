@@ -32,6 +32,8 @@ interface Props {
   onCreateChild(row: any): void
   // 是否是所有项目
   isAllProject?: boolean
+  // 表格不要删除
+  str?:string 
 }
 
 export const SprintDropdownMenu = (props: Props) => {
@@ -119,7 +121,8 @@ export const SprintDropdownMenu = (props: Props) => {
   ]
 
   if (!props.isAllProject) {
-    if (hasDel) {
+    //表格不要删除
+    if (hasDel || props.str === 'noDel') {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
     if (hasCreate) {

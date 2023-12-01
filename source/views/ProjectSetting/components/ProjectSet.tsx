@@ -137,11 +137,11 @@ const CheckboxWrap = styled.div<{ isZh?: boolean }>`
   width: ${props => (props.isZh ? 80 : 100)}px;
   position: relative;
   .provider {
-    height:100%;
+    height: 17px;
     width: 1px;
     background: var(--neutral-n5);
     position: absolute;
-    top: 2px;
+    top: 8px;
     left: ${props => (props.isZh ? 48 : 58)}px;
   }
 `
@@ -161,12 +161,12 @@ const GroupWrap = styled.div<{ isZh?: boolean }>`
 
 const TitleGroup = styled.div<{ isZh?: boolean }>({
   display: 'flex',
-  borderBottom:'1px solid var(--neutral-n6-d1)',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
   alignItems: 'center',
   color: 'var(--neutral-n3)',
   fontSize: 12,
   fontFamily: 'SiYuanMedium',
-  paddingBottom:8
+  paddingBottom: 8,
 })
 
 export const MainWrap = styled.div({
@@ -189,7 +189,7 @@ const MainWrapItem = styled.div({
 
   '.ant-checkbox-wrapper': {
     margin: '0 !important',
-    lineHeight:'32px'
+    lineHeight: '32px',
   },
 })
 
