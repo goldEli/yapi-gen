@@ -36,12 +36,10 @@ const boxItem = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 52px;
-  align-items: center;
-  height: 32px;
+  padding: 4px 12px;
   cursor: pointer;
   color: white;
-  border-radius: 6px;
+  border-radius: 4px;
   div {
     font-size: 12px;
     font-weight: 400;
@@ -139,16 +137,15 @@ const FloatBatch = (props: Props) => {
         <div className={batchAllBox}>
           <div className={batchBox}>
             <Space size={8}>
-             
-                <div className={boxItem} onClick={() => onClickItem('edit')}>
+              <div className={boxItem} onClick={() => onClickItem('edit')}>
                 {t('common.edit')}
-                </div>             
-                <div className={boxItem} onClick={() => onClickItem('delete')}>
+              </div>
+              <div className={boxItem} onClick={() => onClickItem('delete')}>
                 {t('common.del')}
-                </div>
-                <div className={boxItem} onClick={onCopy}>
-                {t('version2.link')}
-                </div>
+              </div>
+              <div className={boxItem} onClick={onCopy}>
+                {t('other.copy')}
+              </div>
             </Space>
             <IconFont
               onClick={props.onClose}

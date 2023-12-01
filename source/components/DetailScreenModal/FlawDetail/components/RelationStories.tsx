@@ -46,6 +46,7 @@ import DragTable from '@/components/DragTable'
 import styled from '@emotion/styled'
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonProgress from '@/components/CommonProgress'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 export const SubLabel = styled.div`
   margin: 8px 0;
   font-size: 12px;
@@ -61,17 +62,13 @@ interface RelationStoriesProps {
   isPreview?: boolean
 }
 
-interface SelectItem {
-  label: string
-  value: number
-}
-
 const RelationStories = (props: RelationStoriesProps, ref: any) => {
   const [t] = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useSelector(store => store.project)
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const paramsData = getParamsData(searchParams) ?? {}
   const { id } = paramsData ?? { id: projectInfo.id }
 
@@ -291,26 +288,6 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
 
   const columns = [
     {
-      width: 40,
-      render: (text: any, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <MoreDropdown
-              isMoreVisible={isShowMore}
-              menu={
-                <RelationDropdownMenu
-                  onDeleteChange={onDeleteChange}
-                  record={record}
-                  type={2}
-                />
-              }
-              onChangeVisible={setIsShowMore}
-            />
-          </div>
-        )
-      },
-    },
-    {
       title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'story_prefix_key',
       width: 140,
@@ -507,6 +484,22 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
               project_id={record.project_id}
             />
           </div>
+        )
+      },
+    },
+    {
+      title: t('operate'),
+      dataIndex: 'action',
+      width: 100,
+      fixed: 'right',
+      render: (text: any, record: any) => {
+        return (
+          <CommonTableOperation
+            isRelation
+            record={record}
+            onDeleteChange={onDeleteChange}
+            init={onUpdate}
+          />
         )
       },
     },
@@ -707,8 +700,16 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
-        padding: props.isDrawer ? '16px 24px' : '16px 24px',
+        padding: '12px 24px 0 24px',
         backgroundColor: 'white',
+        height: props.isDrawer
+          ? '100%'
+          : `calc(${
+              userPreferenceConfig.previewModel === 3 ? '80vh' : '100vh'
+            } - ${
+              userPreferenceConfig.previewModel === 3 ? '162px' : '210px'
+            })`,
+        marginTop: props.isDrawer ? '0px' : '0px',
       }}
       id="tab_associatedWorkItems"
       className="info_item_tab"

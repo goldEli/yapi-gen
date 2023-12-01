@@ -6,6 +6,7 @@ import NoData from '@/components/NoData'
 import { t } from 'i18next'
 import Sort from '@/components/Sort'
 import { useState } from 'react'
+import { useSelector } from '@store/index'
 
 const OperationWrap = styled.div`
   font-size: 14px;
@@ -31,6 +32,7 @@ const NewSort = (sortProps: any) => {
   )
 }
 const Table = (props: any) => {
+  const { language } = useSelector(store => store.global)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
@@ -72,7 +74,6 @@ const Table = (props: any) => {
           onUpdateOrderKey={onUpdateOrderKey}
           fixedKey="department_name"
         >
-          {' '}
           {t('department')}
         </NewSort>
       ),
@@ -88,7 +89,6 @@ const Table = (props: any) => {
           onUpdateOrderKey={onUpdateOrderKey}
           fixedKey="position_name"
         >
-          {' '}
           {t('position')}
         </NewSort>
       ),
@@ -153,10 +153,10 @@ const Table = (props: any) => {
           onUpdateOrderKey={onUpdateOrderKey}
           fixedKey="team_is_admin"
         >
-          {' '}
           {t('team_role')}
         </NewSort>
       ),
+      width: 140,
       dataIndex: 'team_is_admin',
       key: 'team_is_admin',
       render: (text: any) =>
@@ -164,7 +164,7 @@ const Table = (props: any) => {
     },
     {
       title: t('newlyAdd.operation'),
-      width: 220,
+      width: 150,
       dataIndex: 'action',
       fixed: 'right',
       render: (text: string, record: any) => (
@@ -173,7 +173,7 @@ const Table = (props: any) => {
             {t('common.edit') as string}
           </span>
           <span onClick={() => props.onDelRow(record)}>
-            {t('shift_out') as string}
+            {t('common.move') as string}
           </span>
           <span onClick={() => props.onEditRow(record, 'detail')}>
             {t('common.info') as string}

@@ -2648,5 +2648,7 @@
   "updateProgressToast": "The current task handler must include themselves in order to update the progress",
   "notVerify": "Tasks that have already been reviewed cannot be reviewed again",
   "haveWater": "With watermark",
-  "notHaveWater": "No watermark"
+  "notHaveWater": "No watermark",
+  "viewPermissionIsRequiredToOperate": "View permission is required to operate",
+  "editingPermissionIsRequiredToOperate": "Editing permission is required to operate"
 }

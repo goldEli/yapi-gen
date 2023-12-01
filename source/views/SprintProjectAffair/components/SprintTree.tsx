@@ -15,7 +15,6 @@ import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, onComputedFindChild } from '@/tools'
-import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import PaginationBox from '@/components/TablePagination'
@@ -25,13 +24,13 @@ import { getMessage } from '@/components/Message'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
-import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
 import {
   getAffairsList,
   updateAffairsPriority,
   updateAffairsStatus,
   updateAffairsTableParams,
 } from '@/services/affairs'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -450,39 +449,27 @@ const SprintTree = (props: Props) => {
 
     const arrList = [
       {
-        width: 40,
+        title: t('operate'),
+        dataIndex: 'action',
+        width: 180,
+        fixed: 'right',
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel && hasCreate ? null : (
-                <MoreDropdown
-                  isMoreVisible={isShowMore}
-                  menu={
-                    selectedRowKeys
-                      ?.map((i: any) => i.id)
-                      .includes(record.id) ? (
-                      menuBatch()
-                    ) : (
-                      <SprintDropdownMenu
-                        onDeleteChange={onDeleteChange}
-                        onCreateChild={onCreateChild}
-                        onEditChange={onEditChange}
-                        record={record}
-                      />
-                    )
-                  }
-                  onChangeVisible={setIsShowMore}
-                />
-              )}
-            </div>
+            <CommonTableOperation
+              selectedRowKeys={selectedRowKeys}
+              record={record}
+              onEditChange={onEditChange}
+              onCreateChild={onCreateChild}
+              onDeleteChange={props?.onDelete}
+              init={props?.onUpdate}
+              onClickBatch={onClickBatch}
+            />
           )
         },
       },
     ]
-    if (!hasBatch) {
-      arrList.push(Table.SELECTION_COLUMN as any)
-    }
-    return [...arrList, ...newList]
+
+    return [...newList, ...arrList]
   }, [
     props.titleList,
     props.titleList2,

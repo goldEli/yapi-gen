@@ -11,7 +11,11 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
-import { DividerWrap } from '@/components/StyleCommon'
+import {
+  DividerWrap,
+  TableActionItem,
+  TableActionWrap,
+} from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import { getIsPermission } from '@/tools/index'
 import NoData from '@/components/NoData'
@@ -43,6 +47,7 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 import { getMessage } from '@/components/Message'
 import BatchAction from '@/components/BatchOperation/BatchAction'
+import { Tooltip } from 'antd'
 
 export const tableWrapP = css`
   display: flex;
@@ -98,8 +103,10 @@ const StaffManagement = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
   const dispatch = useDispatch()
-  const { userInfo, isRefresh } = useSelector(store => store.user)
-  const { menuPermission } = useSelector(store => store.user)
+  const { userInfo, isRefresh, menuPermission } = useSelector(
+    store => store.user,
+  )
+  const { language } = useSelector(store => store.global)
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
@@ -290,78 +297,60 @@ const StaffManagement = () => {
     const isEdit = (
       userInfo.company_permissions?.map((i: any) => i.identity) || []
     ).includes('b/companyuser/update')
+
     const lastList = [
       {
         title: t('newlyAdd.operation'),
         dataIndex: 'action',
         fixed: 'right',
-        width: 320,
+        width: language === 'zh' ? 260 : 480,
         render: (_text: string, record: any) => {
           return (
-            <>
-              {!hasCheck ? (
-                '--'
-              ) : (
-                <div>
-                  <span
-                    onClick={() => onToDetail(record)}
-                    style={{
-                      fontSize: 14,
-                      color: 'var(--primary-d2)',
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {t('project.checkInfo')}
-                  </span>
-                  {isEdit ? (
-                    <>
-                      {record.handover_status === 1 ? (
-                        <>
-                          <span
-                            onClick={() => controlStaffPersonalVisible(record)}
-                            style={{
-                              fontSize: 14,
-                              marginLeft: ' 16px',
-                              color: 'var(--primary-d2)',
-                              cursor: 'pointer',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            {t('staff.setPermission')}
-                          </span>
-                          <span
-                            onClick={() => controlStaffPersonalVisibleA(record)}
-                            style={{
-                              marginLeft: ' 16px',
-                              fontSize: 14,
-                              color: 'var(--primary-d2)',
-                              cursor: 'pointer',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            {t('quitAndHandover')}
-                          </span>
-                        </>
-                      ) : (
-                        <span
-                          style={{
-                            fontSize: 14,
-                            marginLeft: ' 16px',
-                            color: 'var(--primary-d2)',
-                            cursor: 'pointer',
-                            whiteSpace: 'nowrap',
-                          }}
-                          onClick={() => controlStaffPersonalVisibleC(record)}
-                        >
-                          {t('the_handover_state_is_restored')}
-                        </span>
-                      )}
-                    </>
-                  ) : null}
-                </div>
-              )}
-            </>
+            <TableActionWrap>
+              <Tooltip
+                title={hasCheck ? null : t('viewPermissionIsRequiredToOperate')}
+              >
+                <TableActionItem
+                  isDisable={!hasCheck}
+                  onClick={e => {
+                    e.stopPropagation()
+                    hasCheck ? onToDetail(record) : void 0
+                  }}
+                >
+                  {t('project.checkInfo')}
+                </TableActionItem>
+              </Tooltip>
+              <Tooltip
+                title={
+                  isEdit ? null : t('editingPermissionIsRequiredToOperate')
+                }
+              >
+                <TableActionItem
+                  isDisable={!isEdit}
+                  onClick={e => {
+                    e.stopPropagation()
+                    isEdit ? controlStaffPersonalVisibleA(record) : void 0
+                  }}
+                >
+                  {t('staff.setPermission')}
+                </TableActionItem>
+              </Tooltip>
+              <Tooltip
+                title={
+                  isEdit ? null : t('editingPermissionIsRequiredToOperate')
+                }
+              >
+                <TableActionItem
+                  isDisable={!isEdit}
+                  onClick={e => {
+                    e.stopPropagation()
+                    isEdit ? controlStaffPersonalVisibleC(record) : void 0
+                  }}
+                >
+                  {t('the_handover_state_is_restored')}
+                </TableActionItem>
+              </Tooltip>
+            </TableActionWrap>
           )
         },
       },
@@ -369,7 +358,7 @@ const StaffManagement = () => {
 
     const resultLast = isHaveCheck ? lastList : []
     return [...newList, ...resultLast]
-  }, [titleList, titleList2, columns])
+  }, [titleList, titleList2, columns, language])
 
   const showModal = () => {
     setIsModalVisible(true)

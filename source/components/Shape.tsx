@@ -816,7 +816,7 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <NumericInput type={i.value[0]} />
+                        <NumericInput type={i?.value?.[0]} />
                       </Form.Item>
                     )}
                     {i.type === 'tree' && (

@@ -77,10 +77,7 @@ const titleNumberCss = css`
   font-size: 24px;
   font-family: SiYuanMedium;
 `
-const titleNumberCss2 = css`
-  color: rgba(250, 151, 70, 1);
-  font-size: 24px;
-`
+
 const titleNumberCss3 = css`
   color: var(--primary-d1);
   font-size: 24px;
@@ -90,12 +87,7 @@ const titleTextCss = css`
   color: rgba(100, 101, 102, 1);
   font-size: 12px;
 `
-const StyledWrap = styled.div`
-  height: 400px;
 
-  display: flex;
-  gap: 17px;
-`
 export const FullScreenDiv = styled.div<{ isScreen: boolean }>`
   height: ${props => (props.isScreen ? '100vh' : '')};
   background: white;

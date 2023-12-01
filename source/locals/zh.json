@@ -2648,5 +2648,7 @@
   "updateProgressToast": "当前任务处理人包含自己才能更新进度",
   "notVerify": "已经审核过的任务不能再次审核",
   "haveWater": "有水印",
-  "notHaveWater": "无水印"
+  "notHaveWater": "无水印",
+  "viewPermissionIsRequiredToOperate": "需要查看权限才能操作",
+  "editingPermissionIsRequiredToOperate": "需要编辑权限才能操作"
 }

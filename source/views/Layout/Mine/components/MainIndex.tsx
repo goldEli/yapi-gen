@@ -5,7 +5,6 @@ import CommonNeed from './CommonNeed'
 import MineSwiper from '../components/MineSwiper'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
 import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({

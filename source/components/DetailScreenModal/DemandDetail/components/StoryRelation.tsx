@@ -52,6 +52,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { Label, LabelWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonProgress from '@/components/CommonProgress'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -105,11 +106,6 @@ interface RelationStoriesProps {
   onUpdate?(): void
   isDrawer?: boolean
   isPreview?: boolean
-}
-
-interface SelectItem {
-  label: string
-  value: number
 }
 
 const StoryRelation = (props: RelationStoriesProps, ref: any) => {
@@ -352,26 +348,6 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
 
   const columns: any = [
     {
-      width: 40,
-      render: (text: any, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <MoreDropdown
-              isMoreVisible={isShowMore}
-              menu={
-                <RelationDropdownMenu
-                  onDeleteChange={onDeleteChange}
-                  record={record}
-                  type={3}
-                />
-              }
-              onChangeVisible={setIsShowMore}
-            />
-          </div>
-        )
-      },
-    },
-    {
       title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'story_prefix_key',
       render: (text: string) => <div>{text}</div>,
@@ -566,6 +542,22 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
               project_id={record.project_id}
             />
           </div>
+        )
+      },
+    },
+    {
+      title: t('operate'),
+      dataIndex: 'action',
+      width: 100,
+      fixed: 'right',
+      render: (text: any, record: any) => {
+        return (
+          <CommonTableOperation
+            isRelation
+            record={record}
+            onDeleteChange={onDeleteChange}
+            init={onUpdate}
+          />
         )
       },
     },
@@ -776,19 +768,19 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
-        marginBottom: 12,
-        padding: '12px 24px',
+        padding: '12px 24px 0 24px',
         backgroundColor: 'white',
         height: props.isDrawer
           ? '100%'
           : `calc(${
               userPreferenceConfig.previewModel === 3 ? '80vh' : '100vh'
-            } - 224px)`,
+            } - ${
+              userPreferenceConfig.previewModel === 3 ? '162px' : '210px'
+            })`,
         marginTop: props.isDrawer ? '0px' : '0px',
       }}
       id="tab_link"
       className="info_item_tab"
-      // style={{ marginTop: '24px' }}
     >
       <DeleteConfirmModal />
       <CommonModal

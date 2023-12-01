@@ -14,8 +14,7 @@ const SwiperWrap = styled.div`
   align-items: center;
   justify-content: start;
   box-sizing: border-box;
-  padding: 0 16px;
-  height: 90px;
+  height: 80px;
   background-color: var(--neutral-white-d2);
   overflow: hidden;
   & .swiper {
@@ -34,6 +33,13 @@ const SwiperWrap = styled.div`
   }
 `
 
+const SwiperBox = styled.div`
+  padding: 16px 24px 0 24px;
+  width: 100%;
+  background: var(--neutral-n8);
+  overflow: hidden;
+`
+
 const SwiperCardMove = (props: any) => {
   const [t] = useTranslation()
   const { data, onTap } = props
@@ -50,41 +56,43 @@ const SwiperCardMove = (props: any) => {
 
   return (
     <SwiperWrap>
-      <Swiper
-        spaceBetween={16}
-        freeMode
-        grabCursor
-        observer
-        observeParents
-        slidesPerView={6}
-      >
-        <SwiperSlide key={1}>
-          <SwiperCard
-            all
-            name={t('mine.allProject')}
-            avtar=""
-            tap={() => {
-              setSwiperActive('all')
-              onTap(0)
-            }}
-            show={swiperActive === 'all'}
-          />
-        </SwiperSlide>
-        {data.map((item: any) => (
-          <SwiperSlide key={item.id}>
+      <SwiperBox>
+        <Swiper
+          spaceBetween={16}
+          freeMode
+          grabCursor
+          observer
+          observeParents
+          slidesPerView={6}
+        >
+          <SwiperSlide key={1}>
             <SwiperCard
-              project_type={item.project_type}
-              permission_type={item.permission_type}
-              name={item.name}
-              avtar={item.cover}
+              all
+              name={t('mine.allProject')}
+              avtar=""
               tap={() => {
-                onClickProject(item)
+                setSwiperActive('all')
+                onTap(0)
               }}
-              show={swiperActive === item.id}
+              show={swiperActive === 'all'}
             />
           </SwiperSlide>
-        ))}
-      </Swiper>
+          {data.map((item: any) => (
+            <SwiperSlide key={item.id}>
+              <SwiperCard
+                project_type={item.project_type}
+                permission_type={item.permission_type}
+                name={item.name}
+                avtar={item.cover}
+                tap={() => {
+                  onClickProject(item)
+                }}
+                show={swiperActive === item.id}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </SwiperBox>
     </SwiperWrap>
   )
 }

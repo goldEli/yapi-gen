@@ -3,7 +3,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
-import { Menu, message, Table } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
@@ -14,19 +13,18 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData } from '@/tools'
-import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
 import { getMessage } from '@/components/Message'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import useShortcutC from '@/hooks/useShortcutC'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 const Content = styled.div({
   padding: '8px 12px 0 8px',
@@ -246,15 +244,6 @@ const IterationTable = (props: Props) => {
     'b/story/batch',
   )
 
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/delete',
-  )
-
   //  点击批量
   const onClickBatch = (e: any, type: any) => {
     setIsShowMore(false)
@@ -264,47 +253,6 @@ const IterationTable = (props: Props) => {
     } else {
       batchDom.current?.clickMenu(type)
     }
-  }
-
-  const menuBatch = () => {
-    const batchItems = [
-      {
-        key: '0',
-        disabled: true,
-        label: (
-          <div>
-            {t('version2.checked', {
-              count: selectedRowKeys?.map((i: any) => i.id)?.length,
-            })}
-          </div>
-        ),
-      },
-      {
-        key: '1',
-        label: (
-          <div onClick={e => onClickBatch(e, 'edit')}>
-            {t('version2.batchEdit')}
-          </div>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={e => onClickBatch(e, 'delete')}>
-            {t('version2.batchDelete')}
-          </div>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <div onClick={e => onClickBatch(e, 'copy')}>
-            {t('version2.batchCopyLink')}
-          </div>
-        ),
-      },
-    ]
-    return <Menu style={{ minWidth: 56 }} items={batchItems} />
   }
 
   const selectColum: any = useMemo(() => {
@@ -319,39 +267,27 @@ const IterationTable = (props: Props) => {
     }
     const arrList = [
       {
-        width: 40,
+        title: t('operate'),
+        dataIndex: 'action',
+        width: 180,
+        fixed: 'right',
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel && hasCreate ? null : (
-                <MoreDropdown
-                  isMoreVisible={isShowMore}
-                  menu={
-                    selectedRowKeys
-                      ?.map((i: any) => i.id)
-                      .includes(record.id) ? (
-                      menuBatch()
-                    ) : (
-                      <DemandOperationDropdownMenu
-                        onEditChange={onEditChange}
-                        onDeleteChange={onDeleteChange}
-                        onCreateChild={onCreateChild}
-                        record={record}
-                      />
-                    )
-                  }
-                  onChangeVisible={setIsShowMore}
-                />
-              )}
-            </div>
+            <CommonTableOperation
+              selectedRowKeys={selectedRowKeys}
+              record={record}
+              onEditChange={onEditChange}
+              onCreateChild={onCreateChild}
+              onDeleteChange={onDeleteChange}
+              init={props?.onUpdate}
+              onClickBatch={onClickBatch}
+            />
           )
         },
       },
     ]
-    if (!hasBatch) {
-      arrList.push(Table.SELECTION_COLUMN as any)
-    }
-    return [...arrList, ...newList]
+
+    return [...newList, ...arrList]
   }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
 
   // 需求勾选

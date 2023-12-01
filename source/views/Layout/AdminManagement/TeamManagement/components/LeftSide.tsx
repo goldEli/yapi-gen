@@ -67,7 +67,7 @@ const LeftSideContainer = styled.div`
   }
 `
 const TeamAdd = styled.div`
-  width: 100%;
+  width: 92%;
   display: flex;
   flex-direction: column;
   padding: 16px 0;
@@ -175,7 +175,7 @@ const UploadTitle = styled.div`
 `
 
 const Content = styled.div`
-  padding: 0 16px;
+  padding-left: 16px;
   height: 100%;
 `
 

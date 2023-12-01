@@ -12,7 +12,9 @@ import { getUserInfoProject } from '@/services/memberInfo'
 
 const MainWrap = styled.div({
   height: '100%',
-  overflow: 'auto',
+  overflowY: 'scroll',
+  padding: '0px  0px',
+  background: 'var(--neutral-white-d1)',
 })
 
 interface Props {

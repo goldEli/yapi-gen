@@ -288,36 +288,30 @@ const Index = () => {
         open={selectedRowKeys.length > 0}
         onCancel={() => setSelectedRowKeys([])}
       >
-        <Tooltip
-          placement="top"
-          getPopupContainer={node => node}
-          title={t('removeProjectMembersInBatches')}
-        >
-          <div
-            className={boxItem}
-            onClick={() =>
-              open({
-                title: `批量删除（已选中${selectedRowKeys.length}项）`,
-                text: '勾选的部门将被删除，确认删除吗？',
-                async onConfirm() {
-                  await delDepartment({
-                    ids: selectedRowKeys,
-                    project_id: projectId,
-                  })
-                  _getList()
-                  getMessage({
-                    msg: t('removedSuccessfully'),
-                    type: 'success',
-                  })
+        <div
+          className={boxItem}
+          onClick={() =>
+            open({
+              title: `批量删除（已选中${selectedRowKeys.length}项）`,
+              text: '勾选的部门将被删除，确认删除吗？',
+              async onConfirm() {
+                await delDepartment({
+                  ids: selectedRowKeys,
+                  project_id: projectId,
+                })
+                _getList()
+                getMessage({
+                  msg: t('removedSuccessfully'),
+                  type: 'success',
+                })
 
-                  return Promise.resolve()
-                },
-              })
-            }
-          >
-            删除
-          </div>
-        </Tooltip>
+                return Promise.resolve()
+              },
+            })
+          }
+        >
+          {t('common.del')}
+        </div>
       </BatchAction>
       <DeleteConfirmModal />
     </PermissionWrap>

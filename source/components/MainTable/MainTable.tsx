@@ -150,6 +150,47 @@ const MainTable = (props: Props) => {
     props.onChangePageNavigation({ page, size })
   }
 
+  const menuData = (record: any) => {
+    let menuItems: any = [
+      {
+        key: '1',
+        label: (
+          <div
+            onClick={e => {
+              e.stopPropagation()
+              !(record.team_id === 0 ? hasEdit : record.isTeam) &&
+                dispatch(editProject({ visible: true, id: record.id }))
+            }}
+          >
+            {t('edit')}
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <div
+            onClick={e => {
+              e.stopPropagation()
+              hasDelete ? void 0 : props.onChangeOperation('delete', record)
+            }}
+          >
+            {t('common.del')}
+          </div>
+        ),
+      },
+    ]
+    // isDisable={record.team_id === 0 ? hasEdit : record.isTeam}
+    if ((hasEdit && record.team_id === 0) || record.isTeam) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+    if (hasDelete) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return menuItems
+  }
+
   const columns = [
     {
       dataIndex: 'name',
@@ -339,7 +380,7 @@ const MainTable = (props: Props) => {
     {
       title: t('operate'),
       dataIndex: 'action',
-      width: 200,
+      width: 150,
       fixed: 'right',
       render: (text: number, record: any) => {
         // 项目负责人或者是超管
@@ -408,46 +449,7 @@ const MainTable = (props: Props) => {
       },
     },
   ]
-  const menuData = (record: any) => {
-    let menuItems: any = [
-      {
-        key: '1',
-        label: (
-          <TableActionItem
-            onClick={e => {
-              e.stopPropagation()
-              !(record.team_id === 0 ? hasEdit : record.isTeam) &&
-                dispatch(editProject({ visible: true, id: record.id }))
-            }}
-          >
-            {t('edit')}
-          </TableActionItem>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <TableActionItem
-            onClick={e => {
-              e.stopPropagation()
-              hasDelete ? void 0 : props.onChangeOperation('delete', record)
-            }}
-          >
-            {t('common.del')}
-          </TableActionItem>
-        ),
-      },
-    ]
-    // isDisable={record.team_id === 0 ? hasEdit : record.isTeam}
-    if ((hasEdit && record.team_id === 0) || record.isTeam) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-    if (hasDelete) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
 
-    return menuItems
-  }
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight

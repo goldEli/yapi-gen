@@ -3,14 +3,8 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom'
+import { Outlet, useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
@@ -19,11 +13,11 @@ import { getAsyncMember } from '@store/memberInfo'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
-import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import HisSide from './HisSide'
 
 const Main = styled.div({
-  width: '100%',
+  width: 'calc(100% - 220px)',
+  height: '100%',
 })
 
 const MainWrap = styled.div`
