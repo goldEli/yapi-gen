@@ -140,10 +140,10 @@ const ViewPort = (props: any, ref: any) => {
       )}
     >
       <ViewPortWrap show={show}>
-        <CommonIconFont size={18} type="view-n" />
+        {/* <CommonIconFont size={18} type="view-n" />
         <Name>
           {t('view')}：{name}{' '}
-        </Name>
+        </Name> */}
       </ViewPortWrap>
     </Dropdown>
   )
