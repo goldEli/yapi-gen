@@ -5,7 +5,6 @@ import PaginationBox from '@/components/TablePagination'
 import NoData from '@/components/NoData'
 import { useDispatch, useSelector } from '@store/index'
 import { useEffect, useMemo, useState } from 'react'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getIdByUrl, getIsPermission, getProjectIdByUrl } from '@/tools'
 import {
   setAddWorkItemModal,
@@ -24,12 +23,11 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
-import MoreDropdown from '@/components/MoreDropdown'
-import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import CommonButton from '@/components/CommonButton'
 import { getIterateInfo } from '@store/iterate/iterate.thunk'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -65,15 +63,6 @@ const Demand = (props: DemandProps) => {
   const hasCreate = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/save',
-  )
-
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/delete',
   )
 
   const getList = async (
@@ -282,28 +271,25 @@ const Demand = (props: DemandProps) => {
     }
     const arrList = [
       {
-        width: 40,
+        title: t('operate'),
+        dataIndex: 'action',
+        width: 180,
+        fixed: 'right',
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
-                <MoreDropdown
-                  menu={
-                    <DemandOperationDropdownMenu
-                      onEditChange={onEditChange}
-                      onDeleteChange={onDeleteChange}
-                      onCreateChild={onCreateChild}
-                      record={record}
-                    />
-                  }
-                />
-              )}
-            </div>
+            <CommonTableOperation
+              record={record}
+              onEditChange={onEditChange}
+              onCreateChild={onCreateChild}
+              onDeleteChange={onDeleteChange}
+              init={onUpdate}
+            />
           )
         },
       },
     ]
-    return [...arrList, ...newList]
+
+    return [...newList, ...arrList]
   }, [props?.checkList, props?.checkList2, props?.checkList3, columns])
 
   useEffect(() => {

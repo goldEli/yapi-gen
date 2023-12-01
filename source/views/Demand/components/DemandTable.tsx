@@ -23,7 +23,8 @@ import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { TableContent } from '../style'
-import { TableActionItem } from '@/components/StyleCommon'
+import { TableActionItem, TableActionWrap } from '@/components/StyleCommon'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 interface Props {
   data: any
@@ -201,15 +202,6 @@ const DemandTable = (props: Props) => {
     'b/story/batch',
   )
 
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/delete',
-  )
-
   //  点击批量
   const onClickBatch = (e: any, type: any) => {
     setIsShowMore(false)
@@ -234,29 +226,21 @@ const DemandTable = (props: Props) => {
 
     const arrList = [
       {
-        title: '操作',
+        title: t('operate'),
         dataIndex: 'action',
-        width: 200,
+        width: 180,
         fixed: 'right',
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Space size={16}>
-                <TableActionItem>进度</TableActionItem>
-                {!hasDel && (
-                  <TableActionItem onClick={e => onClickBatch(e, 'delete')}>
-                    删除
-                  </TableActionItem>
-                )}
-                {hasEdit && hasCreate ? null : (
-                  <TableMoreDropdown
-                    record={record}
-                    onEditChange={onEditChange}
-                    onCreateChild={onCreateChild}
-                  />
-                )}
-              </Space>
-            </div>
+            <CommonTableOperation
+              selectedRowKeys={selectedRowKeys}
+              record={record}
+              onEditChange={onEditChange}
+              onCreateChild={onCreateChild}
+              onDeleteChange={onDeleteChange}
+              init={props?.onUpdate}
+              onClickBatch={onClickBatch}
+            />
           )
         },
       },

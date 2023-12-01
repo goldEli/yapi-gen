@@ -28,11 +28,18 @@ interface Props {
   haveComment?: boolean
   onEditChange?(row: any): void
   onCreateChild?(row: any): void
+  onClickBatch?(e: any, row: any): void
+  // 是否展示批量菜单使用
+  selectedRowKeys?: any
+  // 是否是关联关系列表
+  isRelation?: boolean
 }
 
 const TableMoreDropdown = (props: Props) => {
   const [t] = useTranslation()
+  const { selectedRowKeys, onClickBatch } = props
   const { projectInfo } = useSelector(store => store.project)
+  let resultMenu: any
 
   // project_type ===1 为事务，project_type===1&& is_bug === 1 为缺陷，反之则为需求
   const idx =
@@ -60,8 +67,9 @@ const TableMoreDropdown = (props: Props) => {
 
   // 复制需求id
   const onCopyId = () => {
+    props.onChangeVisible?.(false)
     copyLink(
-      `${props?.record.storyPrefixKey}`,
+      `${props?.record.storyPrefixKey ?? props?.record.story_prefix_key}`,
       t('copysuccess'),
       t('copyfailed'),
     )
@@ -69,6 +77,8 @@ const TableMoreDropdown = (props: Props) => {
 
   // 复制需求链接
   const onCopyLink = () => {
+    props.onChangeVisible?.(false)
+
     let text: any = ''
     let beforeUrl: any
     const key = ['Demand', 'Defect', 'Affair']
@@ -89,7 +99,9 @@ const TableMoreDropdown = (props: Props) => {
     const url = `/ProjectDetail/${key[idx]}?data=${params}`
     text += `${beforeUrl}${url} \n`
     copyLink(
-      `【${props?.record.storyPrefixKey}】${text}`,
+      `【${
+        props?.record.storyPrefixKey ?? props?.record.story_prefix_key
+      }】${text}`,
       t('common.copySuccess'),
       t('common.copyFail'),
     )
@@ -175,6 +187,45 @@ const TableMoreDropdown = (props: Props) => {
     },
   ]
 
+  // 批量菜单
+  const batchItems = [
+    {
+      key: '0',
+      disabled: true,
+      label: (
+        <div>
+          {t('version2.checked', {
+            count: selectedRowKeys?.map((i: any) => i.id)?.length,
+          })}
+        </div>
+      ),
+    },
+    {
+      key: '1',
+      label: (
+        <div onClick={e => onClickBatch?.(e, 'edit')}>
+          {t('version2.batchEdit')}
+        </div>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <div onClick={e => onClickBatch?.(e, 'delete')}>
+          {t('version2.batchDelete')}
+        </div>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <div onClick={e => onClickBatch?.(e, 'copy')}>
+          {t('version2.batchCopyLink')}
+        </div>
+      ),
+    },
+  ]
+
   // 计算菜单权限
   const onComputedItems = () => {
     let menuItems: any =
@@ -201,11 +252,22 @@ const TableMoreDropdown = (props: Props) => {
 
     return menuItems
   }
+
+  if (selectedRowKeys?.map((i: any) => i.id).includes(props.record.id)) {
+    resultMenu = batchItems
+  } else if (props.isRelation) {
+    resultMenu = menuItemsDefect.filter((i: any) => i.key !== '2')
+  } else {
+    resultMenu = onComputedItems()
+  }
+
   return (
     <DropdownWrap
       destroyPopupOnHide
       open={props.isMoreVisible}
-      menu={{ items: onComputedItems() }}
+      menu={{
+        items: resultMenu,
+      }}
       trigger={['hover']}
       placement="bottomRight"
       getPopupContainer={node => document.body}

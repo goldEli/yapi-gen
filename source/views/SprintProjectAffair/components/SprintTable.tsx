@@ -30,6 +30,7 @@ import {
 } from '@/services/affairs'
 import { TableActionItem } from '@/components/StyleCommon'
 import TableMoreDropdown from '@/components/TableMoreDropdown'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -239,15 +240,6 @@ const SprintTable = (props: Props) => {
     'b/transaction/batch',
   )
 
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/transaction/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/transaction/delete',
-  )
-
   //  点击批量
   const onClickBatch = (e: any, type: any) => {
     setIsShowMore(false)
@@ -272,33 +264,26 @@ const SprintTable = (props: Props) => {
 
     const arrList = [
       {
-        title: '操作',
+        title: t('operate'),
         dataIndex: 'action',
-        width: 200,
+        width: 180,
         fixed: 'right',
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Space size={16}>
-                <TableActionItem>进度</TableActionItem>
-                {!hasDel && (
-                  <TableActionItem onClick={e => onClickBatch(e, 'delete')}>
-                    删除
-                  </TableActionItem>
-                )}
-                {hasEdit && hasCreate ? null : (
-                  <TableMoreDropdown
-                    record={record}
-                    onEditChange={onEditChange}
-                    onCreateChild={onCreateChild}
-                  />
-                )}
-              </Space>
-            </div>
+            <CommonTableOperation
+              selectedRowKeys={selectedRowKeys}
+              record={record}
+              onEditChange={onEditChange}
+              onCreateChild={onCreateChild}
+              onDeleteChange={props?.onDelete}
+              init={props?.onUpdate}
+              onClickBatch={onClickBatch}
+            />
           )
         },
       },
     ]
+
     return [...newList, ...arrList]
   }, [
     props.titleList,
