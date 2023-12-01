@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
-import { t } from 'i18next'
+import { useTranslation } from 'react-i18next'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -106,6 +106,7 @@ export const SwiperCard = (props: {
   project_type?: any
   permission_type?: any
 }) => {
+  const [t] = useTranslation()
   const changeNames1 = () => {
     let str: string
     switch (props.project_type) {

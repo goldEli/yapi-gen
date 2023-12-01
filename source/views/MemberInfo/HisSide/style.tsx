@@ -6,17 +6,45 @@ const Side = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding-top: 24px;
   flex-shrink: 0;
   width: 220px;
   border-right: 1px solid var(--neutral-n6-d1);
+  padding: 20px 16px 0;
 `
-const InfoWrap = styled.div({
+
+const BackBox = styled.div`
+  height: 22px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  span {
+    color: var(--neutral-n3);
+  }
+  .label {
+    font-size: 14px;
+  }
+`
+
+const InfoWrap = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 12px 0 16px 0px;
+  border-bottom: 1px solid var(--neutral-n6-d1);
+`
+
+const InfoItem = styled.div({
+  marginLeft: '8px',
   display: 'flex',
-  alignItems: 'center',
-  paddingLeft: '16px',
-  borderBottom: '1px solid var(--neutral-n6-d1)',
-  paddingBottom: '16px',
+  flexDirection: 'column',
+  div: {
+    color: 'var(--neutral-n1-d1)',
+    fontSize: 12,
+  },
+  span: {
+    color: 'var(--neutral-n3)',
+    fontSize: 12,
+  },
 })
 
 const NameWrap = styled.div({
@@ -41,47 +69,31 @@ export const MyDiv = styled.div`
   }
 `
 
-const InfoItem = styled.div({
-  marginLeft: '8px',
-  display: 'flex',
-  flexDirection: 'column',
-  div: {
-    color: 'var(--neutral-n1-d1)',
-    fontSize: 16,
-    fontWeight: 400,
-  },
-  span: {
-    color: 'var(--neutral-n3)',
-    fontSize: 14,
-  },
-})
-
 const Menu = styled.div`
   width: 100%;
-  margin-top: 24px;
+  margin-top: 16px;
 `
 
 const MenuItem = styled.div<{ active?: boolean }>(
   {
     boxSizing: 'border-box',
-    // justifyContent: 'center',
     whiteSpace: 'nowrap',
     height: 44,
     display: 'flex',
     alignItems: 'center',
     cursor: 'pointer',
-    paddingLeft: '20px',
+    paddingLeft: '12px',
+    borderRadius: 4,
     '&: hover': {
       color: 'var( --primary-d1)',
+      background: 'var(--hover-d2)',
     },
   },
   ({ active }) => ({
-    // borderRight: active ? '3px solid var(--primary-d2)' : '3px solid transparent',
-    color: active ? 'var( --primary-d1)' : 'var(--neutral-n1-d1)',
-    background: active
-      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
-      : 'transparent',
+    color: active ? 'var( --primary-d1)' : 'var(--neutral-n1-d2)',
+    background: active ? 'var(--selected)' : 'transparent',
+    fontFamily: active ? 'SiYuanMedium' : '',
   }),
 )
 
-export { Side, InfoWrap, NameWrap, InfoItem, Menu, MenuItem }
+export { Side, InfoWrap, NameWrap, InfoItem, Menu, MenuItem, BackBox }

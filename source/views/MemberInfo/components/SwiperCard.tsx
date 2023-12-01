@@ -46,6 +46,7 @@ const Warp = styled.div<{ show?: boolean }>(
     borderTop: show
       ? '2px solid var(--primary-d1) !important'
       : '2px solid var(--neutral-white-d2)',
+    boxShadow: show ? '0px 0px 14px 4px rgba(0,0,0,0.08)' : 'none',
     [Triangle.toString()]: {
       visibility: show ? 'visible' : 'hidden',
     },

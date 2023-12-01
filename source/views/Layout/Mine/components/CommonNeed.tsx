@@ -520,7 +520,13 @@ const CommonNeed = (props: any) => {
                     isTableOperation
                     isTable={false}
                     id={record.id}
-                    type="transaction"
+                    type={
+                      record?.project_type === 2
+                        ? 'transaction'
+                        : record?.project_type === 1 && record?.is_bug === 1
+                        ? 'flaw'
+                        : 'demand'
+                    }
                     hasEdit={!hasUpdateProgress}
                     project_id={record?.project_id as any}
                     onConfirm={init}
@@ -751,14 +757,12 @@ const CommonNeed = (props: any) => {
             )}
 
             {props.id !== 0 && (
-              <>
-                <ScreenMinHover
-                  label={t('common.search')}
-                  icon="filter"
-                  onClick={() => setIsShowSearch(!isShowSearch)}
-                  isActive={isShowSearch}
-                />
-              </>
+              <ScreenMinHover
+                label={t('common.search')}
+                icon="filter"
+                onClick={() => setIsShowSearch(!isShowSearch)}
+                isActive={isShowSearch}
+              />
             )}
 
             {(props.id !== 0 || props.type === 'abeyance') && (
