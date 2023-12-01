@@ -189,7 +189,6 @@ const TableMoreDropdown = (props: Props) => {
     if (hasEdit) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
-    console.log(menuItems)
 
     // 冲刺项目并且不是长故事和标准事务、缺陷类型的不能创建
     if (![3, 4, 5].includes(props.record.work_type) && idx === 2) {
