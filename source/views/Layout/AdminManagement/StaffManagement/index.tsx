@@ -5,9 +5,8 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -51,7 +50,27 @@ export const tableWrapP = css`
   justify-content: space-between;
   overflow: hidden;
 `
-
+const boxItem = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 52px;
+  align-items: center;
+  height: 32px;
+  cursor: pointer;
+  color: white;
+  border-radius: 6px;
+  div {
+    font-size: 12px;
+    font-weight: 400;
+  }
+  svg {
+    font-size: 24px;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+`
 export const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
@@ -577,18 +596,13 @@ const StaffManagement = () => {
           open={selectedRowKeys.length > 0}
           onCancel={() => setSelectedRowKeys([])}
         >
-          <Tooltip
-            placement="top"
-            getPopupContainer={node => node}
-            title={t('common.permissionGroup')}
+          <div
+            className={boxItem}
+            style={{ color: 'var(--neutral-white-d7)', cursor: 'pointer' }}
+            onClick={() => setBatchEditVisible(true)}
           >
-            <div
-              style={{ color: 'var(--neutral-white-d7)', cursor: 'pointer' }}
-              onClick={() => setBatchEditVisible(true)}
-            >
-              {t('common.permission')}
-            </div>
-          </Tooltip>
+            {t('common.permission')}
+          </div>
         </BatchAction>
       </StaffManagementWrap>
     </PermissionWrap>
