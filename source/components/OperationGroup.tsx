@@ -120,14 +120,14 @@ const OperationGroup = (props: Props) => {
         location.pathname.includes('Affair') ||
         location.pathname.includes('Defect')) && (
         <>
-          <ViewPort
+          {/* <ViewPort
             pid={projectId}
             type={1}
             onChangeView={() => {
               console.log('ViewPortRef-----1', ViewPortRef)
             }}
             ref={ViewPortRef}
-          />
+          /> */}
           <DividerWrap type="vertical" />
         </>
       )}

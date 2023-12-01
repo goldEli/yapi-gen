@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 // 需求主页-操作栏
 
 /* eslint-disable camelcase */
@@ -13,11 +14,12 @@ import {
   useState,
   useImperativeHandle,
   forwardRef,
+  useLayoutEffect,
 } from 'react'
 import { getIsPermission, getProjectIdByUrl } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Popover, Space, Tooltip } from 'antd'
+import { Popover, Select, Space, Tooltip } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
@@ -38,6 +40,9 @@ import {
 import CommonExport from '@/components/CommonExport'
 import useShortcutC from '@/hooks/useShortcutC'
 import InputSearch from '@/components/InputSearch'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import MoreSelect from '@/components/MoreSelect'
+import { SelectWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -125,7 +130,7 @@ const Operation = (props: Props, ref: any) => {
   const [isShowExport, setIsShowExport] = useState(false)
   const [filterState, setFilterState] = useState(true)
   const [defaultValue, setDefaultValue] = useState({})
-
+  const [boxMaps, setBoxMaps] = useState<any>()
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
   const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
@@ -167,7 +172,52 @@ const Operation = (props: Props, ref: any) => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
   )
+  const info = useGetloginInfo()
+  const splitArrayByValue = (arr: any) => {
+    let arr1 = arr.filter((x: any) => x.status === 1)
+    // 已离职
+    let arr2 = arr
+      .filter((x: any) => x.status === 2)
+      .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
+    const a = {
+      label: t('working'),
+      children: arr1,
+    }
+    const b = {
+      label: t('resigned'),
+      children: arr2,
+    }
+    return [...arr1, ...arr2]
+    return arr2.length >= 1 ? [...arr1, b] : [...arr1]
+  }
+  function deWeight(arr: any) {
+    const map = new Map()
+    for (const item of arr || []) {
+      if (!map.has(item.id)) {
+        map.set(item.id, item)
+      }
+    }
+    arr = [...map.values()]
+    return arr
+  }
+  const format = (arr: any) => {
+    const newA = arr.filter((j: any) => {
+      return j.value === info
+    })
 
+    const newB = arr.filter((j: any) => {
+      return j.value !== info
+    })
+
+    return newA
+      .map((i: any) => ({
+        ...i,
+        id: i.id,
+        value: i.value,
+        label: `${i.label}（${t('myself')}）`,
+      }))
+      .concat(newB)
+  }
   const onFilterSearch = (e: any, customField: any) => {
     // 如果筛选未打开
     // if (filterState) {
@@ -270,6 +320,17 @@ const Operation = (props: Props, ref: any) => {
     setIsShowExport(true)
     setIsVisibleMore(false)
   }
+  useLayoutEffect(() => {
+    const map: any = new Map()
+    // time-spanTag
+    const box = document.querySelectorAll('.SelectWrapBedeck')
+    box.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      map.set(attr, w)
+    })
+    setBoxMaps(map)
+  }, [props])
   useImperativeHandle(ref, () => {
     return {
       onImportClick,
@@ -465,49 +526,63 @@ const Operation = (props: Props, ref: any) => {
             ))}
           </StatusGroup>
           <InputSearch placeholder="搜索事务名称或编号"></InputSearch>
-          {/* {getIsPermission(
-            projectInfo?.projectPermissions,
-            'b/transaction/save',
-          ) ? null : (
-            <CommonButton
-              onClick={() =>
-                dispatch(
-                  setAddWorkItemModal({
-                    visible: true,
-                    params: {
-                      type: 7,
-                      title: t('createTransaction'),
-                      projectId: getProjectIdByUrl(),
-                    },
-                  }),
+          <SelectWrapBedeck
+            key="users_name"
+            datatype="users_name"
+            className="SelectWrapBedeck"
+          >
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>处理人</span>
+            <MoreSelect
+              onChange={(value: any) => {
+                onFilterSearch({ users_name: value }, {})
+              }}
+              width={boxMaps?.get('users_name')}
+              renderChildren
+              options={splitArrayByValue(
+                format(
+                  deWeight(
+                    projectInfoValues
+                      ?.filter((k: any) => k.key === 'users_name')[0]
+                      ?.children?.map((v: any) => ({
+                        ...v,
+                        label: v.content_txt || v.content,
+                        value: v.id,
+                        id: v.id,
+                      })),
+                  ),
+                ),
+              )}
+            >
+              {splitArrayByValue(
+                format(
+                  deWeight(
+                    projectInfoValues
+                      ?.filter((k: any) => k.key === 'user_name')[0]
+                      ?.children?.map((v: any) => ({
+                        ...v,
+                        label: v.content_txt || v.content,
+                        value: v.id,
+                        id: v.id,
+                      })),
+                  ),
+                ),
+              )?.map((item: any) => {
+                return (
+                  <Select.Option
+                    key={item.id}
+                    value={item.id}
+                    label={item.label}
+                    className={
+                      item.status === 2 && item.isFirst ? 'removeStyle' : ''
+                    }
+                  >
+                    {item.label ?? item.content}
+                    <span>{item.status === 1 ? '' : t('removed')}</span>
+                  </Select.Option>
                 )
-              }
-              type="primary"
-            >
-              <Tooltip placement="top" title={`${t('create')} (C)`}>
-                {t('createTransaction')}
-              </Tooltip>
-            </CommonButton>
-          )}
-
-          {hasExport && hasImport ? null : (
-            <Popover
-              content={moreOperation}
-              placement="bottom"
-              getPopupContainer={node => node}
-              key={isVisibleMore.toString()}
-              visible={isVisibleMore}
-              onVisibleChange={visible => setIsVisibleMore(visible)}
-            >
-              <MoreWrap>
-                <span>{t('newlyAdd.moreOperation')}</span>
-                <IconFont
-                  style={{ fontSize: 16, marginLeft: 8 }}
-                  type={isVisibleMore ? 'up' : 'down'}
-                />
-              </MoreWrap>
-            </Popover>
-          )} */}
+              })}
+            </MoreSelect>
+          </SelectWrapBedeck>
         </Space>
 
         <OperationGroup
@@ -519,9 +594,6 @@ const Operation = (props: Props, ref: any) => {
           settingState={props.settingState}
           onChangeSetting={() => {
             props.onChangeSetting(!props.settingState)
-          }}
-          onChangeView={() => {
-            console.log(111)
           }}
         />
       </OperationWrap>
