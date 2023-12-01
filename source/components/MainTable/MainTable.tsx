@@ -347,7 +347,11 @@ const MainTable = (props: Props) => {
           !isSuperAdmin && record.leader?.id !== userInfo?.id
 
         return (
-          <TableActionWrap>
+          <TableActionWrap
+            onClick={e => {
+              e.stopPropagation()
+            }}
+          >
             <Tooltip
               title={
                 isRolePermission
@@ -392,7 +396,6 @@ const MainTable = (props: Props) => {
             <DropdownWrap
               destroyPopupOnHide
               menu={{ items: menuData(record) }}
-              trigger={['click']}
               placement="bottomRight"
               getPopupContainer={node => document.body}
             >
