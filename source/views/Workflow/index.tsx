@@ -6,17 +6,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import { getParamsData } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { createRef, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { CategoryWrap } from '@/components/StyleCommon'
 import StepPageOne from './components/StepPageOne'
 import StepPageTwo from './components/StepPageTwo'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
-import MyBreadcrumb from '@/components/MyBreadcrumb'
 import { getMessage } from '@/components/Message'
 import {
   RowStyle,
@@ -114,7 +112,7 @@ const Workflow = () => {
           <RowStyle>
             <Col onClick={() => onChangeStep(1)}>
               <StyleLeft bgc={step === 1} />
-              <Text bgc={step === 1}>{t('sprintProject.editTemplate')}</Text>
+              <Text bgc={step === 1}>{t('stateDefinition')}</Text>
               <StyleRight bgc={step === 1} />
             </Col>
             <Col

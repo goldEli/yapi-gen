@@ -5,7 +5,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable max-len */
 import styled from '@emotion/styled'
-import { Table, Space, Checkbox, message } from 'antd'
+import { Table, Space, Checkbox, message, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { useEffect, useMemo, useState } from 'react'
@@ -116,10 +116,12 @@ const StepPageTwo = (props: any) => {
               onChange={e => onChangeCheck(e, record, i.id)}
             />
             {record.canChange?.includes(String(i.id)) ? (
-              <IconfontWrap
-                onClick={() => onClickSet(record, i.id)}
-                type="settings"
-              />
+              <Tooltip title={t('circulationConfiguration')}>
+                <IconfontWrap
+                  onClick={() => onClickSet(record, i.id)}
+                  type="settings"
+                />
+              </Tooltip>
             ) : null}
           </Space>
         ),

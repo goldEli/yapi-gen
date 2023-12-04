@@ -79,7 +79,7 @@ const BtnHeader = styled.div`
   top: -59px;
 `
 const MenuItems = styled.div({
-  // padding: '0 16px',
+  paddingRight: '8px',
   maxHeight: 'calc(100vh - 184px)',
   overflowY: 'auto',
 })
@@ -95,6 +95,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     boxSizing: 'border-box',
     position: 'relative',
     margin: 0,
+    borderRadius: 4,
     '.dropdownIcon': {
       position: 'absolute',
       right: 0,
@@ -102,7 +103,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     '.name': {
       width: '100%',
       textAlign: 'left',
-      paddingLeft: '24px',
+      paddingLeft: '12px',
       fontSize: 14,
       color: 'var(--neutral-n1-d2)',
       fontWeight: 400,
@@ -116,19 +117,17 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       fontWeight: 400,
     },
     '&:hover': {
-      background:
-        'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)',
+      background: 'var(--hover-d1)',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
   },
   ({ isActive }) => ({
-    background: isActive
-      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
-      : 'transparent',
+    background: isActive ? 'var(--selected) !important' : 'transparent',
     '.name': {
       color: isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
+      fontFamily: isActive ? 'SiYuanMedium' : '',
     },
   }),
 )
@@ -154,7 +153,7 @@ const GroupWrap = styled.div<{ isZh?: boolean }>`
   width: ${props => (props.isZh ? 'calc(100% - 180px)' : 'calc(100% - 280px)')};
   display: flex;
   align-items: center;
-  .ant-checkbox-group-item: {
+  .ant-checkbox-group-item {
     margin: 6px 24px 6px 0;
   }
 `
@@ -228,7 +227,12 @@ export const PermissionItem = (props: ItemProps) => {
 
   return (
     <MainWrapItem>
-      <OperationWrap isZh={language === 'zh'}>{props.item.name}</OperationWrap>
+      <OperationWrap
+        isZh={language === 'zh'}
+        style={{ fontFamily: 'SiYuanMedium' }}
+      >
+        {props.item.name}
+      </OperationWrap>
       <CheckboxWrap isZh={language === 'zh'}>
         <Checkbox
           disabled={props.activeDetail?.type === 1}
@@ -525,11 +529,6 @@ const ProjectSet = () => {
                         isActive={item.id === activeDetail.id}
                       >
                         <div className="name">{item.name}</div>
-                        {/* <span className="subName">
-                        {item.type === 1
-                          ? t('setting.systemGroup')
-                          : t('setting.customGroup')}
-                      </span> */}
                         <MoreDropdown
                           isHidden={item.type === 1}
                           isMoreVisible={isMoreVisible}
@@ -552,11 +551,6 @@ const ProjectSet = () => {
                         isActive={item.id === activeDetail.id}
                       >
                         <div className="name">{item.name}</div>
-                        {/* <span className="subName">
-                        {item.type === 1
-                          ? t('setting.systemGroup')
-                          : t('setting.customGroup')}
-                      </span> */}
                         <MoreDropdown
                           isHidden={item.type === 1}
                           isMoreVisible={isMoreVisible}

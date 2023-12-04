@@ -10,6 +10,8 @@ import {
   HoverWrap,
   SelectWrap,
   DividerWrap,
+  TableActionWrap,
+  TableActionItem,
 } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
@@ -67,6 +69,7 @@ import UpdateUserDepartment from '@/components/UpdateUserDepartment'
 import UpdateUserPosition from '@/components/UpdateUserPosition'
 import BatchSetDepartment from './BatchSetDepartment'
 import BatchSetPosition from './BatchSetPosition'
+import { AnyAction } from '@reduxjs/toolkit'
 const Wrap = styled.div({
   padding: '24px 24px 0',
   display: 'flex',
@@ -135,6 +138,7 @@ const ProjectMember = () => {
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const { userInfo } = useSelector(store => store.user)
+  const { language } = useSelector(store => store.global)
   const { projectInfo, isUpdateMember } = useSelector(store => store.project)
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const paramsData = getParamsData(searchParams)
@@ -322,6 +326,37 @@ const ProjectMember = () => {
     setSelectedRowKeys(keys)
     onOperationCheckbox(keys)
   }
+
+  // 权限
+  const hasPermission = (item: any, type: string) => {
+    let menuItems = [
+      {
+        key: '1',
+        name: t('common.edit'),
+      },
+      {
+        key: '2',
+        name: t('common.move'),
+      },
+    ]
+    if (hasEdit || item.is_super_admin === 1) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasDel || item.is_super_admin === 1) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    const hasUser = memberList?.list?.filter(
+      (i: any) => i.roleName === '管理员',
+    ).length
+
+    if (hasUser === 1 && item.roleName === '管理员') {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+    return menuItems?.filter((i: any) => i.key === type)?.length
+  }
+
   // 新加操作移除和编辑，去掉点点
   const columns = [
     {
@@ -395,7 +430,6 @@ const ProjectMember = () => {
             }}
           />
         )
-        return <span>{text || '--'}</span>
       },
     },
     {
@@ -420,7 +454,6 @@ const ProjectMember = () => {
             }}
           />
         )
-        return <span>{text || '--'}</span>
       },
     },
     {
@@ -490,96 +523,66 @@ const ProjectMember = () => {
     {
       title: t('newlyAdd.operation'),
       dataIndex: 'action',
-      width: 120,
+      width: language === 'zh' ? 170 : 220,
       fixed: 'right',
       render: (text: string, record: any) => {
         return (
-          <div style={{ display: 'flex' }}>
-            <Space size={12}>
-              {hasCheck ? (
-                '--'
-              ) : (
-                <span
-                  onClick={() => onToDetail(record)}
-                  style={{
-                    fontSize: 14,
-                    color: 'var(--primary-d2)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {t('project.checkInfo')}
-                </span>
-              )}
+          <TableActionWrap>
+            <Tooltip
+              title={hasCheck ? t('viewPermissionIsRequiredToOperate') : null}
+            >
+              <TableActionItem
+                isDisable={hasCheck}
+                onClick={() => {
+                  hasCheck ? void 0 : onToDetail(record)
+                }}
+              >
+                {t('project.checkInfo')}
+              </TableActionItem>
+            </Tooltip>
 
-              {/* 编辑权限 */}
-              <>
-                {(hasDel && hasEdit) || record.is_super_admin === 1
+            <Tooltip
+              title={
+                hasPermission(record, '1')
                   ? null
-                  : hasAmdin(record)?.map(
-                      (el: { name: string; key: string }) => (
-                        <div key={el.name}>
-                          {el.key === '1' ? (
-                            <span
-                              style={{
-                                fontSize: 14,
-                                color: 'var(--primary-d2)',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => onOperationMember(record, 'edit')}
-                            >
-                              {el.name}
-                            </span>
-                          ) : (
-                            <span
-                              style={{
-                                fontSize: 14,
-                                color: 'var(--primary-d2)',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => onOperationMember(record, 'del')}
-                            >
-                              {el.name}
-                            </span>
-                          )}
-                        </div>
-                      ),
-                    )}
-              </>
-            </Space>
-          </div>
+                  : t('editingPermissionIsRequiredToOperate')
+              }
+            >
+              <TableActionItem
+                isDisable={!hasPermission(record, '1')}
+                onClick={() => {
+                  hasPermission(record, '1')
+                    ? onOperationMember(record, 'edit')
+                    : void 0
+                }}
+              >
+                {t('common.edit')}
+              </TableActionItem>
+            </Tooltip>
+            <Tooltip
+              title={
+                hasPermission(record, '2')
+                  ? null
+                  : t('needToHaveRemovalPermissionToOperate')
+              }
+            >
+              <TableActionItem
+                isDisable={!hasPermission(record, '2')}
+                onClick={() => {
+                  hasPermission(record, '2')
+                    ? onOperationMember(record, 'del')
+                    : void 0
+                }}
+              >
+                {t('common.move')}
+              </TableActionItem>
+            </Tooltip>
+          </TableActionWrap>
         )
       },
     },
   ]
-  // 权限
-  const hasAmdin = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        name: t('common.edit'),
-      },
-      {
-        key: '2',
-        name: t('common.move'),
-      },
-    ]
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
 
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    const hasUser = memberList?.list?.filter(
-      (i: any) => i.roleName === '管理员',
-    ).length
-
-    if (hasUser === 1 && item.roleName === '管理员') {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-    return menuItems
-  }
   // 修改角色权限
   const setProjectClick = async (data: any, record: any) => {
     try {
@@ -597,7 +600,7 @@ const ProjectMember = () => {
 
   const selectColumns: any = useMemo(() => {
     return [...columns]
-  }, [columns])
+  }, [columns, language])
 
   const onChangeUpdate = () => {
     setOperationItem({})
