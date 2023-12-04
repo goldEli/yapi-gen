@@ -343,19 +343,19 @@ const SprintProjectSprint: React.FC = () => {
       key: 0,
       title: t('sprint.stepTitle1'),
       desc: t('sprint.stepDesc1'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/sprint1.jpg',
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/2.7.1/sprint1.jpg',
     },
     {
       key: 1,
       title: t('sprint.stepTitle2'),
       desc: t('sprint.stepDesc2'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/sprint2.jpg',
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/2.7.1/sprint2.jpg',
     },
     {
       key: 2,
       title: t('sprint.stepTitle3'),
       desc: t('sprint.stepDesc3'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/sprint3.jpg',
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/2.7.1/sprint3.jpg',
     },
   ]
 

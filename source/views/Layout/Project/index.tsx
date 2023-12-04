@@ -58,14 +58,14 @@ const ProjectIndex = () => {
       key: 0,
       title: t('project.stepTitle1'),
       desc: t('project.stepDesc1'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/guide_1.jpg',
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/2.7.1/guide_1.jpg',
     },
     {
       key: 1,
       title: t('project.stepTitle2'),
       desc: t('project.stepDesc2'),
       extra: t('project.stepExtra'),
-      img: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/2.7.1/guide_2.jpg',
+      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/2.7.1/guide_2.jpg',
     },
   ]
 

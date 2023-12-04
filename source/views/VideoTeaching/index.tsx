@@ -13,7 +13,7 @@ const VideoTeaching = () => {
   const [time, setTime] = useState('')
   useEffect(() => {
     fetch(
-      `https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/tutorial/tutorial.json?date=${new Date().valueOf()}`,
+      `https://mj-system-1308485183.cos.accelerate.myqcloud.com/tutorial/tutorial.json?date=${new Date().valueOf()}`,
     )
       .then(response => response.json())
       .then(data => {

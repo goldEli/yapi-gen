@@ -308,7 +308,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
                 <img
                   onMouseEnter={() => onChangeLogo(true)}
                   className="logo"
-                  src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-40px.svg"
+                  src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-40px.svg"
                   alt=""
                   onMouseOut={() => {
                     onChangeLogo(false)
@@ -317,7 +317,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
               )}
               <img
                 className="img"
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
                 alt=""
               />
             </div>
@@ -344,7 +344,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
               />
               <img
                 className="img"
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
                 alt=""
               />
             </OtherSystemMenuOpen>
@@ -352,12 +352,12 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
             <OpenLogoWrap>
               <img
                 className="logo"
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-28px.svg"
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-28px.svg"
                 alt=""
               />
               <img
                 className="img"
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
                 alt=""
               />
             </OpenLogoWrap>

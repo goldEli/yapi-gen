@@ -65,7 +65,7 @@ const Page = () => {
   const LeftWrap = styled.div<{ isEn: boolean }>`
     width: 100%;
     height: 100%;
-    background: url('https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/newloginBg.jpg');
+    background: url('https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/newloginBg.jpg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
@@ -134,18 +134,18 @@ const Page = () => {
       <GlobalStyle />
       <div className={style.left}>
         <GuideBg
-          src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/newloginBg_2.png"
+          src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/newloginBg_2.png"
           width="80%"
         />
         <LeftWrap isEn={languageMode.id === 1}>
           <img
             className="dot"
-            src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/newloginBg_1.png"
+            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/newloginBg_1.png"
             width={217}
           />
           <div className="logo">
             <img
-              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/logo/logo@395x80.png"
+              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/logo/logo@395x80.png"
               width={207}
             />
           </div>

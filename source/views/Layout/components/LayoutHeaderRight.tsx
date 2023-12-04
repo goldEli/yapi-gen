@@ -518,7 +518,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             <RobotButton id="robotButton">
               <img
                 className="img"
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/reportAssistant.png"
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
               />
               <div className="name">{t('dailyAssistant')}</div>
             </RobotButton>

@@ -249,7 +249,7 @@ const ForgetPassword = (props: FProps) => {
           inputRef={inputRef}
           mode={4}
           name="phone"
-          icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
+          icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/user.svg"
           value={form2.phone}
           label={t('pleaseEnterPhoneNumber')}
           type="number"
@@ -267,7 +267,7 @@ const ForgetPassword = (props: FProps) => {
         <Filed
           ref={msgRef}
           name="msg"
-          icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
+          icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/pen.svg"
           mode={3}
           value={form2.msg}
           label={t('pleaseEnterVerificationCode')}
@@ -298,7 +298,7 @@ const ForgetPassword = (props: FProps) => {
           errorCheck={errorCheck}
           name="password"
           mode={InputMode.LOCK}
-          icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/password.svg"
+          icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/password.svg"
           value={form2.password}
           label={t('pleaseEnterANewPassword')}
           type={show}
@@ -326,7 +326,7 @@ const ForgetPassword = (props: FProps) => {
           errorCheck={errorCheck}
           name="password2"
           mode={InputMode.LOCK}
-          icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/password.svg"
+          icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/password.svg"
           value={form2.password2}
           label={t('pleaseEnterNewPasswordAgain')}
           type={show}

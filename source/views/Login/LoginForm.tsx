@@ -364,7 +364,7 @@ export default React.memo(
                       inputRef={inputRef}
                       mode={InputMode.NORMAL}
                       name="username"
-                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
+                      icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/user.svg"
                       value={form.username}
                       label={languageMode.user}
                       type="text"
@@ -381,7 +381,7 @@ export default React.memo(
                     <Filed
                       name="password"
                       mode={InputMode.LOCK}
-                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/password.svg"
+                      icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/password.svg"
                       value={form.password}
                       label={languageMode.password}
                       type={show}
@@ -400,7 +400,7 @@ export default React.memo(
                       <Filed
                         name="code"
                         img={captchaImage}
-                        icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                        icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/lock.svg"
                         mode={InputMode.CODE}
                         value={form.code}
                         label={languageMode.code}
@@ -418,7 +418,7 @@ export default React.memo(
                       <Filed
                         name="code"
                         mode={InputMode.NORMAL}
-                        icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                        icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/lock.svg"
                         value={form.code}
                         label={languageMode.code}
                         type="text"
@@ -478,7 +478,7 @@ export default React.memo(
                       inputRef={inputRef2}
                       mode={4}
                       name="phone"
-                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/user.svg"
+                      icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/user.svg"
                       value={form2.phone}
                       label={t('pleaseEnterPhoneNumber')}
                       type="number"
@@ -497,7 +497,7 @@ export default React.memo(
                       ref={msgRef}
                       name="msg"
                       img={captchaImage}
-                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/pen.svg"
+                      icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/pen.svg"
                       mode={3}
                       onGetMsg={async e => {
                         setErrorMessage('')
@@ -536,7 +536,7 @@ export default React.memo(
                     <Filed
                       name="code"
                       mode={InputMode.NORMAL}
-                      icon="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/login/lock.svg"
+                      icon="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/login/lock.svg"
                       value={form2.code}
                       label={languageMode.code}
                       type="text"
@@ -602,7 +602,7 @@ export default React.memo(
           <div onClick={controlPopups} className={style.language}>
             <div className={style.langBox}>
               <img
-                src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/public/sso/LineIcon.svg"
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/sso/LineIcon.svg"
                 alt=""
                 className={style.LineIcon}
               />
