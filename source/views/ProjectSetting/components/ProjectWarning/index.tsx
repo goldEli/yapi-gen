@@ -31,7 +31,9 @@ const ProjectWarning = () => {
   // 保存
   const save = async () => {
     const { push_condition, push_date, push_obj = [] } = projectWarning
-    const { day = [], time = {} } = push_date ?? {}
+    let { day = [], time = {} } = push_date ?? {}
+    day = day.filter((item: number) => item !== -1)
+
     if (push_condition.every((item: any) => item.is_enable === 2)) {
       getMessage({ type: 'error', msg: t('atLeastOnePushConditionIsEnabled') })
       return
@@ -59,6 +61,10 @@ const ProjectWarning = () => {
     let res = await saveWarningConfig({
       ...projectWarning,
       project_id: projectId,
+      push_date: {
+        ...push_date,
+        day,
+      },
       push_obj: push_obj?.map((item: any) => item.id),
     })
     dispatch(
