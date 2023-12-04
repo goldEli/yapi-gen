@@ -40,20 +40,22 @@ export function setValue(res: any) {
   const form1Obj: any = {}
   for (const key in res?.fields) {
     if (
-      res?.fields[key].type === 'select' &&
+      (res?.fields[key].type === 'select' || res?.fields[key].type === 'tag') &&
       res?.fields[key].true_value !== 0 &&
       res?.fields[key].true_value !== ''
     ) {
-      form1Obj[res?.fields[key].content] = res?.fields[key].children.some(
-        (i: any) => i.id === res?.fields[key].true_value,
+      form1Obj[res?.fields[key].content] = res?.fields[key].children?.some(
+        (i: any) =>
+          i.id ===
+          (res?.fields[key].true_value?.content ?? res?.fields[key].true_value),
       )
-        ? res?.fields[key].true_value
+        ? res?.fields[key].true_value?.content ?? res?.fields[key].true_value
         : []
     } else if (
-      res?.fields[key].type === 'select' &&
+      (res?.fields[key].type === 'select' || res?.fields[key].type === 'tag') &&
       res?.fields[key].true_value === ''
     ) {
-      form1Obj[res?.fields[key].content] = null
+      form1Obj[res?.fields[key].content] = []
     } else if (res?.fields[key].true_value === 0) {
       form1Obj[res?.fields[key].content] = null
     } else if (
@@ -63,6 +65,13 @@ export function setValue(res: any) {
       form1Obj[res?.fields[key].content] = res?.fields[key].true_value
         ? res?.fields[key].true_value
         : []
+    } else if (res?.fields[key].type === 'tree') {
+      form1Obj[res?.fields[key].content] = res?.fields[key].children[0].children
+        .map((f: any) => f.value)
+        .includes(res?.fields[key].true_value.content)
+        ? res?.fields[key].true_value
+        : // eslint-disable-next-line no-undefined
+          undefined
     } else {
       form1Obj[res?.fields[key].content] = res?.fields[key].true_value
     }
@@ -793,6 +802,11 @@ export const ShapeContent = (props: any) => {
                     )}
                     {i.type === 'tag' && (
                       <Form.Item
+                        initialValue={
+                          i.true_value?.title ?? Array.isArray(i.true_value)
+                            ? i.true_value
+                            : []
+                        }
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
@@ -802,7 +816,17 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <TagSelect dvalue={i.true_value} options={i.children} />
+                        <CustomSelect
+                          mode="multiple"
+                          placeholder={t('common.pleaseSelect')}
+                          allowClear
+                          options={i.children?.map((item: any) => ({
+                            label: item.name,
+                            value: item.id,
+                          }))}
+                          optionFilterProp="name"
+                        />
+                        {/* <TagSelect dvalue={i.true_value} options={i.children} /> */}
                       </Form.Item>
                     )}
                     {i.type === 'number' && (

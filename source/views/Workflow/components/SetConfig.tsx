@@ -383,7 +383,6 @@ const SetConfig = (props: Props) => {
   const onChangeText = (value: any, row: any, type?: any) => {
     const arr = JSON.parse(JSON.stringify(dataSource))
     if (row.tag) {
-      console.log(1)
       arr.filter((i: any) => i.tag === row.tag)[0].default_value = [
         'date',
         'datetime',
@@ -429,9 +428,11 @@ const SetConfig = (props: Props) => {
           showSearch
           optionFilterProp="label"
           value={
-            Array.isArray(row.default_value)
-              ? row.default_value
-              : row.default_value?.title
+            // 类型不匹配，取不到值
+            row.default_value?.title ?? row.default_value
+            // Array.isArray(row.default_value)
+            //   ? row.default_value
+            //   : row.default_value?.title
           }
           options={
             ['users_name', 'users_copysend_name'].includes(row.content) &&
@@ -481,7 +482,6 @@ const SetConfig = (props: Props) => {
         />
       )
     } else if (['date', 'datetime'].includes(defaultObj?.type)) {
-      console.log(defaultObj?.type, '=defaultObj?.type')
       child = (
         <DatePicker
           style={{ width: i18n.language === 'zh' ? 178 : 220 }}
@@ -495,7 +495,7 @@ const SetConfig = (props: Props) => {
         <InputNumber
           style={{ width: i18n.language === 'zh' ? 178 : 220 }}
           defaultValue={row.default_value}
-          onBlur={value => onChangeText(value, row)}
+          onBlur={e => onChangeText(e.target.value, row)}
         />
       )
     } else {

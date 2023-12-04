@@ -37,29 +37,23 @@ import { getProjectIdByUrl } from '@/tools'
 export function setValue(res: any) {
   const form1Obj: any = {}
   for (const key in res?.fields) {
-    // if (res?.fields[key].content === 'users_name') {
-    //   // eslint-disable-next-line no-undefined
-    //   if (res.originalStatusUserIds.length >= 1) {
-    //     form1Obj[res?.fields[key].content] = [
-    //       res.originalStatusUserIds.join(','),
-    //     ]
-    //   }
-    // } else
     if (
-      res?.fields[key].type === 'select' &&
+      (res?.fields[key].type === 'select' || res?.fields[key].type === 'tag') &&
       res?.fields[key].true_value !== 0 &&
       res?.fields[key].true_value !== ''
     ) {
-      form1Obj[res?.fields[key].content] = res?.fields[key].children.some(
-        (i: any) => i.id === res?.fields[key].true_value,
+      form1Obj[res?.fields[key].content] = res?.fields[key].children?.some(
+        (i: any) =>
+          i.id ===
+          (res?.fields[key].true_value?.content ?? res?.fields[key].true_value),
       )
-        ? res?.fields[key].true_value
+        ? res?.fields[key].true_value?.content ?? res?.fields[key].true_value
         : []
     } else if (
-      res?.fields[key].type === 'select' &&
+      (res?.fields[key].type === 'select' || res?.fields[key].type === 'tag') &&
       res?.fields[key].true_value === ''
     ) {
-      form1Obj[res?.fields[key].content] = null
+      form1Obj[res?.fields[key].content] = []
     } else if (res?.fields[key].true_value === 0) {
       form1Obj[res?.fields[key].content] = null
     } else if (
@@ -69,6 +63,13 @@ export function setValue(res: any) {
       form1Obj[res?.fields[key].content] = res?.fields[key].true_value
         ? res?.fields[key].true_value
         : []
+    } else if (res?.fields[key].type === 'tree') {
+      form1Obj[res?.fields[key].content] = res?.fields[key].children[0].children
+        .map((f: any) => f.value)
+        .includes(res?.fields[key].true_value.content)
+        ? res?.fields[key].true_value
+        : // eslint-disable-next-line no-undefined
+          undefined
     } else {
       form1Obj[res?.fields[key].content] = res?.fields[key].true_value
     }
@@ -483,50 +484,9 @@ const ShapeContentForDetail = (props: any) => {
 
     return (newD ? newD : []).concat(newA, newB)
   }
-  const format2 = (i: any, type: any) => {
-    const a = i.children?.map((item: any) => ({
-      ...item,
-      label: formatName(i.content, item.name, item.id),
 
-      value: item.id,
-    }))
-    const newA = a.filter((j: any) => {
-      return j.id === info
-    })
+  console.log(rightList?.fields, '=rightList?.fields')
 
-    if (type === 1) {
-      return newA[0]?.label
-    }
-    if (type === 2) {
-      const newC = a.filter((j: any) => {
-        return rightList?.originalStatusUserIds.includes(j.id)
-      })
-
-      const names = newC.map((k: any) => k.name).join(' ; ')
-
-      return names ? `${names}（${t('theOriginalStateHandlesThePerson')}）` : ''
-    }
-  }
-  const setMyValue = () => {
-    const arr = form.getFieldsValue().users_name
-    const arr2 = rightList?.originalStatusUserIds
-    form.setFieldsValue({
-      users_name: Array.from(new Set([...arr, ...arr2])),
-    })
-  }
-  const setMyValue2 = () => {
-    const arr = form.getFieldsValue().users_name
-    const arr2 = [info]
-    form.setFieldsValue({
-      users_name: Array.from(new Set([...arr, ...arr2])),
-    })
-  }
-  const valid = () => {
-    const str1 = form.getFieldsValue()?.users_name?.join(',')
-    const str2 = rightList?.originalStatusUserIds?.join(',')
-
-    return str1?.includes(str2)
-  }
   return (
     <Contain>
       {loading && (
@@ -555,6 +515,7 @@ const ShapeContentForDetail = (props: any) => {
                   <div key={i.content}>
                     {i.type === 'area' && (
                       <Form.Item
+                        initialValue={i.true_value}
                         getValueFromEvent={event => {
                           return event.target.value.replace(
                             /(?<start>^\s*)/g,
@@ -581,7 +542,11 @@ const ShapeContentForDetail = (props: any) => {
 
                     {['select', 'radio'].includes(i.type) && (
                       <Form.Item
-                        initialValue={i.true_value === 0 ? '' : i.true_value}
+                        initialValue={
+                          i.true_value === 0
+                            ? ''
+                            : i.true_value?.content ?? i.true_value
+                        }
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
@@ -605,6 +570,11 @@ const ShapeContentForDetail = (props: any) => {
                     {['select_checkbox', 'checkbox'].includes(i.type) &&
                       i.content === 'users_name' && (
                         <Form.Item
+                          initialValue={
+                            i.true_value === 0
+                              ? ''
+                              : i.true_value?.content ?? i.true_value
+                          }
                           label={<LabelComponent title={i.title} />}
                           name={i.content}
                           rules={[
@@ -679,7 +649,11 @@ const ShapeContentForDetail = (props: any) => {
                     {['select_checkbox', 'checkbox'].includes(i.type) &&
                       i.content !== 'users_name' && (
                         <Form.Item
-                          initialValue={i.true_value ?? []}
+                          initialValue={
+                            i.true_value === 0
+                              ? ''
+                              : i.true_value?.content ?? i.true_value
+                          }
                           label={<LabelComponent title={i.title} />}
                           name={i.content}
                           rules={[
@@ -714,6 +688,11 @@ const ShapeContentForDetail = (props: any) => {
                     )}
                     {i.type === 'tag' && (
                       <Form.Item
+                        initialValue={
+                          i.true_value?.title ?? Array.isArray(i.true_value)
+                            ? i.true_value
+                            : []
+                        }
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
@@ -723,11 +702,22 @@ const ShapeContentForDetail = (props: any) => {
                           },
                         ]}
                       >
-                        <TagSelect dvalue={i.true_value} options={i.children} />
+                        <CustomSelect
+                          mode="multiple"
+                          placeholder={t('common.pleaseSelect')}
+                          allowClear
+                          options={i.children?.map((item: any) => ({
+                            label: item.name,
+                            value: item.id,
+                          }))}
+                          optionFilterProp="name"
+                        />
+                        {/* <TagSelect dvalue={i.true_value} options={i.children} /> */}
                       </Form.Item>
                     )}
                     {i.type === 'number' && (
                       <Form.Item
+                        initialValue={i.true_value}
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
@@ -763,6 +753,7 @@ const ShapeContentForDetail = (props: any) => {
                     )}
                     {['text', 'textarea'].includes(i.type) && (
                       <Form.Item
+                        initialValue={i.true_value}
                         getValueFromEvent={event => {
                           return event.target.value.replace(
                             /(?<start>^\s*)/g,

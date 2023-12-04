@@ -26,8 +26,6 @@ import { getProjectMember } from '@/services/project'
 import { getShapeAffairsRight } from '@/services/affairs'
 import { getShapeFlawRight } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
-import MoreSelect from '@/components/MoreSelect'
-import { getProjectIdByUrl } from '@/tools'
 
 interface StatusModalProps {
   // 弹窗显示状态
@@ -80,7 +78,9 @@ const DateInput = (props: any) => {
         onChange={change}
         style={{ width: '100%' }}
         format="YYYY-MM-DD HH:mm:ss"
-        showTime
+        showTime={{
+          defaultValue: moment('00:00:00', 'HH:mm:ss'),
+        }}
       />
     )
   }
@@ -89,7 +89,10 @@ const DateInput = (props: any) => {
       defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
       onChange={change}
       style={{ width: '100%' }}
-      format="YYYY-MM-DD"
+      format="YYYY-MM-DD "
+      showTime={{
+        defaultValue: moment('00:00:00', 'HH:mm:ss'),
+      }}
     />
   )
 }
@@ -112,8 +115,9 @@ const TagSelect = (props: any) => {
     set(newArr)
   }
   const init3 = () => {
-    const newArr = props.dvalue
-      .map((item: any) => {
+    const value = Array.isArray(props.dvalue) ? props.dvalue : []
+    const newArr = value
+      ?.map((item: any) => {
         return props.options.find((index: { id: any }) => index.id === item)
       })
       .map((i: any) => {
@@ -132,7 +136,7 @@ const TagSelect = (props: any) => {
 
   return (
     <CustomSelect
-      defaultValue={props.dvalue}
+      value={props.dvalue}
       onChange={onSelect}
       mode="multiple"
       placeholder={t('common.pleaseSelect')}
@@ -198,20 +202,25 @@ const StatusModal = (props: StatusModalProps) => {
     const form1Obj: any = {}
     for (const key in res?.fields) {
       if (
-        res?.fields[key].type === 'select' &&
+        (res?.fields[key].type === 'select' ||
+          res?.fields[key].type === 'tag') &&
         res?.fields[key].true_value !== 0 &&
         res?.fields[key].true_value !== ''
       ) {
-        form1Obj[res?.fields[key].content] = res?.fields[key].children.some(
-          (i: any) => i.id === res?.fields[key].true_value,
+        form1Obj[res?.fields[key].content] = res?.fields[key].children?.some(
+          (i: any) =>
+            i.id ===
+            (res?.fields[key].true_value?.content ??
+              res?.fields[key].true_value),
         )
-          ? res?.fields[key].true_value
+          ? res?.fields[key].true_value?.content ?? res?.fields[key].true_value
           : []
       } else if (
-        res?.fields[key].type === 'select' &&
+        (res?.fields[key].type === 'select' ||
+          res?.fields[key].type === 'tag') &&
         res?.fields[key].true_value === ''
       ) {
-        form1Obj[res?.fields[key].content] = null
+        form1Obj[res?.fields[key].content] = []
       } else if (res?.fields[key].true_value === 0) {
         form1Obj[res?.fields[key].content] = null
       } else if (
@@ -237,13 +246,6 @@ const StatusModal = (props: StatusModalProps) => {
     return form1Obj
   }
 
-  const valid = () => {
-    const str1 = form.getFieldsValue()?.users_name?.join(',')
-    const str2 = configData?.originalStatusUserIds?.join(',')
-
-    return str1?.includes(str2)
-  }
-
   const rightList = [
     { key: 1, url: getShapeRight },
     { key: 2, url: getShapeAffairsRight },
@@ -260,47 +262,6 @@ const StatusModal = (props: StatusModalProps) => {
       return `${name}（${t('theOriginalStateHandlesThePerson')}）`
     }
     return name
-  }
-
-  const format2 = (i: any, type: any) => {
-    const a = i.children?.map((item: any) => ({
-      ...item,
-      label: formatName(i.content, item.name, item.id),
-
-      value: item.id,
-    }))
-    const newA = a.filter((j: any) => {
-      return j.id === info
-    })
-
-    if (type === 1) {
-      return newA[0]?.label
-    }
-    if (type === 2) {
-      const newC = a.filter((j: any) => {
-        return configData?.originalStatusUserIds.includes(j.id)
-      })
-
-      const names = newC.map((k: any) => k.name).join(' ; ')
-
-      return names ? `${names}（${t('theOriginalStateHandlesThePerson')}）` : ''
-    }
-  }
-
-  const setMyValue = () => {
-    const arr = form.getFieldsValue()['users_name']
-    const arr2 = configData?.originalStatusUserIds
-    form.setFieldsValue({
-      users_name: Array.from(new Set([...arr, ...arr2])),
-    })
-  }
-
-  const setMyValue2 = () => {
-    const arr = form.getFieldsValue()['users_name']
-    const arr2 = [info]
-    form.setFieldsValue({
-      users_name: Array.from(new Set([...arr, ...arr2])),
-    })
   }
 
   // 下拉选择审核人员
@@ -352,6 +313,21 @@ const StatusModal = (props: StatusModalProps) => {
     } else {
       setConfigData(res)
     }
+    // console.log({
+    //   ...res,
+    //   fields: res.fields?.map((k: any) => ({
+    //     ...k,
+    //     ...{
+    //       true_value:
+    //         ['expected_start_at', 'expected_end_at'].includes(k.content) &&
+    //         !k.true_value
+    //           ? moment(new Date()).format(
+    //               k.type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
+    //             )
+    //           : k.true_value,
+    //     },
+    //   })),
+    // })
     form.setFieldsValue(setValue(res))
   }
 
@@ -468,6 +444,7 @@ const StatusModal = (props: StatusModalProps) => {
               <div key={i.content}>
                 {i.type === 'area' && (
                   <Form.Item
+                    initialValue={i.true_value}
                     label={<LabelComponent title={i.title} />}
                     name={i.content}
                     rules={[
@@ -488,6 +465,7 @@ const StatusModal = (props: StatusModalProps) => {
                     />
                   </Form.Item>
                 )}
+                {/* 勾选值未验证 */}
                 {i.type === 'single_checkbox' && (
                   <Form.Item
                     label={<LabelComponent title={i.title} />}
@@ -516,7 +494,11 @@ const StatusModal = (props: StatusModalProps) => {
 
                 {['select', 'radio'].includes(i.type) && (
                   <Form.Item
-                    initialValue={i.true_value === 0 ? '' : i.true_value}
+                    initialValue={
+                      i.true_value === 0
+                        ? ''
+                        : i.true_value?.content ?? i.true_value
+                    }
                     label={<LabelComponent title={i.title} />}
                     name={i.content}
                     rules={[
@@ -540,6 +522,11 @@ const StatusModal = (props: StatusModalProps) => {
                 {['select_checkbox', 'checkbox'].includes(i.type) &&
                   i.content === 'users_name' && (
                     <Form.Item
+                      initialValue={
+                        i.true_value === 0
+                          ? ''
+                          : i.true_value?.content ?? i.true_value
+                      }
                       label={<LabelComponent title={i.title} />}
                       name={i.content}
                       rules={[
@@ -581,6 +568,11 @@ const StatusModal = (props: StatusModalProps) => {
                 {['select_checkbox', 'checkbox'].includes(i.type) &&
                   i.content !== 'users_name' && (
                     <Form.Item
+                      initialValue={
+                        i.true_value === 0
+                          ? ''
+                          : i.true_value?.content ?? i.true_value
+                      }
                       label={<LabelComponent title={i.title} />}
                       name={i.content}
                       rules={[
@@ -591,6 +583,7 @@ const StatusModal = (props: StatusModalProps) => {
                       ]}
                     >
                       <CustomSelect
+                        value={i.true_value?.title ?? i.true_value}
                         mode="multiple"
                         placeholder={t('common.pleaseSelect')}
                         allowClear
@@ -618,6 +611,11 @@ const StatusModal = (props: StatusModalProps) => {
                 )}
                 {i.type === 'tag' && (
                   <Form.Item
+                    initialValue={
+                      i.true_value?.title ?? Array.isArray(i.true_value)
+                        ? i.true_value
+                        : []
+                    }
                     label={<LabelComponent title={i.title} />}
                     name={i.content}
                     rules={[
@@ -627,11 +625,21 @@ const StatusModal = (props: StatusModalProps) => {
                       },
                     ]}
                   >
-                    <TagSelect dvalue={i.true_value} options={i.children} />
+                    <CustomSelect
+                      mode="multiple"
+                      placeholder={t('common.pleaseSelect')}
+                      allowClear
+                      options={i.children?.map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))}
+                      optionFilterProp="name"
+                    />
                   </Form.Item>
                 )}
                 {i.type === 'number' && (
                   <Form.Item
+                    initialValue={i.true_value}
                     label={<LabelComponent title={i.title} />}
                     name={i.content}
                     rules={[
@@ -644,6 +652,7 @@ const StatusModal = (props: StatusModalProps) => {
                     <NumericInput type={i.value[0]} />
                   </Form.Item>
                 )}
+                {/* 分类值未验证 */}
                 {i.type === 'tree' && (
                   <Form.Item
                     label={<LabelComponent title={i.title} />}
@@ -666,6 +675,7 @@ const StatusModal = (props: StatusModalProps) => {
                 )}
                 {['text', 'textarea'].includes(i.type) && (
                   <Form.Item
+                    initialValue={i.true_value}
                     getValueFromEvent={event => {
                       return event.target.value.replace(/(?<start>^\s*)/g, '')
                     }}
