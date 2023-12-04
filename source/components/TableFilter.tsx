@@ -421,11 +421,21 @@ const TableFilter = (props: any) => {
             ))}
         </Collapse.Panel>
         <Collapse.Panel header={t('components.personOrTime')} key="2">
-          {filterSpecialList?.map((i: any) => (
-            <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
-              {i.content_txt}
-            </CollapseDiv>
-          ))}
+          {filterSpecialList
+            ?.filter((item: any) => {
+              if (location.pathname.includes('ProjectDetail')) {
+                return (
+                  item.content !== 'expected_start_at' &&
+                  item.content !== 'expected_end_at'
+                )
+              }
+              return true
+            })
+            ?.map((i: any) => (
+              <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
+                {i.content_txt}
+              </CollapseDiv>
+            ))}
         </Collapse.Panel>
         <Collapse.Panel header={t('newlyAdd.customFields')} key="3">
           {filterCustomList?.map((i: any) => (
@@ -512,6 +522,12 @@ const TableFilter = (props: any) => {
             ?.filter((k: any) =>
               props.isIteration ? k.key !== 'iterate_name' : k,
             )
+            ?.filter((item: { key: string }) => {
+              if (location.pathname.includes('ProjectDetail')) {
+                return item.key !== 'users_name'
+              }
+              return true
+            })
             ?.map((i: any) => (
               <div key={i.key}>
                 {[
