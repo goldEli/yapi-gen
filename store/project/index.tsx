@@ -256,7 +256,16 @@ export const projectSlice = createSlice({
       state.projectInfo = action.payload
     })
     builder.addCase(getWarningConfigInfo.fulfilled, (state, action) => {
-      state.projectWarning = action.payload
+      const res = action.payload
+      const { push_date } = res ?? {}
+      const { day = [], is_holiday } = push_date
+      state.projectWarning = {
+        ...res,
+        push_date: {
+          ...push_date,
+          day: is_holiday === 1 ? [...day, -1] : [...day],
+        },
+      }
     })
   },
 })
