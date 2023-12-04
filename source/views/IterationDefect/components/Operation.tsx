@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 // 需求主页-操作栏
 
 /* eslint-disable camelcase */
@@ -7,11 +8,18 @@
 import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+  forwardRef,
+} from 'react'
 import { getIsPermission, removeNull } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Popover, Space, Tooltip } from 'antd'
+import { Popover, Select, Space, Tooltip } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
 import {
@@ -35,6 +43,13 @@ import {
 import CommonExport from '@/components/CommonExport'
 import { OperationWrap, StatusGroup, StatusItems } from '../style'
 import useShortcutC from '@/hooks/useShortcutC'
+import InputSearch from '@/components/InputSearch'
+import { SelectWrapBedeck } from '@/components/StyleCommon'
+import MoreSelect from '@/components/MoreSelect'
+import RangePicker from '@/components/RangePicker'
+import moment from 'moment'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import dayjs from 'dayjs'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -122,9 +137,10 @@ interface Props {
   pid: any
   onCreateDefect(): void
   statistics: any
+  onInputSearch?(value?: string): void
 }
 
-const Operation = (props: Props) => {
+const Operation = (props: Props, ref: any) => {
   const [t, i18n] = useTranslation()
   const [isShow, setIsShow] = useState(false)
   const [isShow2, setIsShow2] = useState(false)
@@ -150,6 +166,8 @@ const Operation = (props: Props) => {
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
   const [searchVal, setSearchVal] = useState('')
+  const [boxMaps, setBoxMaps] = useState<any>()
+  const [date, setDate] = useState<any>()
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -179,7 +197,52 @@ const Operation = (props: Props) => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
   )
+  const info = useGetloginInfo()
+  const splitArrayByValue = (arr: any) => {
+    let arr1 = arr.filter((x: any) => x.status === 1)
+    // 已离职
+    let arr2 = arr
+      .filter((x: any) => x.status === 2)
+      .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
+    const a = {
+      label: t('working'),
+      children: arr1,
+    }
+    const b = {
+      label: t('resigned'),
+      children: arr2,
+    }
+    return [...arr1, ...arr2]
+    return arr2.length >= 1 ? [...arr1, b] : [...arr1]
+  }
+  function deWeight(arr: any) {
+    const map = new Map()
+    for (const item of arr || []) {
+      if (!map.has(item.id)) {
+        map.set(item.id, item)
+      }
+    }
+    arr = [...map.values()]
+    return arr
+  }
+  const format = (arr: any) => {
+    const newA = arr.filter((j: any) => {
+      return j.value === info
+    })
 
+    const newB = arr.filter((j: any) => {
+      return j.value !== info
+    })
+
+    return newA
+      .map((i: any) => ({
+        ...i,
+        id: i.id,
+        value: i.value,
+        label: `${i.label}（${t('myself')}）`,
+      }))
+      .concat(newB)
+  }
   const onFilterSearch = (e: any, customField: any) => {
     // // 如果筛选未打开
     // if (filterState) {
@@ -317,6 +380,23 @@ const Operation = (props: Props) => {
     { name: '指派我的', key: 1, field: 'users_name', type: 'handler_count' },
     { name: '我创建的', key: 2, field: 'user_name', type: 'user_create_count' },
   ]
+  useLayoutEffect(() => {
+    const map: any = new Map()
+    // time-spanTag
+    const box = document.querySelectorAll('.SelectWrapBedeck')
+    box.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      map.set(attr, w)
+    })
+    setBoxMaps(map)
+  }, [props])
+  useImperativeHandle(ref, () => {
+    return {
+      onImportClick,
+      onExportClick,
+    }
+  })
   const moreOperation = (
     <div
       style={{
@@ -521,58 +601,120 @@ const Operation = (props: Props) => {
               </StatusItems>
             ))}
           </StatusGroup>
-          {getIsPermission(
-            projectInfo?.projectPermissions,
-            'b/flaw/save',
-          ) ? null : (
-            <>
-              {(removeNull(projectInfoValues, 'category') || []).filter(
-                (i: any) => i.work_type === 2,
-              )?.length <= 0 ? (
-                <CommonButton type="primary" onClick={props.onCreateDefect}>
-                  <Tooltip placement="top" title={`${t('create')} (C)`}>
-                    {t('createDefect')}
-                  </Tooltip>
-                </CommonButton>
-              ) : (
-                <Popover
-                  content={changeStatus}
-                  placement="bottomLeft"
-                  getPopupContainer={node => node}
-                  visible={isVisible}
-                  onVisibleChange={visible => setIsVisible(visible)}
-                >
-                  <MoreWrap type="create">
-                    <Tooltip placement="top" title={`${t('create')} (C)`}>
-                      {t('createDefect')}
-                    </Tooltip>
-                    <IconFont
-                      style={{ fontSize: 16, marginLeft: 8 }}
-                      type={isVisible ? 'up' : 'down'}
-                    />
-                  </MoreWrap>
-                </Popover>
+          <InputSearch
+            placeholder="搜索事务名称或编号"
+            onChangeSearch={(value: any) => {
+              console.log(value)
+              props.onInputSearch && props.onInputSearch(value)
+            }}
+          ></InputSearch>
+          <SelectWrapBedeck
+            key="users_name"
+            datatype="users_name"
+            className="SelectWrapBedeck"
+          >
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>处理人</span>
+            <MoreSelect
+              onChange={(value: any) => {
+                onFilterSearch({ users_name: value }, {})
+              }}
+              width={boxMaps?.get('users_name')}
+              renderChildren
+              options={splitArrayByValue(
+                format(
+                  deWeight(
+                    projectInfoValues
+                      ?.filter((k: any) => k.key === 'users_name')[0]
+                      ?.children?.map((v: any) => ({
+                        ...v,
+                        label: v.content_txt || v.content,
+                        value: v.id,
+                        id: v.id,
+                      })),
+                  ),
+                ),
               )}
-            </>
-          )}
-          {hasExport && hasImport ? null : (
-            <Popover
-              content={moreOperation}
-              placement="bottom"
-              getPopupContainer={node => node}
-              key={isVisibleMore.toString()}
-              visible={isVisibleMore}
-              onVisibleChange={visible => setIsVisibleMore(visible)}
             >
-              <MoreWrap>
-                <span>{t('newlyAdd.moreOperation')}</span>
-                <IconFont
-                  style={{ fontSize: 16, marginLeft: 8 }}
-                  type={isVisibleMore ? 'up' : 'down'}
-                />
-              </MoreWrap>
-            </Popover>
-          )}
+              {splitArrayByValue(
+                format(
+                  deWeight(
+                    projectInfoValues
+                      ?.filter((k: any) => k.key === 'user_name')[0]
+                      ?.children?.map((v: any) => ({
+                        ...v,
+                        label: v.content_txt || v.content,
+                        value: v.id,
+                        id: v.id,
+                      })),
+                  ),
+                ),
+              )?.map((item: any) => {
+                return (
+                  <Select.Option
+                    key={item.id}
+                    value={item.id}
+                    label={item.label}
+                    className={
+                      item.status === 2 && item.isFirst ? 'removeStyle' : ''
+                    }
+                  >
+                    {item.label ?? item.content}
+                    <span>{item.status === 1 ? '' : t('removed')}</span>
+                  </Select.Option>
+                )
+              })}
+            </MoreSelect>
+          </SelectWrapBedeck>
+
+          <SelectWrapBedeck
+            key="date"
+            datatype="date"
+            className="SelectWrapBedeck"
+          >
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>时间</span>
+            <RangePicker
+              onChange={dates => {
+                if (!dates) {
+                  setDate('')
+                  onFilterSearch({}, {})
+                  return
+                }
+                const [expected_start_at, expected_end_at] = dates
+                console.log(
+                  'dates----',
+                  dates,
+                  expected_start_at.unix(),
+                  expected_end_at.unix(),
+                )
+                setDate(dates)
+                onFilterSearch(
+                  {
+                    expected_start_at:
+                      dayjs(expected_start_at).format('YYYY-MM-DD'),
+                    expected_end_at:
+                      dayjs(expected_end_at).format('YYYY-MM-DD'),
+                  },
+                  {},
+                )
+              }}
+              isShowQuick
+              placement="bottomLeft"
+              dateValue={
+                date
+                  ? [
+                      moment(date[0]).unix()
+                        ? moment(date[0])
+                        : moment('1970-01-01'),
+                      moment(date[1]).unix() === 1893427200 ||
+                      moment(date[1]).unix() === 0
+                        ? moment('2030-01-01')
+                        : moment(date[1]),
+                    ]
+                  : null
+              }
+              w={boxMaps?.get('date')}
+            ></RangePicker>
+          </SelectWrapBedeck>
         </Space>
 
         <OperationGroup
@@ -606,4 +748,4 @@ const Operation = (props: Props) => {
   )
 }
 
-export default Operation
+export default forwardRef(Operation)

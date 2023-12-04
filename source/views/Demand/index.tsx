@@ -4,7 +4,7 @@ import ManageView from '@/components/ManageView'
 import PermissionWrap from '@/components/PermissionWrap'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
-import { getParamsData } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { useSearchParams } from 'react-router-dom'
 import {
@@ -12,12 +12,21 @@ import {
   ContentMain,
   ContentRight,
   ContentWrap,
+  LiWrap,
+  MoreItem,
+  MoreWrap,
   Wrap,
 } from './style'
 import React, { useEffect, useRef, useState } from 'react'
 import WrapLeft from './components/WrapLeft'
 import { useTranslation } from 'react-i18next'
-import { setFilterKeys, setFilterParams } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setCreateCategory,
+  setFilterKeys,
+  setFilterParams,
+  setFilterParamsModal,
+} from '@store/project'
 import Operation from './components/Operation'
 import DemandTree from './components/DemandTree'
 import DemandTable from './components/DemandTable'
@@ -33,6 +42,9 @@ import {
 } from '@store/view'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import useKeyPress from '@/hooks/useKeyPress'
+import IconFont from '@/components/IconFont'
+import { Popover, Tooltip } from 'antd'
+import CommonIconFont from '@/components/CommonIconFont'
 export const TreeContext: any = React.createContext('')
 
 const DemandIndex = () => {
@@ -42,7 +54,7 @@ const DemandIndex = () => {
   useKeys('3', '/Report/Performance')
   const keyRef = useRef()
   const dispatch = useDispatch()
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const myTreeComponent: any = useRef(null)
   const [searchParams] = useSearchParams()
@@ -72,10 +84,17 @@ const DemandIndex = () => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
+  const [isVisible, setIsVisible] = useState(false)
+  const [isVisibleMore, setIsVisibleMore] = useState(false)
   const bian = useRef<any>(null)
-  const { filterKeys, isUpdateAddWorkItem, projectInfo } = useSelector(
-    store => store.project,
-  )
+  const OperationRef = useRef<any>()
+  const {
+    filterKeys,
+    isUpdateAddWorkItem,
+    projectInfo,
+    projectInfoValues,
+    filterParams,
+  } = useSelector(store => store.project)
   const { userInfo } = useSelector(store => store.user)
   const { isRefresh } = useSelector(store => store.user)
   const { currentMenu } = useSelector(store => store.user)
@@ -380,11 +399,97 @@ const DemandIndex = () => {
       dispatch(onTapSearchChoose({}))
     }
   }, [])
+  const onImportClick = () => {
+    OperationRef.current?.onImportClick()
+  }
 
+  const onExportClick = () => {
+    OperationRef.current?.onExportClick()
+  }
   // 判断是否详情回来，并且权限是不是有
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+  const hasImport = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
+  )
 
+  const hasExport = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
+  )
+  const moreOperation = (
+    <div
+      style={{
+        padding: '4px 0',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {hasImport ? null : (
+        <MoreItem onClick={onImportClick}>
+          <CommonIconFont type="export" />
+          <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
+        </MoreItem>
+      )}
+      {hasExport ? null : (
+        <MoreItem onClick={onExportClick}>
+          <CommonIconFont type="Import" />
+          <span style={{ marginLeft: 8 }}>{t('newlyAdd.exportDemand')}</span>
+        </MoreItem>
+      )}
+    </div>
+  )
+  const onChangeCategory = (e: any, item: any) => {
+    dispatch(setCreateCategory(item))
+
+    // 需求列表筛选参数赋值给 弹窗
+    dispatch(setFilterParamsModal(filterParams))
+    setTimeout(() => {
+      dispatch(
+        setAddWorkItemModal({
+          visible: true,
+          params: {
+            projectId: projectInfo?.id,
+            type: 1,
+            title: t('createRequirements'),
+          },
+        }),
+      )
+      setIsVisible(false)
+    }, 0)
+  }
+  const changeStatus = (
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        minWidth: i18n.language === 'zh' ? 110 : 151,
+      }}
+    >
+      {projectInfoValues
+        ?.filter((i: any) => i.key === 'category')[0]
+        ?.children?.filter((i: any) => i.status === 1 && i.work_type === 1)
+        ?.map((k: any) => {
+          return (
+            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
+              <img
+                src={k.category_attachment ? k.category_attachment : ' '}
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{k.content}</span>
+            </LiWrap>
+          )
+        })}
+    </div>
+  )
   return (
     <PermissionWrap
       auth="b/story/"
@@ -411,7 +516,52 @@ const DemandIndex = () => {
       />
       <TreeContext.Provider value={keyValueTree}>
         <Wrap>
-          <ProjectCommonOperation onInputSearch={onInputSearch} />
+          <ProjectCommonOperation
+            onInputSearch={onInputSearch}
+            showSearchInput={false}
+          >
+            {hasExport && hasImport ? null : (
+              <Popover
+                content={moreOperation}
+                placement="bottom"
+                getPopupContainer={node => node}
+                key={isVisibleMore.toString()}
+                visible={isVisibleMore}
+                onVisibleChange={visible => setIsVisibleMore(visible)}
+              >
+                <MoreWrap>
+                  <span>{t('newlyAdd.moreOperation')}</span>
+                  <IconFont
+                    style={{ fontSize: 16, marginLeft: 8 }}
+                    type={isVisibleMore ? 'up' : 'down'}
+                  />
+                </MoreWrap>
+              </Popover>
+            )}
+            {getIsPermission(
+              projectInfo?.projectPermissions,
+              'b/story/save',
+            ) ? null : (
+              <Popover
+                content={changeStatus}
+                placement="bottomLeft"
+                getPopupContainer={node => node}
+                visible={isVisible}
+                onVisibleChange={visible => setIsVisible(visible)}
+              >
+                <MoreWrap type="create">
+                  <Tooltip placement="top" title={`${t('create')} (C)`}>
+                    {t('common.createDemand')}
+                  </Tooltip>
+                  {/* <span>{t('common.createDemand')}</span> */}
+                  <IconFont
+                    style={{ fontSize: 16, marginLeft: 8 }}
+                    type={isVisible ? 'up' : 'down'}
+                  />
+                </MoreWrap>
+              </Popover>
+            )}
+          </ProjectCommonOperation>
           <ContentWrap>
             <ContentLeft>
               <WrapLeft
@@ -447,6 +597,8 @@ const DemandIndex = () => {
                 }}
                 dataLength={dataList?.total}
                 statistics={dataList?.statistics}
+                ref={OperationRef}
+                onInputSearch={onInputSearch}
               />
               <ContentMain>
                 {isGrid === 2 && (

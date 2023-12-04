@@ -1,20 +1,30 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 import React, { useEffect, useRef, useState } from 'react'
 import PermissionWrap from '@/components/PermissionWrap'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
+import { getIsPermission, getParamsData, removeNull } from '@/tools'
 import {
   ContentLeft,
   ContentMain,
   ContentRight,
   ContentWrap,
+  LiWrap,
+  MoreItem,
+  MoreWrap,
   Wrap,
 } from './style'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterKeys, setFilterParams } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setCreateCategory,
+  setFilterKeys,
+  setFilterParams,
+  setFilterParamsModal,
+} from '@store/project'
 import WrapLeft from './components/WrapLeft'
 import DefectTable from './components/DefectTable'
 import Operation from './components/Operation'
@@ -28,10 +38,14 @@ import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { Popover, Tooltip } from 'antd'
+import IconFont from '@/components/IconFont'
+import CommonIconFont from '@/components/CommonIconFont'
+import CommonButton from '@/components/CommonButton'
 export const TreeContextDefect: any = React.createContext('')
 
 const Index = (props: any) => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const { useKeys } = useKeyPress()
   useKeys('1', '/ProjectDetail/Iteration')
   useKeys('2', '/ProjectDetail/KanBan')
@@ -44,9 +58,13 @@ const Index = (props: any) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const myTreeComponent: any = useRef(null)
-  const { projectInfo, filterKeys, isUpdateAddWorkItem } = useSelector(
-    store => store.project,
-  )
+  const {
+    projectInfo,
+    filterKeys,
+    isUpdateAddWorkItem,
+    projectInfoValues,
+    filterParams,
+  } = useSelector(store => store.project)
   const searchChoose = useSelector(store => store.view.searchChoose)
   const { userInfo } = useSelector(store => store.user)
   const [searchParams] = useSearchParams()
@@ -70,7 +88,9 @@ const Index = (props: any) => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-
+  const [isVisible, setIsVisible] = useState(false)
+  const [isVisibleMore, setIsVisibleMore] = useState(false)
+  const OperationRef = useRef<any>()
   const keyValueTree = {
     key,
     changeKey: (value: any) => {
@@ -309,7 +329,105 @@ const Index = (props: any) => {
   // 判断是否详情回来，并且权限是不是有
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
+  const hasImport = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
+  )
 
+  const hasExport = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
+  )
+  const onImportClick = () => {
+    OperationRef.current?.onImportClick()
+  }
+
+  const onExportClick = () => {
+    OperationRef.current?.onExportClick()
+  }
+  const moreOperation = (
+    <div
+      style={{
+        padding: '4px 0',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {hasImport ? null : (
+        <MoreItem onClick={onImportClick}>
+          <CommonIconFont type="export" />
+          <span style={{ marginLeft: 8 }}>{t('importDefect')}</span>
+        </MoreItem>
+      )}
+      {hasExport ? null : (
+        <MoreItem onClick={onExportClick}>
+          <CommonIconFont type="Import" />
+          <span style={{ marginLeft: 8 }}>{t('exportDefect')}</span>
+        </MoreItem>
+      )}
+    </div>
+  )
+  const onChangeCategory = (e: any, item: any) => {
+    dispatch(setCreateCategory(item))
+    // 需求列表筛选参数赋值给 弹窗
+    dispatch(setFilterParamsModal(filterParams))
+    setTimeout(() => {
+      dispatch(
+        setAddWorkItemModal({
+          visible: true,
+          params: {
+            projectId: projectInfo?.id,
+            type: 2,
+            title: t('createDefect'),
+          },
+        }),
+      )
+      setIsVisible(false)
+    }, 0)
+  }
+
+  const changeStatus = (
+    <div
+      style={{
+        padding: projectInfoValues
+          ?.filter((i: any) => i.key === 'category')[0]
+          ?.children?.filter((i: any) => i.status === 1 && i.work_type === 2)
+          ?.length
+          ? '4px 0px'
+          : '',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        minWidth: i18n.language === 'zh' ? 110 : 151,
+      }}
+    >
+      {projectInfoValues
+        ?.filter((i: any) => i.key === 'category')[0]
+        ?.children?.filter((i: any) => i.status === 1 && i.work_type === 2)
+        ?.map((k: any) => {
+          return (
+            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
+              <img
+                src={k.category_attachment}
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span
+                style={{
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {k.content}
+              </span>
+            </LiWrap>
+          )
+        })}
+    </div>
+  )
   return (
     <PermissionWrap
       auth="b/flaw/"
@@ -340,7 +458,61 @@ const Index = (props: any) => {
           <ProjectCommonOperation
             onInputSearch={onInputSearch}
             title={t('searchForDefectNameOrNumber')}
-          />
+            showSearchInput={false}
+          >
+            {hasExport && hasImport ? null : (
+              <Popover
+                content={moreOperation}
+                placement="bottom"
+                getPopupContainer={node => node}
+                key={isVisibleMore.toString()}
+                visible={isVisibleMore}
+                onVisibleChange={visible => setIsVisibleMore(visible)}
+              >
+                <MoreWrap>
+                  <span>{t('newlyAdd.moreOperation')}</span>
+                  <IconFont
+                    style={{ fontSize: 16, marginLeft: 8 }}
+                    type={isVisibleMore ? 'up' : 'down'}
+                  />
+                </MoreWrap>
+              </Popover>
+            )}
+            {getIsPermission(
+              projectInfo?.projectPermissions,
+              'b/flaw/save',
+            ) ? null : (
+              <>
+                {(removeNull(projectInfoValues, 'category') || []).filter(
+                  (i: any) => i.work_type === 2,
+                )?.length <= 0 ? (
+                  <CommonButton type="primary" onClick={props.onCreateDefect}>
+                    <Tooltip placement="top" title={`${t('create')} (C)`}>
+                      {t('createDefect')}
+                    </Tooltip>
+                  </CommonButton>
+                ) : (
+                  <Popover
+                    content={changeStatus}
+                    placement="bottomLeft"
+                    getPopupContainer={node => node}
+                    visible={isVisible}
+                    onVisibleChange={visible => setIsVisible(visible)}
+                  >
+                    <MoreWrap type="create">
+                      <Tooltip placement="top" title={`${t('create')} (C)`}>
+                        {t('createDefect')}
+                      </Tooltip>
+                      <IconFont
+                        style={{ fontSize: 16, marginLeft: 8 }}
+                        type={isVisible ? 'up' : 'down'}
+                      />
+                    </MoreWrap>
+                  </Popover>
+                )}
+              </>
+            )}
+          </ProjectCommonOperation>
           <ContentWrap>
             <ContentLeft>
               <WrapLeft
@@ -357,6 +529,7 @@ const Index = (props: any) => {
                 onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
                 onRefresh={refresh}
                 onSearch={onSearch}
+                onInputSearch={onInputSearch}
                 settingState={isSettingState}
                 onChangeSetting={setIsSettingState}
                 isShowLeft={isShowLeft}
@@ -370,6 +543,7 @@ const Index = (props: any) => {
                 dataLength={dataList?.total}
                 onCreateDefect={onCreateDefect}
                 statistics={dataList?.statistics}
+                ref={OperationRef}
               />
               <ContentMain>
                 <DefectTable

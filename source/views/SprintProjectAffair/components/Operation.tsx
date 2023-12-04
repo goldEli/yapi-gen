@@ -19,7 +19,7 @@ import {
 import { getIsPermission, getProjectIdByUrl } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Popover, Select, Space, Tooltip } from 'antd'
+import { DatePicker, Popover, Select, Space, Tooltip } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
@@ -43,6 +43,9 @@ import InputSearch from '@/components/InputSearch'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import MoreSelect from '@/components/MoreSelect'
 import { SelectWrap, SelectWrapBedeck } from '@/components/StyleCommon'
+import RangePicker from '@/components/RangePicker'
+import moment from 'moment'
+import dayjs from 'dayjs'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -132,6 +135,7 @@ const Operation = (props: Props, ref: any) => {
   const [filterState, setFilterState] = useState(true)
   const [defaultValue, setDefaultValue] = useState({})
   const [boxMaps, setBoxMaps] = useState<any>()
+  const [date, setDate] = useState<any>()
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
   const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
@@ -589,6 +593,56 @@ const Operation = (props: Props, ref: any) => {
                 )
               })}
             </MoreSelect>
+          </SelectWrapBedeck>
+
+          <SelectWrapBedeck
+            key="date"
+            datatype="date"
+            className="SelectWrapBedeck"
+          >
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>时间</span>
+            <RangePicker
+              onChange={dates => {
+                if (!dates) {
+                  setDate('')
+                  onFilterSearch({}, {})
+                  return
+                }
+                const [expected_start_at, expected_end_at] = dates
+                console.log(
+                  'dates----',
+                  dates,
+                  expected_start_at.unix(),
+                  expected_end_at.unix(),
+                )
+                setDate(dates)
+                onFilterSearch(
+                  {
+                    expected_start_at:
+                      dayjs(expected_start_at).format('YYYY-MM-DD'),
+                    expected_end_at:
+                      dayjs(expected_end_at).format('YYYY-MM-DD'),
+                  },
+                  {},
+                )
+              }}
+              isShowQuick
+              placement="bottomLeft"
+              dateValue={
+                date
+                  ? [
+                      moment(date[0]).unix()
+                        ? moment(date[0])
+                        : moment('1970-01-01'),
+                      moment(date[1]).unix() === 1893427200 ||
+                      moment(date[1]).unix() === 0
+                        ? moment('2030-01-01')
+                        : moment(date[1]),
+                    ]
+                  : null
+              }
+              w={boxMaps?.get('date')}
+            ></RangePicker>
           </SelectWrapBedeck>
         </Space>
 

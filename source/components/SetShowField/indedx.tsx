@@ -215,25 +215,25 @@ const SetShowField = (props: Props) => {
               }
             }),
         },
-        {
-          key: '2',
-          type: 'group',
-          label: t('setting.system'),
-          children: viewList
-            ?.filter((i: any) => {
-              return i.type === 2
-            })
-            .map((item: any) => {
-              return {
-                key: item.id,
-                label: (
-                  <span onClick={() => filterByViewList(item)}>
-                    {item.name}
-                  </span>
-                ),
-              }
-            }),
-        },
+        // {
+        //   key: '2',
+        //   type: 'group',
+        //   label: t('setting.system'),
+        //   children: viewList
+        //     ?.filter((i: any) => {
+        //       return i.type === 2
+        //     })
+        //     .map((item: any) => {
+        //       return {
+        //         key: item.id,
+        //         label: (
+        //           <span onClick={() => filterByViewList(item)}>
+        //             {item.name}
+        //           </span>
+        //         ),
+        //       }
+        //     }),
+        // },
         {
           key: '5',
           label: (
