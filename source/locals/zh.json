@@ -2633,5 +2633,7 @@
   "managementBackend": "管理后台",
   "theTaskIsAboutToEnd": "任务即将截止",
   "theDeadlineForTasksExceeds": "截止任务数超过",
-  "searchForRequirementNameOrNumber": "搜索需求名称或编号"
+  "searchForRequirementNameOrNumber": "搜索需求名称或编号",
+  "ohMyYourPageHasBeenLost": "哎呀！您的页面走丢了",
+  "goBackToTheHomepage": "回到首页"
 }

@@ -41,7 +41,7 @@ const routes = [
     children: [
       {
         path: '*',
-        element: lazy(() => import('@/views/Layout/Project')),
+        element: lazy(() => import('@/components/ErrorPage/404')),
       },
       {
         path: 'Project',

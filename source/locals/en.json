@@ -2633,5 +2633,7 @@
   "managementBackend": "Backstage",
   "theTaskIsAboutToEnd": "The task is about to end",
   "theDeadlineForTasksExceeds": "The deadline for tasks exceeds",
-  "searchForRequirementNameOrNumber": "Search for requirement name or number"
+  "searchForRequirementNameOrNumber": "Search for requirement name or number",
+  "ohMyYourPageHasBeenLost": "Oh my! Your page has been lost",
+  "goBackToTheHomepage": "Go back to the homepage"
 }
