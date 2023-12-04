@@ -139,6 +139,7 @@ const ProjectInfo = () => {
     // 删除确认
     open({
       title: t('deleteConfirmation'),
+      text: t('mark.delP'),
       onConfirm() {
         onDeleteConfirm()
         return Promise.resolve()
@@ -150,8 +151,10 @@ const ProjectInfo = () => {
       await deleteProject({ id: projectInfo.id })
       getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       navigate('/Project')
-    // eslint-disable-next-line no-inline-comments
-    } catch (error) { /* empty */ }
+      // eslint-disable-next-line no-inline-comments
+    } catch (error) {
+      /* empty */
+    }
   }
 
   return (
@@ -160,6 +163,10 @@ const ProjectInfo = () => {
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>
         <CardGroup size={32}>
+          <CardItem>
+            <div>{projectInfo.memberCount || 0}</div>
+            <span>{t('project.projectMember')}</span>
+          </CardItem>
           <CardItem>
             <div>{projectInfo.demandCount || 0}</div>
             <span>{t('common.demand')}</span>
@@ -171,10 +178,6 @@ const ProjectInfo = () => {
           <CardItem>
             <div>{projectInfo.iterateCount || 0}</div>
             <span>{t('project.iterateEdition')}</span>
-          </CardItem>
-          <CardItem>
-            <div>{projectInfo.memberCount || 0}</div>
-            <span>{t('project.projectMember')}</span>
           </CardItem>
         </CardGroup>
       </InfoLeft>

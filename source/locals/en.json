@@ -2650,5 +2650,8 @@
   "haveWater": "With watermark",
   "notHaveWater": "No watermark",
   "viewPermissionIsRequiredToOperate": "View permission is required to operate",
-  "editingPermissionIsRequiredToOperate": "Editing permission is required to operate"
+  "editingPermissionIsRequiredToOperate": "Editing permission is required to operate",
+  "needToHaveRemovalPermissionToOperate": "Need to have removal permission to operate",
+  "stateDefinition": "State definition",
+  "circulationConfiguration": "Circulation configuration"
 }

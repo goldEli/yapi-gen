@@ -9,6 +9,7 @@ export const HeaderWrap = styled.div`
   display: flex;
   align-items: center;
   margin-top: 12px;
+  padding: 0 8px;
   justify-content: space-between;
 `
 export const OperateWrap = styled.div`
@@ -21,6 +22,7 @@ export const OperateWrap = styled.div`
 
 export const TableWrap = styled.div`
   min-height: 200px;
+  padding: 0 8px;
 `
 
 export const OperateLabelText = styled.span<{ color: string }>`

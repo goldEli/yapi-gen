@@ -26,7 +26,7 @@ const ProjectCommonOperation = (props: Props) => {
       <SearchBox>
         <div
           style={{
-            paddingLeft: '24px',
+            paddingLeft: '8px',
             height: '32px',
             display: 'flex',
             alignItems: 'center',

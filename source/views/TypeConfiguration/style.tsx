@@ -77,21 +77,22 @@ export const MenuItem = styled.div<{ isActive?: boolean }>`
   height: 44px;
   display: flex;
   align-items: center;
-  padding: 0 24px;
+  padding-left: 8px;
+  border-radius: 4px;
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   cursor: pointer;
   white-space: nowrap;
   div {
-    margin-left: 12px;
+    margin-left: 8px;
   }
   svg {
     color: ${props =>
-      props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
+      props.isActive ? 'var(--selected)' : 'var(--neutral-n1-d2)'};
   }
-  background: ${props =>
-    props.isActive ? 'var(--gradient-left)' : 'transparent'};
+  background: ${props => (props.isActive ? 'var(--selected)' : 'transparent')};
   &:hover {
+    background: var(--hover-d1);
     svg {
       color: var(--primary-d2) !important;
     }

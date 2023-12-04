@@ -2650,5 +2650,8 @@
   "haveWater": "有水印",
   "notHaveWater": "无水印",
   "viewPermissionIsRequiredToOperate": "需要查看权限才能操作",
-  "editingPermissionIsRequiredToOperate": "需要编辑权限才能操作"
+  "editingPermissionIsRequiredToOperate": "需要编辑权限才能操作",
+  "needToHaveRemovalPermissionToOperate": "需要有移除权限才能操作",
+  "stateDefinition": "状态定义",
+  "circulationConfiguration": "流转配置"
 }
