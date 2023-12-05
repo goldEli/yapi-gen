@@ -255,7 +255,7 @@ const TableMoreDropdown = (props: Props) => {
       label: <div>{t('sprint.moveToSprint')}</div>,
     },
   ].concat(
-    props?.rightSprintList.map((k: any) => ({
+    props?.rightSprintList?.map((k: any) => ({
       key: k.id,
       label: (
         <div
