@@ -164,7 +164,7 @@ const Index = () => {
                 setRowData(record)
               }}
             >
-              编辑
+              {t('edit')}
             </OperateLabelText>
             <OperateLabelText
               color="var(--primary-d2)"
