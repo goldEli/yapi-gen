@@ -28,6 +28,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { Editor } from 'ifunuikit'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { getStaffListAll } from '@/services/staff'
+import { useSearchParams } from 'react-router-dom'
 import NewRelatedNeedForProject from './NewRelatedNeedForProject'
 import {
   AgainButton,
@@ -52,6 +53,9 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const [havePermission, setHavePermission] = useState(false)
   const [form] = Form.useForm()
   const [t]: any = useTranslation()
+  const [searchParams] = useSearchParams()
+  // const paramsData = getParamsData(searchParams) ?? {}
+  // const projectId = paramsData.id
   const [initData, setInitData] = useState<any>(null)
   const [currentProject, setCurrentProject] = useState<any>(null)
   const [projectList, setProjectList] = useState<any>([])
@@ -299,7 +303,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const getInitDaily = async () => {
     const result = await initDaily({
       type: type === 'project' ? 3 : 2,
-      project_id: currentProject.id,
+      project_id: projectId,
     })
     setInitData(result)
   }
@@ -309,7 +313,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       getInitDaily()
       getProjectDataList()
     }
-  }, [visible, currentProject])
+  }, [visible])
 
   useEffect(() => {
     if (currentProject) {
