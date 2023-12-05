@@ -129,6 +129,13 @@ const CollapseHeader = (props: any) => {
               })
               return [...pre, item.id].filter(i => i !== item.id)
             })
+            const resultKeysNotCheckEd = props.userKeys.filter(
+              (object: any) =>
+                !props.item?.member_list?.some(
+                  (otherObject: any) => otherObject.id === object,
+                ),
+            )
+            props.onChangeProjectKeys(resultKeysNotCheckEd)
           }}
           checked={projectKey?.includes(item.id)}
           indeterminate={indeterminate}
@@ -287,6 +294,14 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
                   onChangeIteration={() => {}}
                   setUserKeys={setUserKeys}
                   userKeys={userKeys}
+                  onChangeProjectKeys={(keys: any[]) => {
+                    setIndeterminate(
+                      keys?.length !== getAllUser(allMemberList)?.length,
+                    )
+                    setCheckAll(
+                      keys?.length === getAllUser(allMemberList)?.length,
+                    )
+                  }}
                 />
               }
               key={i.id}

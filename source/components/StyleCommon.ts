@@ -1,3 +1,4 @@
+import { get } from './../tools/http'
 /* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -8,6 +9,7 @@ import styled from '@emotion/styled'
 import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
+import { StatusTagColor } from '@/constants'
 
 const TableActionWrap = styled.div`
   display: flex;
@@ -721,7 +723,7 @@ const ListNameWrap = styled.div<{
   }),
 )
 
-const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
+const StatusWrap = styled.div<{ isShow?: boolean; state?: number | undefined }>(
   {
     height: 22,
     borderRadius: 6,
@@ -734,22 +736,25 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
   },
   ({ isShow, state }) => ({
     cursor: isShow ? 'pointer' : 'inherit',
-    color:
-      state === 1
-        ? 'var(--neutral-white-d7)'
-        : state === 2
-        ? 'var(--neutral-n1-d1)'
-        : state === 3
-        ? 'var(--neutral-white-d7)'
-        : '',
-    background:
-      state === 1
-        ? 'var(--auxiliary-b1)'
-        : state === 2
-        ? 'var(--neutral-n7)'
-        : state === 3
-        ? 'var(--function-success)'
-        : '',
+    // color:
+    //   state === 1
+    //     ? 'var(--neutral-white-d7)'
+    //     : state === 2
+    //     ? 'var(--neutral-n1-d1)'
+    //     : state === 3
+    //     ? 'var(--neutral-white-d7)'
+    //     : '',
+
+    // background:
+    //   state === 1
+    //     ? 'var(--auxiliary-b1)'
+    //     : state === 2
+    //     ? 'var(--neutral-n7)'
+    //     : state === 3
+    //     ? 'var(--function-success)'
+    //     : '',
+    background: StatusTagColor.get(state)?.bg,
+    color: StatusTagColor.get(state)?.color,
   }),
 )
 
