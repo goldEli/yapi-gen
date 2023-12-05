@@ -362,7 +362,6 @@ const StatusModal = (props: StatusModalProps) => {
       setConfigData(res)
     }
     form.setFieldsValue(setValue(res))
-    console.log('-----', form.getFieldsValue(), setValue(res))
   }
 
   // 关闭弹窗
@@ -702,6 +701,7 @@ const StatusModal = (props: StatusModalProps) => {
                         style={{ width: '100%' }}
                         min={1}
                         precision={1}
+                        disabled={i.is_readOnly === 1}
                       />
                     ) : (
                       <NumericInput type={i.value ? i.value[0] : ''} />
