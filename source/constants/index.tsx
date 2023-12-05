@@ -41,3 +41,9 @@ export const ROUTERS_URL: any = {
   '/ProjectManagement/ProjectSetting': '/ProjectDetail/Setting',
   '/SprintProjectManagement/Setting': '/ProjectDetail/Setting',
 }
+
+export const StatusTagColor: any = new Map([
+  [1, { color: 'var(--neutral-n1-d1)', bg: '#CBECFF' }],
+  [2, { color: 'var(--neutral-n1-d1)', bg: '#BBFFBA' }],
+  [3, { color: 'var(--neutral-n1-d1)', bg: '#FFF383' }],
+])

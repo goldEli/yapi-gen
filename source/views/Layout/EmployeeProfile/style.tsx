@@ -88,11 +88,11 @@ export const HeaderWrap = styled.div`
 `
 
 export const HeaderSearch = styled.div`
-  width:90%;
+  width: 90%;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   gap: 16px;
 `
 
