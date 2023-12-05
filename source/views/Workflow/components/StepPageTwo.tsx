@@ -132,18 +132,16 @@ const StepPageTwo = (props: any) => {
 
   const onSave = async (str?: string) => {
     try {
-      if (!compareArrays(nowWorkList, workList?.list)) {
-        await saveWorkflowStatus({
-          projectId: paramsData.id,
-          categoryId: categoryItem?.id,
-          canChanges: workList?.list?.map((k: any) => ({
-            id: k.id,
-            can_changes_category_status: k.canChange,
-          })),
-        })
-        setNowWorkList([...workList?.list])
-        getMessage({ msg: t('common.saveSuccess'), type: 'success' })
-      }
+      await saveWorkflowStatus({
+        projectId: paramsData.id,
+        categoryId: categoryItem?.id,
+        canChanges: workList?.list?.map((k: any) => ({
+          id: k.id,
+          can_changes_category_status: k.canChange,
+        })),
+      })
+      setNowWorkList([...workList?.list])
+      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
       str === 'cancel' && props.onCancel()
     } catch (error) {
       //

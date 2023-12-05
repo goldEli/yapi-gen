@@ -43,8 +43,6 @@ import {
 import {
   IconWrap,
   LiWrap,
-  MoreItem,
-  MoreWrap,
   OperationWrap,
   StatusGroup,
   StatusItems,
@@ -118,16 +116,6 @@ const Operation = (props: Props, ref: any) => {
 
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
-
-  const hasImport = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
-  )
-
-  const hasExport = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
-  )
   const info = useGetloginInfo()
   const splitArrayByValue = (arr: any) => {
     let arr1 = arr.filter((x: any) => x.status === 1)
@@ -308,37 +296,6 @@ const Operation = (props: Props, ref: any) => {
     },
     [],
   )
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        minWidth: i18n.language === 'zh' ? 110 : 151,
-      }}
-    >
-      {projectInfoValues
-        ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1 && i.work_type === 1)
-        ?.map((k: any) => {
-          return (
-            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
-              <img
-                src={k.category_attachment ? k.category_attachment : ' '}
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-              <span>{k.content}</span>
-            </LiWrap>
-          )
-        })}
-    </div>
-  )
   //   状态类型列表
   const statusList = [
     { name: '全部', key: 0, field: '' },
@@ -367,29 +324,6 @@ const Operation = (props: Props, ref: any) => {
       onExportClick,
     }
   })
-  const moreOperation = (
-    <div
-      style={{
-        padding: '4px 0',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {hasImport ? null : (
-        <MoreItem onClick={onImportClick}>
-          <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
-        </MoreItem>
-      )}
-      {hasExport ? null : (
-        <MoreItem onClick={onExportClick}>
-          <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.exportDemand')}</span>
-        </MoreItem>
-      )}
-    </div>
-  )
-
   const onImportClose = () => {
     setIsShowImport(false)
   }

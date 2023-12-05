@@ -539,7 +539,6 @@ const CreateDemandRight = (props: Props) => {
 
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {
-    console.log('------', item, item.title, item.content)
     let nodeComponent
 
     // 下拉多选 抄送人，处理人，迭代,发现版本
