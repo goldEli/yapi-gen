@@ -12,7 +12,7 @@ interface FullScreenContainerProps {
 const Box = styled(FullScreen)<{ isScreen?: boolean }>`
   flex: 1;
   overflow: hidden;
-  margin-top: 32px;
+  /* margin-top: 32px; */
   border-radius: 6px;
   background: ${props => (props.isScreen ? 'var(--neutral-white-d1)' : '')};
   padding: ${props => (props.isScreen ? '16px' : '0')};

@@ -17,6 +17,15 @@ interface MoreWrapProps {
   selectedRowKeys?: any
   // 是否是关联关系列表
   isRelation?: boolean
+  // 冲刺移动
+  onRemoveSprintItem?(
+    iterate_id: number,
+    story_id: number,
+    to_iterate_id: number,
+    needFresh: boolean,
+  ): void
+  // 冲刺的其他菜单
+  rightSprintList?: any
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -40,6 +49,17 @@ const MoreWrap = (props: MoreWrapProps) => {
     props.onClickBatch?.(e, row)
   }
 
+  // 移动
+  const onRemoveSprintItem = (
+    iterate_id: number,
+    story_id: number,
+    to_iterate_id: number,
+    needFresh: boolean,
+  ) => {
+    setIsMoreVisible(false)
+    props.onRemoveSprintItem?.(iterate_id, story_id, to_iterate_id, needFresh)
+  }
+
   return (
     <TableMoreDropdown
       isMoreVisible={isMoreVisible}
@@ -50,6 +70,8 @@ const MoreWrap = (props: MoreWrapProps) => {
       onEditChange={onEditChange}
       onCreateChild={onCreateChild}
       onClickBatch={onClickBatch}
+      onRemoveSprintItem={onRemoveSprintItem}
+      rightSprintList={props?.rightSprintList}
     />
   )
 }
@@ -66,6 +88,15 @@ interface CommonOperationProps {
   selectedRowKeys?: any
   // 是否是关联列表
   isRelation?: boolean
+  // 冲刺移动
+  onRemoveSprintItem?(
+    iterate_id: number,
+    story_id: number,
+    to_iterate_id: number,
+    needFresh: boolean,
+  ): void
+  // 冲刺的其他菜单
+  rightSprintList?: any
 }
 
 const CommonTableOperation = (props: CommonOperationProps) => {
@@ -74,11 +105,13 @@ const CommonTableOperation = (props: CommonOperationProps) => {
     record,
     selectedRowKeys,
     isRelation,
+    rightSprintList,
     onEditChange,
     onCreateChild,
     onDeleteChange,
     onClickBatch,
     init,
+    onRemoveSprintItem,
   } = props
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
@@ -102,8 +135,12 @@ const CommonTableOperation = (props: CommonOperationProps) => {
   // 是否有更新进度的权限
   const hasUpdateProgress =
     !onComputedPermission(record, 'update') &&
-    record?.usersInfo?.length > 0 &&
-    record?.usersInfo?.map((i: any) => i.id)?.includes(userInfo?.id)
+    (record?.usersInfo ?? record?.handlers)?.length > 0 &&
+    (record?.usersInfo ?? record?.handlers)
+      ?.map((i: any) => i.id)
+      ?.includes(userInfo?.id)
+
+  console.log(record)
 
   return (
     <TableActionWrap>
@@ -113,7 +150,11 @@ const CommonTableOperation = (props: CommonOperationProps) => {
             <CommonProgress
               isTableOperation
               isTable={false}
-              id={record.id}
+              id={
+                String(record.id).includes('_')
+                  ? record?.id?.split('_')?.[1]
+                  : record.id
+              }
               type={
                 record?.project_type === 2
                   ? 'transaction'
@@ -149,6 +190,8 @@ const CommonTableOperation = (props: CommonOperationProps) => {
           onEditChange={onEditChange}
           onCreateChild={onCreateChild}
           onClickBatch={onClickBatch}
+          onRemoveSprintItem={onRemoveSprintItem}
+          rightSprintList={rightSprintList}
         />
       </TableActionItem>
     </TableActionWrap>

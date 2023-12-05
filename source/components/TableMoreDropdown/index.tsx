@@ -33,6 +33,15 @@ interface Props {
   selectedRowKeys?: any
   // 是否是关联关系列表
   isRelation?: boolean
+  // 冲刺移动
+  onRemoveSprintItem?(
+    iterate_id: number,
+    story_id: number,
+    to_iterate_id: number,
+    needFresh: boolean,
+  ): void
+  // 冲刺的其他菜单
+  rightSprintList?: any
 }
 
 const TableMoreDropdown = (props: Props) => {
@@ -226,6 +235,46 @@ const TableMoreDropdown = (props: Props) => {
     },
   ]
 
+  // 冲刺的菜单
+  const sprintItems = [
+    {
+      key: '1',
+      label: <div onClick={onCopyLink}>{t('copy_Link')}</div>,
+    },
+    {
+      key: '2',
+      label: (
+        <div onClick={() => props.onEditChange?.(props.record)}>
+          {t('sprint.editTransaction')}
+        </div>
+      ),
+    },
+    {
+      key: '4',
+      disabled: true,
+      label: <div>{t('sprint.moveToSprint')}</div>,
+    },
+  ].concat(
+    props?.rightSprintList.map((k: any) => ({
+      key: k.id,
+      label: (
+        <div
+          key={k.id}
+          onClick={() =>
+            props.onRemoveSprintItem?.(
+              Number(props?.record?.id?.split('_')?.[0]),
+              Number(props?.record?.id?.split('_')?.[1]),
+              k.id,
+              true,
+            )
+          }
+        >
+          {k.name}
+        </div>
+      ),
+    })),
+  )
+
   // 计算菜单权限
   const onComputedItems = () => {
     let menuItems: any =
@@ -257,6 +306,8 @@ const TableMoreDropdown = (props: Props) => {
     resultMenu = batchItems
   } else if (props.isRelation) {
     resultMenu = menuItemsDefect.filter((i: any) => i.key !== '2')
+  } else if (props.rightSprintList) {
+    resultMenu = sprintItems
   } else {
     resultMenu = onComputedItems()
   }

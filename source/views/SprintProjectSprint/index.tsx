@@ -870,7 +870,7 @@ const SprintProjectSprint: React.FC = () => {
                   setCheckCommission([false, false])
                 }}
               >
-                {t('common.clearForm')}
+                {t('reset')}
               </ClearButton>
             </div>
             <Spin spinning={rightLoading} indicator={<NewLoadingTransition />}>
