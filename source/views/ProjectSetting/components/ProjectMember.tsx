@@ -98,9 +98,7 @@ const ProjectMember = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const [isVisible, setIsVisible] = useState(true)
   const [isAddVisible, setIsAddVisible] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
   const [memberList, setMemberList] = useState<any>({
     list: undefined,
@@ -116,12 +114,11 @@ const ProjectMember = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 30 })
   const [searchValue, setSearchValue] = useState('')
+  const [jobIds, setJobIds] = useState<any>([])
+  const [userGroupIds, setUserGroupIds] = useState<any>([])
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [batchEditVisible, setBatchEditVisible] = useState(false)
-  const [departments, setDepartments] = useState([])
-  const [member, setMember] = useState<any>()
-  const [userDataList, setUserDataList] = useState<any[]>([])
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
@@ -147,15 +144,15 @@ const ProjectMember = () => {
   const getList = async (orderVal?: any, pagePrams?: any) => {
     setMemberList({ list: undefined })
     setIsSpinning(true)
-    const values = await form.getFieldsValue()
     const result = await getProjectMember({
       projectId,
       order: orderVal?.value,
       orderKey: orderVal?.key,
       page: pagePrams?.page,
       pageSize: pagePrams?.size,
-      ...values,
-      searchValue: searchValue,
+      searchValue,
+      jobIds,
+      userGroupIds,
     })
     setMemberList(result)
     setIsSpinning(false)
@@ -182,15 +179,6 @@ const ProjectMember = () => {
       })),
     )
   }
-
-  useEffect(() => {
-    getJobList()
-    getPermission()
-  }, [])
-
-  useEffect(() => {
-    getList(order, { ...pageObj, page: 1 })
-  }, [searchValue])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
@@ -222,12 +210,9 @@ const ProjectMember = () => {
   }
 
   const onReset = () => {
-    form.resetFields()
-    getList(order, { page: 1, size: pageObj.size })
-  }
-
-  const onValuesChange = () => {
-    getList(order, { page: 1, size: pageObj.size })
+    setSearchValue('')
+    setJobIds([])
+    setUserGroupIds([])
   }
 
   const menu = (item: any) => {
@@ -532,35 +517,6 @@ const ProjectMember = () => {
     setIsAddVisible(!isAddVisible)
   }
 
-  const init = async () => {
-    const res2 = await getAddDepartMember(projectId)
-
-    const arr = res2.companyList.map((i: any) => {
-      return {
-        id: i.id,
-        code: '234234',
-        name: i.name,
-        avatar: i.avatar,
-        phoneNumber: '123123213',
-        departmentId: i.department_id,
-        jobName: '',
-        jobId: '1584818157136687105',
-        cardType: '',
-        cardNumber: '',
-        hiredate: '2022-11-26',
-        type: 1,
-        gender: 0,
-        companyId: '1504303190303051778',
-      }
-    })
-
-    const obj = {
-      list: arr,
-    }
-    setMember(obj)
-
-    setDepartments(res2.departments)
-  }
   const onClickCancel = () => {
     setIsAddVisible(false)
   }
@@ -617,7 +573,6 @@ const ProjectMember = () => {
     }
     await addMember(params)
     getMessage({ msg: t('common.addSuccess') as string, type: 'success' })
-    setUserDataList([])
     getList(order, pageObj)
     setIsAddVisible(false)
     setTimeout(() => {
@@ -626,21 +581,10 @@ const ProjectMember = () => {
     }, 100)
   }
 
-  useEffect(() => {
-    if (isAddVisible) {
-      init()
-    }
-  }, [isAddVisible])
-
-  useEffect(() => {
-    if (isUpdateMember) {
-      getList(order, { page: 1, size: pageObj.size })
-    }
-  }, [isUpdateMember])
-
   const refresh = () => {
     getList(order, pageObj)
   }
+
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -652,6 +596,21 @@ const ProjectMember = () => {
   useEffect(() => {
     setSelectedRowKeys([])
   }, [memberList?.list])
+
+  useEffect(() => {
+    getJobList()
+    getPermission()
+  }, [])
+
+  useEffect(() => {
+    if (isUpdateMember) {
+      getList(order, { page: 1, size: pageObj.size })
+    }
+  }, [isUpdateMember])
+
+  useEffect(() => {
+    getList(order, { ...pageObj, page: 1 })
+  }, [searchValue, jobIds, userGroupIds])
 
   // 判断是否详情回来，并且权限是不是有
   const isLength =
@@ -748,44 +707,50 @@ const ProjectMember = () => {
         <Header>
           <SearchWrap size={16}>
             <InputSearch
-              onChangeSearch={setSearchValue}
               placeholder={t('project.pleaseNickname')}
               leftIcon
+              defaultValue={searchValue}
+              onChangeSearch={value => {
+                setSearchValue(value)
+              }}
             />
             <SelectWrapBedeck>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('common.job')}
               </span>
-              <Form.Item name="searchValue" />
-              <Form.Item name="jobIds" noStyle>
-                <SelectWrap
-                  showArrow
-                  mode="multiple"
-                  style={{ width: '100%' }}
-                  placeholder={t('common.all')}
-                  showSearch
-                  options={jobList}
-                  optionFilterProp="label"
-                  allowClear
-                />
-              </Form.Item>
+              <SelectWrap
+                showArrow
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder={t('common.all')}
+                showSearch
+                options={jobList}
+                optionFilterProp="label"
+                allowClear
+                value={jobIds}
+                onChange={(value: any) => {
+                  setJobIds(value)
+                }}
+              />
             </SelectWrapBedeck>
             <SelectWrapBedeck>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('common.permissionGroup')}
               </span>
-              <Form.Item name="userGroupIds" noStyle>
-                <SelectWrap
-                  showArrow
-                  mode="multiple"
-                  style={{ width: '100%' }}
-                  placeholder={t('common.all')}
-                  showSearch
-                  options={projectPermission}
-                  optionFilterProp="label"
-                  allowClear
-                />
-              </Form.Item>
+              <SelectWrap
+                showArrow
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder={t('common.all')}
+                showSearch
+                options={projectPermission}
+                optionFilterProp="label"
+                allowClear
+                value={userGroupIds}
+                onChange={(value: any) => {
+                  setUserGroupIds(value)
+                }}
+              />
             </SelectWrapBedeck>
             <div
               style={{
