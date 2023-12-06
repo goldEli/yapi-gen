@@ -11,7 +11,7 @@ export const Wrap = styled.div`
 
 export const ContentWrap = styled.div`
   display: flex;
-  height: calc(100% - 157px);
+  height: calc(100% - 73px);
   overflow: auto;
   flex: 1;
 `
@@ -89,10 +89,10 @@ export const HeaderWrap = styled.div`
 `
 
 export const HeaderSearch = styled.div`
-  margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
+  margin-bottom: 20px;
 `
 
 export const HeaderCardGroup = styled.div`
@@ -694,5 +694,15 @@ export const CollapseHeaderWrap = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
     }
+  }
+`
+
+export const NoDataTextWrap = styled.div`
+  color: var(--neutral-n3);
+  font-size: 14px;
+  margin-top: 24px;
+  text-align: center;
+  span {
+    display: block;
   }
 `

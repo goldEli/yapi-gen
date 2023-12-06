@@ -213,8 +213,25 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   useEffect(() => {
     dispatch(getMemberOverviewList())
   }, [])
-  // 获取最近的项目
 
+  // 获取最近的项目
+  useEffect(() => {
+    const getList = async () => {
+      const res = await getRecentProject({ page: 1, pagesize: 15 })
+      const { list } = res?.data ?? {}
+      const keys = Object.keys(res.data.list)
+      const lastProject = list[keys[0]][0]
+      const {
+        actionable: { id },
+      } = lastProject ?? {}
+      setProjectKey(id)
+      const userKeys = allMemberList
+        .find(item => item.id === id)
+        ?.member_list.map((member: any) => member.id)
+      setUserKeys(userKeys)
+    }
+    getList()
+  }, [allMemberList])
   useEffect(() => {
     if (currentKey?.key && allMemberList?.length > 0) {
       setSelectKeys(currentKey?.user_ids)

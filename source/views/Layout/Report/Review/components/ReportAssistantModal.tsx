@@ -38,8 +38,11 @@ import {
   LoadingButton,
   TitleTips,
   NotHaveTaskWrap,
+  ModalFooter,
 } from './style'
 import ProjectGroup from './ProjectGroup'
+import CommonButton from '@/components/CommonButton'
+import useCountdown from '../hook/useCountdown'
 
 interface ReportAssistantProps {
   visible: boolean
@@ -66,6 +69,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const [options, setOptions] = useState<any>([])
   const [tasksConfig, setTasksConfig] = useState<any>({})
+  const { times, setLocalTime, start, clearTimer } = useCountdown()
   const { close, visible, type, projectId } = props
 
   // 带入默认选中项目
@@ -177,6 +181,8 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
       onClose()
       // 更新List页面
       dispatch(setUpdateList({ isFresh: 1 }))
+      // 发送一次后禁用60s按钮
+      setLocalTime(type)
     }
   }
 
@@ -305,6 +311,10 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
     if (visible) {
       getInitDaily()
       getProjectDataList()
+      start(type)
+    }
+    return () => {
+      clearTimer()
     }
   }, [visible])
 
@@ -920,8 +930,23 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
         title={type === 'user' ? t('singleDaily') : t('projectDaily')}
         isVisible={visible}
         onClose={onClose}
-        onConfirm={confirm}
         confirmText={t('send')}
+        hasFooter={
+          <ModalFooter size={16} style={{ padding: '24px 20px 24px 0px' }}>
+            <CommonButton type="light" onClick={onClose}>
+              {t('common.cancel')}
+            </CommonButton>
+            {times ? (
+              <CommonButton type="light" isDisable style={{ width: 98 }}>
+                重发 ({times}s)
+              </CommonButton>
+            ) : (
+              <CommonButton onClick={confirm} type="primary">
+                {t('common.confirm2')}
+              </CommonButton>
+            )}
+          </ModalFooter>
+        }
       >
         <div
           style={{

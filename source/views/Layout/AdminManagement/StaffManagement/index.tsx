@@ -260,7 +260,7 @@ const StaffManagement = () => {
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
-      navigate('/Mine/Profile')
+      navigate('/Mine/Carbon')
     } else {
       const params = encryptPhp(
         JSON.stringify({
@@ -271,7 +271,7 @@ const StaffManagement = () => {
         }),
       )
       navigate(
-        `/AdminManagement/OrganizationInformation/MemberInfo/Profile?data=${params}`,
+        `/AdminManagement/OrganizationInformation/MemberInfo/Carbon?data=${params}`,
       )
     }
   }

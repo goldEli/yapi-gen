@@ -36,15 +36,18 @@ import {
 import PaginationBox from '@/components/TablePagination'
 import { getMessage } from '@/components/Message'
 import { getHisProjectCharts } from '@/services/mine'
-import CommonIconFont from '@/components/CommonIconFont'
 import FullScreenContainer from '@/views/KanBanBoard/FullScreenContainer'
 import { setFullScreen } from '@store/kanBan'
 import { useFullScreenHandle } from 'react-full-screen'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import LineAnimation from '@/views/Layout/Mine/components/LineAnimation'
-import { FullScreenDiv } from '@/views/Layout/Mine/Profile'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
+
+const FullScreenDiv = styled.div<{ isScreen: boolean }>`
+  height: ${props => (props.isScreen ? '100vh' : '')};
+  background: white;
+`
 
 const Wrap = styled.div`
   padding: 0 24px;

@@ -19,11 +19,6 @@ const Mine = () => {
 
   const list = [
     {
-      key: '1',
-      label: t('mine.mineSurvey'),
-      url: '/Mine/Profile',
-    },
-    {
       key: '2',
       label: t('mine.mineNeedDeal'),
       url: '/Mine/Carbon',
@@ -58,8 +53,8 @@ const Mine = () => {
   }
 
   useEffect(() => {
-    if (routerPath.pathname === '/Mine/Profile') {
-      setActiveKey('1')
+    if (routerPath.pathname === '/Mine/Carbon') {
+      setActiveKey('2')
     } else {
       //   获取当前路由的key
       const currentRouter = list?.filter(
