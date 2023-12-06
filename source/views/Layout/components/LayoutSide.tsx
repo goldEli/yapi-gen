@@ -191,9 +191,9 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       navigateUrl = `${item.url}/Review/List/1`
     }
 
-    // 如果是我的则默认跳转我的概况
+    // 如果是我的则默认跳转我的待办
     if (item.url === '/Mine') {
-      navigateUrl = `${item.url}/Profile`
+      navigateUrl = `${item.url}/Carbon`
     }
 
     // 如果是动态则默认跳转全部

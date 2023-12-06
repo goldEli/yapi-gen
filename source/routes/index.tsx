@@ -132,10 +132,10 @@ const routes = [
             path: 'Examine',
             element: lazy(() => import('@/views/Layout/Mine/Examine')),
           },
-          {
-            path: 'Profile',
-            element: lazy(() => import('@/views/Layout/Mine/Profile')),
-          },
+          // {
+          //   path: 'Profile',
+          //   element: lazy(() => import('@/views/Layout/Mine/Profile')),
+          // },
         ],
       },
       {
@@ -186,10 +186,10 @@ const routes = [
                     path: 'Finished',
                     element: lazy(() => import('@/views/MemberInfo/Finished')),
                   },
-                  {
-                    path: 'Profile',
-                    element: lazy(() => import('@/views/MemberInfo/Profile')),
-                  },
+                  // {
+                  //   path: 'Profile',
+                  //   element: lazy(() => import('@/views/MemberInfo/Profile')),
+                  // },
                 ],
               },
             ],
@@ -375,10 +375,10 @@ const routes = [
                 path: 'Finished',
                 element: lazy(() => import('@/views/MemberInfo/Finished')),
               },
-              {
-                path: 'Profile',
-                element: lazy(() => import('@/views/MemberInfo/Profile')),
-              },
+              // {
+              //   path: 'Profile',
+              //   element: lazy(() => import('@/views/MemberInfo/Profile')),
+              // },
             ],
           },
         ],
