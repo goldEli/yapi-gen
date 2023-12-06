@@ -218,7 +218,7 @@ const Main = (props: UserInfo) => {
                   userId: props.userInfo.id,
                 }),
               )
-              navigate(`/MemberInfo/Profile?data=${params}`)
+              navigate(`/MemberInfo/Carbon?data=${params}`)
             }}
           >
             {/* 需要跳转到他的页面 概况待办 */}

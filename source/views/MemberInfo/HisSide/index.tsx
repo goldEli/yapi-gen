@@ -28,11 +28,6 @@ const HisSide = () => {
   const projectId = paramsData.id
   const menuList = [
     {
-      id: 1,
-      name: t('newlyAdd.hisSurvey'),
-      path: 'Profile',
-    },
-    {
       id: 2,
       name: t('newlyAdd.hisAbeyance'),
       path: 'Carbon',

@@ -405,6 +405,8 @@ const ReportItemGroup = (props: ReportItemGroupProps) => {
 
 interface EmployeeProfileReportProps {
   filterParams: any
+  // 需要向上传递第一个日报的第一个需求的数据
+  onGetReportFirstData(data: { project_id: number; id: number }): void
 }
 
 const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
@@ -445,7 +447,6 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
   }
 
   useEffect(() => {
-    console.log('filterParams', filterParams)
     if (filterParams?.user_ids) {
       setDataList({ list: undefined })
       setLoading(true)

@@ -2635,5 +2635,6 @@
   "theDeadlineForTasksExceeds": "The deadline for tasks exceeds",
   "searchForRequirementNameOrNumber": "Search for requirement name or number",
   "ohMyYourPageHasBeenLost": "Oh my! Your page has been lost",
-  "goBackToTheHomepage": "Go back to the homepage"
+  "goBackToTheHomepage": "Go back to the homepage",
+  "resetFiltering": "Reset filtering"
 }

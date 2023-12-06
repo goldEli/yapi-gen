@@ -7,6 +7,7 @@ import {
   RightBox,
   SideMain,
   Wrap,
+  NoDataTextWrap,
 } from './style'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import EmployeeProfilePerson from './components/EmployeeProfilePerson'
@@ -22,6 +23,8 @@ import {
 } from '@store/employeeProfile'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import NoData from '@/components/NoData'
+import CommonButton from '@/components/CommonButton'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
@@ -35,12 +38,51 @@ const EmployeeProfile = () => {
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [filterParams, setFilterParams] = useState<any>({})
+  // 第一条日报的第一个需求数据
+  const [reportFirstData, setReportFirstData] = useState<any>({
+    project_id: null,
+    id: null,
+  })
   const sideMain = useRef<any>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 600
   const { currentKey, currentClickNumber } = useSelector(
     store => store.employeeProfile,
   )
+
+  // 卡片列表
+  const cardList = [
+    {
+      name: t('mine.overdue'),
+      type: 'red',
+      key: 5,
+      fieldKey: 'overdue',
+    },
+    {
+      name: t('inProgress'),
+      type: 'blue',
+      key: 4,
+      fieldKey: 'start',
+    },
+    {
+      name: t('toBePlanned'),
+      type: 'org',
+      key: 3,
+      fieldKey: 'un_start',
+    },
+    {
+      name: t('completed'),
+      type: 'green',
+      key: 2,
+      fieldKey: 'completed',
+    },
+    {
+      name: t('all'),
+      type: 'purple',
+      key: 1,
+      fieldKey: 'all',
+    },
+  ]
   // filterParams = useMemo(
   //   () => filterParams,
   //   [filterParams?.status, filterParams?.time],
@@ -93,6 +135,34 @@ const EmployeeProfile = () => {
     setEndWidth(0)
     setIsOpen(!isOpen)
   }
+
+  // 计算筛选条件展示
+  const onComputedText = () => {
+    console.log(filterParams, '=1111')
+    // 是否有时间
+    const hasTime =
+      filterParams.time?.length > 0
+        ? `【${filterParams.time[0]} ~ ${filterParams.time[1]}】期间范围内未查询到`
+        : ''
+
+    // 是否有状态
+    const hasStatus =
+      filterParams?.status === 0
+        ? ''
+        : `状态为【${
+            cardList?.filter((i: any) => i.key === filterParams?.status)[0]
+              ?.name
+          }】`
+
+    // 是否有搜索条件
+    const hasKeyword =
+      filterParams?.keyword?.length > 0
+        ? `关键字为【${filterParams?.keyword}】`
+        : ''
+
+    return hasTime + hasKeyword + hasStatus + '的数据'
+  }
+
   // useEffect(() => {
   //   if (paramsData?.user_id) {
   //     console.log('paramsData---', paramsData)
@@ -109,13 +179,7 @@ const EmployeeProfile = () => {
         }}
         filterParams={filterParams}
       />
-      <ContentWrap
-        style={{
-          height: paramsData?.user_id
-            ? 'calc(100% - 73px)'
-            : 'calc(100% - 157px)',
-        }}
-      >
+      <ContentWrap>
         <PersonBox
           isOpen={isOpen}
           ref={sliderRef}
@@ -157,8 +221,33 @@ const EmployeeProfile = () => {
           </Tooltip>
         </PersonBox>
         <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
-          <EmployeeProfileReport filterParams={filterParams} />
-          <EmployeeProfileTask filterParams={filterParams} />
+          {/* 日报-关联需求id存在显示日报列表和任务详情 */}
+          {reportFirstData?.id ? (
+            <>
+              <EmployeeProfileReport
+                filterParams={filterParams}
+                onGetReportFirstData={setReportFirstData}
+              />
+              <EmployeeProfileTask filterParams={filterParams} />
+            </>
+          ) : (
+            <NoData>
+              {/* 暂无数据显示,需要日报提供是否有数据 */}
+              <NoDataTextWrap>
+                <span>{onComputedText()}</span>
+                <span>建议您【重置筛选】</span>
+              </NoDataTextWrap>
+              <CommonButton
+                type="light"
+                onClick={() => {
+                  // 点击清空筛选条件
+                }}
+                style={{ marginTop: 24 }}
+              >
+                {t('resetFiltering')}
+              </CommonButton>
+            </NoData>
+          )}
         </RightBox>
       </ContentWrap>
     </Wrap>

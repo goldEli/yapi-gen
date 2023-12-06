@@ -274,8 +274,8 @@ const Recently = (props: RecentlyProps) => {
     props.onClose()
     switch (tabActive) {
       case 0:
-        // 跳转日报
-        navigate('/Mine/Profile')
+        // 跳转待办
+        navigate('/Mine/Carbon')
         break
       default:
         // 跳转项目
