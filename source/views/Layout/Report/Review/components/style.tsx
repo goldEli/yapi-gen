@@ -1028,3 +1028,10 @@ export const GroupStoryBox = styled.div`
     }
   }
 `
+
+export const ModalFooter = styled(Space)({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+})
