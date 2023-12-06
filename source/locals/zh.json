@@ -2635,5 +2635,6 @@
   "theDeadlineForTasksExceeds": "截止任务数超过",
   "searchForRequirementNameOrNumber": "搜索需求名称或编号",
   "ohMyYourPageHasBeenLost": "哎呀！您的页面走丢了",
-  "goBackToTheHomepage": "回到首页"
+  "goBackToTheHomepage": "回到首页",
+  "resetFiltering": "重置筛选"
 }

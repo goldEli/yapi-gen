@@ -255,7 +255,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
 
   return (
     <HeaderWrap>
-      <HeaderSearch style={{ marginBottom: paramsData?.user_id ? 0 : 20 }}>
+      <HeaderSearch>
         <InputSearch
           onChangeSearch={value => onClickSearch(value, 'keyword')}
           leftIcon
@@ -299,7 +299,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           {t('starsOnly')}
         </Checkbox>
       </HeaderSearch>
-      {!paramsData?.user_id && (
+      {/* {!paramsData?.user_id && (
         <HeaderCardGroup>
           {cardList.map((i: any) => (
             <Card
@@ -328,7 +328,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             </Card>
           ))}
         </HeaderCardGroup>
-      )}
+      )} */}
     </HeaderWrap>
   )
 }
