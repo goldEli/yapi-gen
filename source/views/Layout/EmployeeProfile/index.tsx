@@ -28,6 +28,7 @@ const EmployeeProfile = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+
   const { layoutSideCollapse } = useSelector(state => state.global)
   const [leftWidth, setLeftWidth] = useState(320)
   const [endWidth, setEndWidth] = useState(320)
@@ -92,7 +93,12 @@ const EmployeeProfile = () => {
     setEndWidth(0)
     setIsOpen(!isOpen)
   }
+  // useEffect(() => {
+  //   if (paramsData?.user_id) {
+  //     console.log('paramsData---', paramsData)
 
+  //   }
+  // }, [paramsData?.user_id])
   return (
     <Wrap>
       <EmployeeProfileHeader
@@ -122,7 +128,7 @@ const EmployeeProfile = () => {
             <div className="box">
               <EmployeeProfilePerson
                 onChangeFilter={value => {
-                  setFilterParams(value)
+                  setFilterParams((pre: any) => ({ ...pre, ...value }))
                   dispatch(setFilterParamsOverall(value))
                 }}
                 filterParams={filterParams}

@@ -21,6 +21,7 @@ import EmployeeDepartment from './EmployeeDepartment'
 import { setStatistiDepartment } from '@store/project'
 import CommonIconFont from '@/components/CommonIconFont'
 import _ from 'lodash'
+import { getParamsData } from '@/tools'
 interface EmployeeProfilePersonProps {
   onChangeFilter(value: any): void
   filterParams: any
@@ -28,6 +29,7 @@ interface EmployeeProfilePersonProps {
 // 折叠头部
 const CollapseHeader = (props: any) => {
   const [t] = useTranslation()
+
   const {
     item,
     onChangeKeys,
@@ -129,6 +131,13 @@ const CollapseHeader = (props: any) => {
               })
               return [...pre, item.id].filter(i => i !== item.id)
             })
+            const resultKeysNotCheckEd = props.userKeys.filter(
+              (object: any) =>
+                !props.item?.member_list?.some(
+                  (otherObject: any) => otherObject.id === object,
+                ),
+            )
+            props.onChangeProjectKeys(resultKeysNotCheckEd)
           }}
           checked={projectKey?.includes(item.id)}
           indeterminate={indeterminate}
@@ -143,6 +152,8 @@ const CollapseHeader = (props: any) => {
 const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const [searchParamsUrl] = useSearchParams()
+  const paramsData = getParamsData(searchParamsUrl)
   // 全选状态
   const [checkAll, setCheckAll] = useState(false)
   // 半选状态
@@ -243,7 +254,29 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       },
     })
   }, [userKeys, expandedKeys])
+  useEffect(() => {
+    const data = getAllUser(allMemberList)
 
+    const users = data
+      .filter((item: any) => {
+        const [p_id, user_id] = item.id.split('_')
+        return parseInt(paramsData?.user_id, 10) === parseInt(user_id, 10)
+      })
+      ?.map((item: any) => {
+        const [project_id, user_id] = item.id.split('_')
+        return {
+          project_id: parseInt(project_id, 10),
+          user_id: parseInt(user_id, 10),
+        }
+      })
+    props.onChangeFilter({
+      ...props?.filterParams,
+      ...{
+        user_ids: users,
+      },
+    })
+    console.log('users', users)
+  }, [paramsData?.user_id])
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
     const key = Number(e.panelKey)
@@ -287,6 +320,15 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
                   onChangeIteration={() => {}}
                   setUserKeys={setUserKeys}
                   userKeys={userKeys}
+                  onChangeProjectKeys={(keys: any[]) => {
+                    console.log(keys.length, getAllUser(allMemberList)?.length)
+                    setIndeterminate(
+                      keys?.length !== getAllUser(allMemberList)?.length,
+                    )
+                    setCheckAll(
+                      keys?.length === getAllUser(allMemberList)?.length,
+                    )
+                  }}
                 />
               }
               key={i.id}

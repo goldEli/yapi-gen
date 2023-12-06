@@ -446,7 +446,7 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
 
   useEffect(() => {
     console.log('filterParams', filterParams)
-    if (filterParams?.status) {
+    if (filterParams?.user_ids) {
       setDataList({ list: undefined })
       setLoading(true)
       getReportList()

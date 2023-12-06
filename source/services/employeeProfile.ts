@@ -84,8 +84,8 @@ export const toggleStar = async (id: any, isStar: any) => {
 export const getMemberOverviewReportList = async (params: any) => {
   const response = await http.post<any>('getMemberOverviewReportList', {
     user_ids: params.user_ids || [],
-    start_time: params.time[0] ?? null,
-    end_time: params.time[1] ?? null,
+    start_time: params.time?.[0] ?? null,
+    end_time: params.time?.[1] ?? null,
     is_star: params.isStart ? 1 : 2,
   })
   return response.data
