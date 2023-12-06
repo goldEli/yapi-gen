@@ -41,10 +41,6 @@ const EmployeeProfile = () => {
   const { currentKey, currentClickNumber } = useSelector(
     store => store.employeeProfile,
   )
-  // filterParams = useMemo(
-  //   () => filterParams,
-  //   [filterParams?.status, filterParams?.time],
-  // )
   // 拖动线条
   const onDragLine = () => {
     let width = sliderRef.current?.clientWidth
@@ -103,7 +99,7 @@ const EmployeeProfile = () => {
     <Wrap>
       <EmployeeProfileHeader
         onChangeFilter={value => {
-          setFilterParams(value)
+          setFilterParams((pre: any) => ({ ...pre, ...value }))
           dispatch(setFilterParamsOverall(value))
           dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}

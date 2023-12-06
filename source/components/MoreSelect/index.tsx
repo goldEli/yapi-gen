@@ -126,11 +126,15 @@ const index = (props: any) => {
       dropdownRender={(menu: any) => (
         <>
           {menu}
-          <Divider style={{ margin: '8px 0' }} />
-          <div>
-            <Btn onClick={onClear}>{t('clear_all_options')}</Btn>
-            <Btn onClick={invertSelection}>{t('invert_selection')}</Btn>
-          </div>
+          {props.hiddenFooter ? null : (
+            <>
+              <Divider style={{ margin: '8px 0' }} />
+              <div>
+                <Btn onClick={onClear}>{t('clear_all_options')}</Btn>
+                <Btn onClick={invertSelection}>{t('invert_selection')}</Btn>
+              </div>
+            </>
+          )}
         </>
       )}
     >

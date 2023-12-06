@@ -85,6 +85,7 @@ export const LoadingMore = styled.div`
 export const HeaderWrap = styled.div`
   padding: 20px 24px;
   border-bottom: 1px solid var(--neutral-n6-d1);
+  padding-bottom: 0px;
 `
 
 export const HeaderSearch = styled.div`
@@ -629,7 +630,7 @@ export const TabsWrap = styled.div`
   }
 `
 export const TreeWrap = styled(Tree)`
-  height: 100%;
+  height: calc(100% - 120px);
   overflow-y: scroll;
   .ant-tree-treenode {
     height: 40px;

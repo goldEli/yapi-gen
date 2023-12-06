@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-param-reassign */
 // eslint-disable-next-line no-param-reassign
 import React, {
@@ -13,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { setStatistiDepartment } from '@store/project'
 import CommonIconFont from '@/components/CommonIconFont'
+import { getReportViewLogList } from '@/services/project'
 const EmployeeDepartment = (props: any, ref: any) => {
   const [list, setList] = useState()
   const [usersData, setUsersData] = useState()
@@ -29,13 +31,26 @@ const EmployeeDepartment = (props: any, ref: any) => {
       },
       is_report: void 0,
     })
+    const response = await getReportViewLogList({ page: 1, pagesize: 15 })
+    const { list } = response?.data ?? {}
+    const keys = Object.keys(response.data.list)
+    const lastProject = list[keys[0]][0]
+    const { user_id } = lastProject ?? {}
     setUsersData(res)
     const cloneData = _.cloneDeep(res)
     const treeData = diffData(cloneData)
-    setList(treeData)
+    setList(treeData[0]?.children)
     const users = getAllUserData(cloneData)
-    dispatch(setStatistiDepartment({ ...statistiDepartment, list: users }))
+    dispatch(
+      setStatistiDepartment({
+        ...statistiDepartment,
+        list: users,
+        expandedKeys: [user_id],
+        departMentUserKey: [user_id],
+      }),
+    )
   }
+
   // 处理部门数据
   const diffData = (data: any) => {
     for (const item of data) {
@@ -131,13 +146,15 @@ const EmployeeDepartment = (props: any, ref: any) => {
       setChecked(false)
     }
   }, [expandedKeys, departMentUserKey])
+  // 获取最近的日报
+
   useImperativeHandle(ref, () => {
     return {
       usersData,
     }
   })
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <DepartCheckboxAll checked={checked} onClick={allChecked}>
         {t('selectAll')}
       </DepartCheckboxAll>

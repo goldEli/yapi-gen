@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-undefined */
 import { getMemberOverviewList } from '@store/employeeProfile/employeeProfile.thunk'
 import { useDispatch, useSelector } from '@store/index'
@@ -22,6 +23,7 @@ import { setStatistiDepartment } from '@store/project'
 import CommonIconFont from '@/components/CommonIconFont'
 import _ from 'lodash'
 import { getParamsData } from '@/tools'
+import { getRecentProject } from '@/services/project'
 interface EmployeeProfilePersonProps {
   onChangeFilter(value: any): void
   filterParams: any
@@ -29,17 +31,8 @@ interface EmployeeProfilePersonProps {
 // 折叠头部
 const CollapseHeader = (props: any) => {
   const [t] = useTranslation()
-
-  const {
-    item,
-    onChangeKeys,
-    activeKey,
-    onChangeSelectKeys,
-    selectKeys,
-    setUserKeys,
-    userKeys,
-  } = props
-  const [projectKey, setProjectKey] = useState<any[]>([])
+  const { item, onChangeKeys, activeKey, setUserKeys, userKeys } = props
+  const [projectKey, setProjectKey] = useState<any[]>([props.projectKey])
   // 默认选择全部 - 迭代
   const [normal, setNormal] = useState<any[]>([{ id: 0, projectId: 0 }])
   // 全选状态
@@ -70,14 +63,15 @@ const CollapseHeader = (props: any) => {
         resultList?.length !== 0,
     )
     setCheckAll(resultList?.length === props.item?.member_list?.length)
-  }, [props.selectKeys])
+  }, [props.userKeys])
 
   useEffect(() => {
     if (!userKeys) {
       return
     }
     if (userKeys.length === 0) {
-      setProjectKey([])
+      // setProjectKey([])
+      return
     }
     for (const key of userKeys) {
       const [project_id] = key.split('_')
@@ -95,9 +89,12 @@ const CollapseHeader = (props: any) => {
     }
   }, [userKeys])
   useEffect(() => {
+    if (currentClickNumber === 0) {
+      return
+    }
     const { user_ids } = filterParamsOverall ?? {}
     if (
-      user_ids.some(
+      user_ids?.some(
         (item: any) => item.project_id === 'undefined' || !item.project_id,
       )
     ) {
@@ -113,6 +110,8 @@ const CollapseHeader = (props: any) => {
     setUserKeys(userKeys)
     setProjectKey(projectKeys)
   }, [currentClickNumber])
+  // 查询最近的项目
+
   return (
     <CollapseHeaderWrap>
       <div className="left">
@@ -166,6 +165,8 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   )
   // 获取选中的keys
   const [userKeys, setUserKeys] = useState<any>([])
+  // 获取选中的keys
+  const [projectKey, setProjectKey] = useState<any>([])
   // 折叠展开key
   const [activeKey, setActiveKey] = useState<any>([])
   const [tabActiveKey, setTabActiveKey] = useState('project')
@@ -199,11 +200,6 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
     }
     return array
   }
-  // 打开对比报告
-  const onOpenContrast = () => {
-    dispatch(setContrastDrawer({ visible: true }))
-  }
-
   // 选择人员
   const onSelectMember = (users: any) => {
     const resultUsers = users ?? []
@@ -214,10 +210,10 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
     )
     setCheckAll(resultUsers?.length === allMemberList?.length)
   }
-
   useEffect(() => {
     dispatch(getMemberOverviewList())
   }, [])
+  // 获取最近的项目
 
   useEffect(() => {
     if (currentKey?.key && allMemberList?.length > 0) {
@@ -312,12 +308,8 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               header={
                 <CollapseHeader
                   selectKeys={selectKeys}
-                  onChangeSelectKeys={() => {}}
                   filterParams={props.filterParams}
                   item={i}
-                  onChangeKeys={(state: boolean, key: number) => {}}
-                  activeKey={activeKey}
-                  onChangeIteration={() => {}}
                   setUserKeys={setUserKeys}
                   userKeys={userKeys}
                   onChangeProjectKeys={(keys: any[]) => {
@@ -329,6 +321,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
                       keys?.length === getAllUser(allMemberList)?.length,
                     )
                   }}
+                  projectKey={projectKey}
                 />
               }
               key={i.id}
@@ -371,9 +364,6 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   }
   return (
     <PersonWrap>
-      <ReportButton onClick={onOpenContrast}>
-        {t('comparisonReport')}
-      </ReportButton>
       <div className="input">
         {tabActiveKey === 'project' ? (
           <MoreSelect
