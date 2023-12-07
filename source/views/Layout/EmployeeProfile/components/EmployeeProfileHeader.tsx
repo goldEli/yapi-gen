@@ -61,7 +61,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       key: 5,
       fieldKey: 'overdue',
       label: t('overdue'),
-      value: 5,
+      value: 'overdue',
     },
     {
       name: t('inProgress'),
@@ -69,7 +69,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       key: 4,
       fieldKey: 'start',
       label: t('inProgress'),
-      value: 4,
+      value: 'in_progress',
     },
     {
       name: t('toBePlanned'),
@@ -77,7 +77,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       key: 3,
       fieldKey: 'un_start',
       label: t('toBePlanned'),
-      value: 3,
+      value: 'planning',
     },
     {
       name: t('completed'),
@@ -85,7 +85,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       key: 2,
       fieldKey: 'completed',
       label: t('completed'),
-      value: 2,
+      value: 'end',
     },
     {
       name: t('all'),
@@ -93,7 +93,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       key: 1,
       fieldKey: 'all',
       label: t('all'),
-      value: 1,
+      value: '',
     },
   ]
   //   切换时间

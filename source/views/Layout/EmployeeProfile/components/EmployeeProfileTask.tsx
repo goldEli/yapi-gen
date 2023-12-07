@@ -273,7 +273,7 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
       setDataList({ list: undefined })
       setLoading(true)
       //调用任务接口
-      getTaskList()
+      // getTaskList()
     }
   }, [JSON.stringify(filterParamsOverall)])
 
@@ -300,11 +300,7 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
 
   return (
     <TaskWrap>
-      <Spin
-        spinning={loading}
-        indicator={<NewLoadingTransition />}
-        size="large"
-      >
+      <Spin spinning={false} indicator={<NewLoadingTransition />} size="large">
         <TaskItemBoxs>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
