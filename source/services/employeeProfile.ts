@@ -91,6 +91,19 @@ export const getMemberOverviewReportList = async (params: any) => {
   return response.data
 }
 
+// 新的获取汇报数据
+export const getMemberReportList = async (params: any) => {
+  const response = await http.post<any>('getMemberReportList', {
+    user_ids: params.user_ids || [],
+    start_time: params.time?.[0] ?? null,
+    end_time: params.time?.[1] ?? null,
+    status: params.status ?? null,
+    keyword: params.keyword ?? null,
+    page: params.page,
+  })
+  return response.data
+}
+
 // 获取更多任务数据
 export const getMemberOverviewMoreReportList = async (params: any) => {
   const response = await http.get<any>('getMemberOverviewMoreReportList', {

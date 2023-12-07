@@ -3,7 +3,6 @@
 /* eslint-disable no-undefined */
 import { useSelector } from '@store/index'
 import {
-  LoadingMore,
   OperationButton,
   ReportItemHeader,
   ReportItemHeaderLeft,
@@ -20,13 +19,9 @@ import {
   ProviderBox,
 } from '../style'
 import { useEffect, useState } from 'react'
-import {
-  getMemberOverviewMoreReportList,
-  getMemberOverviewReportList,
-} from '@/services/employeeProfile'
-import { Spin, Tooltip } from 'antd'
+import { getMemberReportList } from '@/services/employeeProfile'
+import { Skeleton, Spin, Tooltip } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
-import NoData from '@/components/NoData'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -34,7 +29,6 @@ import {
   addReportComment,
   delReportComment,
   getReportComment,
-  getReportInfo,
 } from '@/services/report'
 import { useTranslation } from 'react-i18next'
 import { Editor } from 'ifunuikit'
@@ -44,20 +38,16 @@ import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { getStaffListAll } from '@/services/staff'
 import { getIdsForAt } from '@/tools'
 import UploadAttach from '@/components/UploadAttach'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 interface ReportItemProps {
-  // 当前数据
   item: any
-  // 当前操作的人员id
-  user_id: number
-  onChangData(id: any, item: any): void
 }
 
 const ReportItem = (props: ReportItemProps) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
-  const { item, user_id, onChangData } = props
-  const [reportInfo, setReportInfo] = useState<any>({})
+  const { item } = props
   const [commentList, setCommentList] = useState([])
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
@@ -90,12 +80,6 @@ const ReportItem = (props: ReportItemProps) => {
     setCommentList(response.list)
   }
 
-  // 获取汇报详情
-  const getReportDetail = async (id: number) => {
-    const info = await getReportInfo({ id })
-    setReportInfo(info)
-  }
-
   // 获取人员数组
   const getPersonList = async () => {
     const companyList = await getStaffListAll({ all: 1 })
@@ -107,15 +91,15 @@ const ReportItem = (props: ReportItemProps) => {
   }
 
   // 打开汇报数据
-  const onOpenInfo = (item: any) => {
-    item.is_expended = item.is_expended === 1 ? 2 : 1
-    onChangData(user_id, item)
-    if (item.is_expended === 1) {
-      getReportDetail(item.id)
-      getReportCommentData(item.id)
-      getPersonList()
-    }
-  }
+  // const onOpenInfo = (item: any) => {
+  //   item.is_expended = item.is_expended === 1 ? 2 : 1
+  //   onChangData(user_id, item)
+  //   if (item.is_expended === 1) {
+  //     getReportDetail(item.id)
+  //     getReportCommentData(item.id)
+  //     getPersonList()
+  //   }
+  // }
 
   const AttachmentBox = (props: { list: any }) => {
     const list = props.list?.length ? props.list : []
@@ -147,13 +131,13 @@ const ReportItem = (props: ReportItemProps) => {
   const onDeleteConfirm = async () => {
     try {
       await delReportComment({
-        report_user_id: reportInfo?.id,
+        report_user_id: item?.id,
         id: isDeleteId,
       })
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDeleteId(0)
       setIsVisible(false)
-      getReportCommentData(reportInfo?.id)
+      getReportCommentData(item?.id)
     } catch (error) {
       //
     }
@@ -162,13 +146,13 @@ const ReportItem = (props: ReportItemProps) => {
   // 评论
   const onComment = async (value: any) => {
     const params = {
-      report_user_id: reportInfo.id,
+      report_user_id: item.id,
       content: value.info,
       a_user_ids: getIdsForAt(value.info),
     }
     await addReportComment(params)
     getMessage({ msg: t('report.list.okComment'), type: 'success' })
-    getReportCommentData(reportInfo.id)
+    getReportCommentData(item.id)
   }
 
   return (
@@ -207,7 +191,7 @@ const ReportItem = (props: ReportItemProps) => {
               trigger="hover"
               title={item.is_expended === 1 ? t('expand') : t('fold')}
             >
-              <OperationButton onClick={() => onOpenInfo(item)}>
+              <OperationButton>
                 <CommonIconFont
                   type={item.is_expended === 1 ? 'up-02' : 'down-02'}
                   size={20}
@@ -237,8 +221,8 @@ const ReportItem = (props: ReportItemProps) => {
               <Title style={{ marginTop: 8 }}>
                 {t('report.list.reportProject')}
               </Title>
-              <Msg style={{ marginTop: 8 }}>{reportInfo?.project?.name}</Msg>
-              {reportInfo.report_content?.map((item: any) => (
+              <Msg style={{ marginTop: 8 }}>{item?.project?.name}</Msg>
+              {item.report_content?.map((item: any) => (
                 <div key={item.id}>
                   {item.type === 4 && (
                     <Title style={{ marginBottom: 8 }}>
@@ -321,7 +305,7 @@ const ReportItem = (props: ReportItemProps) => {
               </DetailItem>
             </div>
             <CommentFooter
-              placeholder={t('commentOnLog', { name: item.user.name })}
+              placeholder={t('commentOnLog', { name: item?.user?.name })}
               personList={arr}
               onConfirm={onComment}
               style={{
@@ -340,119 +324,50 @@ const ReportItem = (props: ReportItemProps) => {
   )
 }
 
-interface ReportItemGroupProps {
-  // 当前数据
-  item: any
-  // 当前操作的人员id
-  user_id: number
-  // 上一页的最后一条数据
-  lastData: any
-  // 更多汇报修改数据
-  onChangMoreData(arr: any, id: any): void
-  onChangData(id: any, item: any): void
-  filterParams: any
-}
-
-const ReportItemGroup = (props: ReportItemGroupProps) => {
-  const [t] = useTranslation()
-  const {
-    item,
-    user_id,
-    lastData,
-    onChangMoreData,
-    onChangData,
-    filterParams,
-  } = props
-  const [page, setPage] = useState(1)
-  const [moreLoading, setMoreLoading] = useState(false)
-  // 点击加载更多
-  const onLoadingMore = async () => {
-    setMoreLoading(true)
-    const response = await getMemberOverviewMoreReportList({
-      ...filterParams,
-      ...{ user_id, current_time: lastData.created_at },
-    })
-    onChangMoreData(response?.list || [], user_id)
-    setPage(page + 1)
-    setMoreLoading(false)
-  }
-
-  return (
-    <>
-      {item.list?.map((itemChild: any) => (
-        <ReportItem
-          key={itemChild.id}
-          item={itemChild}
-          user_id={user_id}
-          onChangData={onChangData}
-        />
-      ))}
-      {item.list?.length >= 15 * page && (
-        <LoadingMore onClick={onLoadingMore}>
-          {moreLoading && (
-            <img
-              width={16}
-              style={{ marginRight: 4 }}
-              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/shareLoading.gif"
-            />
-          )}
-          {t('loadMoreDailyReportsForThisMember')}
-        </LoadingMore>
-      )}
-    </>
-  )
-}
-
 interface EmployeeProfileReportProps {
   filterParams: any
   // 需要向上传递第一个日报的第一个需求的数据
   onGetReportFirstData(data: { project_id: number; id: number }): void
+  data: any
+  loading: boolean
+  setLoading(val: boolean): void
+  setUserReportList(val: any): void
 }
 
 const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
-  const { filterParams } = props
-  const [loading, setLoading] = useState(false)
-
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
+  const { filterParams, data, loading, setLoading, setUserReportList } = props
+  const [page, setPage] = useState(1)
 
   // 点击加载更多日报，合并数据
-  const onChangMoreData = (arr: any, id: number) => {
-    setDataList({
-      list: dataList?.list?.map((i: any) => ({
-        ...i,
-        list: i.current_user_id === id ? [...i.list, ...arr] : i.list,
-      })),
+  const fetchMoreData = async () => {
+    const newPage = page + 1
+    setLoading(true)
+    const response = await getMemberReportList({
+      ...filterParams,
+      page: newPage,
+    }).finally(() => {
+      setLoading(false)
     })
+    if (response && response?.list?.length) {
+      setPage(response.page)
+      setUserReportList({
+        ...data,
+        list: [...data.list, ...response.list],
+      })
+    }
   }
 
   // 标星/取消标星，折叠/收起
-  const onChangData = (id: any, item: any) => {
-    const resultData = dataList?.list?.map((i: any) => ({
-      ...i,
-      list:
-        i.current_user_id === id
-          ? i.list?.map((k: any) => (k.id === item.id ? item : k))
-          : i.list,
-    }))
-    setDataList({ list: resultData })
-  }
-
-  // 获取汇报列表
-  const getReportList = async () => {
-    const response = await getMemberOverviewReportList(filterParams)
-    setDataList({ list: response })
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    if (filterParams?.user_ids) {
-      setDataList({ list: undefined })
-      setLoading(true)
-      getReportList()
-    }
-  }, [filterParams.time, JSON.stringify(filterParams.user_ids)])
+  // const onChangData = (id: any, item: any) => {
+  //   const resultData = dataList?.list?.map((i: any) => ({
+  //     ...i,
+  //     list:
+  //       i.current_user_id === id
+  //         ? i.list?.map((k: any) => (k.id === item.id ? item : k))
+  //         : i.list,
+  //   }))
+  //   setDataList({ list: resultData })
+  // }
 
   return (
     <ReportWrap>
@@ -461,23 +376,23 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
         indicator={<NewLoadingTransition />}
         size="large"
       >
-        <ReportItemBox>
-          {!!dataList?.list &&
-            (dataList?.list?.length > 0 ? (
-              dataList?.list?.map((i: any) => (
-                <ReportItemGroup
-                  key={i.current_user_id}
-                  item={i}
-                  user_id={i.current_user_id}
-                  lastData={i.list[i.list?.length - 1]}
-                  onChangMoreData={onChangMoreData}
-                  onChangData={onChangData}
-                  filterParams={filterParams}
+        <ReportItemBox id="ReportItemBox">
+          <InfiniteScroll
+            dataLength={data?.list?.length}
+            next={fetchMoreData}
+            hasMore={data?.list?.length < data?.total}
+            loader={<Skeleton paragraph={{ rows: 1 }} active />}
+            scrollableTarget="ReportItemBox"
+          >
+            {data?.list?.length > 0 &&
+              data?.list?.map((i: any) => (
+                <ReportItem
+                  key={i.id}
+                  item={{ ...i, is_expended: 1 }}
+                  // onChangData={onChangData}
                 />
-              ))
-            ) : (
-              <NoData />
-            ))}
+              ))}
+          </InfiniteScroll>
         </ReportItemBox>
       </Spin>
     </ReportWrap>

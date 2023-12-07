@@ -25,6 +25,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import CommonButton from '@/components/CommonButton'
+import { getMemberReportList } from '@/services/employeeProfile'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
@@ -37,12 +38,14 @@ const EmployeeProfile = () => {
   const [endWidth, setEndWidth] = useState(320)
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [userReportList, setUserReportList] = useState<any>({ list: [] })
   const [filterParams, setFilterParams] = useState<any>({})
   // 第一条日报的第一个需求数据
   const [reportFirstData, setReportFirstData] = useState<any>({
     project_id: null,
     id: null,
   })
+  const [loading, setLoading] = useState(false)
   const sideMain = useRef<any>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 600
@@ -169,6 +172,45 @@ const EmployeeProfile = () => {
 
   //   }
   // }, [paramsData?.user_id])
+
+  // 获取汇报列表
+  const getReportList = async () => {
+    setLoading(true)
+    const response = await getMemberReportList({
+      ...filterParams,
+      page: 1,
+    }).finally(() => {
+      setLoading(false)
+    })
+    if (response && response.list) {
+      setUserReportList(response)
+      if (response.list.length > 0) {
+        const item = response.list?.[0]
+        let task = item?.report_content?.find(
+          (k: any) => k.name === 'today_end',
+        )?.pivot?.params?.[0]
+        if (!task) {
+          task = item?.report_content?.find(
+            (k: any) => k.name === 'overdue_tasks',
+          )?.pivot?.params?.[0]
+        }
+        if (task) {
+          setReportFirstData({
+            project_id: item.project_id,
+            id: task.id,
+            project_type: task.project_type,
+            is_bug: task.is_bug,
+          })
+        }
+      }
+    }
+    // setLoading(false)
+  }
+  useEffect(() => {
+    if (filterParams?.user_ids) {
+      getReportList()
+    }
+  }, [filterParams.time, JSON.stringify(filterParams.user_ids)])
   return (
     <Wrap>
       <EmployeeProfileHeader
@@ -227,6 +269,10 @@ const EmployeeProfile = () => {
               <EmployeeProfileReport
                 filterParams={filterParams}
                 onGetReportFirstData={setReportFirstData}
+                data={userReportList}
+                loading={loading}
+                setLoading={setLoading}
+                setUserReportList={setUserReportList}
               />
               <EmployeeProfileTask filterParams={filterParams} />
             </>
