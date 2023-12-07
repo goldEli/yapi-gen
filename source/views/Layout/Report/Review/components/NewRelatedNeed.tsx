@@ -162,6 +162,11 @@ const NewRelatedNeed = (props: any) => {
         user_schedule_percent: k?.user_schedule_percent,
         user_today_task_time: k?.user_today_task_time,
         user_total_task_time: k?.user_total_task_time,
+        story_prefix_key: k?.story_prefix_key,
+        is_bug: k?.is_bug,
+        is_start: k?.is_start,
+        is_end: k?.is_end,
+        project_type: k?.project_type,
       })) ?? [],
     )
     props.onChange(props?.initValue?.map((item: any) => item?.id))

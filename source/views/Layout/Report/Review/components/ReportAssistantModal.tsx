@@ -142,6 +142,11 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
                   user_schedule_percent: tempObj?.user_schedule_percent,
                   user_today_task_time: tempObj?.user_today_task_time,
                   user_total_task_time: tempObj?.user_total_task_time,
+                  story_prefix_key: tempObj?.story_prefix_key,
+                  is_bug: tempObj?.is_bug,
+                  is_start: tempObj?.is_start,
+                  is_end: tempObj?.is_end,
+                  project_type: tempObj?.project_type,
                 }
               : i
           }),
@@ -938,7 +943,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             </CommonButton>
             {times ? (
               <CommonButton type="light" isDisable style={{ width: 98 }}>
-                重发 ({times}s)
+                {t('reSend')} ({times}s)
               </CommonButton>
             ) : (
               <CommonButton onClick={confirm} type="primary">

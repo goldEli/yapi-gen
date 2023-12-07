@@ -2636,5 +2636,6 @@
   "searchForRequirementNameOrNumber": "Search for requirement name or number",
   "ohMyYourPageHasBeenLost": "Oh my! Your page has been lost",
   "goBackToTheHomepage": "Go back to the homepage",
-  "resetFiltering": "Reset filtering"
+  "resetFiltering": "Reset filtering",
+  "reSend": "Resend"
 }
