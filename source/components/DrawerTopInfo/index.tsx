@@ -90,7 +90,6 @@ interface ParticipantsUserProps {
   avatar?: string
   name?: string
   id?: number
-  positionName?: string
   // 当前任务详情数据
   details?: any
 }
@@ -130,7 +129,12 @@ const ParticipantsUser = (props: ParticipantsUserProps) => {
       </AvatarBox>
       <div className="name">
         {props.name && <NameWrap>{props?.name}</NameWrap>}
-        {props.positionName && <NameWrap>-{props?.positionName}</NameWrap>}
+        {props.details?.user?.department?.id && (
+          <NameWrap>-{props.details?.user?.department?.name}</NameWrap>
+        )}
+        {props.details?.user?.position?.id && (
+          <NameWrap>-{props.details?.user?.position?.id}</NameWrap>
+        )}
       </div>
     </UserAvatarWrap>
   )
