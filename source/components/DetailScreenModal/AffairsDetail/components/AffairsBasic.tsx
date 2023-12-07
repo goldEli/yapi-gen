@@ -16,6 +16,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 interface Props {
   onRef: any
+  employeeCurrentId?: number
 }
 
 const AffairsBasic = (props: Props) => {
@@ -59,7 +60,10 @@ const AffairsBasic = (props: Props) => {
 
   return (
     <BasicWrap
-      a={userPreferenceConfig.previewModel === 3}
+      a={
+        userPreferenceConfig.previewModel === 3 ||
+        (props?.employeeCurrentId || 0) > 0
+      }
       b={affairsInfo?.isExamine}
       ref={props.onRef}
     >
@@ -70,6 +74,7 @@ const AffairsBasic = (props: Props) => {
           isOpen
           hasPadding
           isInfoPage
+          isPreview={(props?.employeeCurrentId || 0) > 0}
         />
       </BasicContent>
       <BasicFooter>
@@ -83,10 +88,12 @@ const AffairsBasic = (props: Props) => {
             {detailTimeFormat(affairsInfo.update_at as string)}
           </span>
         </div>
-        <ConfigWrap onClick={onToConfig}>
-          <CommonIconFont type="settings" />
-          <div>{t('configurationFields')}</div>
-        </ConfigWrap>
+        {!props?.employeeCurrentId && (
+          <ConfigWrap onClick={onToConfig}>
+            <CommonIconFont type="settings" />
+            <div>{t('configurationFields')}</div>
+          </ConfigWrap>
+        )}
       </BasicFooter>
     </BasicWrap>
   )

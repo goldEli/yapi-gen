@@ -52,6 +52,7 @@ const RowIconFont = styled(IconFont)({
 
 interface ChildDemandProps {
   activeKey: string
+  employeeCurrentId?: boolean
 }
 
 const ChildDemand = (props: ChildDemandProps) => {
@@ -327,8 +328,19 @@ const ChildDemand = (props: ChildDemandProps) => {
     return [...arrList, ...newList]
   }, [titleList, titleList2, titleList3, columns])
 
+  const aa =
+    userPreferenceConfig.previewModel === 3 || props?.employeeCurrentId
+      ? '80vh'
+      : '100vh'
+
+  const a1 = props?.employeeCurrentId
+    ? 102
+    : userPreferenceConfig.previewModel === 3
+    ? 154
+    : 210
+
   return (
-    <ComputedWrap all={userPreferenceConfig.previewModel === 3}>
+    <ComputedWrap style={{ height: `calc(${aa} - ${a1}px)` }}>
       <DeleteConfirm
         text={t('common.confirmDelChildDemand')}
         isVisible={isDelete}

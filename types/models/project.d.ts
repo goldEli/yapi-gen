@@ -10,6 +10,10 @@ declare namespace Model.Project {
     flawId?: number
     demandId?: number
     type?: string
+    // 用于判断是否是人员模块打开的
+    employeeCurrentId?: number
+    // 是否只支持预览
+    isPreview?: boolean
   }
   interface CheckStatusItem {
     // 可流转的状态列表

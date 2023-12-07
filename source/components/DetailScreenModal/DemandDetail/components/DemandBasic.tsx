@@ -24,9 +24,10 @@ const DemandBasic = (props: Props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { demandInfo, demandCommentList } = useSelector(store => store.demand)
-  const { isUpdateAddWorkItem, projectInfo } = useSelector(
+  const { isUpdateAddWorkItem, projectInfo, isDetailScreenModal } = useSelector(
     store => store.project,
   )
+  const { params } = isDetailScreenModal
   const { userInfo } = useSelector(store => store.user)
   const isRest = useSelector(store => store.scroll.isRest)
   const [activeTabs, setActiveTabs] = useState(1)
@@ -44,7 +45,7 @@ const DemandBasic = (props: Props) => {
   const onToConfig = () => {
     dispatch(setActiveCategory({}))
     dispatch(saveScreenDetailModal({ visible: false, params: {} }))
-    const params = encryptPhp(
+    const params1 = encryptPhp(
       JSON.stringify({
         id: projectInfo.id,
         categoryItem: {
@@ -53,7 +54,7 @@ const DemandBasic = (props: Props) => {
         },
       }),
     )
-    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
+    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params1}`)
   }
 
   const onScrollBottom = () => {
@@ -89,7 +90,8 @@ const DemandBasic = (props: Props) => {
                 !!isCanEdit &&
                 demandInfo?.user
                   ?.map((i: any) => i?.user?.id)
-                  ?.includes(userInfo?.id)
+                  ?.includes(userInfo?.id) &&
+                !params?.employeeCurrentId
               }
               type="demand"
               project_id={demandInfo?.projectId}
@@ -100,6 +102,7 @@ const DemandBasic = (props: Props) => {
               onUpdate={onUpdate}
               isOpen
               isInfoPage
+              isPreview={(params?.employeeCurrentId || 0) > 0}
             />
           </>
         )}
@@ -123,10 +126,12 @@ const DemandBasic = (props: Props) => {
             {detailTimeFormat(demandInfo.update_at)}
           </span>
         </div>
-        <ConfigWrap onClick={onToConfig}>
-          <CommonIconFont type="settings" />
-          <div>{t('configurationFields')}</div>
-        </ConfigWrap>
+        {!params?.employeeCurrentId && (
+          <ConfigWrap onClick={onToConfig}>
+            <CommonIconFont type="settings" />
+            <div>{t('configurationFields')}</div>
+          </ConfigWrap>
+        )}
       </BasicFooter>
     </BasicWrap>
   )

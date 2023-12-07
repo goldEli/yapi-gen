@@ -2636,5 +2636,11 @@
   "searchForRequirementNameOrNumber": "搜索需求名称或编号",
   "ohMyYourPageHasBeenLost": "哎呀！您的页面走丢了",
   "goBackToTheHomepage": "回到首页",
-  "resetFiltering": "重置筛选"
+  "resetFiltering": "重置筛选",
+  "weSuggestThatYouResetTheFiltering": "建议您【重置筛选】",
+  "scopePeriod": "【{{time}}】期间范围内未查询到",
+  "statusFilter": "状态为【{{name}}】",
+  "keywordFilter": "关键字为【{{keyword}}】、",
+  "endText": "的数据",
+  "participants": "参与人"
 }

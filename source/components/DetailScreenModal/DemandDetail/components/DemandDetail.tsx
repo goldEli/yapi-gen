@@ -142,41 +142,50 @@ const DemandDetail = () => {
           }}
         >
           <Label>{t('mine.demandInfo')}</Label>
-          {(isEditInfo || editInfo) && (
-            <div className={canEditHover}>
-              <Editor
-                upload={uploadFile}
-                color="transparent"
-                value={editInfo}
-                getSuggestions={() => []}
-                readonly={!isEditInfo}
-                ref={editorRef}
-                onReadonlyClick={() => {
-                  setIsEditInfo(true)
-                  setTimeout(() => {
-                    editorRef.current?.focus()
-                  }, 10)
-                }}
-                onChange={(value: string) => {
-                  editorRef2.current = value
-                }}
-                onBlur={() => onBlurEditor()}
-              />
-            </div>
-          )}
-          {!isEditInfo && !editInfo && (
-            <TextWrapEdit
-              style={{ width: '100%' }}
-              onClick={e => {
-                e.stopPropagation()
-                setIsEditInfo(true)
-                setTimeout(() => {
-                  editorRef.current?.focus()
-                }, 10)
-              }}
-            >
+          {params?.employeeCurrentId && (
+            <TextWrapEdit style={{ width: '100%' }}>
               <span className={canEditHover}>--</span>
             </TextWrapEdit>
+          )}
+          {!params?.employeeCurrentId && (
+            <>
+              {(isEditInfo || editInfo) && (
+                <div className={canEditHover}>
+                  <Editor
+                    upload={uploadFile}
+                    color="transparent"
+                    value={editInfo}
+                    getSuggestions={() => []}
+                    readonly={!isEditInfo}
+                    ref={editorRef}
+                    onReadonlyClick={() => {
+                      setIsEditInfo(true)
+                      setTimeout(() => {
+                        editorRef.current?.focus()
+                      }, 10)
+                    }}
+                    onChange={(value: string) => {
+                      editorRef2.current = value
+                    }}
+                    onBlur={() => onBlurEditor()}
+                  />
+                </div>
+              )}
+              {!isEditInfo && !editInfo && (
+                <TextWrapEdit
+                  style={{ width: '100%' }}
+                  onClick={e => {
+                    e.stopPropagation()
+                    setIsEditInfo(true)
+                    setTimeout(() => {
+                      editorRef.current?.focus()
+                    }, 10)
+                  }}
+                >
+                  <span className={canEditHover}>--</span>
+                </TextWrapEdit>
+              )}
+            </>
           )}
         </InfoItem>
         <InfoItem>
@@ -186,6 +195,7 @@ const DemandDetail = () => {
             projectId={demandInfo.projectId}
             noBorder
             isBug={demandInfo?.is_bug === 1}
+            userId={params?.employeeCurrentId}
           />
         </InfoItem>
 
@@ -211,9 +221,13 @@ const DemandDetail = () => {
                 del={onDeleteInfoAttach}
                 add={onAddInfoAttach}
                 addWrap={
-                  <CommonButton type="primaryText" icon="plus">
-                    {t('addAttachments')}
-                  </CommonButton>
+                  params?.employeeCurrentId ? (
+                    <span />
+                  ) : (
+                    <CommonButton type="primaryText" icon="plus">
+                      {t('addAttachments')}
+                    </CommonButton>
+                  )
                 }
               />
             )}
@@ -225,14 +239,19 @@ const DemandDetail = () => {
         <InfoItem>
           <Label>{t('common.tag')}</Label>
           <DemandTag
+            isPreview={(params?.employeeCurrentId || 0) > 0}
             defaultList={tagList}
             canAdd
             detail={demandInfo}
             isInfoPage
             addWrap={
-              <AddWrap hasDash>
-                <IconFont type="plus" />
-              </AddWrap>
+              params?.employeeCurrentId ? (
+                <span />
+              ) : (
+                <AddWrap hasDash>
+                  <IconFont type="plus" />
+                </AddWrap>
+              )
             }
           />
         </InfoItem>
@@ -242,7 +261,7 @@ const DemandDetail = () => {
           onChangeVisible={() => setIsDelVisible(!isDelVisible)}
           onConfirm={onDeleteConfirm}
         />
-        {demandInfo.id && (
+        {demandInfo.id && !params?.employeeCurrentId && (
           <InfoItem>
             <Label>{t('new_p1.a3')}</Label>
             <DemandStatus

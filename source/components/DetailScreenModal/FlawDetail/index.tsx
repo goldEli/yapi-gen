@@ -420,6 +420,7 @@ const FlawDetail = () => {
           activeKey={tabActive}
           detail={flawInfo as Model.Flaw.FlawInfo}
           onUpdate={onUpdate}
+          isPreview={(params?.employeeCurrentId || 0) > 0}
         />
       ),
     },
@@ -498,214 +499,230 @@ const FlawDetail = () => {
   }, [])
 
   return (
-    <Wrap all={userPreferenceConfig.previewModel === 3}>
-      <DeleteConfirmModal />
-      <ShareModal
-        url={`${location.origin}/ProjectDetail/Defect?data=${encryptPhp(
-          JSON.stringify({
-            detailId: flawInfo?.id,
-            id: projectInfo.id,
-            specialType: 2,
-            isOpenScreenDetail: true,
-          }),
-        )}`}
-        title={
-          flawInfo?.name
-            ? `【${flawInfo?.projectPrefix}-${flawInfo?.name}-${userInfo?.name}】`
-            : ''
-        }
-      />
-      <CommonModal
-        isVisible={isShowCategory}
-        onClose={onCloseCategory}
-        title={t('newlyAdd.changeCategory')}
-        onConfirm={onConfirmCategory}
-      >
-        <FormWrap
-          form={form}
-          layout="vertical"
-          style={{ padding: '0 20px 0 24px' }}
-        >
-          <Form.Item label={t('newlyAdd.beforeCategory')}>
-            <img
-              src={flawInfo?.category_attachment}
-              style={{
-                width: '18px',
-                height: '18px',
-                marginRight: '8px',
-              }}
-              alt=""
-            />
-            <span>{flawInfo?.categoryName}</span>
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterCategory')}
-            name="categoryId"
-            rules={[{ required: true, message: '' }]}
+    <Wrap
+      all={userPreferenceConfig.previewModel === 3}
+      employeeCurrentId={params?.employeeCurrentId}
+      style={{ paddingTop: (params?.employeeCurrentId || 0) > 0 ? 0 : 20 }}
+    >
+      {!params?.employeeCurrentId && (
+        <>
+          <DeleteConfirmModal />
+          <ShareModal
+            url={`${location.origin}/ProjectDetail/Defect?data=${encryptPhp(
+              JSON.stringify({
+                detailId: flawInfo?.id,
+                id: projectInfo.id,
+                specialType: 2,
+                isOpenScreenDetail: true,
+              }),
+            )}`}
+            title={
+              flawInfo?.name
+                ? `【${flawInfo?.projectPrefix}-${flawInfo?.name}-${userInfo?.name}】`
+                : ''
+            }
+          />
+          <CommonModal
+            isVisible={isShowCategory}
+            onClose={onCloseCategory}
+            title={t('newlyAdd.changeCategory')}
+            onConfirm={onConfirmCategory}
           >
-            <CustomSelect
-              placeholder={t('common.pleaseSelect')}
-              showArrow
-              showSearch
-              getPopupContainer={(node: any) => node}
-              allowClear
-              optionFilterProp="label"
-              onChange={onChangeSelect}
-              options={resultCategory?.map((k: any) => ({
-                label: k.content,
-                value: k.id,
-              }))}
-            />
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterStatus')}
-            name="statusId"
-            rules={[{ required: true, message: '' }]}
-          >
-            <CustomSelect
-              placeholder={t('common.pleaseSelect')}
-              showArrow
-              showSearch
-              getPopupContainer={(node: any) => node}
-              allowClear
-              optionFilterProp="label"
-              options={workList?.list?.map((k: any) => ({
-                label: k.name,
-                value: k.statusId,
-              }))}
-            />
-          </Form.Item>
-        </FormWrap>
-      </CommonModal>
-      <DetailTop
-        style={{ borderBottom: '1px solid #EBECED', paddingBottom: '16px' }}
-      >
-        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-          <MyBreadcrumb />
-          <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
-            {flawInfo.level_tree?.map((i: any, index: number) => (
-              <DrawerHeader
-                style={{
-                  cursor:
-                    index === (flawInfo?.level_tree?.length || 0) - 1
-                      ? 'auto'
-                      : 'pointer',
-                }}
-                key={i.prefix_key}
-                onClick={() => {
-                  const projectId = flawInfo?.projectId
-                  if (index !== (flawInfo?.level_tree?.length || 0) - 1) {
-                    openDemandDetail({ ...i }, projectId, i.id, 2)
-                  }
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: '12px',
-                  }}
-                >
-                  <CommonIconFont
-                    type="right"
-                    color="var(--neutral-n1-d1)"
-                  ></CommonIconFont>
-                </span>
+            <FormWrap
+              form={form}
+              layout="vertical"
+              style={{ padding: '0 20px 0 24px' }}
+            >
+              <Form.Item label={t('newlyAdd.beforeCategory')}>
                 <img
-                  style={{ fontSize: '12px' }}
-                  src={i.category_attachment}
+                  src={flawInfo?.category_attachment}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    marginRight: '8px',
+                  }}
                   alt=""
                 />
-                <div
-                  className={
-                    index === (flawInfo?.level_tree?.length || 0) - 1
-                      ? ''
-                      : myTreeCss
-                  }
-                  style={{
-                    fontSize: '12px',
-                    color:
-                      index === (flawInfo?.level_tree?.length || 0) - 1
-                        ? ''
-                        : 'var(--neutral-n1-d1)',
-                  }}
-                >
-                  {i.project_prefix}-{i.prefix_key}
-                </div>
-              </DrawerHeader>
-            ))}
-          </div>
-        </div>
-
-        {flawInfo.id && (
-          <ButtonGroup size={16}>
-            {(params?.changeIds?.length || 0) > 1 && (
-              <ChangeIconGroup>
-                {currentIndex > 0 && (
-                  <LeftIcontButton
-                    onClick={onUpDemand}
-                    icon="up-md"
-                    text={t('previous')}
-                  />
-                )}
-                {!(
-                  params?.changeIds?.length === 0 ||
-                  currentIndex === (params?.changeIds?.length || 0) - 1
-                ) && (
-                  <LeftIcontButton
-                    onClick={onDownDemand}
-                    icon="down-md"
-                    text={t('next')}
-                  />
-                )}
-              </ChangeIconGroup>
-            )}
-
-            <div>
-              <LeftIcontButton
-                onClick={onShare}
-                icon="share"
-                text={t('share')}
-              />
-            </div>
-
-            <DropdownMenu
-              placement="bottomRight"
-              trigger={['click']}
-              menu={{ items: items }}
-              getPopupContainer={n => n}
-            >
-              <div>
-                <LeftIcontButton icon="more-01" text={t('more')} />
+                <span>{flawInfo?.categoryName}</span>
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterCategory')}
+                name="categoryId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <CustomSelect
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  options={resultCategory?.map((k: any) => ({
+                    label: k.content,
+                    value: k.id,
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterStatus')}
+                name="statusId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <CustomSelect
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={workList?.list?.map((k: any) => ({
+                    label: k.name,
+                    value: k.statusId,
+                  }))}
+                />
+              </Form.Item>
+            </FormWrap>
+          </CommonModal>
+          <DetailTop
+            style={{ borderBottom: '1px solid #EBECED', paddingBottom: '16px' }}
+          >
+            <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+              <MyBreadcrumb />
+              <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
+                {flawInfo.level_tree?.map((i: any, index: number) => (
+                  <DrawerHeader
+                    style={{
+                      cursor:
+                        index === (flawInfo?.level_tree?.length || 0) - 1
+                          ? 'auto'
+                          : 'pointer',
+                    }}
+                    key={i.prefix_key}
+                    onClick={() => {
+                      const projectId = flawInfo?.projectId
+                      if (index !== (flawInfo?.level_tree?.length || 0) - 1) {
+                        openDemandDetail({ ...i }, projectId, i.id, 2)
+                      }
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '12px',
+                      }}
+                    >
+                      <CommonIconFont
+                        type="right"
+                        color="var(--neutral-n1-d1)"
+                      ></CommonIconFont>
+                    </span>
+                    <img
+                      style={{ fontSize: '12px' }}
+                      src={i.category_attachment}
+                      alt=""
+                    />
+                    <div
+                      className={
+                        index === (flawInfo?.level_tree?.length || 0) - 1
+                          ? ''
+                          : myTreeCss
+                      }
+                      style={{
+                        fontSize: '12px',
+                        color:
+                          index === (flawInfo?.level_tree?.length || 0) - 1
+                            ? ''
+                            : 'var(--neutral-n1-d1)',
+                      }}
+                    >
+                      {i.project_prefix}-{i.prefix_key}
+                    </div>
+                  </DrawerHeader>
+                ))}
               </div>
-            </DropdownMenu>
-
-            <div>
-              <LeftIcontButton
-                danger
-                onClick={onClose}
-                icon="close"
-                text={t('closure')}
-              />
             </div>
-          </ButtonGroup>
-        )}
-      </DetailTop>
+
+            {flawInfo.id && (
+              <ButtonGroup size={16}>
+                {(params?.changeIds?.length || 0) > 1 && (
+                  <ChangeIconGroup>
+                    {currentIndex > 0 && (
+                      <LeftIcontButton
+                        onClick={onUpDemand}
+                        icon="up-md"
+                        text={t('previous')}
+                      />
+                    )}
+                    {!(
+                      params?.changeIds?.length === 0 ||
+                      currentIndex === (params?.changeIds?.length || 0) - 1
+                    ) && (
+                      <LeftIcontButton
+                        onClick={onDownDemand}
+                        icon="down-md"
+                        text={t('next')}
+                      />
+                    )}
+                  </ChangeIconGroup>
+                )}
+
+                <div>
+                  <LeftIcontButton
+                    onClick={onShare}
+                    icon="share"
+                    text={t('share')}
+                  />
+                </div>
+
+                <DropdownMenu
+                  placement="bottomRight"
+                  trigger={['click']}
+                  menu={{ items: items }}
+                  getPopupContainer={n => n}
+                >
+                  <div>
+                    <LeftIcontButton icon="more-01" text={t('more')} />
+                  </div>
+                </DropdownMenu>
+
+                <div>
+                  <LeftIcontButton
+                    danger
+                    onClick={onClose}
+                    icon="close"
+                    text={t('closure')}
+                  />
+                </div>
+              </ButtonGroup>
+            )}
+          </DetailTop>
+        </>
+      )}
+
       <DetailTitle>
         <Tooltip title={flawInfo?.categoryName}>
-          <Popover
-            trigger={['hover']}
-            visible={isShowChange}
-            placement="bottomLeft"
-            content={changeStatus}
-            getPopupContainer={node => node}
-            onVisibleChange={visible => setIsShowChange(visible)}
-          >
+          {!params?.employeeCurrentId && (
+            <Popover
+              trigger={['hover']}
+              visible={isShowChange}
+              placement="bottomLeft"
+              content={changeStatus}
+              getPopupContainer={node => node}
+              onVisibleChange={visible => setIsShowChange(visible)}
+            >
+              <div>
+                <Img src={flawInfo.category_attachment} alt="" />
+              </div>
+            </Popover>
+          )}
+          {params?.employeeCurrentId && (
             <div>
               <Img src={flawInfo.category_attachment} alt="" />
             </div>
-          </Popover>
+          )}
         </Tooltip>
         <DetailText>
-          {!hasEdit && (
+          {!hasEdit && !params?.employeeCurrentId && (
             <span
               className="name"
               ref={spanDom}
@@ -715,11 +732,13 @@ const FlawDetail = () => {
               {flawInfo.name}
             </span>
           )}
-          {hasEdit && <span className="name">{flawInfo.name}</span>}
+          {(hasEdit || params?.employeeCurrentId) && (
+            <span className="name">{flawInfo.name}</span>
+          )}
           <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={flawInfo.projectId}
-            isCanOperation={!hasEdit}
+            isCanOperation={!hasEdit && !params?.employeeCurrentId}
             record={flawInfo}
             onChangeStatus={onChangeStatus}
             type={3}

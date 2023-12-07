@@ -39,6 +39,8 @@ interface AffairsDetailProps {
   isInfoPage?: boolean
   onRef?: any
   isPreview?: boolean
+  // 用于获取进度日志中当前处理人的日志
+  userId?: number
 }
 
 const AffairsDetail = (props: AffairsDetailProps) => {
@@ -161,7 +163,6 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           padding: `0px ${props?.isInfoPage ? '12px' : '0px'}`,
         }}
       >
-        {' '}
         <InfoItem
           className="info_item_tab"
           id="sprint-info"
@@ -229,6 +230,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
             projectId={projectInfo.id}
             noBorder
             isBug={props?.affairsInfo?.is_bug === 1}
+            userId={props?.userId}
           />
         </InfoItem>
         <InfoItem

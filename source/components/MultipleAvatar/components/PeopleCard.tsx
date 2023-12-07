@@ -35,13 +35,13 @@ const PeopleCard = (props: any) => {
   // 跳转到员工概况
   const onToEmployee = (e: any) => {
     e.stopPropagation()
-    // EmployeeProfile
     const params = encryptPhp(
       JSON.stringify({
         user_id: props.id,
       }),
     )
     navigate(`/EmployeeProfile?data=${params}`)
+    //关闭浮层
   }
 
   return (

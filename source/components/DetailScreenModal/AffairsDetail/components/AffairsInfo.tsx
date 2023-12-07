@@ -28,7 +28,9 @@ import SprintTag from '@/components/TagComponent/SprintTag'
 import { Tabs } from 'antd'
 interface Props {
   onRef: any
+  employeeCurrentId?: number
 }
+
 const ButtonGroup = (props: {
   state: boolean
   onClickItem: (el: any) => void
@@ -232,20 +234,25 @@ const AffairsInfo = (props: Props) => {
     }
   }, [LeftDomC])
 
+  const aa =
+    userPreferenceConfig.previewModel === 3 ||
+    (props?.employeeCurrentId || 0) > 0
+  const startHeight = aa ? 80 : 100
+  const a2 = affairsInfo?.isExamine ? 176 : 110
+  const a3 = affairsInfo?.isExamine ? 236 : 165
+  // 新加入的人员取消头部
+  const a4 = a2 - (props?.employeeCurrentId || 0) > 0 ? 67 : 0
+  const a5 = a3 - (props?.employeeCurrentId || 0) > 0 ? 67 : 0
+  const a1 = aa ? a4 : a5
+
   return (
     <InfoWrap
-      height={`calc(${userPreferenceConfig.previewModel === 3 ? 80 : 100}vh - ${
-        (userPreferenceConfig.previewModel === 3
-          ? affairsInfo?.isExamine
-            ? 176
-            : 110
-          : affairsInfo?.isExamine
-          ? 236
-          : 165) + (document.getElementById('DetailText')?.clientHeight || 25)
+      height={`calc(${startHeight}vh - ${
+        a1 + (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}
-      {!isScroll && (
+      {!isScroll && !props?.employeeCurrentId && (
         <ButtonGroup
           state={affairsInfo.work_type === 6}
           onClickItem={onClickItem}
@@ -277,6 +284,8 @@ const AffairsInfo = (props: Props) => {
           onRef={uploadFile}
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
           isInfoPage
+          isPreview={(props?.employeeCurrentId || 0) > 0}
+          userId={props?.employeeCurrentId}
         />
         <div
           style={{
@@ -292,12 +301,14 @@ const AffairsInfo = (props: Props) => {
               onRef={childRef}
               detail={affairsInfo as Model.Affairs.AffairsInfo}
               isInfoPage
+              isPreview={(props?.employeeCurrentId || 0) > 0}
             />
           )}
           <LinkSprint
             onRef={linkSprint}
             detail={affairsInfo as Model.Affairs.AffairsInfo}
             isInfoPage
+            isPreview={(props?.employeeCurrentId || 0) > 0}
           />
           <ActivitySprint />
         </div>

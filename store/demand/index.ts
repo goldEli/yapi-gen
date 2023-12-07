@@ -46,7 +46,7 @@ export const demandSlice = createSlice({
     setDemandDetailDrawerProps: (state: any, action) => {
       state.demandDetailDrawerProps = action.payload
     },
-    setAffairsCommentList(state, action) {
+    setDemandCommentList(state, action) {
       state.demandCommentList = action.payload
     },
   },
@@ -65,6 +65,7 @@ export const {
   setIsDemandDetailDrawerVisible,
   setDemandDetailDrawerProps,
   setStartUsing,
+  setDemandCommentList,
 } = demandSlice.actions
 
 export default demandSlice.reducer

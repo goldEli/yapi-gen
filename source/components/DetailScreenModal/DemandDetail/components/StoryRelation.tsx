@@ -105,6 +105,7 @@ interface RelationStoriesProps {
   onUpdate?(): void
   isDrawer?: boolean
   isPreview?: boolean
+  employeeCurrentId?: boolean
 }
 
 interface SelectItem {
@@ -782,8 +783,11 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
         height: props.isDrawer
           ? '100%'
           : `calc(${
-              userPreferenceConfig.previewModel === 3 ? '80vh' : '100vh'
-            } - 224px)`,
+              userPreferenceConfig.previewModel === 3 ||
+              props?.employeeCurrentId
+                ? '80vh'
+                : '100vh'
+            } - ${props?.employeeCurrentId ? '106px' : '224px'})`,
         marginTop: props.isDrawer ? '0px' : '0px',
       }}
       id="tab_link"

@@ -3,7 +3,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Space } from 'antd'
 
-export const Wrap = styled.div<{ all?: boolean }>`
+export const Wrap = styled.div<{ all?: boolean; employeeCurrentId?: number }>`
   height: 100%;
   display: flex;
   padding-top: 20px;
@@ -26,7 +26,14 @@ export const Wrap = styled.div<{ all?: boolean }>`
     color: var(--primary-d1);
   }
   .ant-tabs-content {
-    height: calc(${props => (props.all ? '80vh' : '100vh')} - 227px);
+    height: calc(
+      ${props =>
+        (props.all && props?.employeeCurrentId) || 0 > 0
+          ? '80vh - 142px'
+          : props?.all
+          ? '80vh - 227px'
+          : '100vh - 227px'}
+    );
     .ant-tabs-tabpane {
       height: 100%;
     }
@@ -205,7 +212,7 @@ export const FlawInfoWrap = styled.div<{ all?: boolean; h?: boolean }>`
   position: relative;
   height: calc(
     ${props => (props.all ? '80vh' : '100vh')} -
-      ${props => (props.h ? '180px' : '249px')}
+      ${props => (props.h ? '142px' : '249px')}
   );
   width: 100%;
   margin-top: 16px;

@@ -1,9 +1,11 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
 import MultipleAvatar from '../MultipleAvatar'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import TableQuickEdit from '../TableQuickEdit'
 import { useTranslation } from 'react-i18next'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 
 const Wrap = styled.div`
   display: flex;
@@ -34,10 +36,104 @@ const TopInfoWrap = styled.div`
   }
 `
 
+const ParticipantsWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const UserAvatarWrap = styled.div`
+  display: flex;
+  align-items: center;
+  height: max-content;
+  .name {
+    display: flex;
+    align-items: center;
+    line-height: 24px;
+  }
+  &:hover {
+    .name {
+      border-bottom: 1px solid var(--primary-d1);
+    }
+  }
+`
+
+const AvatarBox = styled.div`
+  border-radius: 50%;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+`
+
+const NameWrap = styled.div`
+  margin-left: 8px;
+  font-size: 14px;
+  font-family: SiYuanRegular;
+  color: var(--primary-d2);
+  max-width: 304px;
+  white-space: wrap;
+`
+
 interface DrawerTopInfoProps {
   details: any
   onUpdate?(): void
   isPreview?: boolean
+  // 用于员工概况查看过滤当前处理人
+  userId?: number
+}
+
+interface ParticipantsUserProps {
+  avatar?: string
+  name?: string
+  id?: number
+  positionName?: string
+  // 当前任务详情数据
+  details?: any
+}
+
+const ParticipantsUser = (props: ParticipantsUserProps) => {
+  const { theme } = useSelector(store => store.global)
+  const [openDemandDetail] = useOpenDemandDetail()
+
+  // 打开任务详情弹层
+  const onToDetail = () => {
+    openDemandDetail(
+      {
+        ...props.details,
+        ...{
+          projectId: props.details.project_id,
+          employeeCurrentId: props?.id,
+        },
+      },
+      props.details.project_id,
+      props.details.id,
+      props.details.project_type === 2 ? 1 : props.details.is_bug === 1 ? 2 : 3,
+      true,
+      true,
+    )
+  }
+
+  return (
+    <UserAvatarWrap onClick={onToDetail}>
+      <AvatarBox>
+        {props.avatar && <img src={props.avatar} />}
+        {!props.avatar && theme === 1 && (
+          <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/dark.pnp" />
+        )}
+        {!props.avatar && theme === 0 && (
+          <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png" />
+        )}
+      </AvatarBox>
+      <div className="name">
+        {props.name && <NameWrap>{props?.name}</NameWrap>}
+        {props.positionName && <NameWrap>-{props?.positionName}</NameWrap>}
+      </div>
+    </UserAvatarWrap>
+  )
 }
 
 const DrawerTopInfo = (props: DrawerTopInfoProps) => {
@@ -119,33 +215,35 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           <CommonIconFont type="user" size={16} color="var(--neutral-n3)" />
         </span>
         <span className="box">
-          <span className="label" style={{ marginRight: 16 }}>
-            {t('common.dealName')}
-          </span>
-          {props.isPreview ? (
-            <MultipleAvatar
-              max={3}
-              list={(props.details?.user ?? [])?.map((i: any) => ({
-                id: i.user.id,
-                name: i.user.name,
-                avatar: i.user.avatar,
-              }))}
-            />
-          ) : (
-            <span>
-              <TableQuickEdit
-                item={{
-                  ...props.details,
-                  ...{ categoryConfigList: drawerCanOperation },
-                }}
-                isInfo
-                keyText="users"
-                type="fixed_select"
-                defaultText={
-                  props.details?.user?.map((i: any) => i.user.id) || []
-                }
-                onUpdate={props.onUpdate}
-              >
+          {/* 如果有当前处理人id则显示参与人 */}
+          {props?.userId && (
+            <>
+              <span className="label" style={{ marginRight: 16 }}>
+                {t('participants')}
+              </span>
+              <ParticipantsWrap>
+                {(
+                  props.details?.user?.filter(
+                    (k: any) => k.user.id !== props?.userId,
+                  ) ?? []
+                )?.map((i: any) => (
+                  <ParticipantsUser
+                    key={i.user.id}
+                    name={i.user.name}
+                    avatar={i.user?.avatar}
+                    details={props.details}
+                    id={i.user.id}
+                  />
+                ))}
+              </ParticipantsWrap>
+            </>
+          )}
+          {!props?.userId && (
+            <>
+              <span className="label" style={{ marginRight: 16 }}>
+                {t('common.dealName')}
+              </span>
+              {props.isPreview ? (
                 <MultipleAvatar
                   max={3}
                   list={(props.details?.user ?? [])?.map((i: any) => ({
@@ -154,8 +252,33 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
                     avatar: i.user.avatar,
                   }))}
                 />
-              </TableQuickEdit>
-            </span>
+              ) : (
+                <span>
+                  <TableQuickEdit
+                    item={{
+                      ...props.details,
+                      ...{ categoryConfigList: drawerCanOperation },
+                    }}
+                    isInfo
+                    keyText="users"
+                    type="fixed_select"
+                    defaultText={
+                      props.details?.user?.map((i: any) => i.user.id) || []
+                    }
+                    onUpdate={props.onUpdate}
+                  >
+                    <MultipleAvatar
+                      max={3}
+                      list={(props.details?.user ?? [])?.map((i: any) => ({
+                        id: i.user.id,
+                        name: i.user.name,
+                        avatar: i.user.avatar,
+                      }))}
+                    />
+                  </TableQuickEdit>
+                </span>
+              )}
+            </>
           )}
         </span>
       </TopInfoWrap>

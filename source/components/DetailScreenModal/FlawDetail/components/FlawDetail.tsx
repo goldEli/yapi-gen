@@ -33,6 +33,8 @@ interface FlawDetailProps {
   isInfoPage?: boolean
   onUpdate?(value?: boolean): void
   isPreview?: boolean
+  // 用于获取进度日志中当前处理人的日志
+  userId?: number
 }
 
 const FlawDetail = (props: FlawDetailProps, ref: any) => {
@@ -211,6 +213,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
             noBorder
             isBug={props?.flawInfo?.is_bug === 1}
             isPreview={props?.isPreview}
+            userId={props?.userId}
           />
         </FlawInfoInfoItem>
         <FlawInfoInfoItem

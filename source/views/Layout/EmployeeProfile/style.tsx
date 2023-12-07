@@ -706,3 +706,81 @@ export const NoDataTextWrap = styled.div`
     display: block;
   }
 `
+
+// 右侧任务详情样式
+
+export const TaskContentWrap = styled.div`
+  height: 100%;
+  overflow: auto;
+  padding: 16px 0px;
+  position: relative;
+  .tabs {
+    padding-top: 32px;
+    position: sticky;
+    top: -18px;
+    z-index: 2;
+    background: var(--neutral-white-d1);
+  }
+`
+
+export const DemandName = styled.div`
+  .name {
+    font-size: 16px;
+    color: var(--neutral-n1-d1);
+    margin-right: 16px;
+    font-family: SiYuanMedium;
+    outline: none;
+  }
+  .icon {
+    margin-right: 16px;
+    cursor: pointer;
+  }
+  flex-wrap: wrap;
+`
+
+export const ProgressBox = styled.div`
+  padding: 12px 24px;
+  background-color: var(--neutral-white-d1);
+`
+
+export const Label = styled.div`
+  color: var(--neutral-n1-d1);
+  font-size: 14px;
+  min-width: 120px;
+  font-family: SiYuanMedium;
+  margin-bottom: 8px;
+  height: 32px;
+  line-height: 32px;
+  ::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 16px;
+    background: #6688ff;
+  }
+`
+
+export const DetailFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  background: var(--neutral-white-d5);
+  width: 100%;
+  .textBox {
+    display: flex;
+    flex-direction: column;
+    div {
+      font-size: 12px;
+      color: var(--neutral-n3);
+      margin-bottom: 4px;
+    }
+    span {
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
+  }
+`

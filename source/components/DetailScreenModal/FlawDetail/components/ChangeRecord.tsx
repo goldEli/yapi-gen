@@ -390,7 +390,7 @@ const ChangeRecord = (props: Props) => {
   }
 
   return (
-    <div style={{ height: '100%', paddingLeft: 24 }}>
+    <div style={{ height: '100%', padding: '0 24px' }}>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}

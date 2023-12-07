@@ -126,6 +126,8 @@ interface ScheduleRecordProps {
   noBorder?: boolean
   isBug?: boolean
   isPreview?: boolean
+  // 用于获取进度日志中当前处理人的日志
+  userId?: number
 }
 
 const ScheduleRecord = (props: ScheduleRecordProps) => {
@@ -147,6 +149,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
       project_id: props.projectId,
       pagesize: 10,
       page: pageNumber ?? page,
+      target_id: props?.userId,
     })
     setTotal(response.pager.total)
     setListData({

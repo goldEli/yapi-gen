@@ -10,7 +10,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import DemandBasic from './DemandBasic'
 import DemandDetail from './DemandDetail'
 
-const DemandInfo = () => {
+const DemandInfo = (props: { employeeCurrentId?: boolean }) => {
   const dispatch = useDispatch()
   const { userPreferenceConfig } = useSelector(store => store.user)
   const LeftDom = useRef<HTMLDivElement>(null)
@@ -33,10 +33,16 @@ const DemandInfo = () => {
     }
   }
 
+  const aa = userPreferenceConfig.previewModel === 3 || props?.employeeCurrentId
+  const startHeight = aa ? 80 : 100
+  const a1 = aa ? (props?.employeeCurrentId ? 142 : 180) : 249
+
   return (
     <DetailMain
-      all={userPreferenceConfig.previewModel === 3}
-      h={userPreferenceConfig.previewModel === 3}
+      style={{
+        height: `calc(${startHeight}vh - ${a1}px)`,
+        marginTop: props?.employeeCurrentId ? 0 : 16,
+      }}
     >
       <div
         style={{

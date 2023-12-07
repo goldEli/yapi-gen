@@ -33,7 +33,7 @@ import DeleteConfirm from '../DeleteConfirm'
 interface Props {
   detail?: any
   isOpen?: boolean
-  onUpdate(): void
+  onUpdate?(): void
   isPreview?: boolean
 }
 interface SelectItem {
@@ -263,7 +263,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
     })
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     onCancelSearch()
-    props.onUpdate()
+    props.onUpdate?.()
   }
   // 获取最近下拉需求列表
   const getSelectRecentList = async () => {
@@ -310,7 +310,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDelete(false)
       setDeleteId(0)
-      props.onUpdate()
+      props.onUpdate?.()
     } catch (error) {
       //
     }

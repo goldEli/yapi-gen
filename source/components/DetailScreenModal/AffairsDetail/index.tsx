@@ -479,184 +479,193 @@ const AffairsDetail = () => {
 
   return (
     <Wrap>
-      <DeleteConfirm
-        title={t('deleteConfirmation')}
-        isVisible={isVisible}
-        onChangeVisible={() => setIsVisible(!isVisible)}
-        onConfirm={onDeleteConfirm}
-      >
-        <div style={{ marginBottom: 9 }}>
-          {t('youWillPermanentlyDeleteWhichCannotBeRecoveredAfterPleaseBe', {
-            key: `${affairsInfo.projectPrefix}-${affairsInfo.prefixKey}`,
-          })}
-        </div>
-        {affairsInfo.work_type !== 6 && (
-          <Checkbox
-            disabled={[4, 5].includes(affairsInfo.work_type || 0)}
-            checked={isDeleteCheck}
-            onChange={e => setIsDeleteCheck(e.target.checked)}
+      {/* 不是员工概况打开就有头部操作 */}
+      {!params?.isPreview && (
+        <>
+          <DeleteConfirm
+            title={t('deleteConfirmation')}
+            isVisible={isVisible}
+            onChangeVisible={() => setIsVisible(!isVisible)}
+            onConfirm={onDeleteConfirm}
           >
-            {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
-          </Checkbox>
-        )}
-      </DeleteConfirm>
-      <ShareModal
-        url={`${location.origin}/ProjectDetail/Affair?data=${encryptPhp(
-          JSON.stringify({
-            id: projectInfo.id,
-            detailId: affairsInfo.id,
-            specialType: 1,
-            isOpenScreenDetail: true,
-          }),
-        )}`}
-        title={
-          affairsInfo?.name
-            ? `【${affairsInfo?.projectPrefix}${
-                affairsInfo?.prefixKey ? '-' : ''
-              }${affairsInfo?.prefixKey}-${affairsInfo?.name}-${
-                userInfo?.name
-              }】`
-            : ''
-        }
-      />
-      <CommonModal
-        isVisible={isShowCategory}
-        onClose={onCloseCategory}
-        title={t('newlyAdd.changeCategory')}
-        onConfirm={onConfirmCategory}
-      >
-        <FormWrap
-          form={form}
-          layout="vertical"
-          style={{ padding: '0 20px 0 24px' }}
-        >
-          <Form.Item label={t('newlyAdd.beforeCategory')}>
-            <img
-              src={affairsInfo?.category_attachment}
-              style={{
-                width: '18px',
-                height: '18px',
-                marginRight: '8px',
-              }}
-              alt=""
-            />
-            <span>{affairsInfo?.categoryName}</span>
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterCategory')}
-            name="categoryId"
-            rules={[{ required: true, message: '' }]}
-          >
-            <CustomSelect
-              placeholder={t('common.pleaseSelect')}
-              showArrow
-              showSearch
-              getPopupContainer={(node: any) => node}
-              allowClear
-              optionFilterProp="label"
-              onChange={onChangeSelect}
-              options={resultCategory?.map((k: any) => ({
-                label: k.content,
-                value: k.id,
-              }))}
-            />
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterStatus')}
-            name="statusId"
-            rules={[{ required: true, message: '' }]}
-          >
-            <CustomSelect
-              placeholder={t('common.pleaseSelect')}
-              showArrow
-              showSearch
-              getPopupContainer={(node: any) => node}
-              allowClear
-              optionFilterProp="label"
-              options={workList?.list?.map((k: any) => ({
-                label: k.name,
-                value: k.statusId,
-              }))}
-            />
-          </Form.Item>
-        </FormWrap>
-      </CommonModal>
-      <DetailTop
-        style={{
-          borderBottom: '1px solid #EBECED',
-          padding: '20px 20px 40px 20px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <MyBreadcrumb />
-          <LongStroyBread
-            longStroy={affairsInfo}
-            onClick={() => {
-              dispatch(
-                getAffairsInfo({
-                  projectId: params.id,
-                  sprintId: affairsInfo.id || 0,
-                }),
-              )
-            }}
-          ></LongStroyBread>
-        </div>
-        {affairsInfo.id && (
-          <ButtonGroup size={16}>
-            {(params?.changeIds?.length || 0) > 1 && (
-              <ChangeIconGroup>
-                {currentIndex > 0 && (
-                  <LeftIcontButton
-                    onClick={onUpDemand}
-                    icon="up-md"
-                    text={t('previous')}
-                  />
-                )}
-                {!(
-                  params?.changeIds?.length === 0 ||
-                  currentIndex === (params?.changeIds?.length || 0) - 1
-                ) && (
-                  <LeftIcontButton
-                    onClick={onDownDemand}
-                    icon="down-md"
-                    text={t('next')}
-                  />
-                )}
-              </ChangeIconGroup>
+            <div style={{ marginBottom: 9 }}>
+              {t(
+                'youWillPermanentlyDeleteWhichCannotBeRecoveredAfterPleaseBe',
+                {
+                  key: `${affairsInfo.projectPrefix}-${affairsInfo.prefixKey}`,
+                },
+              )}
+            </div>
+            {affairsInfo.work_type !== 6 && (
+              <Checkbox
+                disabled={[4, 5].includes(affairsInfo.work_type || 0)}
+                checked={isDeleteCheck}
+                onChange={e => setIsDeleteCheck(e.target.checked)}
+              >
+                {t('deleteAllSubtransactionsUnderThisTransactionAtTheSameTime')}
+              </Checkbox>
             )}
-
-            <div>
-              <LeftIcontButton
-                onClick={onShare}
-                icon="share"
-                text={t('share')}
-              />
-            </div>
-
-            <DropdownMenu
-              placement="bottomRight"
-              trigger={['click']}
-              menu={{
-                items: onGetMenu(),
-              }}
-              getPopupContainer={n => n}
+          </DeleteConfirm>
+          <ShareModal
+            url={`${location.origin}/ProjectDetail/Affair?data=${encryptPhp(
+              JSON.stringify({
+                id: projectInfo.id,
+                detailId: affairsInfo.id,
+                specialType: 1,
+                isOpenScreenDetail: true,
+              }),
+            )}`}
+            title={
+              affairsInfo?.name
+                ? `【${affairsInfo?.projectPrefix}${
+                    affairsInfo?.prefixKey ? '-' : ''
+                  }${affairsInfo?.prefixKey}-${affairsInfo?.name}-${
+                    userInfo?.name
+                  }】`
+                : ''
+            }
+          />
+          <CommonModal
+            isVisible={isShowCategory}
+            onClose={onCloseCategory}
+            title={t('newlyAdd.changeCategory')}
+            onConfirm={onConfirmCategory}
+          >
+            <FormWrap
+              form={form}
+              layout="vertical"
+              style={{ padding: '0 20px 0 24px' }}
             >
-              <div>
-                <LeftIcontButton icon="more-01" text={t('more')} />
-              </div>
-            </DropdownMenu>
-
-            <div>
-              <LeftIcontButton
-                danger
-                onClick={onClose}
-                icon="close"
-                text={t('closure')}
-              />
+              <Form.Item label={t('newlyAdd.beforeCategory')}>
+                <img
+                  src={affairsInfo?.category_attachment}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    marginRight: '8px',
+                  }}
+                  alt=""
+                />
+                <span>{affairsInfo?.categoryName}</span>
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterCategory')}
+                name="categoryId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <CustomSelect
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  options={resultCategory?.map((k: any) => ({
+                    label: k.content,
+                    value: k.id,
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterStatus')}
+                name="statusId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <CustomSelect
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={workList?.list?.map((k: any) => ({
+                    label: k.name,
+                    value: k.statusId,
+                  }))}
+                />
+              </Form.Item>
+            </FormWrap>
+          </CommonModal>
+          <DetailTop
+            style={{
+              borderBottom: '1px solid #EBECED',
+              padding: '20px 20px 40px 20px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <MyBreadcrumb />
+              <LongStroyBread
+                longStroy={affairsInfo}
+                onClick={() => {
+                  dispatch(
+                    getAffairsInfo({
+                      projectId: params.id,
+                      sprintId: affairsInfo.id || 0,
+                    }),
+                  )
+                }}
+              ></LongStroyBread>
             </div>
-          </ButtonGroup>
-        )}
-      </DetailTop>
+            {affairsInfo.id && (
+              <ButtonGroup size={16}>
+                {(params?.changeIds?.length || 0) > 1 && (
+                  <ChangeIconGroup>
+                    {currentIndex > 0 && (
+                      <LeftIcontButton
+                        onClick={onUpDemand}
+                        icon="up-md"
+                        text={t('previous')}
+                      />
+                    )}
+                    {!(
+                      params?.changeIds?.length === 0 ||
+                      currentIndex === (params?.changeIds?.length || 0) - 1
+                    ) && (
+                      <LeftIcontButton
+                        onClick={onDownDemand}
+                        icon="down-md"
+                        text={t('next')}
+                      />
+                    )}
+                  </ChangeIconGroup>
+                )}
+
+                <div>
+                  <LeftIcontButton
+                    onClick={onShare}
+                    icon="share"
+                    text={t('share')}
+                  />
+                </div>
+
+                <DropdownMenu
+                  placement="bottomRight"
+                  trigger={['click']}
+                  menu={{
+                    items: onGetMenu(),
+                  }}
+                  getPopupContainer={n => n}
+                >
+                  <div>
+                    <LeftIcontButton icon="more-01" text={t('more')} />
+                  </div>
+                </DropdownMenu>
+
+                <div>
+                  <LeftIcontButton
+                    danger
+                    onClick={onClose}
+                    icon="close"
+                    text={t('closure')}
+                  />
+                </div>
+              </ButtonGroup>
+            )}
+          </DetailTop>
+        </>
+      )}
+
       {affairsInfo?.isExamine && (
         <div style={{ padding: '0px', backgroundColor: 'white' }}>
           <StatusExamine
@@ -664,48 +673,71 @@ const AffairsDetail = () => {
             onCancel={onCancelExamine}
             isVerify={affairsInfo?.has_verify === 1}
             onCheck={onCheckRecord}
+            isPreview={params?.isPreview}
           />
         </div>
       )}
 
       <DetailMain
-        all={userPreferenceConfig.previewModel === 3}
-        h={userPreferenceConfig.previewModel === 3}
+        all={
+          userPreferenceConfig.previewModel === 3 ||
+          (params?.employeeCurrentId || 0) > 0
+        }
+        h={
+          userPreferenceConfig.previewModel === 3 ||
+          (params?.employeeCurrentId || 0) > 0
+        }
+        style={{ marginTop: (params?.employeeCurrentId || 0) > 0 ? 0 : 16 }}
       >
         <div
           style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
         >
           <DetailTitle>
             <Tooltip title={affairsInfo?.categoryName}>
-              <Popover
-                trigger={['hover']}
-                visible={isShowChange}
-                placement="bottomLeft"
-                content={changeStatus}
-                getPopupContainer={node => node}
-                onVisibleChange={visible => setIsShowChange(visible)}
-              >
+              {params?.employeeCurrentId && (
                 <div>
                   <Img src={affairsInfo.category_attachment} alt="" />
                 </div>
-              </Popover>
-            </Tooltip>
-            <DetailText id="DetailText">
-              {!hasEdit && (
-                <span
-                  className="name"
-                  ref={spanDom}
-                  contentEditable
-                  onBlur={onNameConfirm}
-                >
-                  {affairsInfo.name}
-                </span>
               )}
-              {hasEdit && <span className="name">{affairsInfo.name}</span>}
-              <CopyIcon onCopy={onCopy} />
-            </DetailText>
+              {!params?.employeeCurrentId && (
+                <Popover
+                  trigger={['hover']}
+                  visible={isShowChange}
+                  placement="bottomLeft"
+                  content={changeStatus}
+                  getPopupContainer={node => node}
+                  onVisibleChange={visible => setIsShowChange(visible)}
+                >
+                  <div>
+                    <Img src={affairsInfo.category_attachment} alt="" />
+                  </div>
+                </Popover>
+              )}
+            </Tooltip>
+            {params?.employeeCurrentId && (
+              <span className="name">{affairsInfo.name}</span>
+            )}
+            {!params?.employeeCurrentId && (
+              <DetailText id="DetailText">
+                {!hasEdit && (
+                  <span
+                    className="name"
+                    ref={spanDom}
+                    contentEditable
+                    onBlur={onNameConfirm}
+                  >
+                    {affairsInfo.name}
+                  </span>
+                )}
+                {hasEdit && <span className="name">{affairsInfo.name}</span>}
+                <CopyIcon onCopy={onCopy} />
+              </DetailText>
+            )}
           </DetailTitle>
-          <AffairsInfo onRef={sprintDetailInfoDom} />
+          <AffairsInfo
+            onRef={sprintDetailInfoDom}
+            employeeCurrentId={params?.employeeCurrentId}
+          />
         </div>
         <div
           ref={basicInfoDom}
@@ -717,7 +749,9 @@ const AffairsDetail = () => {
               record={affairsInfo}
               onChangeStatus={onChangeStatus}
               type={2}
-              isCanOperation={!hasEdit && !affairsInfo.isExamine}
+              isCanOperation={
+                !hasEdit && !affairsInfo.isExamine && !params?.employeeCurrentId
+              }
             >
               <StateTag
                 onClick={affairsInfo.isExamine ? onExamine : void 0}
@@ -757,13 +791,17 @@ const AffairsDetail = () => {
                 Array.isArray(affairsInfo?.user) &&
                 affairsInfo?.user
                   ?.map((i: any) => i?.user?.id)
-                  ?.includes(userInfo?.id)
+                  ?.includes(userInfo?.id) &&
+                !params?.employeeCurrentId
               }
               project_id={affairsInfo?.projectId as any}
               onConfirm={onUpdate}
             />
           </div>
-          <AffairsBasic onRef={basicInfoDom} />
+          <AffairsBasic
+            onRef={basicInfoDom}
+            employeeCurrentId={params?.employeeCurrentId}
+          />
         </div>
       </DetailMain>
     </Wrap>

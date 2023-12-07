@@ -89,14 +89,25 @@ const FlawInfo = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
   return (
     <FlawInfoWrap
-      all={userPreferenceConfig.previewModel === 3}
-      h={userPreferenceConfig.previewModel === 3}
+      all={
+        userPreferenceConfig.previewModel === 3 ||
+        (params?.employeeCurrentId || 0) > 0
+      }
+      h={
+        userPreferenceConfig.previewModel === 3 ||
+        (params?.employeeCurrentId || 0) > 0
+      }
     >
       <FlawInfoLeft
         style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
       >
-        <FlawDetail flawInfo={flawInfo as Model.Flaw.FlawInfo} isInfoPage />
-        {flawInfo.id && (
+        <FlawDetail
+          flawInfo={flawInfo as Model.Flaw.FlawInfo}
+          isInfoPage
+          isPreview={(params?.employeeCurrentId || 0) > 0}
+          userId={params?.employeeCurrentId}
+        />
+        {flawInfo.id && !params?.employeeCurrentId && (
           <div style={{ margin: '16px', background: '#f5f5f7' }}>
             <FlawInfoInfoItem>
               <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
@@ -137,7 +148,13 @@ const FlawInfo = () => {
           </div>
         </TitleWrap>
         {activeTabs === 1 && (
-          <FlawBasic detail={flawInfo} onUpdate={onUpdate} isOpen isInfoPage />
+          <FlawBasic
+            detail={flawInfo}
+            onUpdate={onUpdate}
+            isOpen
+            isInfoPage
+            isPreview={(params?.employeeCurrentId || 0) > 0}
+          />
         )}
         {activeTabs === 2 && (
           <FlawComment isOpen={activeTabs === 2} detail={flawInfo} isOpenInfo />
@@ -152,10 +169,12 @@ const FlawInfo = () => {
               {t('updated')} {detailTimeFormat(flawInfo.update_at as string)}
             </span>
           </div>
-          <ConfigWrap onClick={onToConfig}>
-            <CommonIconFont type="settings" />
-            <div>{t('configurationFields')}</div>
-          </ConfigWrap>
+          {!params?.employeeCurrentId && (
+            <ConfigWrap onClick={onToConfig}>
+              <CommonIconFont type="settings" />
+              <div>{t('configurationFields')}</div>
+            </ConfigWrap>
+          )}
         </BasicFooter>
       </WrapRight>
     </FlawInfoWrap>

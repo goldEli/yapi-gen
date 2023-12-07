@@ -74,25 +74,35 @@ const DetailScreenModal = () => {
   return (
     <ModalWrap
       layoutSideCollapse={layoutSideCollapse}
-      all={userPreferenceConfig.previewModel === 3}
+      all={
+        userPreferenceConfig.previewModel === 3 ||
+        (params?.employeeCurrentId || 0) > 0
+      }
       footer={false}
       open={visible}
       closable={false}
       title={false}
-      maskClosable={userPreferenceConfig.previewModel === 3 ? true : false}
+      maskClosable={
+        userPreferenceConfig.previewModel === 3 || params?.employeeCurrentId
+          ? true
+          : false
+      }
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"
       focusTriggerAfterClose={false}
-      mask={userPreferenceConfig.previewModel === 3}
+      mask={
+        userPreferenceConfig.previewModel === 3 ||
+        (params?.employeeCurrentId || 0) > 0
+      }
       bodyStyle={{
         height: fullScreen
           ? '100vh'
-          : userPreferenceConfig.previewModel === 3
+          : userPreferenceConfig.previewModel === 3 ||
+            (params?.employeeCurrentId || 0) > 0
           ? '80vh'
           : 'calc(100vh - 56px)',
         marginTop: fullScreen ? 0 : 56,
-        // marginLeft: fullScreen ? 0 : layoutSideCollapse ? 200 : 80,
       }}
       width={
         fullScreen
@@ -101,7 +111,12 @@ const DetailScreenModal = () => {
           ? 'calc(100vw - 200px)'
           : 'calc(100vw - 80px)'
       }
-      zIndex={userPreferenceConfig.previewModel === 3 ? 1000 : 50}
+      zIndex={
+        userPreferenceConfig.previewModel === 3 ||
+        (params?.employeeCurrentId || 0) > 0
+          ? 1000
+          : 50
+      }
       // 界面全屏时需要挂载到全屏的那个dom元素身上才能显示出来
       getContainer={
         fullScreen

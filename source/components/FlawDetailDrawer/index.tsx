@@ -537,6 +537,7 @@ const FlawDetailDrawer = () => {
     dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
+  // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({

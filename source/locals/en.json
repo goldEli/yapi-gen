@@ -2636,5 +2636,11 @@
   "searchForRequirementNameOrNumber": "Search for requirement name or number",
   "ohMyYourPageHasBeenLost": "Oh my! Your page has been lost",
   "goBackToTheHomepage": "Go back to the homepage",
-  "resetFiltering": "Reset filtering"
+  "resetFiltering": "Reset filtering",
+  "weSuggestThatYouResetTheFiltering": "We suggest that you reset the filtering",
+  "scopePeriod": "No query found within the period range of {{time}}",
+  "statusFilter": "the status is [{name}}]",
+  "keywordFilter": "the keyword is {{keyword}}、",
+  "endText": "the data",
+  "participants": "Participants"
 }

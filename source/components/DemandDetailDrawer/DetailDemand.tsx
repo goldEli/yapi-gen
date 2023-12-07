@@ -32,8 +32,10 @@ import ScheduleRecord from '../ScheduleRecord'
 
 interface DetailDemand {
   detail: any
-  onUpdate(value?: boolean): void
+  onUpdate?(value?: boolean): void
   isPreview?: boolean
+  // 用于获取进度日志中当前处理人的日志
+  userId?: number
 }
 
 const DetailDemand = (props: DetailDemand, ref: any) => {
@@ -67,7 +69,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       type: 'attachment',
       targetId: [obj],
     })
-    props.onUpdate()
+    props.onUpdate?.()
   }
 
   const onDeleteConfirm = async () => {
@@ -79,7 +81,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         targetId: files,
       })
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      props.onUpdate()
+      props.onUpdate?.()
     } catch (error) {
       //
     }
@@ -99,7 +101,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       name: props.detail.name,
     }
     await updateDemandEditor(params)
-    props.onUpdate()
+    props.onUpdate?.()
   }
   const handleUpload = () => {
     uploadRef.current?.handleUpload()
@@ -193,6 +195,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
             projectId={projectInfo.id}
             noBorder
             isBug={props.detail?.is_bug === 1}
+            userId={props?.userId}
           />
         </div>
       </ContentItem>

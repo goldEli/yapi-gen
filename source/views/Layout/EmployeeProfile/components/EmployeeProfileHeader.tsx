@@ -66,7 +66,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   // 状态列表
   const cardList = [
     {
-      name: t('overdue'),
+      name: t('mine.overdue'),
       type: 'red',
       key: 5,
       fieldKey: 'overdue',

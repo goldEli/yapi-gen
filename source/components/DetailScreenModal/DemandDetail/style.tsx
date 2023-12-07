@@ -175,11 +175,14 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
     props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
 `
 
-export const ComputedWrap = styled.div<{ all?: boolean }>`
+export const ComputedWrap = styled.div<{
+  all?: boolean
+  isPreview?: boolean
+}>`
   padding: 0px 24px;
   height: calc(
     ${props => (props.all ? '80vh' : '100vh')} -
-      ${props => (props.all ? '154px' : '210px')}
+      ${props => (props.all ? (props?.isPreview ? '124px' : '154px') : '210px')}
   );
 `
 

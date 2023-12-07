@@ -1008,6 +1008,7 @@ export const getScheduleLogList = async (params: {
   project_id: number
   pagesize: number
   page: number
+  target_id?: number
 }) => {
   const response = await http.get<any>('getScheduleLogList', params)
   return response.data

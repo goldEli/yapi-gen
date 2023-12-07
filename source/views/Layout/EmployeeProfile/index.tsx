@@ -15,7 +15,6 @@ import { Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import EmployeeProfileReport from './components/EmployeeProfileReport'
-import EmployeeProfileTask from './components/EmployeeProfileTask'
 import { useDispatch, useSelector } from '@store/index'
 import {
   setCurrentClickNumber,
@@ -25,6 +24,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import CommonButton from '@/components/CommonButton'
+import EmployeeAffair from './components/EmployeeAffair'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
@@ -40,8 +40,16 @@ const EmployeeProfile = () => {
   const [filterParams, setFilterParams] = useState<any>({})
   // 第一条日报的第一个需求数据
   const [reportFirstData, setReportFirstData] = useState<any>({
+    // 项目id
     project_id: null,
+    // 任务id
     id: null,
+    // 项目类型
+    project_type: null,
+    // 是否是缺陷
+    is_bug: null,
+    // 当前发日报的人
+    user_id: 0,
   })
   const sideMain = useRef<any>(null)
   const sliderRef = useRef<any>(null)
@@ -138,29 +146,31 @@ const EmployeeProfile = () => {
 
   // 计算筛选条件展示
   const onComputedText = () => {
-    console.log(filterParams, '=1111')
     // 是否有时间
     const hasTime =
       filterParams.time?.length > 0
-        ? `【${filterParams.time[0]} ~ ${filterParams.time[1]}】期间范围内未查询到`
+        ? `${t('scopePeriod', {
+            time: `${filterParams.time[0]} ~ ${filterParams.time[1]}`,
+          })}`
         : ''
 
     // 是否有状态
     const hasStatus =
       filterParams?.status === 0
         ? ''
-        : `状态为【${
-            cardList?.filter((i: any) => i.key === filterParams?.status)[0]
-              ?.name
-          }】`
+        : `${t('statusFilter', {
+            name: cardList?.filter(
+              (i: any) => i.key === filterParams?.status,
+            )[0]?.name,
+          })}`
 
     // 是否有搜索条件
     const hasKeyword =
       filterParams?.keyword?.length > 0
-        ? `关键字为【${filterParams?.keyword}】`
+        ? `${t('keywordFilter', { keyword: filterParams?.keyword })}`
         : ''
 
-    return hasTime + hasKeyword + hasStatus + '的数据'
+    return hasTime + hasKeyword + hasStatus + t('endText')
   }
 
   // useEffect(() => {
@@ -228,14 +238,39 @@ const EmployeeProfile = () => {
                 filterParams={filterParams}
                 onGetReportFirstData={setReportFirstData}
               />
-              <EmployeeProfileTask filterParams={filterParams} />
+              {/* 事务 */}
+              {reportFirstData?.project_type === 2 && (
+                <EmployeeAffair
+                  id={reportFirstData?.id}
+                  project_id={reportFirstData?.project_id}
+                  user_id={reportFirstData?.user_id}
+                />
+              )}
+              {/* 缺陷 */}
+              {reportFirstData?.project_type === 1 &&
+                reportFirstData?.is_bug === 1 && (
+                  <EmployeeAffair
+                    id={reportFirstData?.id}
+                    project_id={reportFirstData?.project_id}
+                    user_id={reportFirstData?.user_id}
+                  />
+                )}
+              {/* 需求 */}
+              {reportFirstData?.project_type === 1 &&
+                reportFirstData?.is_bug !== 1 && (
+                  <EmployeeAffair
+                    id={reportFirstData?.id}
+                    project_id={reportFirstData?.project_id}
+                    user_id={reportFirstData?.user_id}
+                  />
+                )}
             </>
           ) : (
             <NoData>
               {/* 暂无数据显示,需要日报提供是否有数据 */}
               <NoDataTextWrap>
                 <span>{onComputedText()}</span>
-                <span>建议您【重置筛选】</span>
+                <span>{t('weSuggestThatYouResetTheFiltering')}</span>
               </NoDataTextWrap>
               <CommonButton
                 type="light"

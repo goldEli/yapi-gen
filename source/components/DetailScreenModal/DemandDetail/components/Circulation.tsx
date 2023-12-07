@@ -108,6 +108,7 @@ const ContentWrap = styled.div({
 
 interface Props {
   activeKey: string
+  isPreview?: boolean
 }
 
 const Circulation = (props: Props) => {
@@ -182,6 +183,7 @@ const Circulation = (props: Props) => {
   return (
     <ComputedWrap
       all={userPreferenceConfig.previewModel === 3}
+      isPreview={props?.isPreview}
       style={{ overflow: 'auto' }}
     >
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>

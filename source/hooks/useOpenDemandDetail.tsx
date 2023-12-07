@@ -37,8 +37,32 @@ const useOpenDemandDetail = () => {
     dispatch(setListActiveId(id ?? 0))
     // 重置浮层详情数据
     dispatch(setDrawerInfo({}))
-    // 浮层预览
-    if (userPreferenceConfig.previewModel === 1 || isPreview) {
+    if (
+      userPreferenceConfig.previewModel === 3 ||
+      isPreview ||
+      item?.employeeCurrentId
+    ) {
+      // 弹层预览 或者是 仅预览 或者是人员模块打开的其他处理人任务详情
+      dispatch(setAffairsInfo({}))
+      dispatch(setDemandInfo({}))
+      dispatch(setFlawInfo({}))
+      let params: any = {
+        changeIds: item.demandIds,
+        id: projectId,
+        specialType: type === 0 ? 3 : type,
+        employeeCurrentId: item?.employeeCurrentId,
+        isPreview,
+      }
+      if (type === 1) {
+        params.sprintId = id
+      } else if (type === 2) {
+        params.flawId = id
+      } else {
+        params.demandId = id
+      }
+      dispatch(saveScreenDetailModal({ visible: true, params }))
+    } else if (userPreferenceConfig.previewModel === 1 || isPreview) {
+      // 浮层预览
       switch (type) {
         case 1:
           // 关闭其他两个浮层
@@ -85,23 +109,7 @@ const useOpenDemandDetail = () => {
           break
       }
     } else if (userPreferenceConfig.previewModel === 2 || isPreview) {
-      dispatch(setAffairsInfo({}))
-      dispatch(setDemandInfo({}))
-      dispatch(setFlawInfo({}))
-      let params: any = {
-        changeIds: item.demandIds,
-        id: projectId,
-        specialType: type === 0 ? 3 : type,
-      }
-      if (type === 1) {
-        params.sprintId = id
-      } else if (type === 2) {
-        params.flawId = id
-      } else {
-        params.demandId = id
-      }
-      dispatch(saveScreenDetailModal({ visible: true, params }))
-    } else if (userPreferenceConfig.previewModel === 3 || isPreview) {
+      // 全屏预览
       dispatch(setAffairsInfo({}))
       dispatch(setDemandInfo({}))
       dispatch(setFlawInfo({}))

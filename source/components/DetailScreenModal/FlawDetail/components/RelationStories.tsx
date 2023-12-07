@@ -56,7 +56,7 @@ interface RelationStoriesProps {
   activeKey?: string
   detail: Model.Flaw.FlawInfo
   isOpen?: boolean
-  onUpdate(value?: boolean): void
+  onUpdate?(value?: boolean): void
   isDrawer?: boolean
   isPreview?: boolean
 }
@@ -210,7 +210,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
     getMessage({ type: 'success', msg: t('addedSuccessfully') })
     getList(pageObj, order)
     onClose()
-    props.onUpdate()
+    props.onUpdate?.()
   }
 
   // 点击切换页码
@@ -709,6 +709,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
       style={{
         padding: props.isDrawer ? '16px 24px' : '16px 24px',
         backgroundColor: 'white',
+        height: '100%',
       }}
       id="tab_associatedWorkItems"
       className="info_item_tab"
@@ -799,7 +800,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
         <>
           <ResizeTable
             isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100% - 83px)"
+            dataWrapNormalHeight={`calc(100% - ${props.isPreview ? 27 : 83}px)`}
             col={props.isDrawer ? drawerColumns : columns}
             dataSource={dataSource?.list}
             noData={<NoData />}

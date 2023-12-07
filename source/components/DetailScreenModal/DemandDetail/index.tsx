@@ -417,7 +417,9 @@ const DemandDetail = () => {
           <span>{t('details')}</span>
         </DetailTabItem>
       ),
-      children: <DemandInfo />,
+      children: (
+        <DemandInfo employeeCurrentId={(params?.employeeCurrentId || 0) > 0} />
+      ),
     },
     {
       key: '2',
@@ -429,7 +431,12 @@ const DemandDetail = () => {
           </ItemNumber>
         </DetailTabItem>
       ),
-      children: <ChildDemand activeKey={tabActive} />,
+      children: (
+        <ChildDemand
+          activeKey={tabActive}
+          employeeCurrentId={(params?.employeeCurrentId || 0) > 0}
+        />
+      ),
     },
     {
       key: '3',
@@ -438,7 +445,13 @@ const DemandDetail = () => {
           <span>{t('associatedWorkItems')}</span>
         </DetailTabItem>
       ),
-      children: <StoryRelation activeKey={tabActive} detail={demandInfo} />,
+      children: (
+        <StoryRelation
+          activeKey={tabActive}
+          detail={demandInfo}
+          employeeCurrentId={(params?.employeeCurrentId || 0) > 0}
+        />
+      ),
     },
     {
       key: '4',
@@ -459,7 +472,12 @@ const DemandDetail = () => {
           <span>{t('circulationRecords')}</span>
         </DetailTabItem>
       ),
-      children: <Circulation activeKey={tabActive} />,
+      children: (
+        <Circulation
+          activeKey={tabActive}
+          isPreview={(params?.employeeCurrentId || 0) > 0}
+        />
+      ),
     },
   ]
 
@@ -523,218 +541,232 @@ const DemandDetail = () => {
   }, [])
 
   return (
-    <DemandWrap>
-      <DeleteConfirmModal />
-      <ShareModal
-        url={`${location.origin}/ProjectDetail/Demand?data=${encryptPhp(
-          JSON.stringify({
-            detailId: demandInfo?.id,
-            id: projectInfo.id,
-            specialType: 3,
-            isOpenScreenDetail: true,
-          }),
-        )}`}
-        title={
-          demandInfo?.name
-            ? `【${demandInfo?.projectPrefix}${
-                demandInfo?.prefixKey ? '-' : ''
-              }${demandInfo?.prefixKey}-${demandInfo?.name}-${userInfo?.name}】`
-            : ''
-        }
-      />
-      <CommonModal
-        isVisible={isShowCategory}
-        onClose={onCloseCategory}
-        title={t('newlyAdd.changeCategory')}
-        onConfirm={onConfirmCategory}
-      >
-        <FormWrap
-          form={form}
-          layout="vertical"
-          style={{ padding: '0 20px 0 24px' }}
-        >
-          <Form.Item label={t('newlyAdd.beforeCategory')}>
-            <img
-              src={demandInfo?.category_attachment}
-              style={{
-                width: '18px',
-                height: '18px',
-                marginRight: '8px',
-              }}
-              alt=""
-            />
-            <span>{demandInfo?.categoryName}</span>
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterCategory')}
-            name="categoryId"
-            rules={[{ required: true, message: '' }]}
+    <DemandWrap
+      style={{ paddingTop: (params?.employeeCurrentId || 0) > 0 ? 0 : 20 }}
+    >
+      {!params?.employeeCurrentId && (
+        <>
+          <DeleteConfirmModal />
+          <ShareModal
+            url={`${location.origin}/ProjectDetail/Demand?data=${encryptPhp(
+              JSON.stringify({
+                detailId: demandInfo?.id,
+                id: projectInfo.id,
+                specialType: 3,
+                isOpenScreenDetail: true,
+              }),
+            )}`}
+            title={
+              demandInfo?.name
+                ? `【${demandInfo?.projectPrefix}${
+                    demandInfo?.prefixKey ? '-' : ''
+                  }${demandInfo?.prefixKey}-${demandInfo?.name}-${
+                    userInfo?.name
+                  }】`
+                : ''
+            }
+          />
+          <CommonModal
+            isVisible={isShowCategory}
+            onClose={onCloseCategory}
+            title={t('newlyAdd.changeCategory')}
+            onConfirm={onConfirmCategory}
           >
-            <CustomSelect
-              placeholder={t('common.pleaseSelect')}
-              showArrow
-              showSearch
-              getPopupContainer={(node: any) => node}
-              allowClear
-              optionFilterProp="label"
-              onChange={onChangeSelect}
-              options={resultCategory?.map((k: any) => ({
-                label: k.content,
-                value: k.id,
-              }))}
-            />
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterStatus')}
-            name="statusId"
-            rules={[{ required: true, message: '' }]}
-          >
-            <CustomSelect
-              placeholder={t('common.pleaseSelect')}
-              showArrow
-              showSearch
-              getPopupContainer={(node: any) => node}
-              allowClear
-              optionFilterProp="label"
-              options={workList?.list?.map((k: any) => ({
-                label: k.name,
-                value: k.statusId,
-              }))}
-            />
-          </Form.Item>
-        </FormWrap>
-      </CommonModal>
-      <DetailTop
-        style={{ borderBottom: '1px solid #EBECED', paddingBottom: '16px' }}
-      >
-        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-          <MyBreadcrumb />
-          <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
-            {demandInfo.level_tree?.map((i: any, index: number) => (
-              <DrawerHeader
-                style={{
-                  cursor:
-                    index === demandInfo?.level_tree?.length - 1
-                      ? 'auto'
-                      : 'pointer',
-                }}
-                key={i.prefix_key}
-                onClick={() => {
-                  // TODO
-                  if (demandInfo.project_id) {
-                    projectIdRef.current = demandInfo.project_id
-                  }
-                  const projectId = demandInfo?.projectId
-                  if (index !== demandInfo?.level_tree?.length - 1) {
-                    openDemandDetail({ ...i }, projectId, i.id, 0)
-                  }
-                }}
-              >
-                <span style={{ fontSize: '12px' }}>
-                  <CommonIconFont
-                    type="right"
-                    color="var(--neutral-n1-d1)"
-                  ></CommonIconFont>
-                </span>
+            <FormWrap
+              form={form}
+              layout="vertical"
+              style={{ padding: '0 20px 0 24px' }}
+            >
+              <Form.Item label={t('newlyAdd.beforeCategory')}>
                 <img
-                  style={{ width: '16px', height: '16px' }}
-                  src={i.category_attachment}
+                  src={demandInfo?.category_attachment}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    marginRight: '8px',
+                  }}
                   alt=""
                 />
-                <div
-                  className={
-                    index === demandInfo?.level_tree?.length - 1
-                      ? ''
-                      : myTreeCss
-                  }
-                  style={{
-                    fontSize: '12px',
-                    color:
-                      index === demandInfo?.level_tree?.length - 1
-                        ? ''
-                        : 'var(--neutral-n1-d1)',
-                  }}
-                >
-                  {i.project_prefix}-{i.prefix_key}
-                </div>
-              </DrawerHeader>
-            ))}
-          </div>
-        </div>
-
-        {demandInfo.id && (
-          <ButtonGroup size={16}>
-            {(params?.changeIds?.length || 0) > 1 && (
-              <ChangeIconGroup>
-                {currentIndex > 0 && (
-                  <LeftIcontButton
-                    onClick={onUpDemand}
-                    icon="up-md"
-                    text={t('previous')}
-                  />
-                )}
-                {!(
-                  params?.changeIds?.length === 0 ||
-                  currentIndex === (params?.changeIds?.length || 0) - 1
-                ) && (
-                  <LeftIcontButton
-                    onClick={onDownDemand}
-                    icon="down-md"
-                    text={t('next')}
-                  />
-                )}
-              </ChangeIconGroup>
-            )}
-
-            <div>
-              <LeftIcontButton
-                onClick={onShare}
-                icon="share"
-                text={t('share')}
-              />
-              {/* <CommonButton type="icon" icon="share"  /> */}
-            </div>
-
-            <DropdownMenu
-              placement="bottomRight"
-              trigger={['click']}
-              menu={{ items: items }}
-              getPopupContainer={n => n}
-            >
-              <div>
-                <LeftIcontButton icon="more-01" text={t('more')} />
+                <span>{demandInfo?.categoryName}</span>
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterCategory')}
+                name="categoryId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <CustomSelect
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  options={resultCategory?.map((k: any) => ({
+                    label: k.content,
+                    value: k.id,
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterStatus')}
+                name="statusId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <CustomSelect
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={(node: any) => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={workList?.list?.map((k: any) => ({
+                    label: k.name,
+                    value: k.statusId,
+                  }))}
+                />
+              </Form.Item>
+            </FormWrap>
+          </CommonModal>
+          <DetailTop
+            style={{ borderBottom: '1px solid #EBECED', paddingBottom: '16px' }}
+          >
+            <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+              <MyBreadcrumb />
+              <div style={{ display: 'inline-flex', marginLeft: '10px' }}>
+                {demandInfo.level_tree?.map((i: any, index: number) => (
+                  <DrawerHeader
+                    style={{
+                      cursor:
+                        index === demandInfo?.level_tree?.length - 1
+                          ? 'auto'
+                          : 'pointer',
+                    }}
+                    key={i.prefix_key}
+                    onClick={() => {
+                      // TODO
+                      if (demandInfo.project_id) {
+                        projectIdRef.current = demandInfo.project_id
+                      }
+                      const projectId = demandInfo?.projectId
+                      if (index !== demandInfo?.level_tree?.length - 1) {
+                        openDemandDetail({ ...i }, projectId, i.id, 0)
+                      }
+                    }}
+                  >
+                    <span style={{ fontSize: '12px' }}>
+                      <CommonIconFont
+                        type="right"
+                        color="var(--neutral-n1-d1)"
+                      ></CommonIconFont>
+                    </span>
+                    <img
+                      style={{ width: '16px', height: '16px' }}
+                      src={i.category_attachment}
+                      alt=""
+                    />
+                    <div
+                      className={
+                        index === demandInfo?.level_tree?.length - 1
+                          ? ''
+                          : myTreeCss
+                      }
+                      style={{
+                        fontSize: '12px',
+                        color:
+                          index === demandInfo?.level_tree?.length - 1
+                            ? ''
+                            : 'var(--neutral-n1-d1)',
+                      }}
+                    >
+                      {i.project_prefix}-{i.prefix_key}
+                    </div>
+                  </DrawerHeader>
+                ))}
               </div>
-            </DropdownMenu>
-
-            <div>
-              <LeftIcontButton
-                danger
-                onClick={onClose}
-                icon="close"
-                text={t('closure')}
-              />
-              {/* <CommonButton onClick={onClose} type="icon" icon="close" /> */}
             </div>
-          </ButtonGroup>
-        )}
-      </DetailTop>
+
+            {demandInfo.id && (
+              <ButtonGroup size={16}>
+                {(params?.changeIds?.length || 0) > 1 && (
+                  <ChangeIconGroup>
+                    {currentIndex > 0 && (
+                      <LeftIcontButton
+                        onClick={onUpDemand}
+                        icon="up-md"
+                        text={t('previous')}
+                      />
+                    )}
+                    {!(
+                      params?.changeIds?.length === 0 ||
+                      currentIndex === (params?.changeIds?.length || 0) - 1
+                    ) && (
+                      <LeftIcontButton
+                        onClick={onDownDemand}
+                        icon="down-md"
+                        text={t('next')}
+                      />
+                    )}
+                  </ChangeIconGroup>
+                )}
+
+                <div>
+                  <LeftIcontButton
+                    onClick={onShare}
+                    icon="share"
+                    text={t('share')}
+                  />
+                  {/* <CommonButton type="icon" icon="share"  /> */}
+                </div>
+
+                <DropdownMenu
+                  placement="bottomRight"
+                  trigger={['click']}
+                  menu={{ items: items }}
+                  getPopupContainer={n => n}
+                >
+                  <div>
+                    <LeftIcontButton icon="more-01" text={t('more')} />
+                  </div>
+                </DropdownMenu>
+
+                <div>
+                  <LeftIcontButton
+                    danger
+                    onClick={onClose}
+                    icon="close"
+                    text={t('closure')}
+                  />
+                </div>
+              </ButtonGroup>
+            )}
+          </DetailTop>
+        </>
+      )}
       <DetailTitle style={{ paddingTop: '16px' }}>
         <Tooltip title={demandInfo?.categoryName}>
-          <Popover
-            trigger={['hover']}
-            visible={isShowChange}
-            placement="bottomLeft"
-            content={changeStatus}
-            getPopupContainer={node => node}
-            onVisibleChange={visible => setIsShowChange(visible)}
-          >
+          {!params?.employeeCurrentId && (
+            <Popover
+              trigger={['hover']}
+              visible={isShowChange}
+              placement="bottomLeft"
+              content={changeStatus}
+              getPopupContainer={node => node}
+              onVisibleChange={visible => setIsShowChange(visible)}
+            >
+              <div>
+                <Img src={demandInfo.category_attachment} alt="" />
+              </div>
+            </Popover>
+          )}
+          {params?.employeeCurrentId && (
             <div>
               <Img src={demandInfo.category_attachment} alt="" />
             </div>
-          </Popover>
+          )}
         </Tooltip>
         <DetailText>
-          {!hasEdit && (
+          {!hasEdit && !params?.employeeCurrentId && (
             <span
               className="name"
               ref={spanDom}
@@ -744,11 +776,15 @@ const DemandDetail = () => {
               {demandInfo.name}
             </span>
           )}
-          {hasEdit && <span className="name">{demandInfo.name}</span>}
+          {(hasEdit || params?.employeeCurrentId) && (
+            <span className="name">{demandInfo.name}</span>
+          )}
           <CopyIcon onCopy={onCopy} />
           <ChangeStatusPopover
             projectId={demandInfo.projectId}
-            isCanOperation={!hasEdit && !demandInfo.isExamine}
+            isCanOperation={
+              !hasEdit && !demandInfo.isExamine && !params?.employeeCurrentId
+            }
             record={demandInfo}
             onChangeStatus={onChangeStatus}
             type={1}
@@ -774,9 +810,7 @@ const DemandDetail = () => {
         </DetailText>
       </DetailTitle>
       <div>
-        {' '}
         <Tabs
-          // style={{padding:'0px 24px'}}
           className="tabs2"
           tabBarExtraContent={
             tabActive === '4' && (

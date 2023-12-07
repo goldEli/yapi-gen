@@ -135,7 +135,7 @@ export const DetailMain = styled.div<{ all?: boolean; h?: boolean }>`
   position: relative;
   height: calc(
     ${props => (props.all ? '80vh' : '100vh')} -
-      ${props => (props.h ? '107px' : '249px')}
+      ${props => (props.h ? '40px' : '249px')}
   );
   width: 100%;
   margin-top: 16px;
