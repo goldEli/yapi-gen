@@ -46,16 +46,23 @@ interface ReportItemProps {
   reportFirstData: any
   onGetReportFirstData(val: any): void
   onChangData(val: number): void
+  personArr: any[]
 }
 
 const ReportItem = (props: ReportItemProps) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
-  const { item, reportFirstData, onGetReportFirstData, onChangData } = props
+  const {
+    item,
+    reportFirstData,
+    onGetReportFirstData,
+    onChangData,
+    personArr,
+  } = props
   const [commentList, setCommentList] = useState([])
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
-  const [arr, setArr] = useState<any>(null)
+
   const onlyObject = useMemo(() => {
     return item
   }, [item.id])
@@ -70,27 +77,6 @@ const ReportItem = (props: ReportItemProps) => {
     })
     setCommentList(response.list)
   }
-
-  // 获取人员数组
-  const getPersonList = async () => {
-    const companyList = await getStaffListAll({ all: 1 })
-    const filterCompanyList = companyList.map((item: any) => ({
-      id: item.id,
-      label: item.name,
-    }))
-    setArr(filterCompanyList)
-  }
-
-  // 打开汇报数据
-  // const onOpenInfo = (item: any) => {
-  //   item.is_expended = item.is_expended === 1 ? 2 : 1
-  //   onChangData(user_id, item)
-  //   if (item.is_expended === 1) {
-  //     getReportDetail(item.id)
-  //     getReportCommentData(item.id)
-  //     getPersonList()
-  //   }
-  // }
 
   const AttachmentBox = (props: { list: any }) => {
     const list = props.list?.length ? props.list : []
@@ -288,7 +274,7 @@ const ReportItem = (props: ReportItemProps) => {
             </div>
             <CommentFooter
               placeholder={t('commentOnLog', { name: item?.user?.name })}
-              personList={arr}
+              personList={personArr}
               onConfirm={onComment}
               style={{
                 position: 'sticky',
@@ -327,6 +313,7 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
   } = props
   const [page, setPage] = useState(1)
   const { filterParamsOverall } = useUpdateFilterParams()
+  const [arr, setArr] = useState<any>(null)
 
   // 点击加载更多日报，合并数据
   const fetchMoreData = async () => {
@@ -345,6 +332,16 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
         list: [...data.list, ...response.list],
       })
     }
+  }
+
+  // 获取人员数组
+  const getPersonList = async () => {
+    const companyList = await getStaffListAll({ all: 1 })
+    const filterCompanyList = companyList.map((item: any) => ({
+      id: item.id,
+      label: item.name,
+    }))
+    setArr(filterCompanyList)
   }
 
   // 折叠/收起
@@ -366,6 +363,10 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
     },
     [data],
   )
+
+  useEffect(() => {
+    getPersonList()
+  }, [])
 
   console.log(data, 'ladatata')
 
@@ -392,6 +393,7 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
                   reportFirstData={reportFirstData}
                   onGetReportFirstData={onGetReportFirstData}
                   onChangData={onChangData}
+                  personArr={arr}
                 />
               ))}
           </InfiniteScroll>

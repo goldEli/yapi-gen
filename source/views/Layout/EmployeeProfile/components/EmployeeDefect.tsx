@@ -220,7 +220,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
   }, [props])
 
   return (
-    <div style={{ flex: 1 }}>
+    <div style={{ width: 'calc(100% - 561px)' }}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
@@ -337,7 +337,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
         onConfirm={onConfirmComment}
         style={{
           padding: '24px 0',
-          width: '100% ',
+          width: 'calc(100% - 116px - 320px - 561px)',
           height: 80,
         }}
         maxHeight="60vh"

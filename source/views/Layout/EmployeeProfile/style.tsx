@@ -298,6 +298,7 @@ export const ProviderBox = styled.div`
 `
 
 export const ReportItemBox = styled.div`
+  width: 561px;
   overflow-y: auto;
   height: 100%;
 `
