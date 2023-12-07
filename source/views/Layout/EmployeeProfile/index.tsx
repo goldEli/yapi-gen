@@ -204,6 +204,7 @@ const EmployeeProfile = () => {
             id: task.id,
             project_type: task.project_type,
             is_bug: task.is_bug,
+            onlyId: item.id,
           })
         }
       }
@@ -284,6 +285,7 @@ const EmployeeProfile = () => {
                 loading={loading}
                 setLoading={setLoading}
                 setUserReportList={setUserReportList}
+                reportFirstData={reportFirstData}
               />
               <EmployeeProfileTask filterParams={filterParams} />
             </>
