@@ -45,10 +45,13 @@ const UserAvatarWrap = styled.div`
   display: flex;
   align-items: center;
   height: max-content;
+  margin-bottom: 8px;
+  cursor: pointer;
   .name {
     display: flex;
     align-items: center;
     line-height: 24px;
+    border-bottom: 1px solid transparent;
   }
   &:hover {
     .name {
@@ -90,7 +93,6 @@ interface ParticipantsUserProps {
   avatar?: string
   name?: string
   id?: number
-  positionName?: string
   // 当前任务详情数据
   details?: any
 }
@@ -101,15 +103,16 @@ const ParticipantsUser = (props: ParticipantsUserProps) => {
 
   // 打开任务详情弹层
   const onToDetail = () => {
+    console.log(props.details, '=details')
     openDemandDetail(
       {
         ...props.details,
         ...{
-          projectId: props.details.project_id,
+          projectId: props.details.project_id ?? props.details?.projectId,
           employeeCurrentId: props?.id,
         },
       },
-      props.details.project_id,
+      props.details.project_id ?? props.details?.projectId,
       props.details.id,
       props.details.project_type === 2 ? 1 : props.details.is_bug === 1 ? 2 : 3,
       true,
@@ -130,7 +133,12 @@ const ParticipantsUser = (props: ParticipantsUserProps) => {
       </AvatarBox>
       <div className="name">
         {props.name && <NameWrap>{props?.name}</NameWrap>}
-        {props.positionName && <NameWrap>-{props?.positionName}</NameWrap>}
+        {props.details?.user?.department?.id && (
+          <NameWrap>-{props.details?.user?.department?.name}</NameWrap>
+        )}
+        {props.details?.user?.position?.id && (
+          <NameWrap>-{props.details?.user?.position?.id}</NameWrap>
+        )}
       </div>
     </UserAvatarWrap>
   )

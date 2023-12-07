@@ -865,7 +865,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
             </Tooltip>
           )}
         </LabelWrap>
-      ) : (
+      ) : props.employeeCurrentId ? null : (
         <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
           {t('linkWorkItem')}
         </CommonButton>

@@ -11,7 +11,7 @@ export const Wrap = styled.div`
 
 export const ContentWrap = styled.div`
   display: flex;
-  height: calc(100% - 73px);
+  height: calc(100% - 75px);
   overflow: auto;
   flex: 1;
 `
@@ -298,6 +298,7 @@ export const ProviderBox = styled.div`
 `
 
 export const ReportItemBox = styled.div`
+  width: 561px;
   overflow-y: auto;
   height: 100%;
 `
@@ -721,8 +722,9 @@ export const TaskContentWrap = styled.div`
   overflow: auto;
   padding: 16px 0px;
   position: relative;
+  flex: 1;
   .tabs {
-    padding-top: 32px;
+    padding: 16px 24px 0;
     position: sticky;
     top: -18px;
     z-index: 2;

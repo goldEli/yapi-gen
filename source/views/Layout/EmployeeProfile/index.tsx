@@ -27,6 +27,8 @@ import CommonButton from '@/components/CommonButton'
 import EmployeeAffair from './components/EmployeeAffair'
 import { getMemberReportList } from '@/services/employeeProfile'
 import useUpdateFilterParams from './components/hooks/useUpdateFilterParams'
+import EmployeeDefect from './components/EmployeeDefect'
+import EmployeeDemand from './components/EmployeeDemand'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
@@ -203,6 +205,7 @@ const EmployeeProfile = () => {
             id: task.id,
             project_type: task.project_type,
             is_bug: task.is_bug,
+            user_id: item.user.id,
             onlyId: item.id,
           })
         }
@@ -214,6 +217,7 @@ const EmployeeProfile = () => {
       getReportList()
     }
   }, [JSON.stringify(filterParamsOverall)])
+
   return (
     <Wrap>
       <EmployeeProfileHeader
@@ -280,7 +284,7 @@ const EmployeeProfile = () => {
               {/* 缺陷 */}
               {reportFirstData?.project_type === 1 &&
                 reportFirstData?.is_bug === 1 && (
-                  <EmployeeAffair
+                  <EmployeeDefect
                     id={reportFirstData?.id}
                     project_id={reportFirstData?.project_id}
                     user_id={reportFirstData?.user_id}
@@ -289,7 +293,7 @@ const EmployeeProfile = () => {
               {/* 需求 */}
               {reportFirstData?.project_type === 1 &&
                 reportFirstData?.is_bug !== 1 && (
-                  <EmployeeAffair
+                  <EmployeeDemand
                     id={reportFirstData?.id}
                     project_id={reportFirstData?.project_id}
                     user_id={reportFirstData?.user_id}

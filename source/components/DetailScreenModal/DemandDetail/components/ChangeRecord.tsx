@@ -63,6 +63,7 @@ const NewSort = (sortProps: any) => {
 interface Props {
   activeKey: string
   filter?: boolean
+  employeeCurrentId?: boolean
 }
 
 const ChangeRecord = (props: Props) => {
@@ -389,8 +390,20 @@ const ChangeRecord = (props: Props) => {
     getList({ page, size }, order)
   }
   const { userPreferenceConfig } = useSelector(store => store.user)
+
+  const aa =
+    userPreferenceConfig.previewModel === 3 || props?.employeeCurrentId
+      ? '80vh'
+      : '100vh'
+
+  const a1 = props?.employeeCurrentId
+    ? 102
+    : userPreferenceConfig.previewModel === 3
+    ? 154
+    : 210
+
   return (
-    <ComputedWrap all={userPreferenceConfig.previewModel === 3}>
+    <ComputedWrap style={{ height: `calc(${aa} - ${a1}px)` }}>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}

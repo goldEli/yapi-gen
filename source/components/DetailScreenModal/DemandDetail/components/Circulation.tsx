@@ -108,7 +108,7 @@ const ContentWrap = styled.div({
 
 interface Props {
   activeKey: string
-  isPreview?: boolean
+  employeeCurrentId?: boolean
 }
 
 const Circulation = (props: Props) => {
@@ -180,12 +180,20 @@ const Circulation = (props: Props) => {
     )
   }
   const { userPreferenceConfig } = useSelector(store => store.user)
+
+  const aa =
+    userPreferenceConfig.previewModel === 3 || props?.employeeCurrentId
+      ? '80vh'
+      : '100vh'
+
+  const a1 = props?.employeeCurrentId
+    ? 102
+    : userPreferenceConfig.previewModel === 3
+    ? 154
+    : 210
+
   return (
-    <ComputedWrap
-      all={userPreferenceConfig.previewModel === 3}
-      isPreview={props?.isPreview}
-      style={{ overflow: 'auto' }}
-    >
+    <ComputedWrap style={{ height: `calc(${aa} - ${a1}px)`, overflow: 'auto' }}>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
         {!!statusLogs?.list && (
           <>

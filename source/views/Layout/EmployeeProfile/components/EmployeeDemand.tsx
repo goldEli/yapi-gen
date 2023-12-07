@@ -31,7 +31,10 @@ import { getMessage } from '@/components/Message'
 import { getDemandCommentList } from '@store/demand/demand.thunk'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { setDemandCommentList } from '@store/demand'
-import { getProjectInfoValuesStore } from '@store/project/project.thunk'
+import {
+  getProjectInfoStore,
+  getProjectInfoValuesStore,
+} from '@store/project/project.thunk'
 
 interface EmployeeDemandProps {
   id: number
@@ -214,11 +217,12 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
       dispatch(setDemandCommentList({ list: [] }))
       getDemandDetail()
       dispatch(getProjectInfoValuesStore({ projectId: props.project_id }))
+      dispatch(getProjectInfoStore({ projectId: props.project_id }))
     }
   }, [props])
 
   return (
-    <>
+    <div style={{ width: 'calc(100% - 561px)' }}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
@@ -345,13 +349,13 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
         onConfirm={onConfirmComment}
         style={{
           padding: '24px 0',
-          width: '100% ',
+          width: 'calc(100% - 116px - 320px - 561px)',
           height: 80,
         }}
         maxHeight="60vh"
         hasAvatar
       />
-    </>
+    </div>
   )
 }
 

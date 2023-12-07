@@ -174,44 +174,53 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           isInfoPage={props?.isInfoPage}
         >
           <Label>{t('describe')}</Label>
-          {(isEditInfo || editInfo) && (
-            <div className={canEditHover}>
-              <Editor
-                upload={uploadFile}
-                color="transparent"
-                value={editInfo}
-                getSuggestions={() => []}
-                readonly={!isEditInfo}
-                ref={editorRef}
-                onReadonlyClick={() => {
-                  setIsEditInfo(true)
-                  setTimeout(() => {
-                    editorRef.current?.focus()
-                  }, 10)
-                }}
-                onChange={(value: string) => {
-                  editorRef2.current = value
-                }}
-                onBlur={() => onBlurEditor()}
-              />
-            </div>
-          )}
-          {!isEditInfo && !editInfo && (
-            <TextWrapEdit
-              style={{ width: '100%' }}
-              onClick={e => {
-                e.stopPropagation()
-                if (props.isPreview) {
-                  return
-                }
-                setIsEditInfo(true)
-                setTimeout(() => {
-                  editorRef.current?.focus()
-                }, 10)
-              }}
-            >
+          {props.isPreview && (
+            <TextWrapEdit style={{ width: '100%' }}>
               <span className={canEditHover}>--</span>
             </TextWrapEdit>
+          )}
+          {!props.isPreview && (
+            <>
+              {(isEditInfo || editInfo) && (
+                <div className={canEditHover}>
+                  <Editor
+                    upload={uploadFile}
+                    color="transparent"
+                    value={editInfo}
+                    getSuggestions={() => []}
+                    readonly={!isEditInfo}
+                    ref={editorRef}
+                    onReadonlyClick={() => {
+                      setIsEditInfo(true)
+                      setTimeout(() => {
+                        editorRef.current?.focus()
+                      }, 10)
+                    }}
+                    onChange={(value: string) => {
+                      editorRef2.current = value
+                    }}
+                    onBlur={() => onBlurEditor()}
+                  />
+                </div>
+              )}
+              {!isEditInfo && !editInfo && (
+                <TextWrapEdit
+                  style={{ width: '100%' }}
+                  onClick={e => {
+                    e.stopPropagation()
+                    if (props.isPreview) {
+                      return
+                    }
+                    setIsEditInfo(true)
+                    setTimeout(() => {
+                      editorRef.current?.focus()
+                    }, 10)
+                  }}
+                >
+                  <span className={canEditHover}>--</span>
+                </TextWrapEdit>
+              )}
+            </>
           )}
         </InfoItem>
         <InfoItem
