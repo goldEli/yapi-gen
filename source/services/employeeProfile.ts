@@ -97,7 +97,7 @@ export const getMemberReportList = async (params: any) => {
     user_ids: params.user_ids || [],
     start_time: params.time?.[0] ?? null,
     end_time: params.time?.[1] ?? null,
-    status: params.status ?? null,
+    status: params.status ? params.status : null,
     keyword: params.keyword ?? null,
     page: params.page,
   })

@@ -203,6 +203,7 @@ const EmployeeProfile = () => {
             id: task.id,
             project_type: task.project_type,
             is_bug: task.is_bug,
+            user_id: item.user.id,
             onlyId: item.id,
           })
         }

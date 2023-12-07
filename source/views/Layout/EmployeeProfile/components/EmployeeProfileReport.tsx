@@ -56,8 +56,8 @@ const ReportItem = (props: ReportItemProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [arr, setArr] = useState<any>(null)
-  const onlyId = useMemo(() => {
-    return item.id
+  const onlyObject = useMemo(() => {
+    return item
   }, [item.id])
   const onOpen = _.debounce(onChangData, 200)
 
@@ -212,15 +212,16 @@ const ReportItem = (props: ReportItemProps) => {
                         key={el.id}
                         isSelect={
                           reportFirstData?.id === el.id &&
-                          reportFirstData?.onlyId === onlyId
+                          reportFirstData?.onlyId === onlyObject.onlyId
                         }
                         onClick={() => {
                           onGetReportFirstData({
-                            project_id: item.project_id,
+                            project_id: onlyObject.project_id,
                             id: el.id,
                             project_type: el.project_type,
                             is_bug: el.is_bug,
-                            onlyId,
+                            user_id: onlyObject.user.id,
+                            onlyId: onlyObject.onlyId,
                           })
                         }}
                       >
