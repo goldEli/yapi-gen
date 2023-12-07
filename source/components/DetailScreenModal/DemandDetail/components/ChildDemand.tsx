@@ -351,7 +351,7 @@ const ChildDemand = (props: ChildDemandProps) => {
         {getIsPermission(
           projectInfo?.projectPermissions,
           projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
-        ) ? (
+        ) || props.employeeCurrentId ? (
           <div />
         ) : (
           <CommonButton

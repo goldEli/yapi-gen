@@ -45,10 +45,13 @@ const UserAvatarWrap = styled.div`
   display: flex;
   align-items: center;
   height: max-content;
+  margin-bottom: 8px;
+  cursor: pointer;
   .name {
     display: flex;
     align-items: center;
     line-height: 24px;
+    border-bottom: 1px solid transparent;
   }
   &:hover {
     .name {
@@ -100,15 +103,16 @@ const ParticipantsUser = (props: ParticipantsUserProps) => {
 
   // 打开任务详情弹层
   const onToDetail = () => {
+    console.log(props.details, '=details')
     openDemandDetail(
       {
         ...props.details,
         ...{
-          projectId: props.details.project_id,
+          projectId: props.details.project_id ?? props.details?.projectId,
           employeeCurrentId: props?.id,
         },
       },
-      props.details.project_id,
+      props.details.project_id ?? props.details?.projectId,
       props.details.id,
       props.details.project_type === 2 ? 1 : props.details.is_bug === 1 ? 2 : 3,
       true,

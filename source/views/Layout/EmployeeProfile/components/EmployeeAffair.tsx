@@ -29,8 +29,11 @@ import { setAffairsCommentList } from '@store/affairs'
 import AffairsDetail from '@/components/DetailScreenModal/AffairsDetail/components/AffairsDetail'
 import ChildSprint from '@/components/DetailScreenModal/AffairsDetail/components/ChildSprint'
 import LinkSprint from '@/components/DetailScreenModal/AffairsDetail/components/LinkSprint'
-import BasicDemand from '@/components/DemandDetailDrawer/BasicDemand'
-import { getProjectInfoValuesStore } from '@store/project/project.thunk'
+import {
+  getProjectInfoStore,
+  getProjectInfoValuesStore,
+} from '@store/project/project.thunk'
+import BasicDemand from '@/components/SprintDetailDrawer/component/BasicDemand'
 
 interface EmployeeAffairProps {
   id: number
@@ -218,11 +221,12 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
       dispatch(setAffairsCommentList({ list: [] }))
       getSprintDetail()
       dispatch(getProjectInfoValuesStore({ projectId: props.project_id }))
+      dispatch(getProjectInfoStore({ projectId: props.project_id }))
     }
   }, [props])
 
   return (
-    <>
+    <div style={{ flex: 1 }}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
@@ -269,9 +273,6 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
               userId={props?.user_id}
             />
             <Tabs
-              style={{
-                paddingTop: '24px',
-              }}
               className="tabs"
               activeKey={tabActive}
               items={
@@ -357,7 +358,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
         maxHeight="60vh"
         hasAvatar
       />
-    </>
+    </div>
   )
 }
 

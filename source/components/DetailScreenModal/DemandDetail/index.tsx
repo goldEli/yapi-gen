@@ -463,7 +463,13 @@ const DemandDetail = () => {
           </ItemNumber>
         </DetailTabItem>
       ),
-      children: <ChangeRecord activeKey={tabActive} filter={filter} />,
+      children: (
+        <ChangeRecord
+          activeKey={tabActive}
+          filter={filter}
+          employeeCurrentId={(params?.employeeCurrentId || 0) > 0}
+        />
+      ),
     },
     {
       key: '5',
@@ -475,7 +481,7 @@ const DemandDetail = () => {
       children: (
         <Circulation
           activeKey={tabActive}
-          isPreview={(params?.employeeCurrentId || 0) > 0}
+          employeeCurrentId={(params?.employeeCurrentId || 0) > 0}
         />
       ),
     },

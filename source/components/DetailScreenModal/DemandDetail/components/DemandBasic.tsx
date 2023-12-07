@@ -73,7 +73,7 @@ const DemandBasic = (props: Props) => {
             {t('newlyAdd.basicInfo')}
           </div>
           <div className="rightWrap" onClick={() => setActiveTabs(2)}>
-            {t('common.comment')}{' '}
+            {t('common.comment')}
             {demandCommentList.list.length > 99
               ? `${demandCommentList.list.length}+`
               : demandCommentList.list.length}

@@ -29,7 +29,10 @@ import FlawDetail from '@/components/DetailScreenModal/FlawDetail/components/Fla
 import RelationStories from '@/components/DetailScreenModal/FlawDetail/components/RelationStories'
 import FlawBasic from '@/components/DetailScreenModal/FlawDetail/components/FlawBasic'
 import { setFlawCommentList } from '@store/flaw'
-import { getProjectInfoValuesStore } from '@store/project/project.thunk'
+import {
+  getProjectInfoStore,
+  getProjectInfoValuesStore,
+} from '@store/project/project.thunk'
 
 interface EmployeeDefectProps {
   id: number
@@ -212,11 +215,12 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
       dispatch(setFlawCommentList({ list: [] }))
       getFlawDetail()
       dispatch(getProjectInfoValuesStore({ projectId: props.project_id }))
+      dispatch(getProjectInfoStore({ projectId: props.project_id }))
     }
   }, [props])
 
   return (
-    <>
+    <div style={{ flex: 1 }}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
@@ -339,7 +343,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
         maxHeight="60vh"
         hasAvatar
       />
-    </>
+    </div>
   )
 }
 
