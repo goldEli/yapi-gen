@@ -185,7 +185,7 @@ const EmployeeProfile = () => {
     }).finally(() => {
       setLoading(false)
     })
-    if (response && response.list) {
+    if (response && response?.list?.length) {
       setUserReportList(response)
       if (response.list.length > 0) {
         const item = response.list?.[0]
@@ -208,13 +208,12 @@ const EmployeeProfile = () => {
         }
       }
     }
-    // setLoading(false)
   }
   useEffect(() => {
-    if (filterParamsOverall?.user_ids) {
+    if (filterParamsOverall?.user_ids?.length) {
       getReportList()
     }
-  }, [filterParamsOverall.time, JSON.stringify(filterParamsOverall.user_ids)])
+  }, [JSON.stringify(filterParamsOverall)])
   return (
     <Wrap>
       <EmployeeProfileHeader
@@ -261,7 +260,7 @@ const EmployeeProfile = () => {
         </PersonBox>
         <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
           {/* 日报-关联需求id存在显示日报列表和任务详情 */}
-          {true ? (
+          {reportFirstData.id ? (
             <>
               <EmployeeProfileReport
                 onGetReportFirstData={setReportFirstData}

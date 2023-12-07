@@ -18,7 +18,7 @@ import {
   ReportItemBox,
   ProviderBox,
 } from '../style'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { getMemberReportList } from '@/services/employeeProfile'
 import { Skeleton, Spin, Tooltip } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -40,16 +40,18 @@ import { getIdsForAt } from '@/tools'
 import UploadAttach from '@/components/UploadAttach'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import useUpdateFilterParams from './hooks/useUpdateFilterParams'
+import _ from 'lodash'
 interface ReportItemProps {
   item: any
   reportFirstData: any
   onGetReportFirstData(val: any): void
+  onChangData(val: number): void
 }
 
 const ReportItem = (props: ReportItemProps) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
-  const { item, reportFirstData, onGetReportFirstData } = props
+  const { item, reportFirstData, onGetReportFirstData, onChangData } = props
   const [commentList, setCommentList] = useState([])
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
@@ -57,6 +59,7 @@ const ReportItem = (props: ReportItemProps) => {
   const onlyId = useMemo(() => {
     return item.id
   }, [item.id])
+  const onOpen = _.debounce(onChangData, 200)
 
   // 获取汇报评论
   const getReportCommentData = async (id: number) => {
@@ -169,7 +172,7 @@ const ReportItem = (props: ReportItemProps) => {
               trigger="hover"
               title={item.is_expended === 1 ? t('expand') : t('fold')}
             >
-              <OperationButton>
+              <OperationButton onClick={() => onOpen(item.id)}>
                 <CommonIconFont
                   type={item.is_expended === 1 ? 'up-02' : 'down-02'}
                   size={20}
@@ -343,17 +346,27 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
     }
   }
 
-  // 标星/取消标星，折叠/收起
-  // const onChangData = (id: any, item: any) => {
-  //   const resultData = dataList?.list?.map((i: any) => ({
-  //     ...i,
-  //     list:
-  //       i.current_user_id === id
-  //         ? i.list?.map((k: any) => (k.id === item.id ? item : k))
-  //         : i.list,
-  //   }))
-  //   setDataList({ list: resultData })
-  // }
+  // 折叠/收起
+  const onChangData = useCallback(
+    (id: any) => {
+      const resultData = data?.list?.map((i: any) => {
+        if (i.id === id) {
+          return {
+            ...i,
+            is_expended: i.is_expended === 1 ? 2 : 1,
+          }
+        }
+        return i
+      })
+      setUserReportList({
+        ...data,
+        list: resultData,
+      })
+    },
+    [data],
+  )
+
+  console.log(data, 'ladatata')
 
   return (
     <ReportWrap>
@@ -377,7 +390,7 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
                   item={i}
                   reportFirstData={reportFirstData}
                   onGetReportFirstData={onGetReportFirstData}
-                  // onChangData={onChangData}
+                  onChangData={onChangData}
                 />
               ))}
           </InfiniteScroll>
