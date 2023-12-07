@@ -384,10 +384,17 @@ export const Msg = styled.div`
   word-break: break-all;
 `
 
-export const RowRadius = styled.div`
+export const RowRadius = styled.div<{ isSelect?: boolean }>`
   display: flex;
+  cursor: pointer;
   align-items: flex-start;
   margin-bottom: 5px;
+  border-radius: 4px;
+  background-color: ${(prop: any) => (prop.isSelect ? '#F0F3FF' : null)};
+  padding: 4px 8px;
+  &:hover {
+    background-color: var(--neutral-n8);
+  }
 `
 export const Radius = styled.div`
   width: 6px;

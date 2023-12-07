@@ -18,7 +18,7 @@ import {
   ReportItemBox,
   ProviderBox,
 } from '../style'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { getMemberReportList } from '@/services/employeeProfile'
 import { Skeleton, Spin, Tooltip } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -42,33 +42,21 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface ReportItemProps {
   item: any
+  reportFirstData: any
+  onGetReportFirstData(val: any): void
 }
 
 const ReportItem = (props: ReportItemProps) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
-  const { item } = props
+  const { item, reportFirstData, onGetReportFirstData } = props
   const [commentList, setCommentList] = useState([])
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [arr, setArr] = useState<any>(null)
-
-  // // 标星或者是取消标星  state: true是已经标星，取消标星，反之， item:当前数据
-  // const onStar = async (state: boolean, item: any) => {
-  //   const params = {
-  //     type: 2,
-  //     relation_id: item.id,
-  //   }
-  //   if (state) {
-  //     await followsCancel(params)
-  //     getMessage({ type: 'success', msg: t('cancelStarSuccessfully') })
-  //   } else {
-  //     await followsMark(params)
-  //     getMessage({ type: 'success', msg: t('starSuccess') })
-  //   }
-  //   item.is_star = item.is_star === 1 ? 2 : 1
-  //   onChangData(user_id, item)
-  // }
+  const onlyId = useMemo(() => {
+    return item.id
+  }, [item.id])
 
   // 获取汇报评论
   const getReportCommentData = async (id: number) => {
@@ -165,23 +153,13 @@ const ReportItem = (props: ReportItemProps) => {
           onConfirm={onDeleteConfirm}
         />
         <ReportItemHeader isExpended={item.is_expended === 1}>
-          {/* {item.is_star === 1 && (
-            <div className="icon">
-              <CommonIconFont type="star" color="#FA9746" size={14} />
-            </div>
-          )} */}
           <ReportItemHeaderLeft>
             <CommonUserAvatar avatar={item.user?.avatar} size="large" />
             <div className="info">
-              <div className="name">
-                {t('reportTitle', {
-                  name: item.user?.name,
-                  time: item?.start_time,
-                  reportName: item?.name,
-                })}
-              </div>
+              <div className="name">{item.title}</div>
               <div className="sub">
-                {item?.departments?.map((i: any) => i.name)?.join(' - ')}
+                {item.user?.company_name}-{item.user?.department_name}-
+                {item.user?.job_name}
               </div>
             </div>
           </ReportItemHeaderLeft>
@@ -198,21 +176,6 @@ const ReportItem = (props: ReportItemProps) => {
                 />
               </OperationButton>
             </Tooltip>
-            {/* <Tooltip
-              placement="top"
-              trigger="hover"
-              title={item.is_star === 1 ? t('unstar') : t('star')}
-            >
-              <OperationButton
-                onClick={() => onStar(item.is_star === 1, item)}
-                isStar={item.is_star === 1}
-              >
-                <CommonIconFont
-                  type={item.is_star === 1 ? 'star' : 'star-adipf4l8'}
-                  size={20}
-                />
-              </OperationButton>
-            </Tooltip> */}
           </ReportItemHeaderRight>
         </ReportItemHeader>
         {item.is_expended === 1 && (
@@ -242,7 +205,22 @@ const ReportItem = (props: ReportItemProps) => {
                   )}
                   {item.type === 4 &&
                     item.pivot.params?.map((el: any) => (
-                      <RowRadius key={el.id}>
+                      <RowRadius
+                        key={el.id}
+                        isSelect={
+                          reportFirstData?.id === el.id &&
+                          reportFirstData?.onlyId === onlyId
+                        }
+                        onClick={() => {
+                          onGetReportFirstData({
+                            project_id: item.project_id,
+                            id: el.id,
+                            project_type: el.project_type,
+                            is_bug: el.is_bug,
+                            onlyId,
+                          })
+                        }}
+                      >
                         <Radius />
                         {item?.name === 'overdue_tasks' &&
                         el.expected_day > 0 ? (
@@ -326,15 +304,23 @@ const ReportItem = (props: ReportItemProps) => {
 
 interface EmployeeProfileReportProps {
   // 需要向上传递第一个日报的第一个需求的数据
-  onGetReportFirstData(data: { project_id: number; id: number }): void
+  onGetReportFirstData(val: any): void
   data: any
   loading: boolean
   setLoading(val: boolean): void
   setUserReportList(val: any): void
+  reportFirstData: any
 }
 
 const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
-  const { data, loading, setLoading, setUserReportList } = props
+  const {
+    data,
+    loading,
+    setLoading,
+    setUserReportList,
+    reportFirstData,
+    onGetReportFirstData,
+  } = props
   const [page, setPage] = useState(1)
   const { filterParamsOverall } = useUpdateFilterParams()
 
@@ -388,7 +374,9 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
               data?.list?.map((i: any) => (
                 <ReportItem
                   key={i.id}
-                  item={{ ...i, is_expended: 1 }}
+                  item={i}
+                  reportFirstData={reportFirstData}
+                  onGetReportFirstData={onGetReportFirstData}
                   // onChangData={onChangData}
                 />
               ))}
