@@ -29,7 +29,7 @@ const initialState: CounterState = {
   allMemberList: [],
   currentKey: {},
   filterParamsOverall: {
-    status: '',
+    status: null,
     tabType: 'paoject',
     personStaus: false,
   },

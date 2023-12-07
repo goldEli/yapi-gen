@@ -27,7 +27,6 @@ import { getRecentProject } from '@/services/project'
 import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface EmployeeProfilePersonProps {
   onChangeFilter?(value: any): void
-  personStatus: boolean
 }
 // 折叠头部
 const CollapseHeader = (props: any) => {
@@ -120,7 +119,6 @@ const CollapseHeader = (props: any) => {
           onChange={e => {
             const userIds = item.member_list.map((item: any) => item.id)
             setProjectKey((pre: any) => {
-              console.log(pre)
               if (e.target.checked) {
                 setUserKeys((pre = []) => {
                   return [...pre, ...userIds]
@@ -153,7 +151,8 @@ const CollapseHeader = (props: any) => {
 const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { updateFilterParams, filterParamsOverall } = useUpdateFilterParams()
+  const { updateFilterParams, filterParamsOverall, restRouter } =
+    useUpdateFilterParams()
   const [searchParamsUrl] = useSearchParams()
   const paramsData = getParamsData(searchParamsUrl)
   // 全选状态
@@ -220,8 +219,9 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   // 获取最近的项目
   useEffect(() => {
     // 从钉钉或者卡片进入
-    console.log('paramsData', paramsData)
-    if (paramsData?.user_id) {
+    const { user_id, start_time, end_time } = paramsData ?? {}
+    // 从钉钉或者卡片进入
+    if (user_id) {
       // setUserKeys([paramsData?.user_id])
       const allUsers = getAllUser(_.clone(allMemberList))
       const users = allUsers.filter((item: any) => {
@@ -296,24 +296,8 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         }
       })
     }
-
     updateFilterParams({ user_ids: params })
   }, [userKeys, checkedKeys])
-  useEffect(() => {
-    const data = getAllUser(allMemberList)
-    const users = data
-      .filter((item: any) => {
-        const [p_id, user_id] = item.id.split('_')
-        return parseInt(paramsData?.user_id, 10) === parseInt(user_id, 10)
-      })
-      ?.map((item: any) => {
-        const [project_id, user_id] = item.id.split('_')
-        return {
-          project_id: parseInt(project_id, 10),
-          user_id: parseInt(user_id, 10),
-        }
-      })
-  }, [paramsData?.user_id])
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
     console.log('activeKey', activeKey)
@@ -355,6 +339,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
                   setUserKeys={setUserKeys}
                   userKeys={userKeys}
                   onChangeProjectKeys={(keys: any[]) => {
+                    restRouter()
                     setIndeterminate(
                       keys?.length !== getAllUser(allMemberList)?.length,
                     )
@@ -367,13 +352,14 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               }
               key={i.id}
             >
-              {props.personStatus
+              {filterParamsOverall.personStatus
                 ? i.member_list?.map((i: any) => {
                     return (
                       <MemberItem key={i.id} onClick={() => {}}>
                         <Checkbox
                           checked={userKeys?.includes(i.id)}
                           onChange={e => {
+                            restRouter()
                             setUserKeys((pre: any) => {
                               if (e.target.checked) {
                                 return [...pre, i.id]
@@ -402,6 +388,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
                           <Checkbox
                             checked={userKeys?.includes(i.id)}
                             onChange={e => {
+                              restRouter()
                               setUserKeys((pre: any) => {
                                 if (e.target.checked) {
                                   return [...pre, i.id]
@@ -482,7 +469,6 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               key={item.value}
               className="item-tab"
               onClick={() => {
-                console.log(11, item)
                 updateFilterParams({ tabType: item.value })
                 setTabActiveKey(item.value)
               }}
@@ -498,9 +484,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       {tabActiveKey === 'project' ? (
         projectEle
       ) : (
-        <EmployeeDepartment
-          personStatus={props.personStatus}
-        ></EmployeeDepartment>
+        <EmployeeDepartment></EmployeeDepartment>
       )}
     </PersonWrap>
   )
