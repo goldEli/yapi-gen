@@ -38,6 +38,8 @@ const EmployeeProfile = () => {
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [filterParams, setFilterParams] = useState<any>({})
+  // 人员是否离职
+  const [personStatus, setPersonStatus] = useState(false)
   // 第一条日报的第一个需求数据
   const [reportFirstData, setReportFirstData] = useState<any>({
     project_id: null,
@@ -178,6 +180,7 @@ const EmployeeProfile = () => {
           dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}
         filterParams={filterParams}
+        checkPersonStatus={status => setPersonStatus(status)}
       />
       <ContentWrap>
         <PersonBox
@@ -196,6 +199,7 @@ const EmployeeProfile = () => {
                   dispatch(setFilterParamsOverall(value))
                 }}
                 filterParams={filterParams}
+                personStatus={personStatus}
               />
             </div>
           </SideMain>

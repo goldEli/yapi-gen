@@ -27,6 +27,7 @@ import { getRecentProject } from '@/services/project'
 interface EmployeeProfilePersonProps {
   onChangeFilter(value: any): void
   filterParams: any
+  personStatus: boolean
 }
 // 折叠头部
 const CollapseHeader = (props: any) => {
@@ -177,7 +178,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   ]
   const {
     list = [],
-    expandedKeys = [],
+    checkedKeys = [],
     departMentUserKey = [],
   } = statistiDepartment ?? {}
   // 点击全选
@@ -230,6 +231,8 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         ?.member_list.map((member: any) => member.id)
       setUserKeys(userKeys)
     }
+    // 默认展开第一级别
+    setActiveKey([_.cloneDeep(allMemberList).shift()?.id])
     getList()
   }, [allMemberList])
   useEffect(() => {
@@ -254,7 +257,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       })
     }
     if (tabActiveKey === 'department') {
-      params = expandedKeys.map((item: any) => {
+      params = checkedKeys.map((item: any) => {
         return {
           user_id: item,
         }
@@ -266,32 +269,34 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         user_ids: params,
       },
     })
-  }, [userKeys, expandedKeys])
+  }, [userKeys, checkedKeys])
   useEffect(() => {
     const data = getAllUser(allMemberList)
-
-    const users = data
-      .filter((item: any) => {
-        const [p_id, user_id] = item.id.split('_')
-        return parseInt(paramsData?.user_id, 10) === parseInt(user_id, 10)
-      })
-      ?.map((item: any) => {
-        const [project_id, user_id] = item.id.split('_')
-        return {
-          project_id: parseInt(project_id, 10),
-          user_id: parseInt(user_id, 10),
-        }
-      })
+    console.log(data)
+    const users = [{ project_id: 24, user_id: 5 }]
+    // const users = data
+    //   .filter((item: any) => {
+    //     const [p_id, user_id] = item.id.split('_')
+    //     return parseInt(paramsData?.user_id, 10) === parseInt(user_id, 10)
+    //   })
+    //   ?.map((item: any) => {
+    //     const [project_id, user_id] = item.id.split('_')
+    //     return {
+    //       project_id: parseInt(project_id, 10),
+    //       user_id: parseInt(user_id, 10),
+    //     }
+    //   })
     props.onChangeFilter({
       ...props?.filterParams,
       ...{
         user_ids: users,
       },
     })
-    console.log('users', users)
+    console.log('users', users, paramsData)
   }, [paramsData?.user_id])
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
+    console.log('activeKey', activeKey)
     const key = Number(e.panelKey)
     setActiveKey(
       e.isActive
@@ -343,27 +348,61 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               }
               key={i.id}
             >
-              {i.member_list?.map((i: any) => (
-                <MemberItem key={i.id} onClick={() => {}}>
-                  <Checkbox
-                    checked={userKeys?.includes(i.id)}
-                    onChange={e => {
-                      setUserKeys((pre: any) => {
-                        if (e.target.checked) {
-                          return [...pre, i.id]
-                        }
-                        return [...pre, i.id].filter(item => item !== i.id)
-                      })
-                    }}
-                  />
-                  <div className="info">
-                    <CommonUserAvatar size="small" avatar={i.avatar} />
-                    <span className="name">
-                      {i.name}（{i?.department?.name}-{i?.position?.name}）
-                    </span>
-                  </div>
-                </MemberItem>
-              ))}
+              {props.personStatus
+                ? i.member_list?.map((i: any) => {
+                    return (
+                      <MemberItem key={i.id} onClick={() => {}}>
+                        <Checkbox
+                          checked={userKeys?.includes(i.id)}
+                          onChange={e => {
+                            setUserKeys((pre: any) => {
+                              if (e.target.checked) {
+                                return [...pre, i.id]
+                              }
+                              return [...pre, i.id].filter(
+                                item => item !== i.id,
+                              )
+                            })
+                          }}
+                        />
+                        <div className="info">
+                          <CommonUserAvatar size="small" avatar={i.avatar} />
+                          <span className="name">
+                            {i.name}（{i?.department?.name}-{i?.position?.name}
+                            ）
+                          </span>
+                        </div>
+                      </MemberItem>
+                    )
+                  })
+                : i.member_list
+                    ?.filter((item: any) => item.status === 1)
+                    ?.map((i: any) => {
+                      return (
+                        <MemberItem key={i.id} onClick={() => {}}>
+                          <Checkbox
+                            checked={userKeys?.includes(i.id)}
+                            onChange={e => {
+                              setUserKeys((pre: any) => {
+                                if (e.target.checked) {
+                                  return [...pre, i.id]
+                                }
+                                return [...pre, i.id].filter(
+                                  item => item !== i.id,
+                                )
+                              })
+                            }}
+                          />
+                          <div className="info">
+                            <CommonUserAvatar size="small" avatar={i.avatar} />
+                            <span className="name">
+                              {i.name}（{i?.department?.name}-
+                              {i?.position?.name}）
+                            </span>
+                          </div>
+                        </MemberItem>
+                      )
+                    })}
             </Collapse.Panel>
           ))}
         </Collapse>
@@ -374,7 +413,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
     dispatch(
       setStatistiDepartment({
         ...statistiDepartment,
-        expandedKeys: key,
+        checkedKeys: key,
         departMentUserKey: key,
       }),
     )
@@ -436,7 +475,9 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       {tabActiveKey === 'project' ? (
         projectEle
       ) : (
-        <EmployeeDepartment></EmployeeDepartment>
+        <EmployeeDepartment
+          personStatus={props.personStatus}
+        ></EmployeeDepartment>
       )}
     </PersonWrap>
   )

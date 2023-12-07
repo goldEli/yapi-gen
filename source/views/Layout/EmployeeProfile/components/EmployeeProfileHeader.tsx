@@ -21,9 +21,11 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import CommonButton from '@/components/CommonButton'
 import MoreSelect from '@/components/MoreSelect'
+import { setFilterParams } from '@store/project'
 interface EmployeeProfileHeaderProps {
   onChangeFilter(value: any): void
   filterParams: any
+  checkPersonStatus?(status: boolean): void
 }
 
 const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
@@ -46,8 +48,8 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           moment().format('YYYY-MM-DD'),
         ]
       : null,
-    // 是否是星标
-    isStart: false,
+    // 是否离职
+    personStaus: false,
     // 状态
     status: 1,
   }
@@ -219,22 +221,34 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     setActive('')
   }
   useEffect(() => {
+    const { start_time, end_time, user_id } = paramsData ?? {}
+    console.log(
+      'paramsData',
+      paramsData,
+      moment('12-07 23:59:59').format('YYYY-MM-DD'),
+    )
+
     // 从左侧菜单
-    if (!paramsData?.user_id) {
+    if (!user_id) {
       dispatch(setCurrentKey(null))
       return
     }
     setActive('')
     // 从钉钉日报过来需要更新时间
-    if (paramsData?.user_id && paramsData?.date) {
+    if (paramsData?.user_id && paramsData?.start_time) {
       setSearchFilterParams((pre: any) => {
         return {
           ...pre,
-          time: [],
+          time: [
+            moment(start_time).format('YYYY-MM-DD'),
+            moment(end_time).format('YYYY-MM-DD'),
+          ],
         }
       })
     }
-
+    props.onChangeFilter({
+      ...searchFilterParams,
+    })
     // if (paramsData?.user_id) {
     //   setActive(paramsData?.user_id ? 5 : 0)
     //   const resultParams = JSON.parse(JSON.stringify(searchFilterParams))
@@ -311,8 +325,13 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           ))}
         </TabsGroup>
         <Checkbox
-          checked={searchFilterParams.isStart}
-          onChange={e => onClickSearch(e.target.checked, 'isStart')}
+          checked={searchFilterParams.personStaus}
+          onChange={e => {
+            setSearchFilterParams((pre: any) => {
+              return { ...pre, personStaus: e.target.checked }
+            })
+            props.checkPersonStatus && props.checkPersonStatus(e.target.checked)
+          }}
         >
           包含离职人员
         </Checkbox>
