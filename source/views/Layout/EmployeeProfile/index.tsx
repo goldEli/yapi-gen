@@ -221,7 +221,6 @@ const EmployeeProfile = () => {
           // dispatch(setFilterParamsOverall(value))
           dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}
-        checkPersonStatus={status => setPersonStatus(status)}
       />
       <ContentWrap>
         <PersonBox
@@ -234,7 +233,7 @@ const EmployeeProfile = () => {
         >
           <SideMain ref={sideMain} style={{ width: leftWidth }} isOpen={isOpen}>
             <div className="box">
-              <EmployeeProfilePerson personStatus={personStatus} />
+              <EmployeeProfilePerson />
             </div>
           </SideMain>
           <MouseDom

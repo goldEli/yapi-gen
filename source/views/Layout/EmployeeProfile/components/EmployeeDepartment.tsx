@@ -16,18 +16,24 @@ import { useDispatch, useSelector } from '@store/index'
 import { setStatistiDepartment } from '@store/project'
 import CommonIconFont from '@/components/CommonIconFont'
 import { getReportViewLogList } from '@/services/project'
+import { useSearchParams, useNavigate } from 'react-router-dom'
+import { getParamsData } from '@/tools'
+import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 const EmployeeDepartment = (props: any, ref: any) => {
   const [list, setList] = useState()
   const [usersData, setUsersData] = useState()
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { statistiDepartment } = useSelector(store => store.project)
+  const { filterParamsOverall } = useUpdateFilterParams()
   const {
     checkedKeys = [],
     departMentUserKey = [],
     expandedKeys = [],
   } = statistiDepartment ?? []
   const [checked, setChecked] = useState(false)
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const getlist = async () => {
     let res = await getDepartmentUserList({
       search: {
@@ -37,13 +43,28 @@ const EmployeeDepartment = (props: any, ref: any) => {
       },
       is_report: void 0,
     })
-    res[0].staffs[1].status = 2
+    // res[0].staffs[1].status = 2
     console.log(res)
     setUsersData(res)
     const cloneData = _.cloneDeep(res)
     const treeData = diffData(cloneData)
     setList(treeData[0]?.children)
     const users = getAllUserData(cloneData)
+    // 从卡片进入和钉钉进入
+    if (paramsData?.user_id) {
+      setTimeout(() => {
+        dispatch(
+          setStatistiDepartment({
+            ...statistiDepartment,
+            list: users,
+            checkedKeys: [paramsData?.user_id],
+            departMentUserKey: [paramsData?.user_id],
+            expandedKeys: [_.cloneDeep(treeData)[0]?.children.shift()?.id],
+          }),
+        )
+      })
+      return
+    }
     // 获取最近的日报第一个人
     const response = await getReportViewLogList({ page: 1, pagesize: 15 })
     const { list } = response?.data ?? {}
@@ -63,28 +84,27 @@ const EmployeeDepartment = (props: any, ref: any) => {
     })
   }
   useEffect(() => {
-    console.log('usersData', usersData)
     if (!usersData) {
       return
     }
     const cloneData = _.cloneDeep(usersData)
     const treeData = diffData(cloneData)
     setList(treeData[0]?.children)
-  }, [props.personStatus])
+  }, [filterParamsOverall.personStatus])
   // 处理部门数据
   const diffData = (data: any) => {
     for (const item of data) {
       if (item.staffs && item.staffs.length && item.children) {
         item.children = [
           ...item.children,
-          ...(props.personStatus
+          ...(filterParamsOverall.personStatus
             ? item.staffs
             : item.staffs.filter((item: any) => item.status === 1)),
         ]
       }
       if (item.staffs && item.staffs.length && !item.children) {
         item.children = [
-          ...(props.personStatus
+          ...(filterParamsOverall.personStatus
             ? item.staffs
             : item.staffs.filter((item: any) => item.status === 1)),
         ]
@@ -167,7 +187,6 @@ const EmployeeDepartment = (props: any, ref: any) => {
   }
   // 点击展开
   const onExpand = (expandedKeys: any, { expanded }: any) => {
-    console.log(expandedKeys, expanded)
     dispatch(
       setStatistiDepartment({
         ...statistiDepartment,

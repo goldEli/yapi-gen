@@ -36,9 +36,8 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
-  const navigate = useNavigate()
   const paramsData = getParamsData(searchParams)
-  const { updateFilterParams } = useUpdateFilterParams()
+  const { updateFilterParams, restRouter } = useUpdateFilterParams()
   const { currentKey, currentClickNumber, filterParamsOverall } = useSelector(
     store => store.employeeProfile,
   )
@@ -57,43 +56,32 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   const cardList = [
     {
       name: t('mine.overdue'),
-      type: 'red',
-      key: 5,
-      fieldKey: 'overdue',
       label: t('overdue'),
-      value: 'overdue',
+      value: 1,
     },
     {
       name: t('inProgress'),
-      type: 'blue',
-      key: 4,
-      fieldKey: 'start',
+
       label: t('inProgress'),
-      value: 'in_progress',
+      value: 2,
     },
     {
       name: t('toBePlanned'),
-      type: 'org',
-      key: 3,
-      fieldKey: 'un_start',
+
       label: t('toBePlanned'),
-      value: 'planning',
+      value: 3,
     },
     {
       name: t('completed'),
-      type: 'green',
-      key: 2,
-      fieldKey: 'completed',
+
       label: t('completed'),
-      value: 'end',
+      value: 4,
     },
     {
       name: t('all'),
-      type: 'purple',
-      key: 1,
-      fieldKey: 'all',
+
       label: t('all'),
-      value: '',
+      value: null,
     },
   ]
   //   切换时间
@@ -108,16 +96,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         : null,
     })
   }
-  // 重置路由
-  const restRouter = () => {
-    const searchParams = new URLSearchParams(location.search)
 
-    searchParams.delete('data')
-
-    const queryString = searchParams.toString()
-
-    navigate(`?${queryString}`)
-  }
   //   点击快速切换日期tab
   const onChangeTab = (item: any) => {
     setActive(item.key)
@@ -176,9 +155,11 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   // 重置搜索条件
   const reset = () => {
     setActive('')
+    updateFilterParams({ status: null, time: null, keyword: '' })
   }
   useEffect(() => {
     const { start_time, end_time, user_id } = paramsData ?? {}
+
     // 从左侧菜单
     if (!user_id) {
       dispatch(setCurrentKey(null))
@@ -187,11 +168,19 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     setActive('')
     // 从钉钉日报过来需要更新时间
     if (paramsData?.user_id && paramsData?.start_time) {
+      setTimeout(() => {
+        updateFilterParams({
+          time: [
+            moment(start_time).format('YYYY-MM-DD'),
+            moment(end_time).format('YYYY-MM-DD'),
+          ],
+        })
+      })
+    }
+    // 从人员进来
+    if (user_id && !start_time) {
       updateFilterParams({
-        time: [
-          moment(start_time).format('YYYY-MM-DD'),
-          moment(end_time).format('YYYY-MM-DD'),
-        ],
+        time: null,
       })
     }
   }, [paramsData?.user_id])
@@ -240,7 +229,6 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             hasClear={false}
           />
         </SelectWrapBedeck>
-
         <TabsGroup>
           {tabList.map((i: any) => (
             <TabItem
@@ -253,9 +241,11 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           ))}
         </TabsGroup>
         <Checkbox
-          checked={filterParamsOverall.personStaus}
+          checked={filterParamsOverall.personStatus}
           onChange={e => {
-            props.checkPersonStatus && props.checkPersonStatus(e.target.checked)
+            setTimeout(() => {
+              updateFilterParams({ personStatus: e.target.checked })
+            })
           }}
         >
           包含离职人员
