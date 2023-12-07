@@ -238,9 +238,7 @@ const TaskItem = (props: TaskItemProps) => {
   )
 }
 
-interface EmployeeProfileTaskProps {
-  filterParams: any
-}
+interface EmployeeProfileTaskProps {}
 
 const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
   const { filterParamsOverall } = useUpdateFilterParams()
@@ -253,7 +251,9 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
 
   // 获取任务列表
   const getTaskList = async () => {
-    const response = await getMemberOverviewStoryList(filterParamsOverall)
+    const response = await getMemberOverviewStoryList({
+      ...filterParamsOverall,
+    })
     setDataList({ list: response })
     setLoading(false)
   }
@@ -313,7 +313,7 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
                   item={i}
                   key={i.id}
                   onChangeData={onChangeData}
-                  filterParams={props?.filterParams}
+                  filterParams={filterParamsOverall}
                 />
               ))
             ) : (

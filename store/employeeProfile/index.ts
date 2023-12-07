@@ -1,6 +1,7 @@
+import { data } from './../../source/views/Layout/Report/Formwork/DataList'
 import { createSlice } from '@reduxjs/toolkit'
 import { getMemberOverviewList } from './employeeProfile.thunk'
-
+import _ from 'lodash'
 export interface CounterState {
   // 成员数组
   allMemberList: any[]
@@ -21,6 +22,7 @@ export interface CounterState {
   }
   // 筛选条件变化
   currentClickNumber?: any
+  cacheData?: []
 }
 
 const initialState: CounterState = {
@@ -28,6 +30,8 @@ const initialState: CounterState = {
   currentKey: {},
   filterParamsOverall: {
     status: 1,
+    tabType: 'paoject',
+    personStaus: false,
   },
   contrastDrawer: {
     visible: false,
@@ -39,6 +43,7 @@ const initialState: CounterState = {
     state: 0,
   },
   currentClickNumber: 0,
+  cacheData: [],
 }
 
 export const employeeProfileSlice = createSlice({

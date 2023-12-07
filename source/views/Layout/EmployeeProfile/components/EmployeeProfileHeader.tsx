@@ -29,37 +29,20 @@ import { setFilterParams } from '@store/project'
 import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface EmployeeProfileHeaderProps {
   onChangeFilter(value: any): void
-  filterParams: any
   checkPersonStatus?(status: boolean): void
 }
 
 const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const paramsData = getParamsData(searchParams)
   const { updateFilterParams } = useUpdateFilterParams()
   const { currentKey, currentClickNumber, filterParamsOverall } = useSelector(
     store => store.employeeProfile,
   )
-  // 初始化参数  从钉钉日报过来需要回填时间
-  const initParams = {
-    // 搜索值
-    keyword: '',
-    // 创建时间
-    time: paramsData?.date
-      ? [
-          moment().subtract(1, 'years').format('YYYY-MM-DD'),
-          moment().format('YYYY-MM-DD'),
-        ]
-      : null,
-    // 是否离职
-    personStaus: false,
-    // 状态
-    status: 1,
-  }
-  const [searchFilterParams, setSearchFilterParams] = useState<any>(initParams)
+
   const [active, setActive] = useState(paramsData?.user_id ? 5 : '')
 
   const tabList = [
@@ -70,7 +53,6 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     { name: t('nearlyMonths'), key: 4 },
     { name: t('nearlyYear'), key: 5 },
   ]
-
   // 状态列表
   const cardList = [
     {
@@ -114,28 +96,17 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       value: 1,
     },
   ]
-
-  // 地址上存在人员时，更新任务列表
-  const onUpdateUserId = (params: any) => {
-    if (paramsData?.user_id) {
-      props.onChangeFilter(params)
-    }
-  }
-
   //   切换时间
   const onChangeTime = (dates: any) => {
-    const resultParams = {
-      ...searchFilterParams,
+    setActive(dates ? -1 : 0)
+    updateFilterParams({
       time: dates[0]
         ? [
             moment(dates[0]).format('YYYY-MM-DD'),
             moment(dates[1]).format('YYYY-MM-DD'),
           ]
         : null,
-    }
-    setSearchFilterParams(resultParams)
-    setActive(dates ? -1 : 0)
-    onUpdateUserId(resultParams)
+    })
   }
   // 重置路由
   const restRouter = () => {
@@ -195,36 +166,19 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     updateFilterParams({ time })
     dispatch(setCurrentClickNumber(currentClickNumber + 1))
   }
-  // 更新参数
-  // const updateFilterParams = (params: any) => {
-  //   dispatch(setFilterParamsOverall({
-  //     ...filterParamsOverall,
-  //     ...params
-  //   }))
-  // }
   //   点击切换搜素条件
   const onClickSearch = (value: any, key: string) => {
-    if (key === 'keyword' && value === searchFilterParams.keyword) {
+    if (key === 'keyword' && value === filterParamsOverall.keyword) {
       return
     }
-    setSearchFilterParams({
-      ...searchFilterParams,
-      [key]: value,
-    })
-    onUpdateUserId({
-      ...searchFilterParams,
-      [key]: value,
-    })
     updateFilterParams({ keyword: value })
   }
   // 重置搜索条件
   const reset = () => {
-    setSearchFilterParams(initParams)
     setActive('')
   }
   useEffect(() => {
     const { start_time, end_time, user_id } = paramsData ?? {}
-
     // 从左侧菜单
     if (!user_id) {
       dispatch(setCurrentKey(null))
@@ -240,23 +194,6 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         ],
       })
     }
-
-    // if (paramsData?.user_id) {
-    //   setActive(paramsData?.user_id ? 5 : 0)
-    //   const resultParams = JSON.parse(JSON.stringify(searchFilterParams))
-    //   resultParams.status = 1
-    //   resultParams.time = [
-    //     moment().subtract(1, 'years').format('YYYY-MM-DD'),
-    //     moment().format('YYYY-MM-DD'),
-    //   ]
-    //   resultParams.user_ids = [Number(paramsData?.user_id)]
-    //   setSearchFilterParams({
-    //     ...searchFilterParams,
-    //     ...resultParams,
-    //   })
-    // } else {
-    //   dispatch(setCurrentKey(null))
-    // }
   }, [paramsData?.user_id])
 
   return (
@@ -275,13 +212,13 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             width={202}
             onConfirm={() => {}}
             onChange={(value: number) => {
-              setSearchFilterParams((pre: any) => ({ ...pre, status: value }))
+              updateFilterParams({ status: value })
             }}
             options={cardList}
             fieldNames={{ label: 'name', value: 'key', options: 'options' }}
             hiddenFooter
             more
-            value={searchFilterParams.status}
+            value={filterParamsOverall.status}
           ></MoreSelect>
         </SelectWrapBedeck>
         <SelectWrapBedeck>
@@ -292,10 +229,10 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             width="260px"
             isShowQuick={false}
             dateValue={
-              searchFilterParams.time
+              filterParamsOverall.time
                 ? [
-                    moment(searchFilterParams.time[0]),
-                    moment(searchFilterParams.time[1]),
+                    moment(filterParamsOverall.time[0]),
+                    moment(filterParamsOverall.time[1]),
                   ]
                 : null
             }
@@ -316,11 +253,8 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           ))}
         </TabsGroup>
         <Checkbox
-          checked={searchFilterParams.personStaus}
+          checked={filterParamsOverall.personStaus}
           onChange={e => {
-            setSearchFilterParams((pre: any) => {
-              return { ...pre, personStaus: e.target.checked }
-            })
             props.checkPersonStatus && props.checkPersonStatus(e.target.checked)
           }}
         >

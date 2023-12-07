@@ -40,7 +40,6 @@ const EmployeeProfile = () => {
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [userReportList, setUserReportList] = useState<any>({ list: [] })
-  const [filterParams, setFilterParams] = useState<any>({})
   // 人员是否离职
   const [personStatus, setPersonStatus] = useState(false)
   // 第一条日报的第一个需求数据
@@ -90,10 +89,7 @@ const EmployeeProfile = () => {
       fieldKey: 'all',
     },
   ]
-  // filterParams = useMemo(
-  //   () => filterParams,
-  //   [filterParams?.status, filterParams?.time],
-  // )
+
   // 拖动线条
   const onDragLine = () => {
     let width = sliderRef.current?.clientWidth
@@ -145,43 +141,37 @@ const EmployeeProfile = () => {
 
   // 计算筛选条件展示
   const onComputedText = () => {
-    console.log(filterParams, '=1111')
+    console.log(filterParamsOverall, '=1111')
     // 是否有时间
     const hasTime =
-      filterParams.time?.length > 0
-        ? `【${filterParams.time[0]} ~ ${filterParams.time[1]}】期间范围内未查询到`
+      filterParamsOverall.time?.length > 0
+        ? `【${filterParamsOverall.time[0]} ~ ${filterParamsOverall.time[1]}】期间范围内未查询到`
         : ''
 
     // 是否有状态
     const hasStatus =
-      filterParams?.status === 0
+      filterParamsOverall?.status === 0
         ? ''
         : `状态为【${
-            cardList?.filter((i: any) => i.key === filterParams?.status)[0]
-              ?.name
+            cardList?.filter(
+              (i: any) => i.key === filterParamsOverall?.status,
+            )[0]?.name
           }】`
 
     // 是否有搜索条件
     const hasKeyword =
-      filterParams?.keyword?.length > 0
-        ? `关键字为【${filterParams?.keyword}】`
+      filterParamsOverall?.keyword?.length > 0
+        ? `关键字为【${filterParamsOverall?.keyword}】`
         : ''
 
     return hasTime + hasKeyword + hasStatus + '的数据'
   }
 
-  // useEffect(() => {
-  //   if (paramsData?.user_id) {
-  //     console.log('paramsData---', paramsData)
-
-  //   }
-  // }, [paramsData?.user_id])
-
   // 获取汇报列表
   const getReportList = async () => {
     setLoading(true)
     const response = await getMemberReportList({
-      ...filterParams,
+      ...filterParamsOverall,
       page: 1,
     }).finally(() => {
       setLoading(false)
@@ -219,14 +209,9 @@ const EmployeeProfile = () => {
     <Wrap>
       <EmployeeProfileHeader
         onChangeFilter={value => {
-          setFilterParams((pre: any) => {
-            console.log('EmployeeProfileHeader----', pre)
-            return { ...pre, ...value }
-          })
           // dispatch(setFilterParamsOverall(value))
           dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}
-        filterParams={filterParams}
         checkPersonStatus={status => setPersonStatus(status)}
       />
       <ContentWrap>
@@ -240,17 +225,7 @@ const EmployeeProfile = () => {
         >
           <SideMain ref={sideMain} style={{ width: leftWidth }} isOpen={isOpen}>
             <div className="box">
-              <EmployeeProfilePerson
-                onChangeFilter={value => {
-                  setFilterParams((pre: any) => {
-                    console.log('EmployeeProfilePerson', pre)
-                    return { ...pre, ...value }
-                  })
-                  // dispatch(setFilterParamsOverall(value))
-                }}
-                filterParams={filterParams}
-                personStatus={personStatus}
-              />
+              <EmployeeProfilePerson personStatus={personStatus} />
             </div>
           </SideMain>
           <MouseDom
@@ -276,7 +251,7 @@ const EmployeeProfile = () => {
         </PersonBox>
         <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
           {/* 日报-关联需求id存在显示日报列表和任务详情 */}
-          {reportFirstData?.id ? (
+          {true ? (
             <>
               <EmployeeProfileReport
                 onGetReportFirstData={setReportFirstData}
@@ -285,7 +260,7 @@ const EmployeeProfile = () => {
                 setLoading={setLoading}
                 setUserReportList={setUserReportList}
               />
-              <EmployeeProfileTask filterParams={filterParams} />
+              <EmployeeProfileTask />
             </>
           ) : (
             <NoData>

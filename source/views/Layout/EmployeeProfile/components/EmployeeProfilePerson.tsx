@@ -26,8 +26,7 @@ import { getParamsData } from '@/tools'
 import { getRecentProject } from '@/services/project'
 import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface EmployeeProfilePersonProps {
-  onChangeFilter(value: any): void
-  filterParams: any
+  onChangeFilter?(value: any): void
   personStatus: boolean
 }
 // 折叠头部
@@ -154,7 +153,7 @@ const CollapseHeader = (props: any) => {
 const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { updateFilterParams } = useUpdateFilterParams()
+  const { updateFilterParams, filterParamsOverall } = useUpdateFilterParams()
   const [searchParamsUrl] = useSearchParams()
   const paramsData = getParamsData(searchParamsUrl)
   // 全选状态
@@ -297,12 +296,8 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         }
       })
     }
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: params,
-      },
-    })
+
+    updateFilterParams({ user_ids: params })
   }, [userKeys, checkedKeys])
   useEffect(() => {
     const data = getAllUser(allMemberList)
@@ -318,13 +313,6 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
           user_id: parseInt(user_id, 10),
         }
       })
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: users,
-      },
-    })
-    console.log('users', users, paramsData)
   }, [paramsData?.user_id])
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
@@ -362,7 +350,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               header={
                 <CollapseHeader
                   selectKeys={selectKeys}
-                  filterParams={props.filterParams}
+                  filterParams={filterParamsOverall}
                   item={i}
                   setUserKeys={setUserKeys}
                   userKeys={userKeys}
@@ -493,7 +481,11 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
             <div
               key={item.value}
               className="item-tab"
-              onClick={() => setTabActiveKey(item.value)}
+              onClick={() => {
+                console.log(11, item)
+                updateFilterParams({ tabType: item.value })
+                setTabActiveKey(item.value)
+              }}
             >
               {tabActiveKey === item.value ? (
                 <div className="cover"> {item.name}</div>
