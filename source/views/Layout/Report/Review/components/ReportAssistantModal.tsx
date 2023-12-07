@@ -938,7 +938,7 @@ const ReportAssistantModal = (props: ReportAssistantProps) => {
             </CommonButton>
             {times ? (
               <CommonButton type="light" isDisable style={{ width: 98 }}>
-                重发 ({times}s)
+                {t('reSend')} ({times}s)
               </CommonButton>
             ) : (
               <CommonButton onClick={confirm} type="primary">
