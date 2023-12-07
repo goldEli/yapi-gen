@@ -27,7 +27,7 @@ const TopInfoWrap = styled.div`
   }
   .box {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     min-height: 32px;
     .title {
       color: var(--neutral-n3);
@@ -217,6 +217,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           backgroundColor: 'white',
           margin: 0,
           padding: '12px 24px 0px 24px',
+          alignItems: 'flex-start',
         }}
       >
         <span className="icon">
