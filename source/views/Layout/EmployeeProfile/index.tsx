@@ -25,6 +25,8 @@ import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import CommonButton from '@/components/CommonButton'
 import EmployeeAffair from './components/EmployeeAffair'
+import { getMemberReportList } from '@/services/employeeProfile'
+import useUpdateFilterParams from './components/hooks/useUpdateFilterParams'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
@@ -37,7 +39,9 @@ const EmployeeProfile = () => {
   const [endWidth, setEndWidth] = useState(320)
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const [filterParams, setFilterParams] = useState<any>({})
+  const [userReportList, setUserReportList] = useState<any>({ list: [] })
+  // 人员是否离职
+  const [personStatus, setPersonStatus] = useState(false)
   // 第一条日报的第一个需求数据
   const [reportFirstData, setReportFirstData] = useState<any>({
     // 项目id
@@ -51,12 +55,14 @@ const EmployeeProfile = () => {
     // 当前发日报的人
     user_id: 0,
   })
+  const [loading, setLoading] = useState(false)
   const sideMain = useRef<any>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 600
   const { currentKey, currentClickNumber } = useSelector(
     store => store.employeeProfile,
   )
+  const { filterParamsOverall } = useUpdateFilterParams()
 
   // 卡片列表
   const cardList = [
@@ -91,10 +97,7 @@ const EmployeeProfile = () => {
       fieldKey: 'all',
     },
   ]
-  // filterParams = useMemo(
-  //   () => filterParams,
-  //   [filterParams?.status, filterParams?.time],
-  // )
+
   // 拖动线条
   const onDragLine = () => {
     let width = sliderRef.current?.clientWidth
@@ -148,46 +151,78 @@ const EmployeeProfile = () => {
   const onComputedText = () => {
     // 是否有时间
     const hasTime =
-      filterParams.time?.length > 0
+      filterParamsOverall.time?.length > 0
         ? `${t('scopePeriod', {
-            time: `${filterParams.time[0]} ~ ${filterParams.time[1]}`,
+            time: `${filterParamsOverall.time[0]} ~ ${filterParamsOverall.time[1]}`,
           })}`
         : ''
 
     // 是否有状态
     const hasStatus =
-      filterParams?.status === 0
+      filterParamsOverall?.status === 0
         ? ''
         : `${t('statusFilter', {
             name: cardList?.filter(
-              (i: any) => i.key === filterParams?.status,
+              (i: any) => i.key === filterParamsOverall?.status,
             )[0]?.name,
           })}`
 
     // 是否有搜索条件
     const hasKeyword =
-      filterParams?.keyword?.length > 0
-        ? `${t('keywordFilter', { keyword: filterParams?.keyword })}`
+      filterParamsOverall?.keyword?.length > 0
+        ? `${t('keywordFilter', { keyword: filterParamsOverall?.keyword })}`
         : ''
 
     return hasTime + hasKeyword + hasStatus + t('endText')
   }
 
-  // useEffect(() => {
-  //   if (paramsData?.user_id) {
-  //     console.log('paramsData---', paramsData)
-
-  //   }
-  // }, [paramsData?.user_id])
+  // 获取汇报列表
+  const getReportList = async () => {
+    setLoading(true)
+    const response = await getMemberReportList({
+      ...filterParamsOverall,
+      page: 1,
+    }).finally(() => {
+      setLoading(false)
+    })
+    if (response && response.list) {
+      setUserReportList(response)
+      if (response.list.length > 0) {
+        const item = response.list?.[0]
+        let task = item?.report_content?.find(
+          (k: any) => k.name === 'today_end',
+        )?.pivot?.params?.[0]
+        if (!task) {
+          task = item?.report_content?.find(
+            (k: any) => k.name === 'overdue_tasks',
+          )?.pivot?.params?.[0]
+        }
+        if (task) {
+          setReportFirstData({
+            project_id: item.project_id,
+            id: task.id,
+            project_type: task.project_type,
+            is_bug: task.is_bug,
+            onlyId: item.id,
+          })
+        }
+      }
+    }
+    // setLoading(false)
+  }
+  useEffect(() => {
+    if (filterParamsOverall?.user_ids) {
+      getReportList()
+    }
+  }, [filterParamsOverall.time, JSON.stringify(filterParamsOverall.user_ids)])
   return (
     <Wrap>
       <EmployeeProfileHeader
         onChangeFilter={value => {
-          setFilterParams((pre: any) => ({ ...pre, ...value }))
-          dispatch(setFilterParamsOverall(value))
+          // dispatch(setFilterParamsOverall(value))
           dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}
-        filterParams={filterParams}
+        checkPersonStatus={status => setPersonStatus(status)}
       />
       <ContentWrap>
         <PersonBox
@@ -200,13 +235,7 @@ const EmployeeProfile = () => {
         >
           <SideMain ref={sideMain} style={{ width: leftWidth }} isOpen={isOpen}>
             <div className="box">
-              <EmployeeProfilePerson
-                onChangeFilter={value => {
-                  setFilterParams((pre: any) => ({ ...pre, ...value }))
-                  dispatch(setFilterParamsOverall(value))
-                }}
-                filterParams={filterParams}
-              />
+              <EmployeeProfilePerson personStatus={personStatus} />
             </div>
           </SideMain>
           <MouseDom
@@ -232,11 +261,15 @@ const EmployeeProfile = () => {
         </PersonBox>
         <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
           {/* 日报-关联需求id存在显示日报列表和任务详情 */}
-          {reportFirstData?.id ? (
+          {true ? (
             <>
               <EmployeeProfileReport
-                filterParams={filterParams}
                 onGetReportFirstData={setReportFirstData}
+                data={userReportList}
+                loading={loading}
+                setLoading={setLoading}
+                setUserReportList={setUserReportList}
+                reportFirstData={reportFirstData}
               />
               {/* 事务 */}
               {reportFirstData?.project_type === 2 && (

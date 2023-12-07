@@ -33,8 +33,8 @@ export const getMemberOverviewStoryList = async (params: any) => {
   const response = await http.post<any>('getMemberOverviewStoryList', {
     status: params.status,
     users: params.user_ids,
-    start_time: params.time[0] ?? null,
-    end_time: params.time[1] ?? null,
+    start_time: (params.time && params.time[0]) ?? null,
+    end_time: (params.time && params.time[1]) ?? null,
     keyword: params.keyword ?? '',
     is_star: params.isStart ? 1 : 2,
   })
@@ -87,6 +87,19 @@ export const getMemberOverviewReportList = async (params: any) => {
     start_time: params.time?.[0] ?? null,
     end_time: params.time?.[1] ?? null,
     is_star: params.isStart ? 1 : 2,
+  })
+  return response.data
+}
+
+// 新的获取汇报数据
+export const getMemberReportList = async (params: any) => {
+  const response = await http.post<any>('getMemberReportList', {
+    user_ids: params.user_ids || [],
+    start_time: params.time?.[0] ?? null,
+    end_time: params.time?.[1] ?? null,
+    status: params.status ?? null,
+    keyword: params.keyword ?? null,
+    page: params.page,
   })
   return response.data
 }

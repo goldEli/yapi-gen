@@ -2642,5 +2642,6 @@
   "statusFilter": "the status is [{name}}]",
   "keywordFilter": "the keyword is {{keyword}}、",
   "endText": "the data",
-  "participants": "Participants"
+  "participants": "Participants",
+  "reSend": "Resend"
 }

@@ -548,6 +548,8 @@ const urls = {
   getMemberOverviewMoreReportList: '/b/report/member_overview/list',
   // 对比报告
   getMemberOverviewCompare: '/b/member_overview/compare',
+  // 成员新的汇报列表
+  getMemberReportList: '/b/report/member_overview/getReportList',
 
   // 效能洞察-看板
   // 看板列表

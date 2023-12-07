@@ -6,10 +6,11 @@ import React, {
   useEffect,
   useImperativeHandle,
   forwardRef,
+  useRef,
 } from 'react'
 import { getDepartmentUserList } from '@/services/setting'
 import { DepartCheckboxAll, TreeWrap } from '../style'
-import _, { set } from 'lodash'
+import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { setStatistiDepartment } from '@store/project'
@@ -21,44 +22,72 @@ const EmployeeDepartment = (props: any, ref: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { statistiDepartment } = useSelector(store => store.project)
-  const { expandedKeys = [], departMentUserKey = [] } = statistiDepartment ?? []
+  const {
+    checkedKeys = [],
+    departMentUserKey = [],
+    expandedKeys = [],
+  } = statistiDepartment ?? []
   const [checked, setChecked] = useState(false)
   const getlist = async () => {
-    const res = await getDepartmentUserList({
+    let res = await getDepartmentUserList({
       search: {
         project_id: '0',
         type: 'company',
+        all: 1,
       },
       is_report: void 0,
     })
-    const response = await getReportViewLogList({ page: 1, pagesize: 15 })
-    const { list } = response?.data ?? {}
-    const keys = Object.keys(response.data.list)
-    const lastProject = list[keys[0]][0]
-    const { user_id } = lastProject ?? {}
+    res[0].staffs[1].status = 2
+    console.log(res)
     setUsersData(res)
     const cloneData = _.cloneDeep(res)
     const treeData = diffData(cloneData)
     setList(treeData[0]?.children)
     const users = getAllUserData(cloneData)
-    dispatch(
-      setStatistiDepartment({
-        ...statistiDepartment,
-        list: users,
-        expandedKeys: [user_id],
-        departMentUserKey: [user_id],
-      }),
-    )
+    // 获取最近的日报第一个人
+    const response = await getReportViewLogList({ page: 1, pagesize: 15 })
+    const { list } = response?.data ?? {}
+    const keys = Object.keys(response.data.list)
+    const lastProject = keys.length && list[keys[0]][0]
+    const { user_id } = lastProject ?? {}
+    setTimeout(() => {
+      dispatch(
+        setStatistiDepartment({
+          ...statistiDepartment,
+          list: users,
+          checkedKeys: [user_id],
+          departMentUserKey: [user_id],
+          expandedKeys: [_.cloneDeep(treeData)[0]?.children.shift()?.id],
+        }),
+      )
+    })
   }
-
+  useEffect(() => {
+    console.log('usersData', usersData)
+    if (!usersData) {
+      return
+    }
+    const cloneData = _.cloneDeep(usersData)
+    const treeData = diffData(cloneData)
+    setList(treeData[0]?.children)
+  }, [props.personStatus])
   // 处理部门数据
   const diffData = (data: any) => {
     for (const item of data) {
       if (item.staffs && item.staffs.length && item.children) {
-        item.children = [...item.children, ...item.staffs]
+        item.children = [
+          ...item.children,
+          ...(props.personStatus
+            ? item.staffs
+            : item.staffs.filter((item: any) => item.status === 1)),
+        ]
       }
       if (item.staffs && item.staffs.length && !item.children) {
-        item.children = [...item.staffs]
+        item.children = [
+          ...(props.personStatus
+            ? item.staffs
+            : item.staffs.filter((item: any) => item.status === 1)),
+        ]
       }
       if (item.children?.length) {
         diffData(item.children)
@@ -108,7 +137,7 @@ const EmployeeDepartment = (props: any, ref: any) => {
     setChecked(e.target.checked)
     const newTreeData = _.cloneDeep(diffData(usersData))
     const newUser = _.cloneDeep(getAllUserData(usersData))
-    const newExpandedKeys = newTreeData.reduce((acc: any, current: any) => {
+    const newCheckedKeys = newTreeData.reduce((acc: any, current: any) => {
       acc = acc.concat(current.id)
       if (current.children) {
         acc = acc.concat(childrenIds(current.children))
@@ -119,33 +148,41 @@ const EmployeeDepartment = (props: any, ref: any) => {
     dispatch(
       setStatistiDepartment({
         ...statistiDepartment,
-        expandedKeys: e.target.checked
-          ? [...new Set([...newExpandedKeys])]
-          : [],
+        checkedKeys: e.target.checked ? [...new Set([...newCheckedKeys])] : [],
         departMentUserKey: e.target.checked
           ? [...new Set(newUser.map((item: any) => item.id))]
           : [],
       }),
     )
   }
-
+  // 点击复选框
   const onCheck = (checkedKeys: any) => {
     dispatch(
       setStatistiDepartment({
         ...statistiDepartment,
-        expandedKeys: checkedKeys,
+        checkedKeys: checkedKeys,
+        departMentUserKey: checkedKeys,
       }),
     )
   }
-
+  // 点击展开
+  const onExpand = (expandedKeys: any, { expanded }: any) => {
+    console.log(expandedKeys, expanded)
+    dispatch(
+      setStatistiDepartment({
+        ...statistiDepartment,
+        expandedKeys: expandedKeys,
+      }),
+    )
+  }
   useEffect(() => {
     getlist()
   }, [])
   useEffect(() => {
-    if (expandedKeys?.length === 0 && departMentUserKey?.length === 0) {
+    if (checkedKeys?.length === 0 && departMentUserKey?.length === 0) {
       setChecked(false)
     }
-  }, [expandedKeys, departMentUserKey])
+  }, [checkedKeys, departMentUserKey])
   // 获取最近的日报
 
   useImperativeHandle(ref, () => {
@@ -157,13 +194,16 @@ const EmployeeDepartment = (props: any, ref: any) => {
     <div style={{ height: '100%' }}>
       <DepartCheckboxAll checked={checked} onClick={allChecked}>
         {t('selectAll')}
+        {}
       </DepartCheckboxAll>
       <TreeWrap
         checkable
-        checkedKeys={expandedKeys}
+        checkedKeys={checkedKeys}
         autoExpandParent
         onCheck={onCheck}
         treeData={list}
+        expandedKeys={expandedKeys}
+        onExpand={onExpand}
         switcherIcon={(e: any) => {
           return (
             <CommonIconFont

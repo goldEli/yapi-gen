@@ -24,9 +24,10 @@ import CommonIconFont from '@/components/CommonIconFont'
 import _ from 'lodash'
 import { getParamsData } from '@/tools'
 import { getRecentProject } from '@/services/project'
+import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface EmployeeProfilePersonProps {
-  onChangeFilter(value: any): void
-  filterParams: any
+  onChangeFilter?(value: any): void
+  personStatus: boolean
 }
 // 折叠头部
 const CollapseHeader = (props: any) => {
@@ -119,18 +120,19 @@ const CollapseHeader = (props: any) => {
           onChange={e => {
             const userIds = item.member_list.map((item: any) => item.id)
             setProjectKey((pre: any) => {
+              console.log(pre)
               if (e.target.checked) {
-                setUserKeys((pre: any) => {
+                setUserKeys((pre = []) => {
                   return [...pre, ...userIds]
                 })
                 return [...pre, item.id]
               }
               setUserKeys((pre: any) => {
-                return [...pre.filter((item: any) => !userIds.includes(item))]
+                return [...pre?.filter((item: any) => !userIds.includes(item))]
               })
               return [...pre, item.id].filter(i => i !== item.id)
             })
-            const resultKeysNotCheckEd = props.userKeys.filter(
+            const resultKeysNotCheckEd = props.userKeys?.filter(
               (object: any) =>
                 !props.item?.member_list?.some(
                   (otherObject: any) => otherObject.id === object,
@@ -151,6 +153,7 @@ const CollapseHeader = (props: any) => {
 const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { updateFilterParams, filterParamsOverall } = useUpdateFilterParams()
   const [searchParamsUrl] = useSearchParams()
   const paramsData = getParamsData(searchParamsUrl)
   // 全选状态
@@ -177,7 +180,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   ]
   const {
     list = [],
-    expandedKeys = [],
+    checkedKeys = [],
     departMentUserKey = [],
   } = statistiDepartment ?? {}
   // 点击全选
@@ -216,6 +219,28 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
 
   // 获取最近的项目
   useEffect(() => {
+    // 从钉钉或者卡片进入
+    console.log('paramsData', paramsData)
+    if (paramsData?.user_id) {
+      // setUserKeys([paramsData?.user_id])
+      const allUsers = getAllUser(_.clone(allMemberList))
+      const users = allUsers.filter((item: any) => {
+        const [p_id, user_id] = item.id.split('_')
+        return parseInt(paramsData?.user_id, 10) === parseInt(user_id, 10)
+      })
+      const usersKey = users.map((item: any) => item.id)
+      setUserKeys(usersKey)
+      updateFilterParams({
+        user_ids: usersKey.map((item: any) => {
+          const [project_id, user_id] = item.split('_')
+          return {
+            project_id: parseInt(project_id, 10),
+            user_id: parseInt(user_id, 10),
+          }
+        }),
+      })
+      return
+    }
     const getList = async () => {
       const res = await getRecentProject({ page: 1, pagesize: 15 })
       const { list } = res?.data ?? {}
@@ -229,7 +254,18 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         .find(item => item.id === id)
         ?.member_list.map((member: any) => member.id)
       setUserKeys(userKeys)
+      updateFilterParams({
+        user_ids: userKeys?.map((item: any) => {
+          const [project_id, user_id] = item.split('_')
+          return {
+            project_id: parseInt(project_id, 10),
+            user_id: parseInt(user_id, 10),
+          }
+        }),
+      })
     }
+    // 默认展开第一级别
+    setActiveKey([_.cloneDeep(allMemberList).shift()?.id])
     getList()
   }, [allMemberList])
   useEffect(() => {
@@ -254,22 +290,17 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       })
     }
     if (tabActiveKey === 'department') {
-      params = expandedKeys.map((item: any) => {
+      params = checkedKeys.map((item: any) => {
         return {
           user_id: item,
         }
       })
     }
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: params,
-      },
-    })
-  }, [userKeys, expandedKeys])
+
+    updateFilterParams({ user_ids: params })
+  }, [userKeys, checkedKeys])
   useEffect(() => {
     const data = getAllUser(allMemberList)
-
     const users = data
       .filter((item: any) => {
         const [p_id, user_id] = item.id.split('_')
@@ -282,16 +313,10 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
           user_id: parseInt(user_id, 10),
         }
       })
-    props.onChangeFilter({
-      ...props?.filterParams,
-      ...{
-        user_ids: users,
-      },
-    })
-    console.log('users', users)
   }, [paramsData?.user_id])
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
+    console.log('activeKey', activeKey)
     const key = Number(e.panelKey)
     setActiveKey(
       e.isActive
@@ -325,12 +350,11 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               header={
                 <CollapseHeader
                   selectKeys={selectKeys}
-                  filterParams={props.filterParams}
+                  filterParams={filterParamsOverall}
                   item={i}
                   setUserKeys={setUserKeys}
                   userKeys={userKeys}
                   onChangeProjectKeys={(keys: any[]) => {
-                    console.log(keys.length, getAllUser(allMemberList)?.length)
                     setIndeterminate(
                       keys?.length !== getAllUser(allMemberList)?.length,
                     )
@@ -343,27 +367,61 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
               }
               key={i.id}
             >
-              {i.member_list?.map((i: any) => (
-                <MemberItem key={i.id} onClick={() => {}}>
-                  <Checkbox
-                    checked={userKeys?.includes(i.id)}
-                    onChange={e => {
-                      setUserKeys((pre: any) => {
-                        if (e.target.checked) {
-                          return [...pre, i.id]
-                        }
-                        return [...pre, i.id].filter(item => item !== i.id)
-                      })
-                    }}
-                  />
-                  <div className="info">
-                    <CommonUserAvatar size="small" avatar={i.avatar} />
-                    <span className="name">
-                      {i.name}（{i?.department?.name}-{i?.position?.name}）
-                    </span>
-                  </div>
-                </MemberItem>
-              ))}
+              {props.personStatus
+                ? i.member_list?.map((i: any) => {
+                    return (
+                      <MemberItem key={i.id} onClick={() => {}}>
+                        <Checkbox
+                          checked={userKeys?.includes(i.id)}
+                          onChange={e => {
+                            setUserKeys((pre: any) => {
+                              if (e.target.checked) {
+                                return [...pre, i.id]
+                              }
+                              return [...pre, i.id].filter(
+                                item => item !== i.id,
+                              )
+                            })
+                          }}
+                        />
+                        <div className="info">
+                          <CommonUserAvatar size="small" avatar={i.avatar} />
+                          <span className="name">
+                            {i.name}（{i?.department?.name}-{i?.position?.name}
+                            ）
+                          </span>
+                        </div>
+                      </MemberItem>
+                    )
+                  })
+                : i.member_list
+                    ?.filter((item: any) => item.status === 1)
+                    ?.map((i: any) => {
+                      return (
+                        <MemberItem key={i.id} onClick={() => {}}>
+                          <Checkbox
+                            checked={userKeys?.includes(i.id)}
+                            onChange={e => {
+                              setUserKeys((pre: any) => {
+                                if (e.target.checked) {
+                                  return [...pre, i.id]
+                                }
+                                return [...pre, i.id].filter(
+                                  item => item !== i.id,
+                                )
+                              })
+                            }}
+                          />
+                          <div className="info">
+                            <CommonUserAvatar size="small" avatar={i.avatar} />
+                            <span className="name">
+                              {i.name}（{i?.department?.name}-
+                              {i?.position?.name}）
+                            </span>
+                          </div>
+                        </MemberItem>
+                      )
+                    })}
             </Collapse.Panel>
           ))}
         </Collapse>
@@ -374,7 +432,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
     dispatch(
       setStatistiDepartment({
         ...statistiDepartment,
-        expandedKeys: key,
+        checkedKeys: key,
         departMentUserKey: key,
       }),
     )
@@ -423,7 +481,11 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
             <div
               key={item.value}
               className="item-tab"
-              onClick={() => setTabActiveKey(item.value)}
+              onClick={() => {
+                console.log(11, item)
+                updateFilterParams({ tabType: item.value })
+                setTabActiveKey(item.value)
+              }}
             >
               {tabActiveKey === item.value ? (
                 <div className="cover"> {item.name}</div>
@@ -436,7 +498,9 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       {tabActiveKey === 'project' ? (
         projectEle
       ) : (
-        <EmployeeDepartment></EmployeeDepartment>
+        <EmployeeDepartment
+          personStatus={props.personStatus}
+        ></EmployeeDepartment>
       )}
     </PersonWrap>
   )
