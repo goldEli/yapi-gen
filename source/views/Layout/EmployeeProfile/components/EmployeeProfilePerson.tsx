@@ -24,6 +24,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import _ from 'lodash'
 import { getParamsData } from '@/tools'
 import { getRecentProject } from '@/services/project'
+import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface EmployeeProfilePersonProps {
   onChangeFilter(value: any): void
   filterParams: any
@@ -120,18 +121,19 @@ const CollapseHeader = (props: any) => {
           onChange={e => {
             const userIds = item.member_list.map((item: any) => item.id)
             setProjectKey((pre: any) => {
+              console.log(pre)
               if (e.target.checked) {
-                setUserKeys((pre: any) => {
+                setUserKeys((pre = []) => {
                   return [...pre, ...userIds]
                 })
                 return [...pre, item.id]
               }
               setUserKeys((pre: any) => {
-                return [...pre.filter((item: any) => !userIds.includes(item))]
+                return [...pre?.filter((item: any) => !userIds.includes(item))]
               })
               return [...pre, item.id].filter(i => i !== item.id)
             })
-            const resultKeysNotCheckEd = props.userKeys.filter(
+            const resultKeysNotCheckEd = props.userKeys?.filter(
               (object: any) =>
                 !props.item?.member_list?.some(
                   (otherObject: any) => otherObject.id === object,
@@ -152,6 +154,7 @@ const CollapseHeader = (props: any) => {
 const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { updateFilterParams } = useUpdateFilterParams()
   const [searchParamsUrl] = useSearchParams()
   const paramsData = getParamsData(searchParamsUrl)
   // 全选状态
@@ -217,6 +220,28 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
 
   // 获取最近的项目
   useEffect(() => {
+    // 从钉钉或者卡片进入
+    console.log('paramsData', paramsData)
+    if (paramsData?.user_id) {
+      // setUserKeys([paramsData?.user_id])
+      const allUsers = getAllUser(_.clone(allMemberList))
+      const users = allUsers.filter((item: any) => {
+        const [p_id, user_id] = item.id.split('_')
+        return parseInt(paramsData?.user_id, 10) === parseInt(user_id, 10)
+      })
+      const usersKey = users.map((item: any) => item.id)
+      setUserKeys(usersKey)
+      updateFilterParams({
+        user_ids: usersKey.map((item: any) => {
+          const [project_id, user_id] = item.split('_')
+          return {
+            project_id: parseInt(project_id, 10),
+            user_id: parseInt(user_id, 10),
+          }
+        }),
+      })
+      return
+    }
     const getList = async () => {
       const res = await getRecentProject({ page: 1, pagesize: 15 })
       const { list } = res?.data ?? {}
@@ -230,6 +255,15 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         .find(item => item.id === id)
         ?.member_list.map((member: any) => member.id)
       setUserKeys(userKeys)
+      updateFilterParams({
+        user_ids: userKeys?.map((item: any) => {
+          const [project_id, user_id] = item.split('_')
+          return {
+            project_id: parseInt(project_id, 10),
+            user_id: parseInt(user_id, 10),
+          }
+        }),
+      })
     }
     // 默认展开第一级别
     setActiveKey([_.cloneDeep(allMemberList).shift()?.id])
@@ -272,20 +306,18 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   }, [userKeys, checkedKeys])
   useEffect(() => {
     const data = getAllUser(allMemberList)
-    console.log(data)
-    const users = [{ project_id: 24, user_id: 5 }]
-    // const users = data
-    //   .filter((item: any) => {
-    //     const [p_id, user_id] = item.id.split('_')
-    //     return parseInt(paramsData?.user_id, 10) === parseInt(user_id, 10)
-    //   })
-    //   ?.map((item: any) => {
-    //     const [project_id, user_id] = item.id.split('_')
-    //     return {
-    //       project_id: parseInt(project_id, 10),
-    //       user_id: parseInt(user_id, 10),
-    //     }
-    //   })
+    const users = data
+      .filter((item: any) => {
+        const [p_id, user_id] = item.id.split('_')
+        return parseInt(paramsData?.user_id, 10) === parseInt(user_id, 10)
+      })
+      ?.map((item: any) => {
+        const [project_id, user_id] = item.id.split('_')
+        return {
+          project_id: parseInt(project_id, 10),
+          user_id: parseInt(user_id, 10),
+        }
+      })
     props.onChangeFilter({
       ...props?.filterParams,
       ...{
@@ -335,7 +367,6 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
                   setUserKeys={setUserKeys}
                   userKeys={userKeys}
                   onChangeProjectKeys={(keys: any[]) => {
-                    console.log(keys.length, getAllUser(allMemberList)?.length)
                     setIndeterminate(
                       keys?.length !== getAllUser(allMemberList)?.length,
                     )

@@ -25,7 +25,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
-
+import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface TaskItemContentProps {
   row: any
   // 当前人员的id
@@ -243,6 +243,8 @@ interface EmployeeProfileTaskProps {
 }
 
 const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
+  const { filterParamsOverall } = useUpdateFilterParams()
+
   const { taskDrawerUpdate } = useSelector(store => store.employeeProfile)
   const [loading, setLoading] = useState(false)
   const [dataList, setDataList] = useState<any>({
@@ -251,7 +253,7 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
 
   // 获取任务列表
   const getTaskList = async () => {
-    const response = await getMemberOverviewStoryList(props.filterParams)
+    const response = await getMemberOverviewStoryList(filterParamsOverall)
     setDataList({ list: response })
     setLoading(false)
   }
@@ -267,13 +269,13 @@ const EmployeeProfileTask = (props: EmployeeProfileTaskProps) => {
   }
 
   useEffect(() => {
-    if (props.filterParams?.status) {
+    if (filterParamsOverall?.user_ids?.length) {
       setDataList({ list: undefined })
       setLoading(true)
       //调用任务接口
       getTaskList()
     }
-  }, [JSON.stringify(props.filterParams)])
+  }, [JSON.stringify(filterParamsOverall)])
 
   useEffect(() => {
     if (taskDrawerUpdate.id) {

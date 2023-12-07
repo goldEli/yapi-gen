@@ -44,7 +44,7 @@ import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { getStaffListAll } from '@/services/staff'
 import { getIdsForAt } from '@/tools'
 import UploadAttach from '@/components/UploadAttach'
-
+import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface ReportItemProps {
   // 当前数据
   item: any
@@ -411,6 +411,8 @@ interface EmployeeProfileReportProps {
 
 const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
   const { filterParams } = props
+  const { filterParamsOverall } = useUpdateFilterParams()
+  console.log('filterParams---', filterParams)
   const [loading, setLoading] = useState(false)
 
   const [dataList, setDataList] = useState<any>({
@@ -441,18 +443,18 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
 
   // 获取汇报列表
   const getReportList = async () => {
-    const response = await getMemberOverviewReportList(filterParams)
+    const response = await getMemberOverviewReportList(filterParamsOverall)
     setDataList({ list: response })
     setLoading(false)
   }
 
   useEffect(() => {
-    if (filterParams?.user_ids) {
+    if (filterParamsOverall?.user_ids?.length) {
       setDataList({ list: undefined })
       setLoading(true)
       getReportList()
     }
-  }, [filterParams.time, JSON.stringify(filterParams.user_ids)])
+  }, [filterParamsOverall.time, JSON.stringify(filterParamsOverall.user_ids)])
 
   return (
     <ReportWrap>

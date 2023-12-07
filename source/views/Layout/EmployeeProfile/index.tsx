@@ -175,8 +175,11 @@ const EmployeeProfile = () => {
     <Wrap>
       <EmployeeProfileHeader
         onChangeFilter={value => {
-          setFilterParams((pre: any) => ({ ...pre, ...value }))
-          dispatch(setFilterParamsOverall(value))
+          setFilterParams((pre: any) => {
+            console.log('EmployeeProfileHeader----', pre)
+            return { ...pre, ...value }
+          })
+          // dispatch(setFilterParamsOverall(value))
           dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}
         filterParams={filterParams}
@@ -195,8 +198,11 @@ const EmployeeProfile = () => {
             <div className="box">
               <EmployeeProfilePerson
                 onChangeFilter={value => {
-                  setFilterParams((pre: any) => ({ ...pre, ...value }))
-                  dispatch(setFilterParamsOverall(value))
+                  setFilterParams((pre: any) => {
+                    console.log('EmployeeProfilePerson', pre)
+                    return { ...pre, ...value }
+                  })
+                  // dispatch(setFilterParamsOverall(value))
                 }}
                 filterParams={filterParams}
                 personStatus={personStatus}
@@ -226,7 +232,7 @@ const EmployeeProfile = () => {
         </PersonBox>
         <RightBox style={{ width: `calc(100% - ${leftWidth}px)` }}>
           {/* 日报-关联需求id存在显示日报列表和任务详情 */}
-          {reportFirstData?.id ? (
+          {true ? (
             <>
               <EmployeeProfileReport
                 filterParams={filterParams}

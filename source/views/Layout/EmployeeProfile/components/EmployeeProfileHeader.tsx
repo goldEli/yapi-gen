@@ -14,7 +14,11 @@ import { useEffect, useState } from 'react'
 import { Checkbox, Select } from 'antd'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
-import { setCurrentClickNumber, setCurrentKey } from '@store/employeeProfile'
+import {
+  setCurrentClickNumber,
+  setCurrentKey,
+  setFilterParamsOverall,
+} from '@store/employeeProfile'
 import { useTranslation } from 'react-i18next'
 import { getMemberOverviewStatistics } from '@/services/employeeProfile'
 import { useSearchParams, useNavigate } from 'react-router-dom'
@@ -22,6 +26,7 @@ import { getParamsData } from '@/tools'
 import CommonButton from '@/components/CommonButton'
 import MoreSelect from '@/components/MoreSelect'
 import { setFilterParams } from '@store/project'
+import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface EmployeeProfileHeaderProps {
   onChangeFilter(value: any): void
   filterParams: any
@@ -34,7 +39,8 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const paramsData = getParamsData(searchParams)
-  const { currentKey, currentClickNumber } = useSelector(
+  const { updateFilterParams } = useUpdateFilterParams()
+  const { currentKey, currentClickNumber, filterParamsOverall } = useSelector(
     store => store.employeeProfile,
   )
   // 初始化参数  从钉钉日报过来需要回填时间
@@ -141,7 +147,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
 
     navigate(`?${queryString}`)
   }
-  //   点击切换tab
+  //   点击快速切换日期tab
   const onChangeTab = (item: any) => {
     setActive(item.key)
     restRouter()
@@ -186,21 +192,16 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
         ]
         break
     }
-    setSearchFilterParams({
-      ...searchFilterParams,
-      time,
-    })
-    // onUpdateUserId({
-    //   ...searchFilterParams,
-    //   time,
-    // })
-    props.onChangeFilter({
-      ...searchFilterParams,
-      time,
-    })
+    updateFilterParams({ time })
     dispatch(setCurrentClickNumber(currentClickNumber + 1))
   }
-
+  // 更新参数
+  // const updateFilterParams = (params: any) => {
+  //   dispatch(setFilterParamsOverall({
+  //     ...filterParamsOverall,
+  //     ...params
+  //   }))
+  // }
   //   点击切换搜素条件
   const onClickSearch = (value: any, key: string) => {
     if (key === 'keyword' && value === searchFilterParams.keyword) {
@@ -214,6 +215,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
       ...searchFilterParams,
       [key]: value,
     })
+    updateFilterParams({ keyword: value })
   }
   // 重置搜索条件
   const reset = () => {
@@ -222,11 +224,6 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   }
   useEffect(() => {
     const { start_time, end_time, user_id } = paramsData ?? {}
-    console.log(
-      'paramsData',
-      paramsData,
-      moment('12-07 23:59:59').format('YYYY-MM-DD'),
-    )
 
     // 从左侧菜单
     if (!user_id) {
@@ -236,19 +233,14 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     setActive('')
     // 从钉钉日报过来需要更新时间
     if (paramsData?.user_id && paramsData?.start_time) {
-      setSearchFilterParams((pre: any) => {
-        return {
-          ...pre,
-          time: [
-            moment(start_time).format('YYYY-MM-DD'),
-            moment(end_time).format('YYYY-MM-DD'),
-          ],
-        }
+      updateFilterParams({
+        time: [
+          moment(start_time).format('YYYY-MM-DD'),
+          moment(end_time).format('YYYY-MM-DD'),
+        ],
       })
     }
-    props.onChangeFilter({
-      ...searchFilterParams,
-    })
+
     // if (paramsData?.user_id) {
     //   setActive(paramsData?.user_id ? 5 : 0)
     //   const resultParams = JSON.parse(JSON.stringify(searchFilterParams))
@@ -283,7 +275,6 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             width={202}
             onConfirm={() => {}}
             onChange={(value: number) => {
-              console.log(value)
               setSearchFilterParams((pre: any) => ({ ...pre, status: value }))
             }}
             options={cardList}
