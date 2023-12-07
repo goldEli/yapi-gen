@@ -39,7 +39,7 @@ import { getStaffListAll } from '@/services/staff'
 import { getIdsForAt } from '@/tools'
 import UploadAttach from '@/components/UploadAttach'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
+import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface ReportItemProps {
   item: any
 }
@@ -325,7 +325,6 @@ const ReportItem = (props: ReportItemProps) => {
 }
 
 interface EmployeeProfileReportProps {
-  filterParams: any
   // 需要向上传递第一个日报的第一个需求的数据
   onGetReportFirstData(data: { project_id: number; id: number }): void
   data: any
@@ -335,15 +334,16 @@ interface EmployeeProfileReportProps {
 }
 
 const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
-  const { filterParams, data, loading, setLoading, setUserReportList } = props
+  const { data, loading, setLoading, setUserReportList } = props
   const [page, setPage] = useState(1)
+  const { filterParamsOverall } = useUpdateFilterParams()
 
   // 点击加载更多日报，合并数据
   const fetchMoreData = async () => {
     const newPage = page + 1
     setLoading(true)
     const response = await getMemberReportList({
-      ...filterParams,
+      ...filterParamsOverall,
       page: newPage,
     }).finally(() => {
       setLoading(false)

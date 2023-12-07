@@ -33,8 +33,8 @@ export const getMemberOverviewStoryList = async (params: any) => {
   const response = await http.post<any>('getMemberOverviewStoryList', {
     status: params.status,
     users: params.user_ids,
-    start_time: params.time[0] ?? null,
-    end_time: params.time[1] ?? null,
+    start_time: (params.time && params.time[0]) ?? null,
+    end_time: (params.time && params.time[1]) ?? null,
     keyword: params.keyword ?? '',
     is_star: params.isStart ? 1 : 2,
   })

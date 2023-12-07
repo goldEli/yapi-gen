@@ -26,6 +26,7 @@ import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import CommonButton from '@/components/CommonButton'
 import { getMemberReportList } from '@/services/employeeProfile'
+import useUpdateFilterParams from './components/hooks/useUpdateFilterParams'
 
 const EmployeeProfile = () => {
   const [t] = useTranslation()
@@ -40,6 +41,8 @@ const EmployeeProfile = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [userReportList, setUserReportList] = useState<any>({ list: [] })
   const [filterParams, setFilterParams] = useState<any>({})
+  // 人员是否离职
+  const [personStatus, setPersonStatus] = useState(false)
   // 第一条日报的第一个需求数据
   const [reportFirstData, setReportFirstData] = useState<any>({
     project_id: null,
@@ -52,6 +55,7 @@ const EmployeeProfile = () => {
   const { currentKey, currentClickNumber } = useSelector(
     store => store.employeeProfile,
   )
+  const { filterParamsOverall } = useUpdateFilterParams()
 
   // 卡片列表
   const cardList = [
@@ -207,19 +211,23 @@ const EmployeeProfile = () => {
     // setLoading(false)
   }
   useEffect(() => {
-    if (filterParams?.user_ids) {
+    if (filterParamsOverall?.user_ids) {
       getReportList()
     }
-  }, [filterParams.time, JSON.stringify(filterParams.user_ids)])
+  }, [filterParamsOverall.time, JSON.stringify(filterParamsOverall.user_ids)])
   return (
     <Wrap>
       <EmployeeProfileHeader
         onChangeFilter={value => {
-          setFilterParams((pre: any) => ({ ...pre, ...value }))
-          dispatch(setFilterParamsOverall(value))
+          setFilterParams((pre: any) => {
+            console.log('EmployeeProfileHeader----', pre)
+            return { ...pre, ...value }
+          })
+          // dispatch(setFilterParamsOverall(value))
           dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}
         filterParams={filterParams}
+        checkPersonStatus={status => setPersonStatus(status)}
       />
       <ContentWrap>
         <PersonBox
@@ -234,10 +242,14 @@ const EmployeeProfile = () => {
             <div className="box">
               <EmployeeProfilePerson
                 onChangeFilter={value => {
-                  setFilterParams((pre: any) => ({ ...pre, ...value }))
-                  dispatch(setFilterParamsOverall(value))
+                  setFilterParams((pre: any) => {
+                    console.log('EmployeeProfilePerson', pre)
+                    return { ...pre, ...value }
+                  })
+                  // dispatch(setFilterParamsOverall(value))
                 }}
                 filterParams={filterParams}
+                personStatus={personStatus}
               />
             </div>
           </SideMain>
@@ -267,7 +279,6 @@ const EmployeeProfile = () => {
           {reportFirstData?.id ? (
             <>
               <EmployeeProfileReport
-                filterParams={filterParams}
                 onGetReportFirstData={setReportFirstData}
                 data={userReportList}
                 loading={loading}

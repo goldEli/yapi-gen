@@ -26,7 +26,9 @@ export interface CounterState {
 const initialState: CounterState = {
   allMemberList: [],
   currentKey: {},
-  filterParamsOverall: {},
+  filterParamsOverall: {
+    status: 1,
+  },
   contrastDrawer: {
     visible: false,
     params: {},

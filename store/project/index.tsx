@@ -115,7 +115,7 @@ const initialState: CounterState = {
   updateProgress: 0,
   projectWarning: {},
   statistiDepartment: {
-    expandedKeys: [],
+    checkedKeys: [],
     list: [],
   },
 }
