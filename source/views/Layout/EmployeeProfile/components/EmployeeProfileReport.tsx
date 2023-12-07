@@ -63,10 +63,11 @@ const ReportItem = (props: ReportItemProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
 
-  const onlyObject = useMemo(() => {
-    return item
-  }, [item.id])
   const onOpen = _.debounce(onChangData, 200)
+
+  useEffect(() => {
+    setCommentList(item.comment)
+  }, [JSON.stringify(item.comment)])
 
   // 获取汇报评论
   const getReportCommentData = async (id: number) => {
@@ -174,45 +175,45 @@ const ReportItem = (props: ReportItemProps) => {
                 {t('report.list.reportProject')}
               </Title>
               <Msg style={{ marginTop: 8 }}>{item?.project?.name}</Msg>
-              {item.report_content?.map((item: any) => (
-                <div key={item.id}>
-                  {item.type === 4 && (
+              {item.report_content?.map((items: any) => (
+                <div key={items.id}>
+                  {items.type === 4 && (
                     <Title style={{ marginBottom: 8 }}>
-                      {item.name_text}: {item.pivot.params?.length}
+                      {items.name_text}: {items.pivot.params?.length}
                       {t('report.list.pieces')}
                     </Title>
                   )}
-                  {item.type === 3 && item.name !== 'total_schedule' && (
+                  {items.type === 3 && items.name !== 'total_schedule' && (
                     <>
-                      <Title>{item.name_text}</Title>
+                      <Title>{items.name_text}</Title>
                       <Editor
                         readonly
                         disableUpdateValue
-                        value={item?.pivot?.content}
+                        value={items?.pivot?.content}
                       />
                     </>
                   )}
-                  {item.type === 4 &&
-                    item.pivot.params?.map((el: any) => (
+                  {items.type === 4 &&
+                    items.pivot.params?.map((el: any) => (
                       <RowRadius
                         key={el.id}
                         isSelect={
                           reportFirstData?.id === el.id &&
-                          reportFirstData?.onlyId === onlyObject.onlyId
+                          reportFirstData?.onlyId === item.id
                         }
                         onClick={() => {
                           onGetReportFirstData({
-                            project_id: onlyObject.project_id,
+                            project_id: item.project_id,
                             id: el.id,
                             project_type: el.project_type,
                             is_bug: el.is_bug,
-                            user_id: onlyObject.user.id,
-                            onlyId: onlyObject.onlyId,
+                            user_id: item.user.id,
+                            onlyId: item.id,
                           })
                         }}
                       >
                         <Radius />
-                        {item?.name === 'overdue_tasks' &&
+                        {items?.name === 'overdue_tasks' &&
                         el.expected_day > 0 ? (
                           <span
                             style={{ marginRight: 3, whiteSpace: 'nowrap' }}
@@ -233,10 +234,10 @@ const ReportItem = (props: ReportItemProps) => {
                       </RowRadius>
                     ))}
 
-                  {item.type === 2 && (
+                  {items.type === 2 && (
                     <>
-                      <Title>{item?.name_text}</Title>
-                      <AttachmentBox list={item?.pivot?.params} />
+                      <Title>{items?.name_text}</Title>
+                      <AttachmentBox list={items?.pivot?.params} />
                     </>
                   )}
                 </div>
@@ -368,7 +369,7 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
     getPersonList()
   }, [])
 
-  console.log(data, 'ladatata')
+  console.log(data, 'ladatata', reportFirstData)
 
   return (
     <ReportWrap>
