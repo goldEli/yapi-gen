@@ -54,7 +54,11 @@ const index = (props: any) => {
   }
   const resove = (arry: any, ids: any) => {
     const data = arry.reduce((acc: any, cur: any) => {
-      const ids = cur.children.map((item: any) => item.id)
+      let ids = []
+      if (cur.children) {
+        ids = cur.children.map((item: any) => item.id)
+      }
+      ids.push(cur.id)
       acc = acc.concat(ids)
       return acc
     }, [])

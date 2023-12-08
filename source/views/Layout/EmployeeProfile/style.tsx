@@ -93,6 +93,7 @@ export const HeaderSearch = styled.div`
   align-items: center;
   gap: 16px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 `
 
 export const HeaderCardGroup = styled.div`

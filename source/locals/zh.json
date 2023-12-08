@@ -2643,5 +2643,6 @@
   "keywordFilter": "关键字为【{{keyword}}】、",
   "endText": "的数据",
   "participants": "参与人",
-  "reSend": "重发"
+  "reSend": "重发",
+  "includingResignedPersonnel": "包含离职人员"
 }

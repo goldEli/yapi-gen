@@ -69,31 +69,31 @@ const EmployeeProfile = () => {
   // 卡片列表
   const cardList = [
     {
-      name: t('mine.overdue'),
+      name: '全部',
       type: 'red',
-      key: 5,
+      key: null,
       fieldKey: 'overdue',
     },
     {
-      name: t('inProgress'),
+      name: '已完成',
       type: 'blue',
       key: 4,
       fieldKey: 'start',
     },
     {
-      name: t('toBePlanned'),
+      name: '待规划',
       type: 'org',
       key: 3,
       fieldKey: 'un_start',
     },
     {
-      name: t('completed'),
+      name: '进行中',
       type: 'green',
       key: 2,
       fieldKey: 'completed',
     },
     {
-      name: t('all'),
+      name: t('mine.overdue'),
       type: 'purple',
       key: 1,
       fieldKey: 'all',
@@ -175,7 +175,7 @@ const EmployeeProfile = () => {
         ? `${t('keywordFilter', { keyword: filterParamsOverall?.keyword })}`
         : ''
 
-    return hasTime + hasKeyword + hasStatus + t('endText')
+    return `权限不足或${hasTime + hasKeyword + hasStatus + t('endText')}`
   }
 
   // 获取汇报列表
