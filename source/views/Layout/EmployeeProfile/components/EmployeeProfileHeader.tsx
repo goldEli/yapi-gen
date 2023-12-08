@@ -248,7 +248,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             })
           }}
         >
-          包含离职人员
+          <span style={{ whiteSpace: 'nowrap' }}>包含离职人员</span>
         </Checkbox>
         <CommonButton type="primaryText" size="small" onClick={reset}>
           重置

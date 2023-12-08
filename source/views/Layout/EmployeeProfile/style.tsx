@@ -282,7 +282,7 @@ export const CheckboxLi = styled.div`
 
 // EmployeeProfileReport
 export const ReportWrap = styled.div`
-  width: 561px;
+  flex: 2;
   height: 100%;
   border-right: 1px solid var(--neutral-n6-d1);
   padding: 0 4px 0 0px;
@@ -302,7 +302,6 @@ export const ProviderBox = styled.div`
 `
 
 export const ReportItemBox = styled.div`
-  width: 561px;
   overflow-y: auto;
   height: 100%;
   .infinite-scroll-component {

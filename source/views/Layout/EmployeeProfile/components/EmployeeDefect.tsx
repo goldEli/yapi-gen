@@ -220,7 +220,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
   }, [JSON.stringify(props)])
 
   return (
-    <div style={{ width: 'calc(100% - 561px)' }}>
+    <div style={{ flex: 3 }}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
