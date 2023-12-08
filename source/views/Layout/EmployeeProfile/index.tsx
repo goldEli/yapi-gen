@@ -64,7 +64,7 @@ const EmployeeProfile = () => {
   const { currentKey, currentClickNumber } = useSelector(
     store => store.employeeProfile,
   )
-  const { filterParamsOverall } = useUpdateFilterParams()
+  const { filterParamsOverall, updateFilterParams } = useUpdateFilterParams()
 
   // 卡片列表
   const cardList = [
@@ -315,6 +315,7 @@ const EmployeeProfile = () => {
                 type="light"
                 onClick={() => {
                   // 点击清空筛选条件
+                  updateFilterParams({ status: null, time: null, keyword: '' })
                 }}
                 style={{ marginTop: 24 }}
               >
