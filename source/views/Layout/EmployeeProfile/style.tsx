@@ -5,7 +5,7 @@ import { Checkbox, Tabs, Tree } from 'antd'
 export const Wrap = styled.div`
   width: 100%;
   height: calc(100vh - 56px);
-  min-width: 1440px;
+  /* min-width: 1440px; */
   overflow: auto;
 `
 
@@ -92,8 +92,9 @@ export const HeaderSearch = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 20px;
+  padding-bottom: 20px;
   flex-wrap: wrap;
+  box-sizing: border-box;
 `
 
 export const HeaderCardGroup = styled.div`

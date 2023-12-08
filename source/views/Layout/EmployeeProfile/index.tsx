@@ -42,6 +42,8 @@ const EmployeeProfile = () => {
   const [focus, setFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [userReportList, setUserReportList] = useState<any>({ list: [] })
+  const [headHeight, setHeadHeight] = useState<number>(75)
+  const headBoxRef = useRef<any>()
   // 人员是否离职
   const [personStatus, setPersonStatus] = useState(false)
   // 第一条日报的第一个需求数据
@@ -222,15 +224,34 @@ const EmployeeProfile = () => {
     }
   }, [JSON.stringify(filterParamsOverall)])
 
+  const observer = useRef(
+    new ResizeObserver(e => {
+      if (headBoxRef.current) {
+        setHeadHeight(headBoxRef.current.getBoundingClientRect().height)
+      }
+    }),
+  )
+
+  useEffect(() => {
+    if (!headBoxRef.current) {
+      return
+    }
+    observer.current.observe(headBoxRef.current)
+    return () => {
+      observer.current.disconnect()
+    }
+  }, [])
+
   return (
     <Wrap>
       <EmployeeProfileHeader
+        refs={headBoxRef}
         onChangeFilter={value => {
           // dispatch(setFilterParamsOverall(value))
           dispatch(setCurrentClickNumber(currentClickNumber + 1))
         }}
       />
-      <ContentWrap>
+      <ContentWrap style={{ height: `calc(100% - ${headHeight}px)` }}>
         <PersonBox
           isOpen={isOpen}
           ref={sliderRef}

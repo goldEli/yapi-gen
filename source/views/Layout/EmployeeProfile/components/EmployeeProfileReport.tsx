@@ -278,6 +278,7 @@ const ReportItem = (props: ReportItemProps) => {
               placeholder={t('commentOnLog', { name: item?.user?.name })}
               personList={personArr}
               onConfirm={onComment}
+              padding="no"
               style={{
                 position: 'sticky',
                 bottom: 0,
