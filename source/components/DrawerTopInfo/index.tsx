@@ -154,9 +154,9 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
   const { drawerCanOperation } = useSelector(store => store.project)
   const isEmployeeProfilePage = location.pathname === '/EmployeeProfile'
   return (
-    <Wrap >
+    <Wrap>
       <TopInfoWrap
-      className='TopInfoWrap'
+        className="TopInfoWrap"
         style={{
           backgroundColor: 'white',
           margin: 0,

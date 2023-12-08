@@ -330,7 +330,7 @@ const AffairsInfo = (props: Props) => {
         )}
         padding={'no'}
         onConfirm={onConfirmComment}
-        style={{marginLeft:15, padding: '0', width: 'calc(100% - 36px)' }}
+        style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
         maxHeight="60vh"
         hasAvatar
       />

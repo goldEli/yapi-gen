@@ -38,7 +38,7 @@ const WaringCard = (props: WaringCardProps) => {
     is_open,
   } = projectWarning ?? {}
 
-  const { day = [], time = {} } = push_date ?? {}
+  let { day = [], time = {} } = push_date ?? {}
 
   const weekMaps: mapInterface = {
     0: t('onMonday'),
@@ -120,8 +120,13 @@ const WaringCard = (props: WaringCardProps) => {
               setIsDeleteVisible(true)
               return
             }
+            day = day.filter((item: number) => item !== -1)
             let res = await saveWarningConfig({
               ...projectWarning,
+              push_date: {
+                ...push_date,
+                day,
+              },
               project_id: projectId,
               push_obj: push_obj?.map((item: any) => item.id),
               is_open: checked ? 1 : 2,
@@ -203,8 +208,13 @@ const WaringCard = (props: WaringCardProps) => {
         }}
         onCancelState
         onConfirm={async () => {
+          day = day.filter((item: number) => item !== -1)
           let res = await saveWarningConfig({
             ...projectWarning,
+            push_date: {
+              ...push_date,
+              day,
+            },
             project_id: projectId,
             push_obj: push_obj?.map((item: any) => item.id),
             is_open: checked ? 1 : 2,
