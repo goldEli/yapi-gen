@@ -738,6 +738,9 @@ export const TaskContentWrap = styled.div`
     z-index: 2;
     background: var(--neutral-white-d1);
   }
+  .employeeProfileWrap .TopInfoWrap{
+    align-items: baseline;
+  }
 `
 
 export const DemandName = styled.div`
