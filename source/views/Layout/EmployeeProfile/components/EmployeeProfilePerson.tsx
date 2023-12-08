@@ -52,7 +52,28 @@ const CollapseHeader = (props: any) => {
     setNormal(props.filterParams?.iteration ?? [{ id: 0, projectId: 0 }])
   }, [props.filterParams])
 
+  // useEffect(() => {
+  //   const resultList = props.selectKeys?.filter((object: any) =>
+  //     props.item?.member_list?.some(
+  //       (otherObject: any) => otherObject.id === object,
+  //     ),
+  //   )
+  //   setIndeterminate(
+  //     resultList?.length !== props.item?.member_list?.length &&
+  //     resultList?.length !== 0,
+  //   )
+  //   console.log(111111, projectKey)
+  //   setCheckAll(resultList?.length === props.item?.member_list?.length)
+  // }, [props.userKeys])
+
   useEffect(() => {
+    if (!userKeys) {
+      return
+    }
+    if (userKeys.length === 0) {
+      setProjectKey([])
+      return
+    }
     const resultList = props.selectKeys?.filter((object: any) =>
       props.item?.member_list?.some(
         (otherObject: any) => otherObject.id === object,
@@ -63,16 +84,6 @@ const CollapseHeader = (props: any) => {
         resultList?.length !== 0,
     )
     setCheckAll(resultList?.length === props.item?.member_list?.length)
-  }, [props.userKeys])
-
-  useEffect(() => {
-    if (!userKeys) {
-      return
-    }
-    if (userKeys.length === 0) {
-      // setProjectKey([])
-      return
-    }
     for (const key of userKeys) {
       const [project_id] = key.split('_')
       const currentProjectUserIds = item.member_list
