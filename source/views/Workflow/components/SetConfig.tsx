@@ -431,7 +431,7 @@ const SetConfig = (props: Props) => {
           value={
             Array.isArray(row.default_value)
               ? row.default_value
-              : row.default_value?.title
+              : row.default_value?.title ?? row.default_value
           }
           options={
             ['users_name', 'users_copysend_name'].includes(row.content) &&
