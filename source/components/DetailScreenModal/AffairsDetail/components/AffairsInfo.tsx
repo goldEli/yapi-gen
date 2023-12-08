@@ -248,7 +248,7 @@ const AffairsInfo = (props: Props) => {
   return (
     <InfoWrap
       height={`calc(${startHeight}vh - ${
-        a1 + (document.getElementById('DetailText')?.clientHeight || 25)
+        a1 + (document.getElementById('DetailText')?.clientHeight || 75)
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}
@@ -328,8 +328,9 @@ const AffairsInfo = (props: Props) => {
             id: k.id,
           }),
         )}
+        padding={'no'}
         onConfirm={onConfirmComment}
-        style={{ padding: '0 0 0 24px', width: '100%' }}
+        style={{marginLeft:15, padding: '0', width: 'calc(100% - 36px)' }}
         maxHeight="60vh"
         hasAvatar
       />

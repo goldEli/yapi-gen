@@ -20,6 +20,8 @@ interface CommentFooterProps {
   onRef?: any
   // 是否是员工概况
   isEmployee?: boolean
+  // 不要内边距
+  padding?:string
 }
 
 const CommentFooter = (props: CommentFooterProps) => {
@@ -106,7 +108,7 @@ const CommentFooter = (props: CommentFooterProps) => {
     <CommentFooterWrap isReview={isReview} style={{ ...props.style }}>
       {isReview ? (
         <div
-          style={{ backgroundColor: 'var(--neutral-white-d5)', padding: 24 }}
+          style={{ backgroundColor: 'var(--neutral-white-d5)', padding: props.padding === 'no'? 0 : 24 }}
         >
           <div>
             <Form form={form}>
@@ -145,7 +147,7 @@ const CommentFooter = (props: CommentFooterProps) => {
           </div>
 
           {!props.isEmployee && (
-            <div style={{ color: '#BBBDBF' }}>
+            <div style={{ color: '#BBBDBF',padding:props.padding ==='no'?'0 2px' :0 }}>
               {t('pressShortcutKeyToSendComments')}
             </div>
           )}
@@ -198,6 +200,7 @@ const CommentFooter = (props: CommentFooterProps) => {
             style={{ width: '100%' }}
             onFocus={onFocus}
           />
+
           <CommonButton type="primary" onClick={onFocus}>
             评论
           </CommonButton>
