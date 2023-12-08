@@ -59,7 +59,7 @@ const EmployeeDepartment = (props: any, ref: any) => {
             list: users,
             checkedKeys: [paramsData?.user_id],
             departMentUserKey: [paramsData?.user_id],
-            expandedKeys: [_.cloneDeep(treeData)[0]?.children.shift()?.id],
+            expandedKeys: [paramsData?.user_id],
           }),
         )
       })

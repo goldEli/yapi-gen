@@ -241,15 +241,19 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       })
       const usersKey = users.map((item: any) => item.id)
       setUserKeys(usersKey)
+      // 获取需要展开的人员
+      const activekey: any[] = []
       updateFilterParams({
         user_ids: usersKey.map((item: any) => {
           const [project_id, user_id] = item.split('_')
+          activekey.push(parseInt(project_id, 10))
           return {
             project_id: parseInt(project_id, 10),
             user_id: parseInt(user_id, 10),
           }
         }),
       })
+      setActiveKey(activekey)
       return
     }
     const getList = async () => {

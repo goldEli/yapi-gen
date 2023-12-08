@@ -34,6 +34,9 @@ const PeopleCard = (props: any) => {
 
   // 跳转到员工概况
   const onToEmployee = (e: any) => {
+    if (location.pathname === '/EmployeeProfile') {
+      return
+    }
     e.stopPropagation()
     const params = encryptPhp(
       JSON.stringify({

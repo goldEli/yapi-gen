@@ -95,9 +95,11 @@ interface ParticipantsUserProps {
   id?: number
   // 当前任务详情数据
   details?: any
+  userInfo?: any
 }
 
 const ParticipantsUser = (props: ParticipantsUserProps) => {
+  console.log('-----', props)
   const { theme } = useSelector(store => store.global)
   const [openDemandDetail] = useOpenDemandDetail()
 
@@ -133,11 +135,11 @@ const ParticipantsUser = (props: ParticipantsUserProps) => {
       </AvatarBox>
       <div className="name">
         {props.name && <NameWrap>{props?.name}</NameWrap>}
-        {props.details?.user?.department?.id && (
-          <NameWrap>-{props.details?.user?.department?.name}</NameWrap>
+        {props.userInfo?.user?.department?.id && (
+          <NameWrap>-{props.userInfo?.user?.department?.name}</NameWrap>
         )}
-        {props.details?.user?.position?.id && (
-          <NameWrap>-{props.details?.user?.position?.id}</NameWrap>
+        {props.userInfo?.user?.position?.id && (
+          <NameWrap>-{props.userInfo?.user?.position?.name}</NameWrap>
         )}
       </div>
     </UserAvatarWrap>
@@ -212,85 +214,90 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           </div>
         </span>
       </TopInfoWrap>
-      <TopInfoWrap
-        style={{
-          backgroundColor: 'white',
-          margin: 0,
-          padding: '12px 24px 0px 24px',
-          alignItems: 'flex-start',
-        }}
-      >
-        <span className="icon">
-          <CommonIconFont type="user" size={16} color="var(--neutral-n3)" />
-        </span>
-        <span className="box">
-          {/* 如果有当前处理人id则显示参与人 */}
-          {props?.userId && (
-            <>
-              <span className="label" style={{ marginRight: 16 }}>
-                {t('participants')}
-              </span>
-              <ParticipantsWrap>
-                {(
-                  props.details?.user?.filter(
-                    (k: any) => k.user.id !== props?.userId,
-                  ) ?? []
-                )?.map((i: any) => (
-                  <ParticipantsUser
-                    key={i.user.id}
-                    name={i.user.name}
-                    avatar={i.user?.avatar}
-                    details={props.details}
-                    id={i.user.id}
-                  />
-                ))}
-              </ParticipantsWrap>
-            </>
-          )}
-          {!props?.userId && (
-            <>
-              <span className="label" style={{ marginRight: 16 }}>
-                {t('common.dealName')}
-              </span>
-              {props.isPreview ? (
-                <MultipleAvatar
-                  max={3}
-                  list={(props.details?.user ?? [])?.map((i: any) => ({
-                    id: i.user.id,
-                    name: i.user.name,
-                    avatar: i.user.avatar,
-                  }))}
-                />
-              ) : (
-                <span>
-                  <TableQuickEdit
-                    item={{
-                      ...props.details,
-                      ...{ categoryConfigList: drawerCanOperation },
-                    }}
-                    isInfo
-                    keyText="users"
-                    type="fixed_select"
-                    defaultText={
-                      props.details?.user?.map((i: any) => i.user.id) || []
-                    }
-                    onUpdate={props.onUpdate}
-                  >
-                    <MultipleAvatar
-                      max={3}
-                      list={(props.details?.user ?? [])?.map((i: any) => ({
-                        id: i.user.id,
-                        name: i.user.name,
-                        avatar: i.user.avatar,
-                      }))}
-                    />
-                  </TableQuickEdit>
+      {props?.userId &&
+      props.details?.user?.filter((k: any) => k.user.id !== props?.userId)
+        ?.length ? (
+        <TopInfoWrap
+          style={{
+            backgroundColor: 'white',
+            margin: 0,
+            padding: '12px 24px 0px 24px',
+            alignItems: 'flex-start',
+          }}
+        >
+          <span className="icon">
+            <CommonIconFont type="user" size={16} color="var(--neutral-n3)" />
+          </span>
+          <span className="box">
+            {/* 如果有当前处理人id则显示参与人 */}
+            {props?.userId && (
+              <>
+                <span className="label" style={{ marginRight: 16 }}>
+                  {t('participants')}
                 </span>
-              )}
-            </>
-          )}
-        </span>
-      </TopInfoWrap>
+                <ParticipantsWrap>
+                  {(
+                    props.details?.user?.filter(
+                      (k: any) => k.user.id !== props?.userId,
+                    ) ?? []
+                  )?.map((i: any) => (
+                    <ParticipantsUser
+                      key={i.user.id}
+                      name={i.user.name}
+                      avatar={i.user?.avatar}
+                      details={props.details}
+                      id={i.user.id}
+                      userInfo={i}
+                    />
+                  ))}
+                </ParticipantsWrap>
+              </>
+            )}
+            {!props?.userId && (
+              <>
+                <span className="label" style={{ marginRight: 16 }}>
+                  {t('common.dealName')}
+                </span>
+                {props.isPreview ? (
+                  <MultipleAvatar
+                    max={3}
+                    list={(props.details?.user ?? [])?.map((i: any) => ({
+                      id: i.user.id,
+                      name: i.user.name,
+                      avatar: i.user.avatar,
+                    }))}
+                  />
+                ) : (
+                  <span>
+                    <TableQuickEdit
+                      item={{
+                        ...props.details,
+                        ...{ categoryConfigList: drawerCanOperation },
+                      }}
+                      isInfo
+                      keyText="users"
+                      type="fixed_select"
+                      defaultText={
+                        props.details?.user?.map((i: any) => i.user.id) || []
+                      }
+                      onUpdate={props.onUpdate}
+                    >
+                      <MultipleAvatar
+                        max={3}
+                        list={(props.details?.user ?? [])?.map((i: any) => ({
+                          id: i.user.id,
+                          name: i.user.name,
+                          avatar: i.user.avatar,
+                        }))}
+                      />
+                    </TableQuickEdit>
+                  </span>
+                )}
+              </>
+            )}
+          </span>
+        </TopInfoWrap>
+      ) : null}
     </Wrap>
   )
 }
