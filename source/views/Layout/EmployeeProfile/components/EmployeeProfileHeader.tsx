@@ -30,6 +30,7 @@ import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 interface EmployeeProfileHeaderProps {
   onChangeFilter(value: any): void
   checkPersonStatus?(status: boolean): void
+  refs: any
 }
 
 const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
@@ -186,7 +187,7 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
   }, [paramsData?.user_id])
 
   return (
-    <HeaderWrap>
+    <HeaderWrap ref={props.refs}>
       <HeaderSearch>
         <InputSearch
           onChangeSearch={value => onClickSearch(value, 'keyword')}
