@@ -136,10 +136,14 @@ const ParticipantsUser = (props: ParticipantsUserProps) => {
       <div className="name">
         {props.name && <NameWrap>{props?.name}</NameWrap>}
         {props.userInfo?.user?.department?.id && (
-          <NameWrap>-{props.userInfo?.user?.department?.name}</NameWrap>
+          <NameWrap style={{ marginLeft: 0 }}>
+            -{props.userInfo?.user?.department?.name}
+          </NameWrap>
         )}
         {props.userInfo?.user?.position?.id && (
-          <NameWrap>-{props.userInfo?.user?.position?.name}</NameWrap>
+          <NameWrap style={{ marginLeft: 0 }}>
+            -{props.userInfo?.user?.position?.name}
+          </NameWrap>
         )}
       </div>
     </UserAvatarWrap>

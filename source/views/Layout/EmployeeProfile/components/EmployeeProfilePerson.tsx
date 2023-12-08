@@ -265,6 +265,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         actionable: { id },
       } = lastProject ?? {}
       setProjectKey(id)
+      const activekey: any[] = []
       const userKeys = allMemberList
         .find(item => item.id === id)
         ?.member_list.map((member: any) => member.id)
@@ -272,15 +273,17 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       updateFilterParams({
         user_ids: userKeys?.map((item: any) => {
           const [project_id, user_id] = item.split('_')
+          activekey.push(parseInt(project_id, 10))
           return {
             project_id: parseInt(project_id, 10),
             user_id: parseInt(user_id, 10),
           }
         }),
       })
+      setActiveKey(activekey)
     }
     // 默认展开第一级别
-    setActiveKey([_.cloneDeep(allMemberList).shift()?.id])
+    // setActiveKey([_.cloneDeep(allMemberList).shift()?.id])
     getList()
   }, [allMemberList])
   useEffect(() => {
