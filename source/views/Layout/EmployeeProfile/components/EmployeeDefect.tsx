@@ -237,7 +237,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
   }, [])
 
   return (
-    <div style={{ flex: 1 }}>
+    <div style={{ width: 'calc(100% - 468px)' }}>
       <TaskContentWrap id="contentDom" ref={wrap}>
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
