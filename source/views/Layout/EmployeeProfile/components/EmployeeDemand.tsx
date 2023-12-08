@@ -219,7 +219,7 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
       dispatch(getProjectInfoValuesStore({ projectId: props.project_id }))
       dispatch(getProjectInfoStore({ projectId: props.project_id }))
     }
-  }, [props])
+  }, [JSON.stringify(props)])
 
   return (
     <div style={{ width: 'calc(100% - 561px)' }}>

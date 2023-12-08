@@ -301,6 +301,9 @@ export const ReportItemBox = styled.div`
   width: 561px;
   overflow-y: auto;
   height: 100%;
+  .infinite-scroll-component {
+    overflow: visible !important;
+  }
 `
 
 export const ReportItemHeader = styled.div<{ isExpended?: boolean }>`
