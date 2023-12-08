@@ -364,7 +364,6 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
           </div>
         </DetailFooter>
       </TaskContentWrap>
-      {wrapWidth}
       <CommentFooter
         onRef={commentDom}
         placeholder={t('postComment')}
@@ -376,7 +375,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
         )}
         onConfirm={onConfirmComment}
         style={{
-          padding: '24px 0',
+          padding: '24px 0px',
           width: wrapWidth + 'px',
           height: 80,
         }}
