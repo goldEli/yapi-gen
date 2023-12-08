@@ -226,17 +226,14 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
   }, [JSON.stringify(props)])
 
   return (
-    <div style={{ flex: 3 }}>
+    <div style={{ width: 'calc(100% - 561px)' }}>
       <TaskContentWrap id="contentDom">
-        {skeletonLoading && (
-          <div style={{ padding: 16 }}>
+        {skeletonLoading ? <div style={{ padding: 16 }}>
             <DetailsSkeleton />
-          </div>
-        )}
+          </div> : null}
         {!skeletonLoading && (
           <div style={{ marginBottom: 4 }}>
-            {drawerInfo?.isExamine && (
-              <div>
+            {drawerInfo?.isExamine ? <div>
                 <StatusExamine
                   type={2}
                   onCancel={() => {
@@ -246,8 +243,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
                   isDrawer
                   isPreview
                 />
-              </div>
-            )}
+              </div> : null}
             <DemandName
               style={{
                 backgroundColor: 'white',

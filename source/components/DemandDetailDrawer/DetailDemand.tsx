@@ -187,7 +187,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       >
         <div id="tab_log" className="info_item_tab">
           <LabelWrap>
-            <Label>{t('scheduleRecord')}</Label>
+            <Label >{t('scheduleRecord')}</Label>
           </LabelWrap>
           <ScheduleRecord
             isPreview={props?.isPreview}
