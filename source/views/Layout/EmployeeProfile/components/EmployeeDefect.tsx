@@ -51,7 +51,8 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
   const [tabActive, setTabActive] = useState('tab_desc')
   const { flawCommentList } = useSelector(store => store.flaw)
   const { projectInfoValues } = useSelector(store => store.project)
-
+  const wrap = useRef<any>()
+  const [wrapWidth, setWrapWidth] = useState()
   const tabItems: any = [
     {
       key: 'tab_desc',
@@ -218,10 +219,26 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
       dispatch(getProjectInfoStore({ projectId: props.project_id }))
     }
   }, [JSON.stringify(props)])
+  const observer = useRef(
+    new ResizeObserver(e => {
+      if (wrap.current) {
+        setWrapWidth(wrap.current?.getBoundingClientRect().width)
+      }
+    }),
+  )
+  useEffect(() => {
+    if (!wrap.current) {
+      return
+    }
+    observer.current.observe(wrap.current)
+    return () => {
+      observer.current.disconnect()
+    }
+  }, [])
 
   return (
     <div style={{ flex: 1 }}>
-      <TaskContentWrap id="contentDom">
+      <TaskContentWrap id="contentDom" ref={wrap}>
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
             <DetailsSkeleton />
@@ -337,7 +354,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
         onConfirm={onConfirmComment}
         style={{
           padding: '24px 0',
-          width: 'calc(100% - 116px - 320px - 561px)',
+          width: wrapWidth+'px',
           height: 80,
         }}
         maxHeight="60vh"
