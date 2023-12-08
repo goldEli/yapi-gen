@@ -52,6 +52,8 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
   const [tabActive, setTabActive] = useState('sprint-info')
   const { affairsCommentList } = useSelector(store => store.affairs)
   const { projectInfoValues } = useSelector(store => store.project)
+  const wrap = useRef<any>()
+  const [wrapWidth, setWrapWidth] = useState()
 
   // tab标签栏
   const items: any = [
@@ -224,10 +226,25 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
       dispatch(getProjectInfoStore({ projectId: props.project_id }))
     }
   }, [JSON.stringify(props)])
-
+  const observer = useRef(
+    new ResizeObserver(e => {
+      if (wrap.current) {
+        setWrapWidth(wrap.current?.getBoundingClientRect().width)
+      }
+    }),
+  )
+  useEffect(() => {
+    if (!wrap.current) {
+      return
+    }
+    observer.current.observe(wrap.current)
+    return () => {
+      observer.current.disconnect()
+    }
+  }, [])
   return (
     <div style={{ width: 'calc(100% - 561px)' }}>
-      <TaskContentWrap id="contentDom">
+      <TaskContentWrap id="contentDom" ref={wrap}>
         {skeletonLoading ? <div style={{ padding: 16 }}>
             <DetailsSkeleton />
           </div> : null}
@@ -343,6 +360,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
           </div>
         </DetailFooter>
       </TaskContentWrap>
+      {wrapWidth}
       <CommentFooter
         onRef={commentDom}
         placeholder={t('postComment')}
@@ -355,7 +373,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
         onConfirm={onConfirmComment}
         style={{
           padding: '24px 0',
-          width: 'calc(100% - 116px - 320px - 561px)',
+          width: wrapWidth+'px',
           height: 80,
         }}
         maxHeight="60vh"
