@@ -370,8 +370,6 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
     getPersonList()
   }, [])
 
-  console.log(data, 'ladatata', reportFirstData)
-
   return (
     <ReportWrap>
       <Spin

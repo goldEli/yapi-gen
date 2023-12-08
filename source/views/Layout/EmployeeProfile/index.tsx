@@ -187,6 +187,7 @@ const EmployeeProfile = () => {
     }).finally(() => {
       setLoading(false)
     })
+
     if (response && response?.list?.length) {
       setUserReportList(response)
       if (response.list.length > 0) {
@@ -210,6 +211,9 @@ const EmployeeProfile = () => {
           })
         }
       }
+    } else {
+      setUserReportList(response)
+      setReportFirstData({})
     }
   }
   useEffect(() => {

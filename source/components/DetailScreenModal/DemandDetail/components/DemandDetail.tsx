@@ -142,50 +142,46 @@ const DemandDetail = () => {
           }}
         >
           <Label>{t('mine.demandInfo')}</Label>
-          {params?.employeeCurrentId && (
+          {/* {params?.employeeCurrentId && (
             <TextWrapEdit style={{ width: '100%' }}>
               <span className={canEditHover}>--</span>
             </TextWrapEdit>
+          )} */}
+          {(isEditInfo || editInfo) && (
+            <div className={canEditHover}>
+              <Editor
+                upload={uploadFile}
+                color="transparent"
+                value={editInfo}
+                getSuggestions={() => []}
+                readonly={params?.employeeCurrentId ? true : !isEditInfo}
+                ref={editorRef}
+                onReadonlyClick={() => {
+                  setIsEditInfo(true)
+                  setTimeout(() => {
+                    editorRef.current?.focus()
+                  }, 10)
+                }}
+                onChange={(value: string) => {
+                  editorRef2.current = value
+                }}
+                onBlur={() => onBlurEditor()}
+              />
+            </div>
           )}
-          {!params?.employeeCurrentId && (
-            <>
-              {(isEditInfo || editInfo) && (
-                <div className={canEditHover}>
-                  <Editor
-                    upload={uploadFile}
-                    color="transparent"
-                    value={editInfo}
-                    getSuggestions={() => []}
-                    readonly={!isEditInfo}
-                    ref={editorRef}
-                    onReadonlyClick={() => {
-                      setIsEditInfo(true)
-                      setTimeout(() => {
-                        editorRef.current?.focus()
-                      }, 10)
-                    }}
-                    onChange={(value: string) => {
-                      editorRef2.current = value
-                    }}
-                    onBlur={() => onBlurEditor()}
-                  />
-                </div>
-              )}
-              {!isEditInfo && !editInfo && (
-                <TextWrapEdit
-                  style={{ width: '100%' }}
-                  onClick={e => {
-                    e.stopPropagation()
-                    setIsEditInfo(true)
-                    setTimeout(() => {
-                      editorRef.current?.focus()
-                    }, 10)
-                  }}
-                >
-                  <span className={canEditHover}>--</span>
-                </TextWrapEdit>
-              )}
-            </>
+          {!isEditInfo && !editInfo && (
+            <TextWrapEdit
+              style={{ width: '100%' }}
+              onClick={e => {
+                e.stopPropagation()
+                setIsEditInfo(true)
+                setTimeout(() => {
+                  editorRef.current?.focus()
+                }, 10)
+              }}
+            >
+              <span className={canEditHover}>--</span>
+            </TextWrapEdit>
           )}
         </InfoItem>
         <InfoItem>
