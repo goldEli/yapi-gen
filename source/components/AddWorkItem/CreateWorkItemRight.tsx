@@ -644,6 +644,10 @@ const CreateDemandRight = (props: Props) => {
         </ChangeSeverityPopover>
       )
     } else if (item.content === 'class') {
+      console.log(
+        'treeData',
+        projectInfoValues?.filter((i: any) => i.key === 'class')[0]?.children,
+      )
       // 需求分类
       nodeComponent = (
         <TreeSelect

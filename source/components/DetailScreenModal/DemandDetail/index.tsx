@@ -819,7 +819,8 @@ const DemandDetail = () => {
         <Tabs
           className="tabs2"
           tabBarExtraContent={
-            tabActive === '4' && (
+            tabActive === '4' &&
+            location.pathname !== '/EmployeeProfile' && (
               <ScreenMinHover
                 style={{ marginRight: '24px' }}
                 label={t('common.search')}
