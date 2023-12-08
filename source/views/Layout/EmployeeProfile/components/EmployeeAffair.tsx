@@ -226,7 +226,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
   }, [JSON.stringify(props)])
 
   return (
-    <div style={{ width: 'calc(100% - 561px)' }}>
+    <div style={{ flex: 3 }}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
@@ -267,7 +267,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
                 project_id={drawerInfo.projectId}
               />
             </ProgressBox>
-            <div className='employeeProfileWrap'>
+            <div className="employeeProfileWrap">
               <DrawerTopInfo
                 details={drawerInfo}
                 isPreview
@@ -309,9 +309,14 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
             </div>
             <div
               style={{
+                backgroundColor: 'rgb(245, 245, 247)',
+                height: 12,
+              }}
+            />
+            <div
+              style={{
                 backgroundColor: 'white',
                 padding: '16px 24px',
-                marginTop: '12px',
               }}
             >
               <Label
