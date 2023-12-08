@@ -177,6 +177,10 @@ export const PersonWrap = styled.div`
   .ant-checkbox-wrapper + .ant-checkbox-wrapper {
     margin-left: 0;
   }
+  .ant-collapse-expand-icon {
+    position: relative;
+    top: -3px;
+  }
 `
 
 export const ReportButton = styled.div`

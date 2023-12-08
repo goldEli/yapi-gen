@@ -12,7 +12,7 @@ const Wrap = styled.div`
   flex-direction: column;
 `
 
-const TopInfoWrap = styled.div`
+const TopInfoWrap = styled.div<{ isEmployeeProfilePage: boolean }>`
   display: flex;
   align-items: center;
   margin-top: 16px;
@@ -27,7 +27,8 @@ const TopInfoWrap = styled.div`
   }
   .box {
     display: flex;
-    align-items: flex-start;
+    align-items: ${props =>
+      props.isEmployeeProfilePage ? 'flex-start' : 'center'};
     min-height: 32px;
     .title {
       color: var(--neutral-n3);
@@ -99,13 +100,11 @@ interface ParticipantsUserProps {
 }
 
 const ParticipantsUser = (props: ParticipantsUserProps) => {
-  console.log('-----', props)
   const { theme } = useSelector(store => store.global)
   const [openDemandDetail] = useOpenDemandDetail()
 
   // 打开任务详情弹层
   const onToDetail = () => {
-    console.log(props.details, '=details')
     openDemandDetail(
       {
         ...props.details,
@@ -153,7 +152,7 @@ const ParticipantsUser = (props: ParticipantsUserProps) => {
 const DrawerTopInfo = (props: DrawerTopInfoProps) => {
   const [t] = useTranslation()
   const { drawerCanOperation } = useSelector(store => store.project)
-
+  const isEmployeeProfilePage = location.pathname === '/EmployeeProfile'
   return (
     <Wrap>
       <TopInfoWrap
@@ -162,6 +161,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           margin: 0,
           padding: '0px 24px 0px 24px',
         }}
+        isEmployeeProfilePage={isEmployeeProfilePage}
       >
         <span className="icon">
           <CommonIconFont type="time" size={16} color="var(--neutral-n3)" />
@@ -228,6 +228,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
             padding: '12px 24px 0px 24px',
             alignItems: 'flex-start',
           }}
+          isEmployeeProfilePage={isEmployeeProfilePage}
         >
           <span className="icon">
             <CommonIconFont type="user" size={16} color="var(--neutral-n3)" />
