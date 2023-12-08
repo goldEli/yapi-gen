@@ -48,6 +48,8 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
   const detailDemandRef = useRef<any>()
   const childrenDemandRef = useRef<any>()
   const storyRelationRef = useRef<any>()
+  const wrap = useRef<any>()
+  const [wrapWidth, setWrapWidth] = useState()
   const commentDom: any = createRef()
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
@@ -220,9 +222,24 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
       dispatch(getProjectInfoStore({ projectId: props.project_id }))
     }
   }, [JSON.stringify(props)])
-
+  const observer = useRef(
+    new ResizeObserver(e => {
+      if (wrap.current) {
+        setWrapWidth(wrap.current?.getBoundingClientRect().width)
+      }
+    }),
+  )
+  useEffect(() => {
+    if (!wrap.current) {
+      return
+    }
+    observer.current.observe(wrap.current)
+    return () => {
+      observer.current.disconnect()
+    }
+  }, [])
   return (
-    <div style={{ width: 'calc(100% - 561px)' }}>
+    <div style={{ width: 'calc(100% - 561px)' }} ref={wrap}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
@@ -349,7 +366,7 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
         onConfirm={onConfirmComment}
         style={{
           padding: '24px 0',
-          width: 'calc(100% - 116px - 320px - 561px)',
+          width: wrapWidth + 'px',
           height: 80,
         }}
         maxHeight="60vh"
