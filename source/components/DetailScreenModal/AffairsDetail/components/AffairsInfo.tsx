@@ -26,6 +26,7 @@ import ChildSprint from './ChildSprint'
 import CommonButton from '@/components/CommonButton'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import { Tabs } from 'antd'
+import { useLocation  } from 'react-router-dom'
 interface Props {
   onRef: any
   employeeCurrentId?: number
@@ -41,6 +42,7 @@ const ButtonGroup = (props: {
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
   const [items, setItems] = useState<Array<{ label: string; key: string }>>([])
+  const location  = useLocation ()
   const data = [
     { key: 'sprint-attachment', label: t('attachment') },
     { key: 'sprint-tag', label: t('addTag') },
@@ -65,7 +67,6 @@ const ButtonGroup = (props: {
       setItems(data)
     }
   }, [props.state])
-
   return (
     <ButtonGroupWrap style={{ paddingBottom: '16px' }}>
       {items.map((el: { label: string; key: string }) => (
@@ -243,12 +244,13 @@ const AffairsInfo = (props: Props) => {
   // 新加入的人员取消头部
   const a4 = a2 - (props?.employeeCurrentId || 0) > 0 ? 67 : 0
   const a5 = a3 - (props?.employeeCurrentId || 0) > 0 ? 67 : 0
+  // 少了64事务出不来评论
   const a1 = aa ? a4 : a5
-
+  console.log(a1)
   return (
     <InfoWrap
       height={`calc(${startHeight}vh - ${
-        a1 + (document.getElementById('DetailText')?.clientHeight || 75)
+        a1 + (document.getElementById('DetailText')?.clientHeight || location.pathname ==='/EmployeeProfile' ? 75 :100)
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}
