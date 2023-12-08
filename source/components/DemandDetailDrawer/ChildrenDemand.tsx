@@ -413,7 +413,7 @@ const ChildrenDemand = (props: Props, ref: any) => {
             columns={columnsChild}
             dataSource={dataList}
             onChangeData={onChangeData}
-            hasOperation={operationList}
+            hasOperation={props?.isPreview ? [] : operationList}
             hasHandle
           />
         </TableBorder>

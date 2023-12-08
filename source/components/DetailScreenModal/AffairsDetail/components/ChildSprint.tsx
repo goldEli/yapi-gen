@@ -490,7 +490,7 @@ const ChildSprint = (
                 dataSource={dataSource}
                 onChangeData={onChangeData}
                 showHeader={false}
-                hasOperation={operationList}
+                hasOperation={props?.isPreview ? [] : operationList}
                 hasHandle
               />
             </TableBorder>

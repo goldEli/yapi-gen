@@ -226,7 +226,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
   }, [JSON.stringify(props)])
 
   return (
-    <div style={{ flex: 3 }}>
+    <div style={{ flex: 1 }}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
