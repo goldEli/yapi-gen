@@ -213,7 +213,7 @@ const EmployeeProfile = () => {
     }
   }
   useEffect(() => {
-    if (filterParamsOverall?.user_ids?.length) {
+    if (filterParamsOverall?.user_ids) {
       getReportList()
     }
   }, [JSON.stringify(filterParamsOverall)])
