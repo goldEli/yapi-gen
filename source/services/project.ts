@@ -939,6 +939,8 @@ export const getProjectInfoValues: any = async (params: any, all?: number) => {
                   key: 0,
                   value: 0,
                   children: [],
+                  title:
+                    language === 'zh' ? '默认分类' : 'Default classification',
                 },
               ],
               ...transData(

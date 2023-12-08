@@ -93,6 +93,7 @@ export const HeaderSearch = styled.div`
   align-items: center;
   gap: 16px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 `
 
 export const HeaderCardGroup = styled.div`
@@ -735,6 +736,9 @@ export const TaskContentWrap = styled.div`
     top: -18px;
     z-index: 2;
     background: var(--neutral-white-d1);
+  }
+  .employeeProfileWrap .TopInfoWrap {
+    align-items: baseline;
   }
 `
 

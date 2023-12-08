@@ -195,7 +195,9 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
           width={184}
         />
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>状态</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('state')}
+          </span>
           <MoreSelect
             onFocus={() => {}}
             width={202}
@@ -248,10 +250,10 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
             })
           }}
         >
-          <span style={{ whiteSpace: 'nowrap' }}>包含离职人员</span>
+          {t('includingResignedPersonnel')}
         </Checkbox>
         <CommonButton type="primaryText" size="small" onClick={reset}>
-          重置
+          {t('reset')}
         </CommonButton>
       </HeaderSearch>
     </HeaderWrap>

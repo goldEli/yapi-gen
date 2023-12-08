@@ -156,6 +156,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
   return (
     <Wrap>
       <TopInfoWrap
+        className="TopInfoWrap"
         style={{
           backgroundColor: 'white',
           margin: 0,

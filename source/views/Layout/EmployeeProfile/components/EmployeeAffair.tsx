@@ -267,11 +267,13 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
                 project_id={drawerInfo.projectId}
               />
             </ProgressBox>
-            <DrawerTopInfo
-              details={drawerInfo}
-              isPreview
-              userId={props?.user_id}
-            />
+            <div className="employeeProfileWrap">
+              <DrawerTopInfo
+                details={drawerInfo}
+                isPreview
+                userId={props?.user_id}
+              />
+            </div>
             <Tabs
               className="tabs"
               activeKey={tabActive}
@@ -307,9 +309,14 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
             </div>
             <div
               style={{
+                backgroundColor: 'rgb(245, 245, 247)',
+                height: 12,
+              }}
+            />
+            <div
+              style={{
                 backgroundColor: 'white',
                 padding: '16px 24px',
-                marginTop: '12px',
               }}
             >
               <Label
