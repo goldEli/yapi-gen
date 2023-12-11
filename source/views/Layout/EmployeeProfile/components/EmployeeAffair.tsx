@@ -324,7 +324,11 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
                   }
                   onChange={onChangeTabs}
                 />
-                <AffairsDetail affairsInfo={drawerInfo} isPreview />
+                <AffairsDetail
+                  affairsInfo={drawerInfo}
+                  isPreview
+                  userId={props?.user_id}
+                />
                 <div
                   style={{
                     backgroundColor: '#f5f5f7',
