@@ -84,9 +84,10 @@ const ChangeRecord = (props: Props) => {
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
+    console.log('projectInfo', projectInfo.id)
     const result = await getAffairsChangeLog({
       sprintId: affairsInfo.id || 0,
-      projectId: id,
+      projectId: id ?? projectInfo.id,
       page: item ? item.page ?? 1 : 1,
       pageSize: item ? item.size ?? 10 : 10,
       order: orderVal?.value,

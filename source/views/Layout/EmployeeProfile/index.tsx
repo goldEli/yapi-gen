@@ -177,7 +177,7 @@ const EmployeeProfile = () => {
         ? `${t('keywordFilter', { keyword: filterParamsOverall?.keyword })}`
         : ''
 
-    return `权限不足或${hasTime + hasKeyword + hasStatus + t('endText')}`
+    return `${hasTime + hasKeyword + hasStatus + t('endText')}`
   }
 
   // 获取汇报列表
