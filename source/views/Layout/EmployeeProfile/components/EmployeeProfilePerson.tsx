@@ -296,7 +296,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   // 监听选中的成员
   useEffect(() => {
     let params: any = []
-    if (tabActiveKey === 'project') {
+    if (filterParamsOverall.tabType === 'project') {
       params = userKeys?.map((item: any) => {
         const [project_id, user_id] = item.split('_')
         return {
@@ -305,7 +305,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         }
       })
     }
-    if (tabActiveKey === 'department') {
+    if (filterParamsOverall.tabType === 'department') {
       params = checkedKeys.map((item: any) => {
         return {
           user_id: item,
@@ -313,7 +313,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       })
     }
     updateFilterParams({ user_ids: params })
-  }, [userKeys, checkedKeys])
+  }, [userKeys, checkedKeys, filterParamsOverall.tabType])
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
     console.log('activeKey', activeKey)
