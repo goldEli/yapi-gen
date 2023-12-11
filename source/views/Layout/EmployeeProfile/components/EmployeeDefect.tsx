@@ -321,6 +321,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
                   <FlawDetail
                     flawInfo={drawerInfo}
                     ref={flawDetailRef}
+                    userId={props?.user_id}
                     isPreview
                   />
                   <RelationStories
