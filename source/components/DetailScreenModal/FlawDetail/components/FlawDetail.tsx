@@ -157,7 +157,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
         >
           <FlawInfoLabel>{t('describe')}</FlawInfoLabel>
           {isEditInfo || editInfo ? (
-            <div className={canEditHover}>
+            <div className={props.isPreview ? '' : canEditHover}>
               <Editor
                 upload={uploadFile}
                 value={editInfo}
@@ -194,7 +194,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
                 }, 500)
               }}
             >
-              <span className={canEditHover}>--</span>
+              <span>--</span>
             </TextWrapEdit>
           )}
         </FlawInfoInfoItem>
