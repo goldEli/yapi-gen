@@ -334,7 +334,10 @@ const DemandComment = (props: Props) => {
                       {item.createdTime}
                     </div>
                     <CommentEditor
-                      item={item}
+                      item={{
+                        ...item,
+                        canComment: isComment && userInfo?.id === item.userId,
+                      }}
                       onEditComment={value => onEditComment(value, item.id)}
                     />
                     {item.attachment?.length > 0 && (

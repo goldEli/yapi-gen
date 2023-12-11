@@ -24,6 +24,9 @@ const CommentEditor = (props: CommentEditorProps) => {
 
   // 只读编辑
   const onReadonlyClick = () => {
+    if (!props.item.canComment) {
+      return
+    }
     setIsEditInfo(true)
     setTimeout(() => {
       editorRef.current?.focus()
