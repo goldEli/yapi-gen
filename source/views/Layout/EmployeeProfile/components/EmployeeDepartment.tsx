@@ -81,11 +81,10 @@ const EmployeeDepartment = (props: any, ref: any) => {
           list: users,
           checkedKeys: [user_id],
           departMentUserKey: [user_id],
-          // expandedKeys: [_.cloneDeep(treeData)[0]?.children.shift()?.id],
-          expandedKeys: ['1542006488750587906'],
+          expandedKeys: [department_id],
         }),
       )
-    }, 600)
+    })
   }
   useEffect(() => {
     if (!usersData) {
@@ -196,9 +195,7 @@ const EmployeeDepartment = (props: any, ref: any) => {
         ...statistiDepartment,
         expandedKeys: expanded
           ? expandedExpandKeys
-          : [...expandedExpandKeys].filter((key: any) =>
-              expandedExpandKeys.includes(node.id),
-            ),
+          : expandedExpandKeys.filter((key: any) => key !== node.id),
       }),
     )
   }
