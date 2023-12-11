@@ -443,7 +443,7 @@ const ChangeRecord = (props: Props) => {
           props.filter
             ? 118
             : props?.isPreview
-            ? 12
+            ? 142
             : userPreferenceConfig.previewModel === 3
             ? 0
             : 34

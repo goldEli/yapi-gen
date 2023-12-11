@@ -200,7 +200,11 @@ const Circulation = (props: Props) => {
     <Wrap
       style={{
         height: `calc(100% - ${
-          props?.isPreview ? 0 : userPreferenceConfig.previewModel === 3 ? 0 : 0
+          props?.isPreview
+            ? 90
+            : userPreferenceConfig.previewModel === 3
+            ? 0
+            : 0
         }px)`,
       }}
     >

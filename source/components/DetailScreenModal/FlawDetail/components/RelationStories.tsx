@@ -712,7 +712,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
         backgroundColor: 'white',
         height: `calc(100% - ${
           props?.isPreview
-            ? 0
+            ? 94
             : userPreferenceConfig.previewModel === 3
             ? 0
             : 50

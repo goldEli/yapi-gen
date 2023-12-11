@@ -221,6 +221,11 @@ const EmployeeProfile = () => {
     }
   }
   useEffect(() => {
+    if (filterParamsOverall?.user_ids?.length === 0) {
+      setReportFirstData((pre: any) => ({ ...pre, id: null }))
+      return
+    }
+
     if (filterParamsOverall?.user_ids) {
       getReportList()
     }
