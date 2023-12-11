@@ -477,6 +477,14 @@ const AffairsDetail = () => {
     }
   }, [])
 
+  const aa =
+    userPreferenceConfig.previewModel === 3 ||
+    (params?.employeeCurrentId || 0) > 0
+
+  const a1 = affairsInfo?.isExamine ? 91 : 40
+  const a2 = affairsInfo?.isExamine ? 164 : 97
+  const a3 = 249
+
   return (
     <Wrap>
       {/* 不是员工概况打开就有头部操作 */}
@@ -667,7 +675,13 @@ const AffairsDetail = () => {
       )}
 
       {affairsInfo?.isExamine && (
-        <div style={{ padding: '0px', backgroundColor: 'white' }}>
+        <div
+          style={{
+            padding:
+              (params?.employeeCurrentId || 0) > 0 ? ' 0 0 8px 0' : '0px',
+            backgroundColor: 'white',
+          }}
+        >
           <StatusExamine
             type={2}
             onCancel={onCancelExamine}
@@ -679,13 +693,13 @@ const AffairsDetail = () => {
       )}
 
       <DetailMain
-        all={
-          userPreferenceConfig.previewModel === 3 ||
+        all={aa}
+        height={
           (params?.employeeCurrentId || 0) > 0
-        }
-        h={
-          userPreferenceConfig.previewModel === 3 ||
-          (params?.employeeCurrentId || 0) > 0
+            ? a1
+            : userPreferenceConfig.previewModel === 3
+            ? a2
+            : a3
         }
         style={{ marginTop: (params?.employeeCurrentId || 0) > 0 ? 0 : 16 }}
       >
@@ -775,7 +789,7 @@ const AffairsDetail = () => {
           <SprintDetailMouseDom
             active={focus}
             onMouseDown={onDragLine}
-            style={{ left: 0, height: affairsInfo.isExamine ? '92%' : '100%' }}
+            style={{ left: 0, height: affairsInfo.isExamine ? '92%' : '96%' }}
           >
             <SprintDetailDragLine active={focus} className="line" />
           </SprintDetailMouseDom>

@@ -45,7 +45,6 @@ const TimeLIneWrap = styled(Timeline)({
 })
 
 const Wrap = styled.div({
-  height: '100%',
   background: 'white',
   overflowX: 'auto',
   padding: '0 16px',
@@ -115,6 +114,7 @@ const ContentWrap = styled.div({
 
 interface Props {
   activeKey: string
+  isPreview?: boolean
 }
 
 const Circulation = (props: Props) => {
@@ -129,7 +129,7 @@ const Circulation = (props: Props) => {
   })
 
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector(store => store.user)
+  const { isRefresh, userPreferenceConfig } = useSelector(store => store.user)
   const { flawInfo } = useSelector(store => store.flaw)
   const { language } = useSelector(store => store.global)
 
@@ -188,7 +188,13 @@ const Circulation = (props: Props) => {
   }
 
   return (
-    <Wrap>
+    <Wrap
+      style={{
+        height: `calc(100% - ${
+          props?.isPreview ? 0 : userPreferenceConfig.previewModel === 3 ? 0 : 0
+        }px)`,
+      }}
+    >
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
         {!!statusLogs?.list && (
           <>

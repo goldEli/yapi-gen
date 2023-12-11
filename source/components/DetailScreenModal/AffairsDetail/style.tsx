@@ -129,13 +129,15 @@ export const LiWrap = styled.div({
   },
 })
 
-export const DetailMain = styled.div<{ all?: boolean; h?: boolean }>`
+export const DetailMain = styled.div<{
+  all?: boolean
+  height?: number
+}>`
   display: flex;
   padding-right: 24px;
   position: relative;
   height: calc(
-    ${props => (props.all ? '80vh' : '100vh')} -
-      ${props => (props.h ? '40px' : '249px')}
+    ${props => (props.all ? '80vh' : '100vh')} - ${props => props.height + 'px'}
   );
   width: 100%;
   margin-top: 16px;
@@ -150,11 +152,9 @@ export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
 `
 
-export const BasicWrap = styled.div<{ a?: boolean; b?: boolean }>`
+export const BasicWrap = styled.div<{ height?: number }>`
   position: relative;
-  height: calc(
-    100% - ${props => (props.a ? (props.b ? 132 : 85) : props.b ? 42 : 0)}px
-  );
+  height: calc(100% - ${props => props.height ?? 78}px);
 `
 
 export const BasicContent = styled.div`
