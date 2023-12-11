@@ -348,7 +348,9 @@ const FlawBasic = (props: Props) => {
                 />
                 <span>{props.detail?.priority?.content_txt || '--'}</span>
               </div>
-              {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
+              {isCanEdit && !props.isPreview ? (
+                <IconFontWrapEdit type="down-icon" />
+              ) : null}
             </CanOperation>
           </div>
         </ChangePriorityPopover>
@@ -385,7 +387,9 @@ const FlawBasic = (props: Props) => {
               >
                 {props.detail.severity?.content ?? '--'}
               </SeverityWrap>
-              {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
+              {isCanEdit && !props.isPreview ? (
+                <IconFontWrapEdit type="down-icon" />
+              ) : null}
             </CanOperation>
           </div>
         </ChangeSeverityPopover>

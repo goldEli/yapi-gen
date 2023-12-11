@@ -586,7 +586,7 @@ const TableQuickEdit = (props: Props) => {
                         </>
                       )}
 
-                    {isCanEdit && (
+                    {canClick && (
                       <IconFontWrapEdit
                         onClick={() => setIsShowControl(true)}
                         isTable={isShowIcon}

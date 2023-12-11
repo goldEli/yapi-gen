@@ -341,7 +341,7 @@ const BasicDemand = (props: Props) => {
               width: '100%',
             }}
           >
-            <CanOperation isCanEdit={isCanEdit}>
+            <CanOperation isCanEdit={isCanEdit} isPreview={props.isPreview}>
               <div
                 style={{
                   display: 'flex',
@@ -358,7 +358,9 @@ const BasicDemand = (props: Props) => {
                 />
                 <span>{props.detail?.priority?.content_txt || '--'}</span>
               </div>
-              {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
+              {isCanEdit && !props.isPreview ? (
+                <IconFontWrapEdit type="down-icon" />
+              ) : null}
             </CanOperation>
           </div>
         </ChangePriorityPopover>
@@ -391,7 +393,9 @@ const BasicDemand = (props: Props) => {
               >
                 {props.detail.severity?.content ?? '--'}
               </SeverityWrap>
-              {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
+              {isCanEdit && !props.isPreview ? (
+                <IconFontWrapEdit type="down-icon" />
+              ) : null}
             </CanOperation>
           </div>
         </ChangeSeverityPopover>
