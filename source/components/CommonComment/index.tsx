@@ -138,7 +138,10 @@ const CommonComment = (props: CommonCommentProps) => {
                     {item.createdTime}
                   </div>
                   <CommentEditor
-                    item={item}
+                    item={{
+                      ...item,
+                      canComment: isComment && userInfo?.id === item.userId,
+                    }}
                     onEditComment={value =>
                       props.onEditComment?.(value, item.id)
                     }
