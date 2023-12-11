@@ -313,7 +313,7 @@ return <>{AddUserModalElement}<>
 ### 富文本编辑器
 
 ```js
-import { Editor } from '@xyfe/uikit'
+import { Editor } from 'ifunuikit'
 interface Props {
   onReadonlyClick?(): void
   onPressEnter?(): void
