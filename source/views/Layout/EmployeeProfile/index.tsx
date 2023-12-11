@@ -16,10 +16,7 @@ import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import EmployeeProfileReport from './components/EmployeeProfileReport'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  setCurrentClickNumber,
-  setFilterParamsOverall,
-} from '@store/employeeProfile'
+import { setCurrentClickNumber, setUserId } from '@store/employeeProfile'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
@@ -211,6 +208,7 @@ const EmployeeProfile = () => {
             user_id: item.user.id,
             onlyId: item.id,
           })
+          dispatch(setUserId(item.user.id))
         }
       }
     } else {

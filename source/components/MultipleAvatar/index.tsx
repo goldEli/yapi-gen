@@ -2,7 +2,7 @@
  * 多个头像展示组件
  */
 /* eslint-disable react/jsx-handler-names */
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { Dropdown, Popover } from 'antd'
 import IconFont from '@/components/IconFont'
@@ -38,22 +38,32 @@ interface MultipleAvatarProps {
 const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
-  const [items, setItems] = useState(
-    props.list?.map((item, idx) => {
-      return {
-        key: `${item?.id}-${idx}`,
-        label: (
-          <ItemRow>
-            <CommonUserAvatar isBorder name={item.name} avatar={item?.avatar} />
-          </ItemRow>
-        ),
-      }
-    }),
-  )
+  const [items, setItems] = useState<any[]>([])
   const data = props.list?.slice(0, props.max)
   const len = props.list?.length
   const hiddenNum = len - data?.length
   const { fullScreen } = useSelector(store => store.kanBan)
+
+  useEffect(() => {
+    if (props.list) {
+      setItems(
+        props.list?.map((item, idx) => {
+          return {
+            key: `${item?.id}-${idx}`,
+            label: (
+              <ItemRow>
+                <CommonUserAvatar
+                  isBorder
+                  name={item.name}
+                  avatar={item?.avatar}
+                />
+              </ItemRow>
+            ),
+          }
+        }),
+      )
+    }
+  }, [props.list])
 
   const text = React.useMemo(() => {
     if (hiddenNum > 99) {

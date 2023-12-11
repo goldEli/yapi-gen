@@ -744,6 +744,7 @@ const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
 const CanOperation = styled.div<{
   isCanEdit?: any
   isTable?: any
+  isPreview?: any
 }>(
   {
     display: 'flex',
@@ -752,13 +753,14 @@ const CanOperation = styled.div<{
     borderRadius: 4,
     flex: 1,
   },
-  ({ isCanEdit, isTable }) => ({
-    cursor: isCanEdit ? 'pointer' : 'inherit',
+  ({ isCanEdit, isTable, isPreview }) => ({
+    cursor: isPreview ? 'default' : isCanEdit ? 'pointer' : 'inherit',
     justifyContent: isTable ? 'flex-start' : 'space-between',
     minWidth: isTable ? 0 : 60,
     padding: isTable ? 0 : '0 8px',
     '&: hover': {
-      background: isTable ? '' : isCanEdit ? 'var(--hover-d3)' : '',
+      background:
+        isTable || isPreview ? '' : isCanEdit ? 'var(--hover-d3)' : '',
       [IconFontWrapEdit.toString()]: {
         visibility: 'visible',
       },

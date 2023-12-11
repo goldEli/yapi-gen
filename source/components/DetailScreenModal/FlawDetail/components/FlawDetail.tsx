@@ -183,6 +183,7 @@ const FlawDetail = (props: FlawDetailProps, ref: any) => {
           ) : null}
           {!isEditInfo && !editInfo && (
             <TextWrapEdit
+              style={{ cursor: props?.isPreview ? 'default' : '' }}
               onClick={e => {
                 e.stopPropagation()
                 if (props.isPreview) {
