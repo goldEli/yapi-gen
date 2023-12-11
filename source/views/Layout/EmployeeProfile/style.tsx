@@ -605,13 +605,25 @@ export const TabWrap = styled(Tabs)`
     height: 100%;
   }
 `
+export const TitleBox = styled.div`
+  color: var(--neutral-n2);
+  cursor: pointer;
+  position: relative;
+  background: var(--hover-d2);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 20px);
+  padding: 8px 0px;
+  border-radius: 6px;
+`
 export const TabsWrap = styled.div`
   /* width: 2cm; */
   width: 246px;
-  height: 32px;
+  height: 40px;
   width: calc(100% - 20px);
   box-sizing: border-box;
-  padding-left: 2px;
   margin-bottom: 18px;
   border-radius: 4px 4px 4px 4px;
   display: flex;

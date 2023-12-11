@@ -11,6 +11,7 @@ import {
   PersonWrap,
   ReportButton,
   TabsWrap,
+  TitleBox,
 } from '../style'
 import { Checkbox, Collapse, Radio, Select } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -478,7 +479,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         )}
       </div>
 
-      <TabsWrap style={{ margin: '0 16px 0 0' }}>
+      {/* <TabsWrap style={{ margin: '0 16px 0 0' }}>
         {tabs.map(item => {
           return (
             <div
@@ -496,12 +497,14 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
             </div>
           )
         })}
-      </TabsWrap>
-      {tabActiveKey === 'project' ? (
+      </TabsWrap> */}
+      {/* {tabActiveKey === 'project' ? (
         projectEle
       ) : (
         <EmployeeDepartment></EmployeeDepartment>
-      )}
+      )} */}
+      <TitleBox>{t('theProjectsIParticipatedIn')}</TitleBox>
+      {projectEle}
     </PersonWrap>
   )
 }
