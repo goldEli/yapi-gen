@@ -33,6 +33,7 @@ import {
   getProjectInfoStore,
   getProjectInfoValuesStore,
 } from '@store/project/project.thunk'
+import NoData from '@/components/NoData'
 
 interface EmployeeDefectProps {
   id: number
@@ -250,128 +251,139 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
 
   return (
     <div style={{ width: 'calc(100% - 468px)' }}>
-      <TaskContentWrap id="contentDom" ref={wrap}>
-        {skeletonLoading && (
-          <div style={{ padding: 16 }}>
-            <DetailsSkeleton />
-          </div>
-        )}
-        {!skeletonLoading && (
-          <div style={{ marginBottom: 16 }}>
-            {drawerInfo?.isExamine && (
-              <div>
-                <StatusExamine
-                  type={3}
-                  onCancel={() => {
-                    //
-                  }}
-                  isVerify={drawerInfo?.has_verify === 1}
-                  isDrawer
-                  isPreview
-                />
+      {drawerInfo?.deleted_at && (
+        <NoData subText={t('theTaskHasBeenDeletedAndDetailsCannotBeViewed')} />
+      )}
+      {!drawerInfo?.deleted_at && (
+        <>
+          <TaskContentWrap id="contentDom" ref={wrap}>
+            {skeletonLoading && (
+              <div style={{ padding: 16 }}>
+                <DetailsSkeleton />
               </div>
             )}
-            <DemandName
-              style={{
-                backgroundColor: 'white',
-                padding: '16px 24px 8px 24px',
-                margin: 0,
-              }}
-            >
-              <span className="name">{drawerInfo.name}</span>
-              <CopyIcon onCopy={onCopy} />
-            </DemandName>
-            <ProgressBox>
-              <CommonProgress
-                isTable={false}
-                type="flaw"
-                id={drawerInfo.id}
-                percent={drawerInfo?.schedule}
-                hasEdit={false}
-                project_id={drawerInfo.projectId}
-              />
-            </ProgressBox>
-            <DrawerTopInfo
-              details={drawerInfo}
-              isPreview
-              userId={props?.user_id}
-            />
-            <Tabs
-              style={{
-                paddingLeft: '24px',
-                paddingTop: '15px',
-                backgroundColor: 'white',
-              }}
-              className="tabs"
-              activeKey={tabActive}
-              items={tabItems}
-              onChange={onChangeTabs}
-            />
-            <div>
-              <FlawDetail flawInfo={drawerInfo} ref={flawDetailRef} isPreview />
-              <RelationStories
-                detail={drawerInfo}
-                isDrawer
-                ref={relationStoriesRef}
-                isPreview
-              />
-              <FlawBasic
-                detail={drawerInfo}
-                onUpdate={() => {
-                  //
-                }}
-                isPreview
-              />
-              <div
-                id="tab_defectComment"
-                style={{
-                  backgroundColor: 'white',
-                  padding: '16px 24px',
-                  marginTop: '12px',
-                }}
-                className="info_item_tab"
-              >
-                <Label>{t('defectComment')}</Label>
-                <CommonComment
-                  data={flawCommentList}
-                  onDeleteConfirm={onDeleteCommentConfirm}
-                  onEditComment={onEditComment}
+            {!skeletonLoading && (
+              <div style={{ marginBottom: 16 }}>
+                {drawerInfo?.isExamine && (
+                  <div>
+                    <StatusExamine
+                      type={3}
+                      onCancel={() => {
+                        //
+                      }}
+                      isVerify={drawerInfo?.has_verify === 1}
+                      isDrawer
+                      isPreview
+                    />
+                  </div>
+                )}
+                <DemandName
+                  style={{
+                    backgroundColor: 'white',
+                    padding: '16px 24px 8px 24px',
+                    margin: 0,
+                  }}
+                >
+                  <span className="name">{drawerInfo.name}</span>
+                  <CopyIcon onCopy={onCopy} />
+                </DemandName>
+                <ProgressBox>
+                  <CommonProgress
+                    isTable={false}
+                    type="flaw"
+                    id={drawerInfo.id}
+                    percent={drawerInfo?.schedule}
+                    hasEdit={false}
+                    project_id={drawerInfo.projectId}
+                  />
+                </ProgressBox>
+                <DrawerTopInfo
+                  details={drawerInfo}
+                  isPreview
+                  userId={props?.user_id}
                 />
+                <Tabs
+                  style={{
+                    paddingLeft: '24px',
+                    paddingTop: '15px',
+                    backgroundColor: 'white',
+                  }}
+                  className="tabs"
+                  activeKey={tabActive}
+                  items={tabItems}
+                  onChange={onChangeTabs}
+                />
+                <div>
+                  <FlawDetail
+                    flawInfo={drawerInfo}
+                    ref={flawDetailRef}
+                    isPreview
+                  />
+                  <RelationStories
+                    detail={drawerInfo}
+                    isDrawer
+                    ref={relationStoriesRef}
+                    isPreview
+                  />
+                  <FlawBasic
+                    detail={drawerInfo}
+                    onUpdate={() => {
+                      //
+                    }}
+                    isPreview
+                  />
+                  <div
+                    id="tab_defectComment"
+                    style={{
+                      backgroundColor: 'white',
+                      padding: '16px 24px',
+                      marginTop: '12px',
+                    }}
+                    className="info_item_tab"
+                  >
+                    <Label>{t('defectComment')}</Label>
+                    <CommonComment
+                      data={flawCommentList}
+                      onDeleteConfirm={onDeleteCommentConfirm}
+                      onEditComment={onEditComment}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
-        <DetailFooter style={{ padding: '0 12px' }}>
-          <div className="textBox">
-            <div>
-              {t('created')}{' '}
-              {detailTimeFormat(drawerInfo.createdTime as string)}
-            </div>
-            <span>
-              {t('updated')}
-              {detailTimeFormat(drawerInfo.update_at as string)}
-            </span>
-          </div>
-        </DetailFooter>
-      </TaskContentWrap>
-      <CommentFooter
-        onRef={commentDom}
-        placeholder={t('postComment')}
-        personList={removeNull(projectInfoValues, 'user_name')?.map(
-          (k: any) => ({
-            label: k.content,
-            id: k.id,
-          }),
-        )}
-        onConfirm={onConfirmComment}
-        style={{
-          padding: '24px 0',
-          width: wrapWidth + 'px',
-          height: 80,
-        }}
-        maxHeight="60vh"
-        hasAvatar
-      />
+            )}
+            <DetailFooter style={{ padding: '0 12px' }}>
+              <div className="textBox">
+                <div>
+                  {t('created')}{' '}
+                  {detailTimeFormat(drawerInfo.createdTime as string)}
+                </div>
+                <span>
+                  {t('updated')}
+                  {detailTimeFormat(drawerInfo.update_at as string)}
+                </span>
+              </div>
+            </DetailFooter>
+          </TaskContentWrap>
+          <CommentFooter
+            onRef={commentDom}
+            placeholder={t('postComment')}
+            personList={removeNull(projectInfoValues, 'user_name')?.map(
+              (k: any) => ({
+                label: k.content,
+                id: k.id,
+              }),
+            )}
+            onConfirm={onConfirmComment}
+            style={{
+              padding: '24px 0',
+              width: wrapWidth + 'px',
+              height: 80,
+            }}
+            maxHeight="60vh"
+            hasAvatar
+          />
+        </>
+      )}
     </div>
   )
 }
