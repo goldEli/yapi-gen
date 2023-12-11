@@ -2644,5 +2644,6 @@
   "endText": "the data",
   "participants": "Participants",
   "reSend": "Resend",
-  "includingResignedPersonnel": "Including resigned personnel"
+  "includingResignedPersonnel": "Including resigned personnel",
+  "relativeNeed": "Please select associated task"
 }

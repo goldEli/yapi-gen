@@ -609,6 +609,7 @@ export const TabsWrap = styled.div`
   /* width: 2cm; */
   width: 246px;
   height: 32px;
+  width: calc(100% - 20px);
   box-sizing: border-box;
   padding-left: 2px;
   margin-bottom: 18px;
@@ -629,14 +630,14 @@ export const TabsWrap = styled.div`
     position: relative;
     z-index: 6;
     box-sizing: border-box;
-    width: 120px;
+    width: calc(50% - 0px);
     justify-content: center;
     .cover {
       background: #ffffff;
       position: absolute;
       height: 28px;
       border-radius: 4px;
-      width: 120px;
+      width: calc(100% - 4px);
       top: 2px;
       left: 1px;
       text-align: center;

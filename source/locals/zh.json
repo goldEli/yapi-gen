@@ -2644,5 +2644,6 @@
   "endText": "的数据",
   "participants": "参与人",
   "reSend": "重发",
-  "includingResignedPersonnel": "包含离职人员"
+  "includingResignedPersonnel": "包含离职人员",
+  "relativeNeed": "请选择关联任务"
 }

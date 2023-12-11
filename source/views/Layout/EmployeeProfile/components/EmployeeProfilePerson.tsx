@@ -43,9 +43,7 @@ const CollapseHeader = (props: any) => {
     store => store.employeeProfile,
   )
   // 点击名称折叠展开
-  const onClickName = () => {
-    onChangeKeys(activeKey?.includes(item.id), item.id)
-  }
+  const onClickName = () => {}
 
   // 根据筛选条件选中对应的人分组
   useEffect(() => {

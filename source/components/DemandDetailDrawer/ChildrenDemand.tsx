@@ -405,7 +405,9 @@ const ChildrenDemand = (props: Props, ref: any) => {
           </Space>
         )}
       </LabelWrap>
-      <DetailsChildProgress details={props.detail}></DetailsChildProgress>
+      {dataList?.list?.length > 0 ? (
+        <DetailsChildProgress details={props.detail}></DetailsChildProgress>
+      ) : null}
       {dataList?.list?.length > 0 ? (
         <TableBorder style={{ marginTop: '8px' }}>
           <DragTable
