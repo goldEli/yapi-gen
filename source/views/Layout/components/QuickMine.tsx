@@ -286,7 +286,7 @@ const QuickMine = (props: QuickMineProps) => {
         id: row.project_id,
         type: row.project_type === 2 ? 'sprint' : 'iteration',
         isOpenScreenDetail: true,
-        detailId: row?.id,
+        detailId: row?.story_id,
         specialType:
           row.project_type === 2
             ? 1
