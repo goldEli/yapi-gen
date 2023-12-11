@@ -71,6 +71,8 @@ const EmployeeDepartment = (props: any, ref: any) => {
     const keys = Object.keys(response.data.list)
     const lastProject = keys.length && list[keys[0]][0]
     const { user_id } = lastProject ?? {}
+    const { department_id } =
+      users.find((item: any) => item.id === user_id) ?? {}
     setTimeout(() => {
       dispatch(
         setStatistiDepartment({
@@ -79,7 +81,7 @@ const EmployeeDepartment = (props: any, ref: any) => {
           checkedKeys: [user_id],
           departMentUserKey: [user_id],
           // expandedKeys: [_.cloneDeep(treeData)[0]?.children.shift()?.id],
-          expandedKeys: [user_id],
+          expandedKeys: [department_id],
         }),
       )
     })
@@ -187,11 +189,15 @@ const EmployeeDepartment = (props: any, ref: any) => {
     )
   }
   // 点击展开
-  const onExpand = (expandedKeys: any, { expanded }: any) => {
+  const onExpand = (expandedExpandKeys: any, { expanded, node }: any) => {
     dispatch(
       setStatistiDepartment({
         ...statistiDepartment,
-        expandedKeys: expandedKeys,
+        expandedKeys: expanded
+          ? expandedExpandKeys
+          : expandedExpandKeys.filter(
+              (key: any) => !expandedExpandKeys.includes(node.id),
+            ),
       }),
     )
   }

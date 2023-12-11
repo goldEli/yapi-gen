@@ -26,7 +26,7 @@ import ChildSprint from './ChildSprint'
 import CommonButton from '@/components/CommonButton'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import { Tabs } from 'antd'
-import { useLocation  } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 interface Props {
   onRef: any
   employeeCurrentId?: number
@@ -42,7 +42,7 @@ const ButtonGroup = (props: {
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
   const [items, setItems] = useState<Array<{ label: string; key: string }>>([])
-  const location  = useLocation ()
+  const location = useLocation()
   const data = [
     { key: 'sprint-attachment', label: t('attachment') },
     { key: 'sprint-tag', label: t('addTag') },
@@ -250,7 +250,11 @@ const AffairsInfo = (props: Props) => {
   return (
     <InfoWrap
       height={`calc(${startHeight}vh - ${
-        a1 + (document.getElementById('DetailText')?.clientHeight || location.pathname ==='/EmployeeProfile' ? 75 :100)
+        a1 +
+        (document.getElementById('DetailText')?.clientHeight ||
+        location.pathname === '/EmployeeProfile'
+          ? 75
+          : 100)
       }px)`}
     >
       {/* 子任务不存在子事务模块 */}
