@@ -239,7 +239,7 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
     }
   }, [])
   return (
-    <div style={{ width: 'calc(100% - 561px)' }} ref={wrap}>
+    <div style={{ width: 'calc(100% - 468px)' }}>
       <TaskContentWrap id="contentDom">
         {skeletonLoading && (
           <div style={{ padding: 16 }}>
