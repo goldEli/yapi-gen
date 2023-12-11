@@ -31,7 +31,7 @@ const initialState: CounterState = {
   currentKey: {},
   filterParamsOverall: {
     status: null,
-    tabType: 'paoject',
+    tabType: 'project',
     personStaus: false,
   },
   contrastDrawer: {
