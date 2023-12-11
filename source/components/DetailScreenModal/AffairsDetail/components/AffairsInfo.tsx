@@ -238,35 +238,21 @@ const AffairsInfo = (props: Props) => {
   const aa =
     userPreferenceConfig.previewModel === 3 ||
     (props?.employeeCurrentId || 0) > 0
+  // 可视高度
   const startHeight = aa ? 80 : 100
-  const a2 = affairsInfo?.isExamine ? 176 : 110
-  const a3 = affairsInfo?.isExamine ? 236 : 165
-  // 新加入的人员取消头部
-  const a4 = a2 - (props?.employeeCurrentId || 0) > 0 ? 67 : 0
-  const a5 = a3 - (props?.employeeCurrentId || 0) > 0 ? 67 : 0
+  const a2 = affairsInfo?.isExamine ? 176 : 124
+  const a3 = affairsInfo?.isExamine ? 236 : 176
   // 少了64事务出不来评论
-  const a1 = aa ? a4 : a5
-  console.log(a1)
+  const a1 = aa ? a2 : a3
+  const a6 = aa ? a2 - 76 : a3 - 76
   return (
     <InfoWrap
       height={`calc(${startHeight}vh - ${
-        a1 +
-        (document.getElementById('DetailText')?.clientHeight ||
-        location.pathname === '/EmployeeProfile'
-          ? 75
-          : 100)
+        ((props?.employeeCurrentId || 0) > 0 ? a6 : a1) +
+        (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
-      {/* 子任务不存在子事务模块 */}
-      {!isScroll && !props?.employeeCurrentId && (
-        <ButtonGroup
-          state={affairsInfo.work_type === 6}
-          onClickItem={onClickItem}
-          affairsInfo={affairsInfo}
-          isInfoPage
-        />
-      )}
-      {isScroll && (
+      {(isScroll || props?.employeeCurrentId) && (
         <TabsWrap1 style={{ paddingBottom: '0px' }}>
           <Tabs
             className="tabs"
@@ -281,6 +267,16 @@ const AffairsInfo = (props: Props) => {
           />
         </TabsWrap1>
       )}
+      {/* 子任务不存在子事务模块 */}
+      {!isScroll && !props?.employeeCurrentId && (
+        <ButtonGroup
+          state={affairsInfo.work_type === 6}
+          onClickItem={onClickItem}
+          affairsInfo={affairsInfo}
+          isInfoPage
+        />
+      )}
+
       <DetailInfoWrap
         ref={LeftDomDetailInfo}
         className="sprintDetail_dom"
@@ -334,11 +330,12 @@ const AffairsInfo = (props: Props) => {
             id: k.id,
           }),
         )}
-        padding={'no'}
+        padding="no"
         onConfirm={onConfirmComment}
         style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
         maxHeight="60vh"
         hasAvatar
+        isEmployee={(props?.employeeCurrentId || 0) > 0}
       />
     </InfoWrap>
   )

@@ -87,15 +87,24 @@ const FlawInfo = () => {
     }
   }
   const { userPreferenceConfig } = useSelector(store => store.user)
+
+  // 计算高度
+  const a1 = flawInfo?.isExamine ? 91 : 130
+  const a2 = flawInfo?.isExamine ? 164 : 178
+  const a3 = 239
+
   return (
     <FlawInfoWrap
       all={
         userPreferenceConfig.previewModel === 3 ||
         (params?.employeeCurrentId || 0) > 0
       }
-      h={
-        userPreferenceConfig.previewModel === 3 ||
+      height={
         (params?.employeeCurrentId || 0) > 0
+          ? a1
+          : userPreferenceConfig.previewModel === 3
+          ? a2
+          : a3
       }
     >
       <FlawInfoLeft

@@ -196,7 +196,7 @@ const CommentFooter = (props: CommentFooterProps) => {
                   gap: 12,
                   display: 'flex',
                   alignItems: 'center',
-                  padding: '0 24px',
+                  padding: props?.padding ? 0 : '0 24px',
                 }
           }
         >

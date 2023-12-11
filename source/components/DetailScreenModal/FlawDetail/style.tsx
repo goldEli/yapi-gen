@@ -207,12 +207,11 @@ export const DetailTitle = styled.div`
   margin-left: 24px;
 `
 
-export const FlawInfoWrap = styled.div<{ all?: boolean; h?: boolean }>`
+export const FlawInfoWrap = styled.div<{ all?: boolean; height?: number }>`
   display: flex;
   position: relative;
   height: calc(
-    ${props => (props.all ? '80vh' : '100vh')} -
-      ${props => (props.h ? '142px' : '249px')}
+    ${props => (props.all ? '80vh' : '100vh')} - ${props => props.height + 'px'}
   );
   width: 100%;
   margin-top: 16px;

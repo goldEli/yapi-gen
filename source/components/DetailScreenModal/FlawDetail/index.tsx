@@ -434,7 +434,13 @@ const FlawDetail = () => {
           </ItemNumber>
         </ActivityTabItem>
       ),
-      children: <ChangeRecord activeKey={tabActive} filter={filter} />,
+      children: (
+        <ChangeRecord
+          activeKey={tabActive}
+          filter={filter}
+          isPreview={(params?.employeeCurrentId || 0) > 0}
+        />
+      ),
     },
     {
       key: '4',
@@ -443,7 +449,12 @@ const FlawDetail = () => {
           <span>{t('circulationRecords')}</span>
         </ActivityTabItem>
       ),
-      children: <Circulation activeKey={tabActive} />,
+      children: (
+        <Circulation
+          activeKey={tabActive}
+          isPreview={(params?.employeeCurrentId || 0) > 0}
+        />
+      ),
     },
   ]
 
@@ -767,7 +778,7 @@ const FlawDetail = () => {
         items={tabItems}
         onChange={onChangeTabs}
         tabBarExtraContent={
-          tabActive === '3' ? (
+          tabActive === '3' && !params?.employeeCurrentId ? (
             <ScreenMinHover
               style={{ marginRight: '24px' }}
               label={t('common.search')}
