@@ -7,6 +7,7 @@ WORKDIR /opt/build/
 COPY . /opt/build/
 
 RUN npm config set cache /tmp/cache \
+    && npm set registry https://registry.npmmirror.com \
     && npm ci --legacy-peer-deps --loglevel verbose \
     && export NODE_OPTIONS="--max-old-space-size=8192" \
     && if [ "$ENV_ARG" = "development-b" ]; then \

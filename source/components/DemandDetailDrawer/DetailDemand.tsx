@@ -136,7 +136,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
       >
         <Label>{t('requirement_description')}</Label>
         {(isEditInfo || editInfo) && (
-          <div className={canEditHover}>
+          <div className={props.isPreview ? '' : canEditHover}>
             <Editor
               upload={uploadFile}
               color="transparent"
@@ -174,7 +174,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
               }, 10)
             }}
           >
-            <span className={canEditHover}>--</span>
+            <span>--</span>
           </TextWrapEdit>
         )}
       </ContentItem>

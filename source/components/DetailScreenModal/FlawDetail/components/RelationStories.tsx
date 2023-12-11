@@ -72,6 +72,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useSelector(store => store.project)
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const paramsData = getParamsData(searchParams) ?? {}
   const { id } = paramsData ?? { id: projectInfo.id }
 
@@ -709,7 +710,13 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
       style={{
         padding: props.isDrawer ? '16px 24px' : '16px 24px',
         backgroundColor: 'white',
-        height: '100%',
+        height: `calc(100% - ${
+          props?.isPreview
+            ? 0
+            : userPreferenceConfig.previewModel === 3
+            ? 0
+            : 50
+        }px)`,
       }}
       id="tab_associatedWorkItems"
       className="info_item_tab"
@@ -790,9 +797,13 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
           )}
         </LabelWrap>
       ) : (
-        <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
-          {t('linkWorkItem')}
-        </CommonButton>
+        <>
+          {props.isPreview ? null : (
+            <CommonButton type="primaryText" icon="plus" onClick={onClickOpen}>
+              {t('linkWorkItem')}
+            </CommonButton>
+          )}
+        </>
       )}
 
       {/* 缺陷详情 */}
@@ -800,7 +811,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
         <>
           <ResizeTable
             isSpinning={isSpinning}
-            dataWrapNormalHeight={`calc(100% - ${props.isPreview ? 27 : 83}px)`}
+            dataWrapNormalHeight="100%"
             col={props.isDrawer ? drawerColumns : columns}
             dataSource={dataSource?.list}
             noData={<NoData />}
@@ -828,7 +839,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
                       dataSource={{ list: i.list }}
                       onChangeData={arr => onChangeData(i, arr)}
                       showHeader={false}
-                      hasOperation={operationList}
+                      hasOperation={props?.isPreview ? [] : operationList}
                       hasHandle
                     />
                   </TableBorder>

@@ -58,15 +58,21 @@ const AffairsBasic = (props: Props) => {
     navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
   }
 
+  // 高度计算
+  const a1 = affairsInfo?.isExamine ? 72 : 65
+  const a2 = affairsInfo?.isExamine ? 78 : 98
+  const a3 = affairsInfo?.isExamine ? 48 : 0
+  const result =
+    (props?.employeeCurrentId || 0) > 0
+      ? a1
+      : userPreferenceConfig.previewModel === 3
+      ? a2
+      : a3
+
+  const aa = affairsInfo?.id ? result : 78
+
   return (
-    <BasicWrap
-      a={
-        userPreferenceConfig.previewModel === 3 ||
-        (props?.employeeCurrentId || 0) > 0
-      }
-      b={affairsInfo?.isExamine}
-      ref={props.onRef}
-    >
+    <BasicWrap height={aa} ref={props.onRef}>
       <BasicContent>
         <BasicDemand
           onUpdate={onUpdate}

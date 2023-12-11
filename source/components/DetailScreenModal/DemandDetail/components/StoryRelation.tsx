@@ -774,25 +774,29 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
       relationId: value,
     })
   }
+
+  // 计算高度
+  const aa =
+    userPreferenceConfig.previewModel === 3 || props?.employeeCurrentId
+      ? '80vh'
+      : '100vh'
+  const a1 = props?.employeeCurrentId
+    ? 106
+    : userPreferenceConfig.previewModel === 3
+    ? 160
+    : 212
+
   return (
     <RelationWrap
       style={{
         marginBottom: 12,
         padding: '12px 24px',
         backgroundColor: 'white',
-        height: props.isDrawer
-          ? '100%'
-          : `calc(${
-              userPreferenceConfig.previewModel === 3 ||
-              props?.employeeCurrentId
-                ? '80vh'
-                : '100vh'
-            } - ${props?.employeeCurrentId ? '106px' : '224px'})`,
+        height: props.isDrawer ? '100%' : `calc(${aa} - ${a1}px)`,
         marginTop: props.isDrawer ? '0px' : '0px',
       }}
       id="tab_link"
       className="info_item_tab"
-      // style={{ marginTop: '24px' }}
     >
       <DeleteConfirmModal />
       <CommonModal
@@ -874,7 +878,9 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
         <>
           <ResizeTable
             isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100% - 78px)"
+            dataWrapNormalHeight={`calc(100% - ${
+              props.employeeCurrentId ? 40 : 78
+            }px)`}
             col={columns}
             dataSource={dataSource?.list}
             noData={<NoData />}
@@ -902,7 +908,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
                       dataSource={{ list: i.list }}
                       onChangeData={arr => onChangeData(i, arr)}
                       showHeader={false}
-                      hasOperation={operationList}
+                      hasOperation={props?.isPreview ? [] : operationList}
                       hasHandle
                     />
                   </TableBorder>

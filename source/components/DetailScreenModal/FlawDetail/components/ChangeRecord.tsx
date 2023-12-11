@@ -63,6 +63,7 @@ const NewSort = (sortProps: any) => {
 interface Props {
   activeKey: string
   filter: boolean
+  isPreview?: boolean
 }
 
 const ChangeRecord = (props: Props) => {
@@ -80,7 +81,7 @@ const ChangeRecord = (props: Props) => {
   const [pageObj, setPageObj] = useState({ page: 1, size: 30 })
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector(store => store.user)
+  const { isRefresh, userPreferenceConfig } = useSelector(store => store.user)
 
   const { flawInfo } = useSelector(store => store.flaw)
 
@@ -429,7 +430,7 @@ const ChangeRecord = (props: Props) => {
           </div>
         </SpaceWrap>
       </CommonModal>
-      {props.filter ? (
+      {props.filter && !props?.isPreview ? (
         <ChangeLogFilter
           onChange={data => {
             getList(data)
@@ -438,7 +439,15 @@ const ChangeRecord = (props: Props) => {
       ) : null}
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight={`calc(100% - ${props.filter ? 118 : 52}px)`}
+        dataWrapNormalHeight={`calc(100% - ${
+          props.filter
+            ? 118
+            : props?.isPreview
+            ? 12
+            : userPreferenceConfig.previewModel === 3
+            ? 0
+            : 34
+        }px)`}
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}
