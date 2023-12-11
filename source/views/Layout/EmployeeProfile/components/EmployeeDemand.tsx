@@ -259,7 +259,7 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
       )}
       {!drawerInfo?.deleted_at && (
         <>
-          <TaskContentWrap id="contentDom">
+          <TaskContentWrap id="contentDom" ref={wrap}>
             {skeletonLoading && (
               <div style={{ padding: 16 }}>
                 <DetailsSkeleton />
