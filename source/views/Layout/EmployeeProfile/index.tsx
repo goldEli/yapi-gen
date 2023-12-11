@@ -176,8 +176,10 @@ const EmployeeProfile = () => {
       filterParamsOverall?.keyword?.length > 0
         ? `${t('keywordFilter', { keyword: filterParamsOverall?.keyword })}`
         : ''
-
-    return `${hasTime + hasKeyword + hasStatus + t('endText')}`
+    if (hasTime) {
+      return `${hasTime + hasKeyword + hasStatus + t('endText')}`
+    }
+    return `未查询到状态为${hasStatus}的数据`
   }
 
   // 获取汇报列表

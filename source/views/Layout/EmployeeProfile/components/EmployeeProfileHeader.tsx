@@ -159,6 +159,11 @@ const EmployeeProfileHeader = (props: EmployeeProfileHeaderProps) => {
     updateFilterParams({ status: null, time: null, keyword: '' })
   }
   useEffect(() => {
+    return () => {
+      reset()
+    }
+  }, [])
+  useEffect(() => {
     const { start_time, end_time, user_id } = paramsData ?? {}
 
     // 从左侧菜单
