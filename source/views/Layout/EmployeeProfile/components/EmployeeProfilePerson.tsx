@@ -184,7 +184,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const { statistiDepartment } = useSelector(store => store.project)
   const tabs = [
     { name: t('projectTeam'), value: 'project' },
-    { name: t('department1'), value: 'department' },
+    // { name: t('department1'), value: 'department' },
   ]
   const {
     list = [],
