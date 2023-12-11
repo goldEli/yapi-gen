@@ -276,7 +276,10 @@ const EmployeeProfile = () => {
               style={{ marginLeft: 4 }}
             />
           </MouseDom>
-          <Tooltip title={t('putAway') as string} placement="right">
+          <Tooltip
+            title={isOpen ? t('newlyAdd.open') : t('putAway')}
+            placement="right"
+          >
             <FoldIcon onClick={onChangeSide}>
               <CommonIconFont
                 type={isOpen ? 'right' : 'left'}

@@ -227,7 +227,7 @@ const NewRelatedNeed = (props: any) => {
                         fontSize: '12px',
                       }}
                     >
-                      {t('p2.need1')}
+                      {t('relativeNeed')}
                     </span>
                   ),
                 },

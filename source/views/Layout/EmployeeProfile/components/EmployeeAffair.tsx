@@ -167,6 +167,15 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
     })
   }
 
+  // 切换任务重置tabs
+  const resetTabs = (value: string) => {
+    setTabActive(value)
+    document.getElementById('contentDom')?.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
+
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
     if (!document.querySelector('#contentDom')) {
@@ -224,6 +233,9 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
       getSprintDetail()
       dispatch(getProjectInfoValuesStore({ projectId: props.project_id }))
       dispatch(getProjectInfoStore({ projectId: props.project_id }))
+      setTimeout(() => {
+        resetTabs('sprint-info')
+      }, 100)
     }
   }, [JSON.stringify(props)])
   const observer = useRef(

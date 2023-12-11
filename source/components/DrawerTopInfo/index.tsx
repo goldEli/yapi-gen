@@ -231,7 +231,7 @@ const DrawerTopInfo = (props: DrawerTopInfoProps) => {
           }}
           isEmployeeProfilePage={isEmployeeProfilePage}
         >
-          <span className="icon">
+          <span className="icon" style={{ marginTop: 0 }}>
             <CommonIconFont type="user" size={16} color="var(--neutral-n3)" />
           </span>
           <span className="box">

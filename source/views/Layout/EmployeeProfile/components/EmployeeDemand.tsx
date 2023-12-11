@@ -165,6 +165,15 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
     })
   }
 
+  // 切换任务重置tabs
+  const resetTabs = (value: string) => {
+    setTabActive(value)
+    document.getElementById('contentDom')?.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
+
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
     if (!document.querySelector('#contentDom')) {
@@ -220,8 +229,12 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
       getDemandDetail()
       dispatch(getProjectInfoValuesStore({ projectId: props.project_id }))
       dispatch(getProjectInfoStore({ projectId: props.project_id }))
+      setTimeout(() => {
+        resetTabs('tab_desc')
+      }, 100)
     }
   }, [JSON.stringify(props)])
+
   const observer = useRef(
     new ResizeObserver(e => {
       if (wrap.current) {

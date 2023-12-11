@@ -41,6 +41,7 @@ import UploadAttach from '@/components/UploadAttach'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 import _ from 'lodash'
+import { CloseWrap } from '@/components/StyleCommon'
 interface ReportItemProps {
   item: any
   reportFirstData: any
@@ -157,7 +158,7 @@ const ReportItem = (props: ReportItemProps) => {
             <Tooltip
               placement="top"
               trigger="hover"
-              title={item.is_expended === 1 ? t('expand') : t('fold')}
+              title={item.is_expended === 1 ? t('fold') : t('expand')}
             >
               <OperationButton onClick={() => onOpen(item.id)}>
                 <CommonIconFont
@@ -253,12 +254,17 @@ const ReportItem = (props: ReportItemProps) => {
                             <div className="time">{i.created_at || '--'}</div>
                           </div>
                           {userInfo?.id === i.comment_user.id ? (
-                            <IconFont
-                              className="deleteIcon"
-                              style={{ marginLeft: 20 }}
-                              type="close"
+                            <CloseWrap
+                              width={24}
+                              height={24}
                               onClick={() => onDeleteComment(i)}
-                            />
+                            >
+                              <IconFont
+                                className="deleteIcon"
+                                type="delete"
+                                style={{ fontSize: 16 }}
+                              />
+                            </CloseWrap>
                           ) : null}
                         </div>
                         <div className="content">
