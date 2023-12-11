@@ -460,6 +460,7 @@ export const getAffairsInfo = async (
     parent: [
       { value: response.data.parent?.id, label: response.data.parent?.name },
     ],
+    deleted_at: response.data.deleted_at,
   }
 }
 
