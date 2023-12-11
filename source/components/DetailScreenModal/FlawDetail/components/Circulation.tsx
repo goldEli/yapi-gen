@@ -105,12 +105,21 @@ const TextWrap = styled.div({
   color: 'var(--neutral-n1-d2)',
 })
 
-const ContentWrap = styled.div({
-  fontSize: 14,
-  fontWeight: 400,
-  color: 'var(--neutral-n1-d2)',
-  width: 'calc(100% - 70px)',
-})
+// const ContentWrap = styled.div({
+//   fontSize: 14,
+//   fontWeight: 400,
+//   color: 'var(--neutral-n1-d2)',
+//   width: 'calc(100% - 70px)',
+// })
+const ContentWrap = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral-n1-d1);
+  width: calc(100% - 70px);
+  .ant-space {
+    flex-wrap: wrap;
+  }
+`
 
 interface Props {
   activeKey: string
