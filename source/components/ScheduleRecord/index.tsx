@@ -25,6 +25,7 @@ const RecordItem = styled.div<{
   isDrawer?: boolean
   notPadding?: boolean
   noBorder?: boolean
+  isPreview?: boolean
 }>`
   padding: ${props => (props.isDrawer || props.notPadding ? 0 : 12)}px;
   margin-bottom: ${props => (props.isDrawer || props.notPadding ? 24 : 0)}px;
@@ -35,8 +36,8 @@ const RecordItem = styled.div<{
   display: flex;
   align-items: flex-start;
   &:hover {
-    background-color: var(--hover-d2);
-    cursor: pointer;
+    background-color: ${props => (props.isPreview ? '' : 'var(--hover-d2)')};
+    cursor: ${props => (props.isPreview ? 'default' : 'pointer')};
   }
 `
 
@@ -217,6 +218,7 @@ const ScheduleRecord = (props: ScheduleRecordProps) => {
               isDrawer={props.isDrawer}
               notPadding={props.notPadding}
               noBorder={props.noBorder}
+              isPreview={props.isPreview}
             >
               <ItemAvatar>
                 <CommonUserAvatar avatar={i.userInfo?.avatar} />

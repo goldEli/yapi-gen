@@ -23,6 +23,7 @@ export interface CounterState {
   // 筛选条件变化
   currentClickNumber?: any
   cacheData?: []
+  userId: number
 }
 
 const initialState: CounterState = {
@@ -44,6 +45,8 @@ const initialState: CounterState = {
   },
   currentClickNumber: 0,
   cacheData: [],
+  // 记录参与人中需要过滤的日报人员
+  userId: 0,
 }
 
 export const employeeProfileSlice = createSlice({
@@ -70,6 +73,10 @@ export const employeeProfileSlice = createSlice({
     setCurrentClickNumber: (state: any, action) => {
       state.currentClickNumber = action.payload
     },
+    // 修改记录参与人中需要过滤的日报人员
+    setUserId: (state: any, action) => {
+      state.userId = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getMemberOverviewList.fulfilled, (state, action) => {
@@ -84,6 +91,7 @@ export const {
   setContrastDrawer,
   setTaskDrawerUpdate,
   setCurrentClickNumber,
+  setUserId,
 } = employeeProfileSlice.actions
 
 export default employeeProfileSlice.reducer

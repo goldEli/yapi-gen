@@ -148,7 +148,7 @@ const DemandDetail = () => {
             </TextWrapEdit>
           )} */}
           {(isEditInfo || editInfo) && (
-            <div className={canEditHover}>
+            <div className={params?.employeeCurrentId ? '' : canEditHover}>
               <Editor
                 upload={uploadFile}
                 color="transparent"
@@ -171,9 +171,15 @@ const DemandDetail = () => {
           )}
           {!isEditInfo && !editInfo && (
             <TextWrapEdit
-              style={{ width: '100%' }}
+              style={{
+                width: '100%',
+                cursor: params?.employeeCurrentId ? 'default' : '',
+              }}
               onClick={e => {
                 e.stopPropagation()
+                if (params?.employeeCurrentId) {
+                  return
+                }
                 setIsEditInfo(true)
                 setTimeout(() => {
                   editorRef.current?.focus()
@@ -192,6 +198,7 @@ const DemandDetail = () => {
             noBorder
             isBug={demandInfo?.is_bug === 1}
             userId={params?.employeeCurrentId}
+            isPreview={!!params?.employeeCurrentId}
           />
         </InfoItem>
 

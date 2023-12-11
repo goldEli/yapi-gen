@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 // 需求列表快捷编辑组件
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
@@ -141,6 +141,7 @@ const TableQuickEdit = (props: Props) => {
       )?.length > 0
     canClick = isCan && isCanEdit && !props.isPreview
   }
+
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
     const response = await storyConfigField({
@@ -563,7 +564,8 @@ const TableQuickEdit = (props: Props) => {
                       canClick ? setIsShowControl(true) : void 0
                     }
                     isTable={!props.isInfo}
-                    isCanEdit={isCanEdit}
+                    isCanEdit={canClick}
+                    isPreview={props.isPreview}
                   >
                     {(!['text', 'textarea'].includes(props.type as any) ||
                       props.isDemandName) && <div>{props.children}</div>}
