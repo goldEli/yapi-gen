@@ -73,6 +73,7 @@ const EmployeeDepartment = (props: any, ref: any) => {
     const { user_id } = lastProject ?? {}
     const { department_id } =
       users.find((item: any) => item.id === user_id) ?? {}
+
     setTimeout(() => {
       dispatch(
         setStatistiDepartment({
@@ -80,7 +81,6 @@ const EmployeeDepartment = (props: any, ref: any) => {
           list: users,
           checkedKeys: [user_id],
           departMentUserKey: [user_id],
-          // expandedKeys: [_.cloneDeep(treeData)[0]?.children.shift()?.id],
           expandedKeys: [department_id],
         }),
       )
@@ -195,9 +195,7 @@ const EmployeeDepartment = (props: any, ref: any) => {
         ...statistiDepartment,
         expandedKeys: expanded
           ? expandedExpandKeys
-          : expandedExpandKeys.filter(
-              (key: any) => !expandedExpandKeys.includes(node.id),
-            ),
+          : expandedExpandKeys.filter((key: any) => key !== node.id),
       }),
     )
   }

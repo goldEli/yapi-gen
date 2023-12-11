@@ -729,7 +729,9 @@ const AffairsDetail = () => {
               )}
             </Tooltip>
             {params?.employeeCurrentId && (
-              <span className="name">{affairsInfo.name}</span>
+              <span className="name" id="DetailText">
+                {affairsInfo.name}
+              </span>
             )}
             {!params?.employeeCurrentId && (
               <DetailText id="DetailText">

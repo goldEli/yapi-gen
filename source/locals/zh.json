@@ -2645,5 +2645,7 @@
   "participants": "参与人",
   "reSend": "重发",
   "includingResignedPersonnel": "包含离职人员",
-  "relativeNeed": "请选择关联任务"
+  "relativeNeed": "请选择关联任务",
+  "theTaskHasBeenDeletedAndCannotBeViewed": "该任务已被删除无法查看",
+  "theTaskHasBeenDeletedAndDetailsCannotBeViewed": "该任务已被删除，无法查看详情"
 }

@@ -35,6 +35,7 @@ import {
   getProjectInfoStore,
   getProjectInfoValuesStore,
 } from '@store/project/project.thunk'
+import NoData from '@/components/NoData'
 
 interface EmployeeDemandProps {
   id: number
@@ -253,138 +254,145 @@ const EmployeeDemand = (props: EmployeeDemandProps) => {
   }, [])
   return (
     <div style={{ width: 'calc(100% - 468px)' }}>
-      <TaskContentWrap id="contentDom">
-        {skeletonLoading && (
-          <div style={{ padding: 16 }}>
-            <DetailsSkeleton />
-          </div>
-        )}
-        {!skeletonLoading && (
-          <div>
-            {drawerInfo?.isExamine && (
-              <div>
-                <StatusExamine
-                  type={1}
-                  onCancel={() => {
-                    //
-                  }}
-                  isVerify={drawerInfo?.has_verify === 1}
-                  isDrawer
-                  isPreview
-                />
+      {drawerInfo?.deleted_at && (
+        <NoData subText={t('theTaskHasBeenDeletedAndDetailsCannotBeViewed')} />
+      )}
+      {!drawerInfo?.deleted_at && (
+        <>
+          <TaskContentWrap id="contentDom">
+            {skeletonLoading && (
+              <div style={{ padding: 16 }}>
+                <DetailsSkeleton />
               </div>
             )}
-            <DemandName
-              style={{
-                backgroundColor: 'white',
-                padding: '12px 24px',
-              }}
-            >
-              <span className="name">{drawerInfo.name}</span>
-              <CopyIcon onCopy={onCopy} />
-            </DemandName>
-            <ProgressBox>
-              <CommonProgress
-                isTable={false}
-                type="demand"
-                id={drawerInfo.id}
-                percent={drawerInfo?.schedule}
-                hasEdit={false}
-                project_id={drawerInfo.projectId}
-              />
-            </ProgressBox>
-            <DrawerTopInfo
-              details={drawerInfo}
-              isPreview
-              userId={props?.user_id}
-            />
-            <Tabs
-              style={{
-                paddingLeft: '24px',
-                paddingTop: '15px',
-                backgroundColor: 'white',
-              }}
-              className="tabs"
-              activeKey={tabActive}
-              items={items}
-              onChange={onChangeTabs}
-            />
-            <div>
-              <DetailDemand
-                detail={drawerInfo}
-                ref={detailDemandRef}
-                isPreview
-                userId={props?.user_id}
-              />
-              <ChildrenDemand
-                detail={drawerInfo}
-                ref={childrenDemandRef}
-                isPreview
-              />
-              <StoryRelation
-                detail={drawerInfo}
-                isDrawer
-                ref={storyRelationRef}
-                isPreview
-              />
-              <BasicDemand
-                detail={drawerInfo}
-                onUpdate={() => {
-                  //
-                }}
-                isPreview
-              />
-              <div
-                id="tab_comment"
-                style={{
-                  backgroundColor: 'white',
-                  margin: 0,
-                  marginBottom: 12,
-                  padding: '12px 24px',
-                }}
-                className="info_item_tab"
-              >
-                <Label> {t('requirements_review')}</Label>
-                <CommonComment
-                  data={demandCommentList}
-                  onDeleteConfirm={onDeleteCommentConfirm}
-                  onEditComment={onEditComment}
+            {!skeletonLoading && (
+              <div>
+                {drawerInfo?.isExamine && (
+                  <div>
+                    <StatusExamine
+                      type={1}
+                      onCancel={() => {
+                        //
+                      }}
+                      isVerify={drawerInfo?.has_verify === 1}
+                      isDrawer
+                      isPreview
+                    />
+                  </div>
+                )}
+                <DemandName
+                  style={{
+                    backgroundColor: 'white',
+                    padding: '12px 24px',
+                  }}
+                >
+                  <span className="name">{drawerInfo.name}</span>
+                  <CopyIcon onCopy={onCopy} />
+                </DemandName>
+                <ProgressBox>
+                  <CommonProgress
+                    isTable={false}
+                    type="demand"
+                    id={drawerInfo.id}
+                    percent={drawerInfo?.schedule}
+                    hasEdit={false}
+                    project_id={drawerInfo.projectId}
+                  />
+                </ProgressBox>
+                <DrawerTopInfo
+                  details={drawerInfo}
+                  isPreview
+                  userId={props?.user_id}
                 />
+                <Tabs
+                  style={{
+                    paddingLeft: '24px',
+                    paddingTop: '15px',
+                    backgroundColor: 'white',
+                  }}
+                  className="tabs"
+                  activeKey={tabActive}
+                  items={items}
+                  onChange={onChangeTabs}
+                />
+                <div>
+                  <DetailDemand
+                    detail={drawerInfo}
+                    ref={detailDemandRef}
+                    isPreview
+                    userId={props?.user_id}
+                  />
+                  <ChildrenDemand
+                    detail={drawerInfo}
+                    ref={childrenDemandRef}
+                    isPreview
+                  />
+                  <StoryRelation
+                    detail={drawerInfo}
+                    isDrawer
+                    ref={storyRelationRef}
+                    isPreview
+                  />
+                  <BasicDemand
+                    detail={drawerInfo}
+                    onUpdate={() => {
+                      //
+                    }}
+                    isPreview
+                  />
+                  <div
+                    id="tab_comment"
+                    style={{
+                      backgroundColor: 'white',
+                      margin: 0,
+                      marginBottom: 12,
+                      padding: '12px 24px',
+                    }}
+                    className="info_item_tab"
+                  >
+                    <Label> {t('requirements_review')}</Label>
+                    <CommonComment
+                      data={demandCommentList}
+                      onDeleteConfirm={onDeleteCommentConfirm}
+                      onEditComment={onEditComment}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
-        <DetailFooter style={{ padding: '0 12px' }}>
-          <div className="textBox">
-            <div>
-              {t('created')}
-              {detailTimeFormat(drawerInfo.createdTime as string)}
-            </div>
-            <span>
-              {t('updated')}
-              {detailTimeFormat(drawerInfo.update_at as string)}
-            </span>
-          </div>
-        </DetailFooter>
-      </TaskContentWrap>
-      <CommentFooter
-        onRef={commentDom}
-        placeholder={t('postComment')}
-        personList={removeNull(projectInfoValues, 'user_name')?.map(
-          (k: any) => ({
-            label: k.content,
-            id: k.id,
-          }),
-        )}
-        onConfirm={onConfirmComment}
-        style={{
-          padding: '24px 0',
-          width: wrapWidth + 'px',
-          height: 80,
-        }}
-        maxHeight="60vh"
-        hasAvatar
-      />
+            )}
+            <DetailFooter style={{ padding: '0 12px' }}>
+              <div className="textBox">
+                <div>
+                  {t('created')}
+                  {detailTimeFormat(drawerInfo.createdTime as string)}
+                </div>
+                <span>
+                  {t('updated')}
+                  {detailTimeFormat(drawerInfo.update_at as string)}
+                </span>
+              </div>
+            </DetailFooter>
+          </TaskContentWrap>
+          <CommentFooter
+            onRef={commentDom}
+            placeholder={t('postComment')}
+            personList={removeNull(projectInfoValues, 'user_name')?.map(
+              (k: any) => ({
+                label: k.content,
+                id: k.id,
+              }),
+            )}
+            onConfirm={onConfirmComment}
+            style={{
+              padding: '24px 0',
+              width: wrapWidth + 'px',
+              height: 80,
+            }}
+            maxHeight="60vh"
+            hasAvatar
+          />
+        </>
+      )}
     </div>
   )
 }

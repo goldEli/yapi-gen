@@ -173,8 +173,10 @@ const EmployeeProfile = () => {
       filterParamsOverall?.keyword?.length > 0
         ? `${t('keywordFilter', { keyword: filterParamsOverall?.keyword })}`
         : ''
-
-    return `${hasTime + hasKeyword + hasStatus + t('endText')}`
+    if (hasTime) {
+      return `${hasTime + hasKeyword + hasStatus + t('endText')}`
+    }
+    return `未查询到状态为${hasStatus}的数据`
   }
 
   // 获取汇报列表
@@ -217,6 +219,11 @@ const EmployeeProfile = () => {
     }
   }
   useEffect(() => {
+    if (filterParamsOverall?.user_ids?.length === 0) {
+      setReportFirstData((pre: any) => ({ ...pre, id: null }))
+      return
+    }
+
     if (filterParamsOverall?.user_ids) {
       getReportList()
     }

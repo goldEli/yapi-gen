@@ -105,12 +105,21 @@ const TextWrap = styled.div({
   color: 'var(--neutral-n1-d2)',
 })
 
-const ContentWrap = styled.div({
-  fontSize: 14,
-  fontWeight: 400,
-  color: 'var(--neutral-n1-d2)',
-  width: 'calc(100% - 70px)',
-})
+// const ContentWrap = styled.div({
+//   fontSize: 14,
+//   fontWeight: 400,
+//   color: 'var(--neutral-n1-d2)',
+//   width: 'calc(100% - 70px)',
+// })
+const ContentWrap = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral-n1-d1);
+  width: calc(100% - 70px);
+  .ant-space {
+    flex-wrap: wrap;
+  }
+`
 
 interface Props {
   activeKey: string
@@ -137,7 +146,7 @@ const Circulation = (props: Props) => {
     if (state) {
       setIsSpin(true)
       const result = await getFlawStatusLog({
-        projectId: id,
+        projectId: id ?? projectInfo.id,
         id: flawInfo.id || 0,
         all: true,
       })
@@ -191,7 +200,11 @@ const Circulation = (props: Props) => {
     <Wrap
       style={{
         height: `calc(100% - ${
-          props?.isPreview ? 0 : userPreferenceConfig.previewModel === 3 ? 0 : 0
+          props?.isPreview
+            ? 90
+            : userPreferenceConfig.previewModel === 3
+            ? 0
+            : 0
         }px)`,
       }}
     >

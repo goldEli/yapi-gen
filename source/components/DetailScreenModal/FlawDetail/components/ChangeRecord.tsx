@@ -89,7 +89,7 @@ const ChangeRecord = (props: Props) => {
     setIsSpinning(true)
     const result = await getFlawChangeLog({
       id: flawInfo.id || 0,
-      projectId: id,
+      projectId: id ?? projectInfo.id,
       page: item ? item.page ?? 1 : 1,
       pageSize: item ? item.size ?? 10 : 10,
       order: orderVal?.value,
@@ -443,7 +443,7 @@ const ChangeRecord = (props: Props) => {
           props.filter
             ? 118
             : props?.isPreview
-            ? 12
+            ? 142
             : userPreferenceConfig.previewModel === 3
             ? 0
             : 34
