@@ -902,7 +902,7 @@ const StoryRelation = (props: RelationStoriesProps, ref: any) => {
                       dataSource={{ list: i.list }}
                       onChangeData={arr => onChangeData(i, arr)}
                       showHeader={false}
-                      hasOperation={operationList}
+                      hasOperation={props?.isPreview ? [] : operationList}
                       hasHandle
                     />
                   </TableBorder>

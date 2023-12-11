@@ -180,7 +180,7 @@ const DemandDetail = () => {
                 }, 10)
               }}
             >
-              <span className={canEditHover}>--</span>
+              <span>--</span>
             </TextWrapEdit>
           )}
         </InfoItem>

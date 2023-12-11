@@ -182,7 +182,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           {/* {!props.isPreview && (
             <> */}
           {(isEditInfo || editInfo) && (
-            <div className={canEditHover}>
+            <div className={props.isPreview ? '' : canEditHover}>
               <Editor
                 upload={uploadFile}
                 color="transparent"
@@ -217,7 +217,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
                 }, 10)
               }}
             >
-              <span className={canEditHover}>--</span>
+              <span>--</span>
             </TextWrapEdit>
           )}
           {/* </>
