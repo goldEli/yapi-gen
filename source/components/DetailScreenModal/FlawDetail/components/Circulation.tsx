@@ -146,7 +146,7 @@ const Circulation = (props: Props) => {
     if (state) {
       setIsSpin(true)
       const result = await getFlawStatusLog({
-        projectId: id,
+        projectId: id ?? projectInfo.id,
         id: flawInfo.id || 0,
         all: true,
       })

@@ -89,7 +89,7 @@ const ChangeRecord = (props: Props) => {
     setIsSpinning(true)
     const result = await getDemandChangeLog({
       demandId: demandInfo.id,
-      projectId: id,
+      projectId: id ?? projectInfo.id,
       page: item ? item.page ?? 1 : 1,
       pageSize: item ? item.size ?? 10 : 10,
       order: orderVal?.value,

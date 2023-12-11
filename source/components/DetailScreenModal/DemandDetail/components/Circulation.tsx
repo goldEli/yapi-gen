@@ -139,7 +139,7 @@ const Circulation = (props: Props) => {
     if (state) {
       setIsSpin(true)
       const result = await getStoryStatusLog({
-        projectId: id,
+        projectId: id ?? projectInfo.id,
         demandId: demandInfo.id,
         all: true,
       })
