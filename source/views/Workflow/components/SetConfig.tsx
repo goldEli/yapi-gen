@@ -428,11 +428,9 @@ const SetConfig = (props: Props) => {
           showSearch
           optionFilterProp="label"
           value={
-            // 类型不匹配，取不到值
-            row.default_value?.title ?? row.default_value
-            // Array.isArray(row.default_value)
-            //   ? row.default_value
-            //   : row.default_value?.title
+            Array.isArray(row.default_value)
+              ? row.default_value
+              : row.default_value?.title ?? row.default_value
           }
           options={
             ['users_name', 'users_copysend_name'].includes(row.content) &&
