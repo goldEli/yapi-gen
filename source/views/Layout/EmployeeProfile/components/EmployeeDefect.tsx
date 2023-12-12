@@ -256,7 +256,11 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
       )}
       {!drawerInfo?.deleted_at && (
         <>
-          <TaskContentWrap id="contentDom" ref={wrap}>
+          <TaskContentWrap
+            id="contentDom"
+            ref={wrap}
+            style={{ paddingBottom: 80 }}
+          >
             {skeletonLoading && (
               <div style={{ padding: 16 }}>
                 <DetailsSkeleton />
@@ -287,7 +291,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
                   <span className="name">{drawerInfo.name}</span>
                   <CopyIcon onCopy={onCopy} />
                 </DemandName>
-                <ProgressBox>
+                <ProgressBox style={{ paddingTop: 0 }}>
                   <CommonProgress
                     isTable={false}
                     type="flaw"
@@ -317,6 +321,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
                   <FlawDetail
                     flawInfo={drawerInfo}
                     ref={flawDetailRef}
+                    userId={props?.user_id}
                     isPreview
                   />
                   <RelationStories

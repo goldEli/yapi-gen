@@ -11,6 +11,7 @@ import {
   PersonWrap,
   ReportButton,
   TabsWrap,
+  TitleBox,
 } from '../style'
 import { Checkbox, Collapse, Radio, Select } from 'antd'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -184,7 +185,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   const { statistiDepartment } = useSelector(store => store.project)
   const tabs = [
     { name: t('projectTeam'), value: 'project' },
-    { name: t('department1'), value: 'department' },
+    // { name: t('department1'), value: 'department' },
   ]
   const {
     list = [],
@@ -296,7 +297,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
   // 监听选中的成员
   useEffect(() => {
     let params: any = []
-    if (tabActiveKey === 'project') {
+    if (filterParamsOverall.tabType === 'project') {
       params = userKeys?.map((item: any) => {
         const [project_id, user_id] = item.split('_')
         return {
@@ -305,7 +306,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         }
       })
     }
-    if (tabActiveKey === 'department') {
+    if (filterParamsOverall.tabType === 'department') {
       params = checkedKeys.map((item: any) => {
         return {
           user_id: item,
@@ -313,7 +314,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
       })
     }
     updateFilterParams({ user_ids: params })
-  }, [userKeys, checkedKeys])
+  }, [userKeys, checkedKeys, filterParamsOverall.tabType])
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
     console.log('activeKey', activeKey)
@@ -478,7 +479,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         )}
       </div>
 
-      <TabsWrap style={{ margin: '0 16px 0 0' }}>
+      {/* <TabsWrap style={{ margin: '0 16px 0 0' }}>
         {tabs.map(item => {
           return (
             <div
@@ -496,12 +497,14 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
             </div>
           )
         })}
-      </TabsWrap>
-      {tabActiveKey === 'project' ? (
+      </TabsWrap> */}
+      {/* {tabActiveKey === 'project' ? (
         projectEle
       ) : (
         <EmployeeDepartment></EmployeeDepartment>
-      )}
+      )} */}
+      <TitleBox>{t('theProjectsIParticipatedIn')}</TitleBox>
+      {projectEle}
     </PersonWrap>
   )
 }

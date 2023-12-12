@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import {
   OperationButton,
   ReportItemHeader,
@@ -42,12 +42,14 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import useUpdateFilterParams from './hooks/useUpdateFilterParams'
 import _ from 'lodash'
 import { CloseWrap } from '@/components/StyleCommon'
+import { setUserId } from '@store/employeeProfile'
 interface ReportItemProps {
   item: any
   reportFirstData: any
   onGetReportFirstData(val: any): void
   onChangData(val: number): void
   personArr: any[]
+  dispatch: any
 }
 
 const ReportItem = (props: ReportItemProps) => {
@@ -59,6 +61,7 @@ const ReportItem = (props: ReportItemProps) => {
     onGetReportFirstData,
     onChangData,
     personArr,
+    dispatch,
   } = props
   const [commentList, setCommentList] = useState([])
   const [isVisible, setIsVisible] = useState(false)
@@ -211,6 +214,7 @@ const ReportItem = (props: ReportItemProps) => {
                             user_id: item.user.id,
                             onlyId: item.id,
                           })
+                          dispatch(setUserId(item.user.id))
                         }}
                       >
                         <Radius />
@@ -320,6 +324,7 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
     reportFirstData,
     onGetReportFirstData,
   } = props
+  const dispatch = useDispatch()
   const [page, setPage] = useState(1)
   const { filterParamsOverall } = useUpdateFilterParams()
   const [arr, setArr] = useState<any>(null)
@@ -375,6 +380,9 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
 
   useEffect(() => {
     getPersonList()
+    return () => {
+      dispatch(setUserId(0))
+    }
   }, [])
 
   return (
@@ -401,6 +409,7 @@ const EmployeeProfileReport = (props: EmployeeProfileReportProps) => {
                   onGetReportFirstData={onGetReportFirstData}
                   onChangData={onChangData}
                   personArr={arr}
+                  dispatch={dispatch}
                 />
               ))}
           </InfiniteScroll>

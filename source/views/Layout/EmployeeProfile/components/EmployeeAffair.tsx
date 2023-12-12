@@ -262,7 +262,11 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
       )}
       {!drawerInfo?.deleted_at && (
         <>
-          <TaskContentWrap id="contentDom" ref={wrap}>
+          <TaskContentWrap
+            id="contentDom"
+            ref={wrap}
+            style={{ paddingBottom: 80 }}
+          >
             {skeletonLoading ? (
               <div style={{ padding: 16 }}>
                 <DetailsSkeleton />
@@ -292,7 +296,7 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
                   <span className="name">{drawerInfo.name}</span>
                   <CopyIcon onCopy={onCopy} />
                 </DemandName>
-                <ProgressBox>
+                <ProgressBox style={{ paddingTop: 0 }}>
                   <CommonProgress
                     isTable={false}
                     type="transaction"
@@ -320,7 +324,11 @@ const EmployeeAffair = (props: EmployeeAffairProps) => {
                   }
                   onChange={onChangeTabs}
                 />
-                <AffairsDetail affairsInfo={drawerInfo} isPreview />
+                <AffairsDetail
+                  affairsInfo={drawerInfo}
+                  isPreview
+                  userId={props?.user_id}
+                />
                 <div
                   style={{
                     backgroundColor: '#f5f5f7',

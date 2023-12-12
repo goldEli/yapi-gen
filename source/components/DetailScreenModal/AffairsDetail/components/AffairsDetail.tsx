@@ -205,7 +205,10 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           )}
           {!isEditInfo && !editInfo && (
             <TextWrapEdit
-              style={{ width: '100%' }}
+              style={{
+                width: '100%',
+                cursor: props?.isPreview ? 'default' : '',
+              }}
               onClick={e => {
                 e.stopPropagation()
                 if (props.isPreview) {

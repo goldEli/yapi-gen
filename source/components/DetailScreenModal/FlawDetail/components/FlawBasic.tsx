@@ -67,6 +67,7 @@ const FlawBasic = (props: Props) => {
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
   const { affairsDetailDrawer } = useSelector(store => store.affairs)
+  const { userId } = useSelector(store => store.employeeProfile)
   useEffect(() => {
     setSchedule(props.detail?.schedule)
   }, [props.detail?.schedule])
@@ -151,14 +152,26 @@ const FlawBasic = (props: Props) => {
           !['finish_at', 'created_at', 'user_name'].includes(i.content),
       ),
     )
-    setNotFoldList(
-      result?.filter(
-        (i: any) =>
-          i.isFold === 1 &&
-          i.status === 1 &&
-          !['finish_at', 'created_at', 'user_name'].includes(i.content),
-      ),
+    const tempFoldList = result?.filter(
+      (i: any) =>
+        i.isFold === 1 &&
+        i.status === 1 &&
+        !['finish_at', 'created_at', 'user_name'].includes(i.content),
     )
+    const resFoldList = tempFoldList.map?.((s: any) => {
+      if (
+        location.href.includes('/EmployeeProfile') &&
+        s.content === 'users_name'
+      ) {
+        return {
+          ...s,
+          title: t('participants'),
+        }
+      }
+      return s
+    })
+
+    setNotFoldList(resFoldList)
     dispatch(setIsRefresh(false))
   }
 
@@ -235,7 +248,19 @@ const FlawBasic = (props: Props) => {
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {
     let nodeComponent
-
+    let tempUserList: any = props.detail?.user?.map((i: any) => ({
+      id: i.user.id,
+      name: i.user.name,
+      avatar: i.user.avatar,
+    }))
+    // 参与人过滤下日报创建人
+    if (
+      item.content === 'users_name' &&
+      location.href.includes('/EmployeeProfile') &&
+      userId
+    ) {
+      tempUserList = tempUserList?.filter((l: any) => l.id !== userId)
+    }
     // 如果不属于下列字段的则渲染
     if (!['parent_id', 'priority', 'severity'].includes(item.content)) {
       const filterContent = basicFieldList?.filter(
@@ -264,11 +289,7 @@ const FlawBasic = (props: Props) => {
               max={3}
               list={
                 item.content === 'users_name'
-                  ? props.detail?.user?.map((i: any) => ({
-                      id: i.user.id,
-                      name: i.user.name,
-                      avatar: i.user.avatar,
-                    }))
+                  ? tempUserList
                   : props.detail?.copySend?.map((i: any) => ({
                       id: i.copysend.id,
                       name: i.copysend.name,
@@ -310,7 +331,7 @@ const FlawBasic = (props: Props) => {
               width: '100%',
             }}
           >
-            <CanOperation isCanEdit={isCanEdit}>
+            <CanOperation isCanEdit={isCanEdit} isPreview={props.isPreview}>
               <div
                 style={{
                   display: 'flex',
@@ -327,7 +348,9 @@ const FlawBasic = (props: Props) => {
                 />
                 <span>{props.detail?.priority?.content_txt || '--'}</span>
               </div>
-              {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
+              {isCanEdit && !props.isPreview ? (
+                <IconFontWrapEdit type="down-icon" />
+              ) : null}
             </CanOperation>
           </div>
         </ChangePriorityPopover>
@@ -350,17 +373,23 @@ const FlawBasic = (props: Props) => {
               width: '100%',
             }}
           >
-            <CanOperation isCanEdit={isCanEdit}>
+            <CanOperation isCanEdit={isCanEdit} isPreview={props.isPreview}>
               <SeverityWrap
                 style={{
                   background: props.detail.severity?.color,
                   width: 'max-content',
-                  cursor: isCanEdit ? 'pointer' : 'initial',
+                  cursor: props.isPreview
+                    ? 'default'
+                    : isCanEdit
+                    ? 'pointer'
+                    : 'initial',
                 }}
               >
                 {props.detail.severity?.content ?? '--'}
               </SeverityWrap>
-              {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
+              {isCanEdit && !props.isPreview ? (
+                <IconFontWrapEdit type="down-icon" />
+              ) : null}
             </CanOperation>
           </div>
         </ChangeSeverityPopover>

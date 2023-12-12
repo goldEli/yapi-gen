@@ -163,6 +163,7 @@ const DetailDemand = (props: DetailDemand, ref: any) => {
         )}
         {!isEditInfo && !editInfo && (
           <TextWrapEdit
+            style={{ cursor: props?.isPreview ? 'default' : '' }}
             onClick={e => {
               e.stopPropagation()
               if (props.isPreview) {

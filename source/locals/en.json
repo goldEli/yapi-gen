@@ -2647,5 +2647,6 @@
   "includingResignedPersonnel": "Including resigned personnel",
   "relativeNeed": "Please select associated task",
   "theTaskHasBeenDeletedAndCannotBeViewed": "The task has been deleted and cannot be viewed",
-  "theTaskHasBeenDeletedAndDetailsCannotBeViewed": "The task has been deleted and details cannot be viewed"
+  "theTaskHasBeenDeletedAndDetailsCannotBeViewed": "The task has been deleted and details cannot be viewed",
+  "theProjectsIParticipatedIn": "The projects I participated in"
 }
