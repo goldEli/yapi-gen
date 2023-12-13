@@ -21,6 +21,7 @@ import { setDemandInfo } from '@store/demand'
 import { getMessage } from '@/components/Message'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import ScheduleRecord from '@/components/ScheduleRecord'
+import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
 
 const DemandDetail = () => {
   const dId = useRef<any>()
@@ -274,6 +275,9 @@ const DemandDetail = () => {
             />
           </InfoItem>
         )}
+        <InfoItem>
+          <DemandComment detail={demandInfo} isOpenInfo />
+        </InfoItem>
       </div>
     </WrapLeft>
   )

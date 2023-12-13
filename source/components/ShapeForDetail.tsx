@@ -378,8 +378,6 @@ const ShapeContentForDetail = (props: any) => {
   }
 
   const init2 = async () => {
-    // console.log(props.row, '=111111',)
-    // if (props.row.project_id !== getProjectIdByUrl()) return
     setLoading(false)
     setActiveStatus(props.row.status)
     const res2 = await getProjectMember(projectId)
@@ -484,8 +482,6 @@ const ShapeContentForDetail = (props: any) => {
 
     return (newD ? newD : []).concat(newA, newB)
   }
-
-  console.log(rightList?.fields, '=rightList?.fields')
 
   return (
     <Contain>

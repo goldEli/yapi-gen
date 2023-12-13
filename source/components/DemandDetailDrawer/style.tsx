@@ -585,7 +585,6 @@ export const CommentTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;

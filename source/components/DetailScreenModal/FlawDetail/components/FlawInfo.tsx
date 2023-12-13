@@ -8,15 +8,13 @@ import {
   FlawInfoWrap,
   SprintDetailDragLine,
   SprintDetailMouseDom,
-  TitleWrap,
   WrapRight,
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
-import { Tooltip } from 'antd'
-import { CloseWrap, ConfigWrap } from '@/components/StyleCommon'
+import { ConfigWrap } from '@/components/StyleCommon'
 import { detailTimeFormat } from '@/tools'
 import { useTranslation } from 'react-i18next'
-import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
+import { getFlawInfo } from '@store/flaw/flaw.thunk'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
@@ -30,12 +28,10 @@ const FlawInfo = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const LeftDom = useRef<HTMLDivElement>(null)
   const basicInfoDom = useRef<HTMLDivElement>(null)
-  const { flawInfo, flawCommentList } = useSelector(store => store.flaw)
+  const { flawInfo } = useSelector(store => store.flaw)
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
-  const [activeTabs, setActiveTabs] = useState(1)
   const { projectInfo, isDetailScreenModal } = useSelector(
     store => store.project,
   )
@@ -61,18 +57,7 @@ const FlawInfo = () => {
     )
     navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
   }
-  useEffect(() => {
-    if (flawInfo?.id && projectInfo?.id) {
-      dispatch(
-        getFlawCommentList({
-          projectId: projectInfo?.id,
-          id: flawInfo.id || 0,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
-    }
-  }, [flawInfo])
+
   // 拖动线条
   const onDragLine = () => {
     document.onmousemove = e => {
@@ -133,6 +118,11 @@ const FlawInfo = () => {
             <CommonIconFont type="review" size={64} />
           </div>
         )}
+        <div style={{ margin: '16px', background: '#f5f5f7' }}>
+          <FlawInfoInfoItem>
+            <FlawComment detail={flawInfo} isOpenInfo />
+          </FlawInfoInfoItem>
+        </div>
       </FlawInfoLeft>
       <WrapRight
         ref={basicInfoDom}
@@ -145,29 +135,12 @@ const FlawInfo = () => {
         >
           <SprintDetailDragLine active={focus} className="line" />
         </SprintDetailMouseDom>
-        <TitleWrap activeTabs={activeTabs}>
-          <div className="leftWrap" onClick={() => setActiveTabs(1)}>
-            {t('newlyAdd.basicInfo')}
-          </div>
-          <div className="rightWrap" onClick={() => setActiveTabs(2)}>
-            {t('common.comment')}{' '}
-            {flawCommentList?.list?.length > 99
-              ? `${flawCommentList?.list?.length}+`
-              : flawCommentList?.list?.length}
-          </div>
-        </TitleWrap>
-        {activeTabs === 1 && (
-          <FlawBasic
-            detail={flawInfo}
-            onUpdate={onUpdate}
-            isOpen
-            isInfoPage
-            isPreview={(params?.employeeCurrentId || 0) > 0}
-          />
-        )}
-        {activeTabs === 2 && (
-          <FlawComment isOpen={activeTabs === 2} detail={flawInfo} isOpenInfo />
-        )}
+        <FlawBasic
+          detail={flawInfo}
+          onUpdate={onUpdate}
+          isInfoPage
+          isPreview={(params?.employeeCurrentId || 0) > 0}
+        />
         <BasicFooter style={{ width: '94%' }}>
           <div className="textBox">
             <div>

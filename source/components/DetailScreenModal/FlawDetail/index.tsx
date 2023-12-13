@@ -37,7 +37,6 @@ import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import {
   setAddWorkItemModal,
   setIsUpdateAddWorkItem,
-  setIsUpdateChangeLog,
   setIsUpdateStatus,
 } from '@store/project'
 import { getMessage } from '@/components/Message'
@@ -46,7 +45,6 @@ import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setFlawInfo } from '@store/flaw'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
-import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import CopyIcon from '@/components/CopyIcon'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover'
@@ -391,6 +389,14 @@ const FlawDetail = () => {
     await updateFlawStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    dispatch(
+      getFlawCommentList({
+        projectId: flawInfo.projectId || 0,
+        id: flawInfo.id || 0,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // 是否审核

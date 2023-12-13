@@ -979,6 +979,7 @@ const FlawDetailDrawer = () => {
                   detail={drawerInfo}
                   onUpdate={onOperationUpdate}
                   isPreview={isPreview}
+                  hasPadding
                 />
                 <div
                   id="tab_defectComment"

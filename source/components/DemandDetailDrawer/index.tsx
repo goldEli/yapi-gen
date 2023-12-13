@@ -45,7 +45,6 @@ import {
   DrawerHeader,
   SkeletonStatus,
   DetailFooter,
-  CommentTitle,
   LayerBox,
   BtnWrap,
   ProgressBox,

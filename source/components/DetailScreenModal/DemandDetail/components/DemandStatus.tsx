@@ -17,7 +17,6 @@ import { getDemandInfo, getShapeLeft } from '@/services/demand'
 import { setDemandInfo } from '@store/demand'
 import { getMessage } from '@/components/Message'
 import { setIsUpdateAddWorkItem, setIsUpdateStatus } from '@store/project'
-import { getDemandCommentList } from '@store/demand/demand.thunk'
 import StatusExamine from '@/components/StatusExamine'
 
 const StatusWrap = styled.div({

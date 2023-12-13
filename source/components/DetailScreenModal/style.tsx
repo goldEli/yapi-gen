@@ -16,7 +16,7 @@ export const ModalWrap = styled(Modal)<{
   all?: boolean
 }>`
   max-width: ${props => (props.all ? '80vw' : '100vw')};
-  margin-left: ${props => (props.all ? 'auto' : '0')};
+  margin-left: ${props => (props.all ? 'auto' : '80px')};
   .ant-modal-body {
     background-color: var(--neutral-white-d5);
     border-radius: 6px;

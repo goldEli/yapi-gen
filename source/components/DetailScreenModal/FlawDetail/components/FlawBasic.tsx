@@ -31,7 +31,6 @@ import CommonProgress from '@/components/CommonProgress'
 
 interface Props {
   detail?: any
-  isOpen?: boolean
   onUpdate(): void
   hasPadding?: boolean
   // 是否是详情页面
@@ -76,23 +75,6 @@ const FlawBasic = (props: Props) => {
     projectInfo.projectPermissions?.filter(
       (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
-
-  // 修改进度
-  const onChangeSchedule = async () => {
-    if (
-      props.detail?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
-      props.detail.status.is_start !== 1 &&
-      props.detail.status.is_end !== 1
-    ) {
-      const obj = {
-        projectId: props.detail.projectId,
-        id: props.detail?.id,
-        otherParams: { schedule },
-      }
-      await updateFlawTableParams(obj)
-      props.onUpdate?.()
-    }
-  }
 
   // 修改优先级
   const onChangeState = async (item: any) => {
@@ -446,36 +428,33 @@ const FlawBasic = (props: Props) => {
     <div
       style={{
         width: '100%',
-        paddingLeft: props.hasPadding ? '24px' : 24,
-        height: 'calc(100% - 108px)',
+        paddingLeft: props.hasPadding ? '24px' : 0,
+        height: 'calc(100% - 48px)',
         overflowY: 'auto',
         overflowX: 'hidden',
         backgroundColor: 'white',
-        marginTop: '12px',
       }}
       id="tab_info"
       className="info_item_tab"
     >
-      <div style={{ marginBottom: 20 }}>
-        {props.isInfoPage ? (
-          <CommonProgress
-            update={props?.detail}
-            isTable={false}
-            percent={props?.detail?.schedule}
-            type="flaw"
-            hasEdit={
-              !!isCanEdit &&
-              !props.isPreview &&
-              props?.detail?.user
-                ?.map((i: any) => i?.user?.id)
-                ?.includes(userInfo?.id)
-            }
-            id={props?.detail?.id}
-            project_id={props?.detail?.projectId}
-            onConfirm={props.onUpdate}
-          />
-        ) : null}
-      </div>
+      {props.isInfoPage && (
+        <CommonProgress
+          update={props?.detail}
+          isTable={false}
+          percent={props?.detail?.schedule}
+          type="flaw"
+          hasEdit={
+            !!isCanEdit &&
+            !props.isPreview &&
+            props?.detail?.user
+              ?.map((i: any) => i?.user?.id)
+              ?.includes(userInfo?.id)
+          }
+          id={props?.detail?.id}
+          project_id={props?.detail?.projectId}
+          onConfirm={props.onUpdate}
+        />
+      )}
 
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList

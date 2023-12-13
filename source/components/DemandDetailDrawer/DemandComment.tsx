@@ -13,7 +13,7 @@ import {
 import { delCommonAt } from '@/services/user'
 import { bytesToSize, getIdsForAt } from '@/tools'
 import { OmitText } from '@star-yun/ui'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { Editor } from 'ifunuikit'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -43,10 +43,11 @@ import {
 } from './style'
 import useMkeyDown from '@/hooks/useMkeyDown'
 import CommentEditor from '../CommentEditor'
+import { getDemandCommentList } from '@store/demand/demand.thunk'
+import { setDemandCommentList } from '@store/demand'
 
 interface Props {
   detail?: any
-  isOpen?: boolean
   onRef?: any
   // 是否是新开需求详情
   isOpenInfo?: boolean
@@ -54,17 +55,11 @@ interface Props {
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 const DemandComment = (props: Props) => {
   const attachRef = useRef<any>(null)
+  const dispatch = useDispatch()
   const [t]: any = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
-  const [pictureList, setPictureList] = useState({
-    imageArray: [],
-    index: 0,
-  })
-  const [previewOpen, setPreviewOpen] = useState<boolean>(false)
+  const { demandCommentList } = useSelector(store => store.demand)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleComment, setIsVisibleComment] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
@@ -91,54 +86,21 @@ const DemandComment = (props: Props) => {
     ).length > 0
 
   // 获取评论列表
-  const getList = async () => {
-    const result = await getCommentList({
-      projectId: props.detail.projectId,
-      demandId: props.detail.id,
-      page: 1,
-      pageSize: 999,
-    })
-    setDataList(result)
+  const onUpdateComment = async () => {
+    dispatch(
+      getDemandCommentList({
+        projectId: props.detail.projectId,
+        demandId: props.detail.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // 删除评论
   const onDeleteComment = (item: any) => {
     setIsVisible(true)
     setIsDeleteId(item.id)
-  }
-
-  const onReview = (item: any, attachList: any) => {
-    setPictureList({
-      imageArray: attachList
-        ?.filter((j: any) => imgs.includes(j.attachment.ext))
-        ?.map((k: any, index: any) => ({
-          src: k.attachment.path,
-          index,
-        })),
-      index: attachList
-        ?.filter((j: any) => imgs.includes(j.attachment.ext))
-        ?.findIndex((i: any) => i.attachment.path === item.path),
-    })
-    setPreviewOpen(true)
-  }
-
-  const downloadIamge = (src: string, name1: string) => {
-    let urls = ''
-    urls = `${src}?t=${new Date().getTime()}`
-    fetch(urls).then(response => {
-      response.blob().then(myBlob => {
-        const href = URL.createObjectURL(myBlob)
-        const a = document.createElement('a')
-        a.href = href
-        a.download = name1
-        a.click()
-      })
-    })
-  }
-
-  // 下载图片
-  const onDownload = (url: string, name1: string) => {
-    downloadIamge(url, name1)
   }
 
   // 删除附件
@@ -149,7 +111,7 @@ const DemandComment = (props: Props) => {
       att_id: id,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    getList()
+    onUpdateComment()
   }
 
   const onDeleteConfirm = async () => {
@@ -158,7 +120,7 @@ const DemandComment = (props: Props) => {
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDeleteId(0)
       setIsVisible(false)
-      getList()
+      onUpdateComment()
     } catch (error) {
       //
     }
@@ -181,7 +143,7 @@ const DemandComment = (props: Props) => {
         a_user_ids: params.a_user_ids,
       })
       getMessage({ msg: t('project.replaySuccess'), type: 'success' })
-      getList()
+      onUpdateComment()
       setIsVisibleComment(false)
     } catch (error) {
       //
@@ -191,11 +153,11 @@ const DemandComment = (props: Props) => {
   // 点击编辑评论按钮
   const onEdit = (item: any) => {
     const result =
-      dataList?.list.map((i: any) => ({
+      demandCommentList?.list.map((i: any) => ({
         ...i,
         isEdit: i.id === item.id ? true : false,
       })) || []
-    setDataList({ list: result })
+    dispatch(setDemandCommentList({ list: result }))
   }
 
   // 编辑评论
@@ -211,23 +173,11 @@ const DemandComment = (props: Props) => {
       ids: getIdsForAt(value),
     })
     getMessage({ type: 'success', msg: t('common.editSuccess') })
-    getList()
+    onUpdateComment()
   }
-
-  useEffect(() => {
-    if (props.isOpen) {
-      getList()
-    }
-  }, [props.isOpen])
 
   return (
     <div className={props.isOpenInfo ? haveAuto : ''}>
-      <EditComment
-        projectId={props.detail.projectId}
-        visibleEdit={isVisibleComment}
-        editClose={() => setIsVisibleComment(false)}
-        editConfirm={onAddConfirm}
-      />
       <div>
         <DeleteConfirm
           text={t('mark.cd')}
@@ -238,16 +188,6 @@ const DemandComment = (props: Props) => {
         {props.isOpenInfo && (
           <CommentTitle>
             <Label>{t('requirements_review')}</Label>
-            {isComment && (
-              <CommonButton
-                onClick={() => setIsVisibleComment(true)}
-                type="primaryText"
-                iconPlacement="left"
-                icon="plus"
-              >
-                {t('add_a_comment')}
-              </CommonButton>
-            )}
           </CommentTitle>
         )}
 
@@ -267,10 +207,10 @@ const DemandComment = (props: Props) => {
           </>
         )}
 
-        {!!dataList?.list &&
-          (dataList?.list?.length > 0 ? (
+        {!!demandCommentList?.list &&
+          (demandCommentList?.list?.length > 0 ? (
             <div>
-              {dataList?.list?.map((item: any) => (
+              {demandCommentList?.list?.map((item: any) => (
                 <CommentItem key={item.id}>
                   <CommonUserAvatar avatar={item.avatar} />
                   <TextWrap>

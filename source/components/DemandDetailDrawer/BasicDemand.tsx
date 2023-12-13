@@ -32,7 +32,6 @@ import { setIsRefresh } from '@store/user'
 
 interface Props {
   detail?: any
-  isOpen?: boolean
   onUpdate(): void
   isInfoPage?: boolean
   isPreview?: boolean
@@ -363,7 +362,7 @@ const BasicDemand = (props: Props) => {
       style={{
         backgroundColor: 'white',
         marginBottom: 12,
-        padding: '12px 24px',
+        padding: props?.isInfoPage ? '12px 24px 12px 0' : '12px 24px ',
       }}
       id="tab_info"
       className="info_item_tab"

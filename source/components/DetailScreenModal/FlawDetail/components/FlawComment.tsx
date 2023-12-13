@@ -4,7 +4,7 @@
 /* eslint-disable no-undefined */
 import { bytesToSize, getIdsForAt } from '@/tools'
 import { OmitText } from '@star-yun/ui'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { Editor } from 'ifunuikit'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -32,18 +32,18 @@ import { CloseWrap, HiddenText } from '@/components/StyleCommon'
 import UploadAttach, { fileIconMap } from '@/components/UploadAttach'
 import NoData from '@/components/NoData'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { getFlawCommentList } from '@store/flaw/flaw.thunk'
 import {
   addFlawComment,
   deleteFlawComment,
   deleteFlawCommentAttach,
-  getFlawCommentList,
   updateFlawComment,
 } from '@/services/flaw'
 import CommentEditor from '@/components/CommentEditor'
+import { setFlawCommentList } from '@store/flaw'
 
 interface Props {
   detail?: any
-  isOpen?: boolean
   onRef?: any
   // 是否是缺陷详情
   isOpenInfo?: boolean
@@ -51,17 +51,12 @@ interface Props {
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 const FlawComment = (props: Props) => {
   const attachRef = useRef<any>(null)
+  const dispatch = useDispatch()
   const [t]: any = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
-  const [pictureList, setPictureList] = useState({
-    imageArray: [],
-    index: 0,
-  })
-  const [previewOpen, setPreviewOpen] = useState<boolean>(false)
+  const { flawCommentList } = useSelector(store => store.flaw)
+
   const [isVisibleComment, setIsVisibleComment] = useState(false)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
 
@@ -81,49 +76,16 @@ const FlawComment = (props: Props) => {
           : 'b/transaction/comment'),
     ).length > 0
 
-  // 获取评论列表
-  const getList = async () => {
-    const result = await getFlawCommentList({
-      projectId: props.detail.projectId,
-      id: props.detail.id,
-      page: 1,
-      pageSize: 999,
-    })
-    setDataList(result)
-  }
-
-  const onReview = (item: any, attachList: any) => {
-    setPictureList({
-      imageArray: attachList
-        ?.filter((j: any) => imgs.includes(j.attachment.ext))
-        ?.map((k: any, index: any) => ({
-          src: k.attachment.path,
-          index,
-        })),
-      index: attachList
-        ?.filter((j: any) => imgs.includes(j.attachment.ext))
-        ?.findIndex((i: any) => i.attachment.path === item.path),
-    })
-    setPreviewOpen(true)
-  }
-
-  const downloadIamge = (src: string, name1: string) => {
-    let urls = ''
-    urls = `${src}?t=${new Date().getTime()}`
-    fetch(urls).then(response => {
-      response.blob().then(myBlob => {
-        const href = URL.createObjectURL(myBlob)
-        const a = document.createElement('a')
-        a.href = href
-        a.download = name1
-        a.click()
-      })
-    })
-  }
-
-  // 下载图片
-  const onDownload = (url: string, name1: string) => {
-    downloadIamge(url, name1)
+  // 更新评论
+  const onUpdateComment = () => {
+    dispatch(
+      getFlawCommentList({
+        projectId: props.detail.projectId,
+        id: props.detail.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // 删除附件
@@ -134,24 +96,24 @@ const FlawComment = (props: Props) => {
       att_id: id,
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    getList()
+    onUpdateComment()
   }
 
   // 删除确认
   const onDeleteConfirm = async (item: any) => {
     await deleteFlawComment({ projectId: props.detail.projectId, id: item.id })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    getList()
+    onUpdateComment()
   }
 
   // 点击编辑评论按钮
   const onEdit = (item: any) => {
     const result =
-      dataList?.list.map((i: any) => ({
+      flawCommentList?.list.map((i: any) => ({
         ...i,
         isEdit: i.id === item.id ? true : false,
       })) || []
-    setDataList({ list: result })
+    dispatch(setFlawCommentList({ list: result }))
   }
 
   // 编辑评论
@@ -167,7 +129,7 @@ const FlawComment = (props: Props) => {
       ids: getIdsForAt(value),
     })
     getMessage({ type: 'success', msg: t('common.editSuccess') })
-    getList()
+    onUpdateComment()
   }
 
   // 删除评论
@@ -200,46 +162,24 @@ const FlawComment = (props: Props) => {
         a_user_ids: params.a_user_ids,
       })
       getMessage({ msg: t('project.replaySuccess'), type: 'success' })
-      getList()
+      onUpdateComment()
       setIsVisibleComment(false)
     } catch (error) {
       //
     }
   }
 
-  useEffect(() => {
-    if (props.isOpen && props.detail.id) {
-      getList()
-    }
-  }, [props.isOpen || props.detail.id])
-
   return (
     <div className={props.isOpenInfo ? haveAuto : ''}>
-      <EditComment
-        projectId={props.detail.projectId}
-        visibleEdit={isVisibleComment}
-        editClose={() => setIsVisibleComment(false)}
-        editConfirm={onAddConfirm}
-      />
       <DeleteConfirmModal />
       <div>
         <CommentTitle>
           <Label style={{ marginBottom: 0 }}>{t('requirements_review')}</Label>
-          {isComment && (
-            <CommonButton
-              onClick={() => setIsVisibleComment(true)}
-              type="primaryText"
-              iconPlacement="left"
-              icon="plus"
-            >
-              {t('add_a_comment')}
-            </CommonButton>
-          )}
         </CommentTitle>
-        {!!dataList?.list &&
-          (dataList?.list?.length > 0 ? (
+        {!!flawCommentList?.list &&
+          (flawCommentList?.list?.length > 0 ? (
             <div>
-              {dataList?.list?.map((item: any) => (
+              {flawCommentList?.list?.map((item: any) => (
                 <CommentItem key={item.id}>
                   <CommonUserAvatar avatar={item.avatar} />
                   <TextWrap>

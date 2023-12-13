@@ -76,6 +76,14 @@ const FlawStatus = (props: any) => {
       await updateFlawStatus(res1)
       getMessage({ msg: t('common.circulationSuccess'), type: 'success' })
       dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+      dispatch(
+        getFlawCommentList({
+          projectId: props.pid,
+          id: props.sid,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
     } catch (error) {
       //
     }
@@ -87,6 +95,14 @@ const FlawStatus = (props: any) => {
     getMessage({ type: 'success', msg: t('other.cancelExamineSuccess') })
     dispatch(getFlawInfo({ projectId: props.pid, id: props.sid }))
     dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    dispatch(
+      getFlawCommentList({
+        projectId: props.pid,
+        id: props.sid,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // useEffect(() => {
