@@ -2650,5 +2650,16 @@
   "theTaskHasBeenDeletedAndDetailsCannotBeViewed": "该任务已被删除，无法查看详情",
   "theProjectsIParticipatedIn": "我参与的项目",
   "searchProjectName": "搜索项目名称",
-  "numberOfMembers": "成员人数"
+  "numberOfMembers": "成员人数",
+  "projectOperations": "项目操作",
+  "deleteItem": "删除项目",
+  "editProject": "编辑项目",
+  "closeProject": "关闭项目",
+  "suspendProject": "暂停项目",
+  "openProject": "开启项目",
+  "theNameEnteredMustMatchTheNameOfTheDeletedProject": "输入的名称必须与删除项目名称一致",
+  "afterDeletioncommaItCannotBeRestoredPleaseOperateWithCaution": "删除后不可恢复请谨慎操作",
+  "entryName": "项目名称",
+  "pleaseEnterTheCurrentProjectName": "请输入当前项目名称",
+  "deleteAndName": "确认删除项目"
 }

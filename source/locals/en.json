@@ -2650,5 +2650,16 @@
   "theTaskHasBeenDeletedAndDetailsCannotBeViewed": "The task has been deleted and details cannot be viewed",
   "theProjectsIParticipatedIn": "The projects I participated in",
   "searchProjectName": "Search project name",
-  "numberOfMembers": "Number of members"
+  "numberOfMembers": "Number of members",
+  "projectOperations": "Project Operations",
+  "deleteItem": "Delete item",
+  "editProject": "Edit Project",
+  "closeProject": "Close project",
+  "suspendProject": "Suspend project",
+  "openProject": "Open Project",
+  "theNameEnteredMustMatchTheNameOfTheDeletedProject": "The name entered must match the name of the deleted project",
+  "afterDeletioncommaItCannotBeRestoredPleaseOperateWithCaution": "After deletion, it cannot be restored. Please operate with caution",
+  "entryName": "Entry name",
+  "pleaseEnterTheCurrentProjectName": "Please enter the current project name",
+  "deleteAndName": "Are you sure to delete project"
 }

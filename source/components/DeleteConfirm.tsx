@@ -22,6 +22,10 @@ export interface DeleteConfirmProps {
   onCancelState?: boolean
   okText?: string
   cancelText?: string
+  width?: number
+  // 是否不带图标
+  hasIcon?: boolean
+  isRed?: boolean
 }
 
 const ModalHeader = styled.div({
@@ -78,7 +82,7 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
       footer={false}
       bodyStyle={{ padding: '20px 0px 0px 0px' }}
       closable={false}
-      width={420}
+      width={props?.width ?? 420}
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"
@@ -94,10 +98,13 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
     >
       <ModalHeader>
         <Title>
-          <IconFont
-            style={{ fontSize: 24, color: 'var(--function-warning)' }}
-            type="Warning"
-          />
+          {props.hasIcon && (
+            <IconFont
+              style={{ fontSize: 24, color: 'var(--function-warning)' }}
+              type="Warning"
+            />
+          )}
+
           <div
             style={{
               width: '260px',
@@ -105,6 +112,7 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
+              marginLeft: props?.hasIcon ? 12 : 0,
             }}
           >
             {props.title ? props.title : t('confirmationOfDeletion')}
@@ -124,14 +132,16 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
           </CloseWrap>
         )}
       </ModalHeader>
-      <ModalContent>{props.children ?? props.text}</ModalContent>
+      <ModalContent style={{ paddingLeft: props?.hasIcon ? 60 : 24 }}>
+        {props.children ?? props.text}
+      </ModalContent>
       <ModalFooter size={16}>
         {!props?.notCancel && (
           <CommonButton onClick={props.onChangeVisible} type="light">
             {props?.cancelText ? props?.cancelText : t('cancel')}
           </CommonButton>
         )}
-        <CommonButton type="primary" onClick={props.onConfirm}>
+        <CommonButton type="dangerDel" onClick={props.onConfirm}>
           {props?.okText ? props?.okText : t('confirm')}
         </CommonButton>
       </ModalFooter>
