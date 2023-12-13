@@ -18,14 +18,10 @@ import {
   setProjectSort,
 } from '@/services/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import GuideModal from '@/components/GuideModal'
-import { updateCompanyUserPreferenceConfig } from '@/services/user'
-import { getLoginDetail } from '@store/user/user.thunk'
 
 const ProjectIndex = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { userPreferenceConfig } = useSelector(store => store.user)
   const { isUpdateProject } = useSelector(store => store.createProject)
   // 缩略图还是列表
   const [isSpinning, setIsSpinning] = useState(false)
@@ -52,22 +48,6 @@ const ProjectIndex = () => {
     order: { value: '', key: '' },
     isGrid: false,
   })
-
-  const inform = [
-    {
-      key: 0,
-      title: t('project.stepTitle1'),
-      desc: t('project.stepDesc1'),
-      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/2.7.1/guide_1.jpg',
-    },
-    {
-      key: 1,
-      title: t('project.stepTitle2'),
-      desc: t('project.stepDesc2'),
-      extra: t('project.stepExtra'),
-      img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/2.7.1/guide_2.jpg',
-    },
-  ]
 
   // 获取数据
   const getList = async (params: any, notSpin?: boolean) => {
@@ -261,24 +241,6 @@ const ProjectIndex = () => {
           )}
         </Spin>
       </ProjectWrap>
-      {userPreferenceConfig?.guidePageConfig?.project_list === 1 &&
-      filterParams?.isGrid ? (
-        <GuideModal
-          width={784}
-          height={700}
-          inform={inform}
-          close={async () => {
-            await updateCompanyUserPreferenceConfig({
-              id: userPreferenceConfig?.id,
-              previewModel: userPreferenceConfig.previewModel,
-              guidePageConfig: {
-                project_list: 2,
-              },
-            })
-            dispatch(getLoginDetail())
-          }}
-        />
-      ) : null}
     </ProjectIndexWrap>
   )
 }

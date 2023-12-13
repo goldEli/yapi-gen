@@ -274,11 +274,9 @@ export const getProjectInfo: any = async (params: any) => {
 
 export const addProject: any = async (params: any) => {
   const res = await http.post<any>('addProject', {
-    is_public: params?.isPublic,
     name: params.name,
     info: params?.info,
     cover: params?.cover,
-    team_id: params?.team_id,
     prefix: params?.prefix,
     groups: params?.groups,
     leader_id: params?.leader_id,
@@ -298,11 +296,9 @@ export const addProject: any = async (params: any) => {
 
 export const updateProject: any = async (params: any) => {
   const res = await http.put<any>('updateProject', {
-    is_public: params?.isPublic,
     name: params.name,
     info: params?.info,
     cover: params?.cover,
-    team_id: params?.team_id,
     prefix: params?.prefix,
     groups: params?.groups,
     leader_id: params?.leader_id,

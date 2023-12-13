@@ -135,21 +135,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
     setFilterParams(resultParams)
   }
 
-  //   重置
-  const onReset = () => {
-    setFilterParams({
-      status: 0,
-      keyword: '',
-      time: [],
-      otherType: [1, 2],
-      order: { value: '', key: '' },
-      pageObj: {
-        page: 1,
-        size: 30,
-      },
-    })
-  }
-
   // 点击创建项目
   const onCreateProject = () => {
     dispatch({ type: 'createProject/changeCreateVisible', payload: true })
@@ -234,7 +219,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
             value={filterParams.otherType}
             onChange={(values: any) => onChangeParams('otherType', values)}
           />
-          <ResetWrap onClick={onReset}>{t('reset')}</ResetWrap>
         </FilterLeftWrap>
         <FilterRightWrap>
           <DropDownMenu
@@ -248,11 +232,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
             </div>
           </DropDownMenu>
           <DividerWrap type="vertical" />
-          <ScreenMinHover
-            onClick={() => props?.onChangeParamsUpdate(filterParams)}
-            icon="sync"
-            label={t('common.refresh')}
-          />
         </FilterRightWrap>
       </HeaderBottom>
     </HeaderFilterWrap>

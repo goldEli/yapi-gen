@@ -5,16 +5,8 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { uploadFileByTask } from '@/services/cos'
-import {
-  getAffiliation,
-  getAffiliationUser,
-  getProjectInfoOnly,
-} from '@/services/project'
-import {
-  changeCreateVisible,
-  editProject,
-  setIsUpdateProject,
-} from '@store/create-propject'
+import { getAffiliationUser, getProjectInfoOnly } from '@/services/project'
+import { changeCreateVisible, editProject } from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { DatePicker, Form, Input, Select, Tooltip, Upload } from 'antd'
@@ -113,12 +105,8 @@ const CreateAProjectForm = () => {
   const [leaderId, setLeaderId] = useState<any>(0)
   const [lock, setLock] = useState(true)
   const [canChooseLeader, setCanChooseLeader] = useState(true)
-  const { createVisible, isEditId, groupId, isUpdateProject } = useSelector(
-    state => state.createProject,
-  )
+  const { createVisible, isEditId } = useSelector(state => state.createProject)
   const [selectLeaders, setSelectLeaders] = useState<any>([])
-  const [affiliations, setAffiliations] = useState<any>([])
-  const [pros, setPros] = useState<any>([])
   const [names, setNames] = useState<any>()
   const [pey, setPey] = useState<any>()
   const [user, setUser] = useState<any>()
@@ -231,28 +219,6 @@ const CreateAProjectForm = () => {
     }
   }
 
-  const getGroupData = async () => {
-    // 获取所属
-    const result2 = await getAffiliation()
-
-    setAffiliations(
-      result2.map((i: any) => ({
-        name: `${
-          i.team_id === 0
-            ? t('enterprise_project2')
-            : t('demandSettingSide.teamProject')
-        }/${i.name}`,
-        id: i.team_id,
-        img: i.logo,
-      })),
-    )
-    form.setFieldsValue({
-      team_id: 0,
-      groups: groupId ? [groupId] : undefined,
-      isPublic: 2,
-    })
-  }
-
   //编辑项目逻辑
   const getProjectInfo = async () => {
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
@@ -270,11 +236,9 @@ const CreateAProjectForm = () => {
     // setMyCover(res.cover)
     form.setFieldsValue({
       name: res.name,
-      team_id: res.team_id,
       prefix: res.prefix,
       // eslint-disable-next-line no-undefined
       leader_id: res.leader_id || undefined,
-      isPublic: res.is_public,
       groups: res.groups.map((i: any) => i.id),
       info: res.info,
       expected_start_at: res.expected_start_at
@@ -285,6 +249,7 @@ const CreateAProjectForm = () => {
     setLeaderId(res.team_id)
     setCanChooseLeader(false)
   }
+
   const getProjectInfo2 = async () => {
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
     const res2 = await getAffiliationUser(res.team_id)
@@ -296,10 +261,6 @@ const CreateAProjectForm = () => {
       })),
     )
     setActiveCover(res.cover)
-    // setMyCover(res.cover)
-    form.setFieldsValue({
-      team_id: res.team_id,
-    })
     setLeaderId(res.team_id)
     setCanChooseLeader(false)
   }
@@ -315,31 +276,7 @@ const CreateAProjectForm = () => {
       })),
     )
   }
-  const pro = [
-    {
-      name: t('project.companyOpen'),
-      id: 1,
-      dec: t(
-        'all_members_in_the_enterprise_can_be_seen_only_project_members_can_edit',
-      ),
-    },
-    {
-      name: t('common.privateProject'),
-      id: 2,
-      dec: t('only_project_members_can_view_edits'),
-    },
-    {
-      name: t('the_team_is_open'),
-      id: 3,
-      dec: t('all_team_members_are_visible_only_project_members_can_edit'),
-    },
-  ]
   useEffect(() => {
-    if (leaderId === 0) {
-      setPros(pro.slice(0, 2))
-    } else {
-      setPros(pro)
-    }
     if (leaderId || leaderId === 0) {
       getLeader()
     }
@@ -353,11 +290,7 @@ const CreateAProjectForm = () => {
 
   useEffect(() => {
     if (createVisible) {
-      getGroupData()
       setActiveCover(covers[0]?.path)
-      form.setFieldsValue({
-        isPublic: 2,
-      })
       if (isEditId) {
         setStep(3)
         setType(0)
@@ -615,44 +548,6 @@ const CreateAProjectForm = () => {
                       autoComplete="off"
                     />
                   </Form.Item>
-
-                  <Form.Item
-                    label={<FormTitleSmall text={t('affiliated')} />}
-                    name="team_id"
-                    rules={[{ required: true, message: '' }]}
-                  >
-                    <CustomSelect
-                      disabled={
-                        !!isEditId || multipleSelectionItems.length >= 1
-                      }
-                      placeholder={t('please_select_your_affiliation')}
-                      onChange={(value: any) => {
-                        setLeaderId(value)
-                        // eslint-disable-next-line no-undefined
-                        form.setFieldsValue({
-                          leader_id: undefined,
-                          isPublic: undefined,
-                        })
-                      }}
-                    >
-                      {affiliations.map((i: any) => {
-                        return (
-                          <Select.Option value={i.id} key={i.id} label={i.name}>
-                            <MoreOptions
-                              type="project"
-                              name={i.name}
-                              dec={i.dec}
-                              img={
-                                i.img?.length > 0
-                                  ? i.img
-                                  : 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/normalCompany.jpg'
-                              }
-                            />
-                          </Select.Option>
-                        )
-                      })}
-                    </CustomSelect>
-                  </Form.Item>
                   <Form.Item
                     label={
                       <div>
@@ -717,28 +612,6 @@ const CreateAProjectForm = () => {
                             name={i.name}
                             dec={i.dec}
                             img={i.img}
-                          />
-                        </Select.Option>
-                      ))}
-                    </CustomSelect>
-                  </Form.Item>
-                  <Form.Item
-                    rules={[{ required: true, message: '' }]}
-                    label={<FormTitleSmall text={t('Permission')} />}
-                    name="isPublic"
-                    initialValue={2}
-                  >
-                    <CustomSelect
-                      // disabled={canChooseLeader}
-                      placeholder={t('please_select_permissions')}
-                      optionLabelProp="label"
-                    >
-                      {pros.map((i: any) => (
-                        <Select.Option value={i.id} key={i.id} label={i.name}>
-                          <MoreOptions
-                            type="promise"
-                            name={i.name}
-                            dec={i.dec}
                           />
                         </Select.Option>
                       ))}
