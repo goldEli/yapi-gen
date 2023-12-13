@@ -27,17 +27,11 @@ export const getProjectList: any = async (params: any) => {
       // 搜索值
       keyword: params?.searchValue,
       // 是否是用户参与
-      self: params?.project_types?.includes(3) ? 1 : 0,
+      self: 0,
       // 项目状态
       status: params.status === 5 ? '' : params.status,
       // 是否是全部 -- 例查下拉列表
       all: params.all ? 1 : 0,
-      // 项目类型 迭代1冲刺2
-      project_types: params?.project_types?.filter((i: any) => i !== 3),
-      // 项目开始时间
-      expected_start_at: params.time?.[0] ?? '',
-      // 项目结束时间
-      expected_end_at: params.time?.[1] ?? '',
       // 是否是最近查看
       is_recent: params?.status === 5 ? 1 : '',
     },

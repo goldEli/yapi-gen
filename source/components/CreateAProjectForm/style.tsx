@@ -13,9 +13,9 @@ export const FormFooter = styled.div`
 export const Wrap = styled.div`
   width: 410px;
   padding-left: 24px;
-  max-height: 60vh;
+  /* max-height: 60vh; */
   overflow-y: auto;
-  padding-right: 24px;
+  /* padding-right: 24px; */
 `
 
 export const CoverAreaWrap = styled.div`

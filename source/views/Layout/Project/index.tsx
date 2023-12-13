@@ -40,13 +40,9 @@ const ProjectIndex = () => {
     status: 0,
     // 搜索值
     keyword: '',
-    // 项目周期
-    time: [],
-    //其他的类型(迭代，冲刺、我参与的)
-    otherType: [1, 2],
     pageObj: { page: 1, size: 30 },
     order: { value: '', key: '' },
-    isGrid: false,
+    isGrid: 1,
   })
 
   // 获取数据
@@ -57,10 +53,8 @@ const ProjectIndex = () => {
       orderKey: params?.order?.key,
       order: params?.order?.value,
       status: params.status,
-      project_types: params.otherType,
-      time: params.time,
     }
-    if (params?.isGrid) {
+    if (params?.isGrid === 1) {
       paramsObj.all = true
     } else {
       paramsObj.page = params.pageObj.page
@@ -73,8 +67,13 @@ const ProjectIndex = () => {
 
   //   筛选条件变化后更新数据 或者是 刷新
   const onChangeParamsUpdate = (params: any, notSpin?: boolean) => {
-    setFilterParams(params)
+    if (params?.isGrid !== filterParams?.isGrid) {
+      setDataList({
+        list: undefined,
+      })
+    }
     getList(params, notSpin)
+    setFilterParams(params)
   }
 
   //  修改分页
@@ -209,15 +208,12 @@ const ProjectIndex = () => {
       />
       <ProjectWrap>
         <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-          {filterParams?.isGrid ? (
+          {filterParams?.isGrid === 1 ? (
             <MainGrid
               onChangeOperation={onChangeOperation}
               onAddClick={onAddClick}
               hasFilter={
-                filterParams?.keyword?.length > 0 ||
-                filterParams?.time?.length > 0 ||
-                filterParams?.status > 0 ||
-                filterParams?.otherType?.length > 0
+                filterParams?.keyword?.length > 0 || filterParams?.status > 0
               }
               projectList={dataList}
             />
@@ -229,10 +225,7 @@ const ProjectIndex = () => {
               order={filterParams?.order}
               onAddClick={onAddClick}
               hasFilter={
-                filterParams?.keyword?.length > 0 ||
-                filterParams?.time?.length > 0 ||
-                filterParams?.status > 0 ||
-                filterParams?.otherType?.length > 0
+                filterParams?.keyword?.length > 0 || filterParams?.status > 0
               }
               projectList={dataList}
               onChangeProjectList={onDragDataList}

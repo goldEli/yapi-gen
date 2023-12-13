@@ -92,7 +92,7 @@ export const StyleRight = styled.div<{ bgc?: any }>(
   {
     width: 0,
     height: 0,
-    border: '16px solid transparent',
+    border: '14px solid transparent',
     lineHeight: 0,
     fontSize: 0,
   },
@@ -107,7 +107,7 @@ export const StyleLeft = styled.div<{ bgc?: any }>(
   {
     width: 0,
     height: 0,
-    border: '16px solid transparent',
+    border: '14px solid transparent',
     lineHeight: 0,
     fontSize: 0,
   },

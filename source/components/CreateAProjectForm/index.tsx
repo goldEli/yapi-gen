@@ -51,7 +51,7 @@ export const Col = styled.div<{ tap: boolean }>`
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 200px;
-  height: 32px;
+  height: 28px;
   display: flex;
   &:hover {
     cursor: ${props => (props.tap ? 'pointer' : 'not-allowed')};
@@ -59,10 +59,10 @@ export const Col = styled.div<{ tap: boolean }>`
 `
 const Text = styled.div<{ bgc: any }>(
   {
-    padding: '0 24px 0 0',
-    minWidth: '99px',
-    height: '32px',
-    lineHeight: '32px',
+    padding: '0 14px 0 0',
+    minWidth: '144px',
+    height: '28px',
+    lineHeight: '28px',
     textAlign: 'center',
     fontSize: '14px',
     whiteSpace: 'nowrap',
@@ -647,23 +647,23 @@ const CreateAProjectForm = () => {
                     />
                   </Form.Item>
                 </Form>
+                {step === 3 && (
+                  <FormFooter>
+                    <CommonButton
+                      type="light"
+                      onClick={() => {
+                        dispatch(changeCreateVisible(false))
+                        dispatch(editProject({ visible: false, id: '' }))
+                      }}
+                    >
+                      {t('common.cancel')}
+                    </CommonButton>
+                    <CommonButton type="primary" onClick={onConfirm}>
+                      {t('common.confirm')}
+                    </CommonButton>
+                  </FormFooter>
+                )}
               </Wrap>
-              {step === 3 && (
-                <FormFooter>
-                  <CommonButton
-                    type="light"
-                    onClick={() => {
-                      dispatch(changeCreateVisible(false))
-                      dispatch(editProject({ visible: false, id: '' }))
-                    }}
-                  >
-                    {t('common.cancel')}
-                  </CommonButton>
-                  <CommonButton type="primary" onClick={onConfirm}>
-                    {t('common.confirm')}
-                  </CommonButton>
-                </FormFooter>
-              )}
             </OpacityDiv>
           </div>
         </div>
