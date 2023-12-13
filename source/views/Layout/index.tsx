@@ -54,7 +54,6 @@ const LayoutIndex = () => {
   } = useTranslation()
   const antdLocal = loadedAntdLocals[language]
   const language1 = useSelector(store => store.global.language)
-  const { layoutSideCollapse } = useSelector(store => store.global)
   const { viewReportModal } = useSelector(store => store.workReport)
   const { loginInfo, menuPermission } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
@@ -162,7 +161,7 @@ const LayoutIndex = () => {
 
         <LayoutWrap id="layoutWrap">
           <LayoutSideIndex onClose={onClose} />
-          <LayoutContent isOpen={layoutSideCollapse}>
+          <LayoutContent>
             <LayoutHeader onClick={onClose}>
               <LayoutHeaderLeft />
               <LayoutSecondaryMenu />
@@ -170,7 +169,7 @@ const LayoutIndex = () => {
                 onChangeReportAssistantModalObj={setReportAssistantModalObj}
               />
             </LayoutHeader>
-            <MainContent isOpen={layoutSideCollapse}>
+            <MainContent>
               <Outlet />
             </MainContent>
           </LayoutContent>

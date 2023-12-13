@@ -25,7 +25,6 @@ const DetailScreenModal = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { fullScreen } = useSelector(store => store.kanBan)
-  const { layoutSideCollapse } = useSelector(store => store.global)
 
   const detailContent = [
     { specialType: 1, content: <AffairsDetail /> },
@@ -73,7 +72,6 @@ const DetailScreenModal = () => {
 
   return (
     <ModalWrap
-      layoutSideCollapse={layoutSideCollapse}
       all={
         userPreferenceConfig.previewModel === 3 ||
         (params?.employeeCurrentId || 0) > 0
@@ -104,13 +102,7 @@ const DetailScreenModal = () => {
           : 'calc(100vh - 56px)',
         marginTop: fullScreen ? 0 : 56,
       }}
-      width={
-        fullScreen
-          ? '100vw'
-          : layoutSideCollapse
-          ? 'calc(100vw - 200px)'
-          : 'calc(100vw - 80px)'
-      }
+      width={fullScreen ? '100vw' : 'calc(100vw - 80px)'}
       zIndex={
         userPreferenceConfig.previewModel === 3 ||
         (params?.employeeCurrentId || 0) > 0

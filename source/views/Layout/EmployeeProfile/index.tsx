@@ -32,8 +32,6 @@ const EmployeeProfile = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-
-  const { layoutSideCollapse } = useSelector(state => state.global)
   const [leftWidth, setLeftWidth] = useState(320)
   const [endWidth, setEndWidth] = useState(320)
   const [focus, setFocus] = useState(false)
@@ -107,7 +105,7 @@ const EmployeeProfile = () => {
       setFocus(true)
       if (!sideMain.current) return
       sideMain.current.style.transition = '0s'
-      width = e.clientX - (layoutSideCollapse ? 200 : 80)
+      width = e.clientX - 80
       if (width > maxWidth) {
         setLeftWidth(maxWidth)
       } else {

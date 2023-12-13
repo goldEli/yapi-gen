@@ -2,30 +2,23 @@
 import { useDispatch, useSelector } from '@store/index'
 import {
   LayoutSide,
-  CollapseWrap,
-  CollapseWrapItem,
   notOpenSideMenu,
-  openSideMenu,
   MorePopover,
   MoreTitle,
   MorePopoverContent,
   MoreItem,
   activeSideMenu,
   OtherSystemMenuNotOpen,
-  OtherSystemMenuOpen,
   MoreOtherSystemWrap,
   MoreOtherSystemItem,
   MoreOtherPopover,
   NotOpenLogoWrap,
-  OpenLogoWrap,
   MenusWrap,
 } from '../style'
-import { Popover, Tooltip } from 'antd'
+import { Popover } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CloseWrap } from '@/components/StyleCommon'
-import { setLayoutSideCollapse } from '@store/global'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { setCurrentMenu } from '@store/user'
 import { setHeaderParmas, setSave } from '@store/performanceInsight'
@@ -43,12 +36,17 @@ interface MorePopoverComponentProps {
 const MorePopoverComponent = (props: MorePopoverComponentProps) => {
   const [t] = useTranslation()
   const { menuIconList, currentMenu } = useSelector(store => store.user)
+  // 按照固定的位置排序
+  const order = ['/Report', '/CalendarManager', '/AdminManagement']
+  const resultList = props.foldList?.sort(
+    (a: any, b: any) => order.indexOf(a.url) - order.indexOf(b.url),
+  )
 
   return (
     <MorePopover>
       <MoreTitle>{t('moreApplications')}</MoreTitle>
       <MorePopoverContent>
-        {props.foldList?.map((i: any) => (
+        {resultList?.map((i: any) => (
           <MoreItem
             onClick={() => {
               props.onChangeCurrentMenu(i)
@@ -95,7 +93,6 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const childStateRef = useRef<any>()
-  const { layoutSideCollapse } = useSelector(store => store.global)
   const { currentMenu, menuIconList, menuPermission } = useSelector(
     store => store.user,
   )
@@ -118,41 +115,37 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   ]
 
   // 计算菜单显示
-  const onComputedMenu = (state: boolean, menu: any) => {
+  const onComputedMenu = (menu: any) => {
     if (!menu?.length) return
     // 获取左侧菜单剩余展示菜案高度
     const clientHeight =
-      (document.getElementById('LayoutSide')?.clientHeight || 0) -
-      (state ? 142 : 160)
-    // 计算菜单显示区域能显示几个菜单
-    const menuNumber = Math.floor(clientHeight / (state ? 48 : 72)) - 1
+      (document.getElementById('LayoutSide')?.clientHeight || 0) - 128
+    // 计算菜单显示区域能显示几个菜单 --  -1是为了增加更多菜单显示
+    const menuNumber = Math.floor(clientHeight / 72) - 1
+
+    // 需要放入更多的菜单
+    const foldMenuList = ['/Report', '/CalendarManager', '/AdminManagement']
 
     // 如果显示条数大于菜单条数，则全部显示除后台管理
     if (menuNumber > menu?.length) {
       setNotFoldList(
-        menuPermission.menus?.filter((k: any) => k.url !== '/AdminManagement'),
+        menuPermission.menus?.filter(
+          (k: any) => !foldMenuList?.includes(k.url),
+        ),
       )
       setFoldList(
-        menuPermission.menus?.filter((k: any) => k.url === '/AdminManagement'),
+        menuPermission.menus?.filter((k: any) => foldMenuList?.includes(k.url)),
       )
     } else {
       // 删除后台管理
-      const notHave = menu?.filter((k: any) => k.url !== '/AdminManagement')
+      const notHave = menu?.filter((k: any) => !foldMenuList?.includes(k.url))
       setNotFoldList(notHave.slice(0, menuNumber))
       setFoldList(
         notHave
           .slice(menuNumber, menu?.length - 1)
-          .concat(menu?.filter((k: any) => k.url === '/AdminManagement')),
+          .concat(menu?.filter((k: any) => foldMenuList?.includes(k.url))),
       )
     }
-  }
-
-  // 切换展开折叠
-  const onChangeCollapse = () => {
-    setTimeout(() => {
-      dispatch(setLayoutSideCollapse(!layoutSideCollapse))
-      onComputedMenu(!layoutSideCollapse, menuPermission?.menus)
-    }, 100)
   }
 
   // 切换展开折叠
@@ -267,115 +260,68 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
         )[0]
       }
       dispatch(setCurrentMenu(resultMenu))
-      onComputedMenu(layoutSideCollapse, menuPermission?.menus)
+      onComputedMenu(menuPermission?.menus)
     }
   }, [menuPermission, routerPath])
 
   return (
-    <LayoutSide
-      isOpen={layoutSideCollapse}
-      onClick={props.onClose}
-      id="LayoutSide"
-    >
-      {/* 折叠状态下的 */}
-      {!layoutSideCollapse && (
-        <NotOpenLogoWrap>
-          <MoreOtherPopover
-            content={isLogoChange ? moreOtherSystem : null}
-            open={isLogoChange}
-            placement="rightTop"
-            onOpenChange={(state: boolean) => {
-              onChangeLogo(state)
-            }}
-            getPopupContainer={n => n}
-          >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              {isLogoChange ? (
-                <OtherSystemMenuNotOpen>
-                  <CommonIconFont
-                    type="menu-02"
-                    size={24}
-                    color="var(--neutral-n2)"
-                  />
-                </OtherSystemMenuNotOpen>
-              ) : (
-                <img
-                  onMouseEnter={() => onChangeLogo(true)}
-                  className="logo"
-                  src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-40px.svg"
-                  alt=""
-                  onMouseOut={() => {
-                    onChangeLogo(false)
-                  }}
-                />
-              )}
-              <img
-                className="img"
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
-                alt=""
-              />
-            </div>
-          </MoreOtherPopover>
-        </NotOpenLogoWrap>
-      )}
-
-      {/* 展开的交互 */}
-      {layoutSideCollapse && (
+    <LayoutSide onClick={props.onClose} id="LayoutSide">
+      <NotOpenLogoWrap>
         <MoreOtherPopover
           content={isLogoChange ? moreOtherSystem : null}
           open={isLogoChange}
-          placement="rightBottom"
+          placement="rightTop"
           onOpenChange={(state: boolean) => {
             onChangeLogo(state)
           }}
+          getPopupContainer={n => n}
         >
-          {isLogoChange ? (
-            <OtherSystemMenuOpen>
-              <CommonIconFont
-                type="menu-02"
-                size={24}
-                color="var(--neutral-n2)"
-              />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            {isLogoChange ? (
+              <OtherSystemMenuNotOpen>
+                <CommonIconFont
+                  type="menu-02"
+                  size={24}
+                  color="var(--neutral-n2)"
+                />
+              </OtherSystemMenuNotOpen>
+            ) : (
               <img
-                className="img"
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
-                alt=""
-              />
-            </OtherSystemMenuOpen>
-          ) : (
-            <OpenLogoWrap>
-              <img
+                onMouseEnter={() => onChangeLogo(true)}
                 className="logo"
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-28px.svg"
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-40px.svg"
                 alt=""
+                onMouseOut={() => {
+                  onChangeLogo(false)
+                }}
               />
-              <img
-                className="img"
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-text-28px.svg"
-                alt=""
-              />
-            </OpenLogoWrap>
-          )}
+            )}
+            <img
+              className="img"
+              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/logo/2.7.0/logo-text-40px.svg"
+              alt=""
+            />
+          </div>
         </MoreOtherPopover>
-      )}
+      </NotOpenLogoWrap>
 
       {/* 占位使用 */}
-      <div style={{ width: 60, height: layoutSideCollapse ? 24 : 16 }} />
+      <div style={{ width: 60, height: 16 }} />
 
-      <MenusWrap isOpen={layoutSideCollapse}>
+      <MenusWrap>
         {notFoldList?.map((i: any) => (
           <div
             key={i.id}
             onClick={() => onChangeCurrentMenu(i)}
-            className={`${
-              layoutSideCollapse ? openSideMenu : notOpenSideMenu
-            } ${currentMenu?.url === i.url ? activeSideMenu : ''}`}
+            className={`${notOpenSideMenu} ${
+              currentMenu?.url === i.url ? activeSideMenu : ''
+            }`}
           >
             {i.url === '/Trends' && (
               <SiteNotifications ref={childStateRef} item={i} />
@@ -414,9 +360,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
             onOpenChange={setIsPopover}
           >
             <div
-              className={`${
-                layoutSideCollapse ? openSideMenu : notOpenSideMenu
-              } ${
+              className={`${notOpenSideMenu} ${
                 foldList?.filter((i: any) => i.url === currentMenu?.url)
                   ?.length > 0
                   ? activeSideMenu
@@ -438,28 +382,6 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
           </Popover>
         )}
       </MenusWrap>
-
-      <CollapseWrap>
-        {layoutSideCollapse && (
-          <CollapseWrapItem onClick={onChangeCollapse}>
-            <CommonIconFont
-              type={layoutSideCollapse ? 'outdent' : 'indent'}
-              size={24}
-            />
-            <div>{layoutSideCollapse ? t('fold') : t('expand')}</div>
-          </CollapseWrapItem>
-        )}
-        {!layoutSideCollapse && (
-          <Tooltip title={layoutSideCollapse ? t('fold') : t('expand')}>
-            <CloseWrap width={32} height={32} onClick={onChangeCollapse}>
-              <CommonIconFont
-                type={layoutSideCollapse ? 'outdent' : 'indent'}
-                size={24}
-              />
-            </CloseWrap>
-          </Tooltip>
-        )}
-      </CollapseWrap>
     </LayoutSide>
   )
 }

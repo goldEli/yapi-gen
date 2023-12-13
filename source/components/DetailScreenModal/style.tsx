@@ -14,11 +14,9 @@ export const ModelClose = styled.div`
 
 export const ModalWrap = styled(Modal)<{
   all?: boolean
-  layoutSideCollapse?: boolean
 }>`
   max-width: ${props => (props.all ? '80vw' : '100vw')};
-  margin-left: ${props =>
-    props.all ? 'auto' : props.layoutSideCollapse ? '200px' : '80px'};
+  margin-left: ${props => (props.all ? 'auto' : '0')};
   .ant-modal-body {
     background-color: var(--neutral-white-d5);
     border-radius: 6px;

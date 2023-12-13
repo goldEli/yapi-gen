@@ -59,7 +59,6 @@ const SiteNotifications = (props: any, ref: any) => {
   const dispatch = useDispatch()
   const { isVisible, all } = useSelector(store => store.siteNotifications)
   const isRefresh = useSelector(store => store.user.isRefresh)
-  const { layoutSideCollapse } = useSelector(store => store.global)
   const { currentMenu, menuIconList } = useSelector(store => store.user)
 
   const init2 = async () => {
@@ -460,41 +459,22 @@ const SiteNotifications = (props: any, ref: any) => {
 
   return (
     <>
-      {!layoutSideCollapse && (
-        <Badge size="small" offset={[-2, 1]} count={all}>
-          <CommonIconFont
-            type={
-              currentMenu?.id === props?.item.id
-                ? menuIconList?.filter((k: any) =>
-                    String(props?.item.url).includes(k.key),
-                  )[0]?.active
-                : menuIconList?.filter((k: any) =>
-                    String(props?.item.url).includes(k.key),
-                  )[0]?.normal
-            }
-            size={24}
-            color="var(--neutral-n2)"
-          />
-        </Badge>
-      )}
-      {layoutSideCollapse && (
-        <>
-          <CommonIconFont
-            type={
-              currentMenu?.id === props?.item.id
-                ? menuIconList?.filter((k: any) =>
-                    String(props?.item.url).includes(k.key),
-                  )[0]?.active
-                : menuIconList?.filter((k: any) =>
-                    String(props?.item.url).includes(k.key),
-                  )[0]?.normal
-            }
-            size={24}
-            color="var(--neutral-n2)"
-          />
-          <FeedBadge size="small" offset={[-2, 1]} count={all} />
-        </>
-      )}
+      <Badge size="small" offset={[-2, 1]} count={all}>
+        <CommonIconFont
+          type={
+            currentMenu?.id === props?.item.id
+              ? menuIconList?.filter((k: any) =>
+                  String(props?.item.url).includes(k.key),
+                )[0]?.active
+              : menuIconList?.filter((k: any) =>
+                  String(props?.item.url).includes(k.key),
+                )[0]?.normal
+          }
+          size={24}
+          color="var(--neutral-n2)"
+        />
+      </Badge>
+
       <NoteModal
         onClose={() => setFirst(false)}
         data={first2}

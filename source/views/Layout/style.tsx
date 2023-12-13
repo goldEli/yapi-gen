@@ -137,17 +137,17 @@ export const LayoutWrap = styled.div`
   display: flex;
 `
 
-export const LayoutSide = styled.div<{ isOpen?: boolean }>`
+export const LayoutSide = styled.div`
   height: 100%;
-  width: ${props => (props.isOpen ? 200 : 80)}px;
+  width: 80px;
   transition: 0.3s;
   background: var(--neutral-white-d2);
   border-right: 1px solid var(--neutral-n6-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  padding: ${props => (props.isOpen ? '18px 12px' : '18px 8px')};
+  padding: 18px 8px;
   display: flex;
   flex-direction: column;
-  align-items: ${props => (props.isOpen ? 'flex-start' : 'center')};
+  align-items: center;
   z-index: 200;
   position: relative;
   .ant-popover-placement-rightTop {
@@ -155,20 +155,18 @@ export const LayoutSide = styled.div<{ isOpen?: boolean }>`
   }
 `
 
-export const MenusWrap = styled.div<{ isOpen?: boolean }>`
-  height: ${props =>
-    props.isOpen ? 'calc(100% - 106px)' : 'calc(100% - 124px)'};
+export const MenusWrap = styled.div`
+  height: 'calc(100% - 124px)';
   overflow-y: auto;
   ::-webkit-scrollbar {
     width: 0px;
   }
 `
 
-export const LayoutContent = styled.div<{ isOpen?: boolean }>`
+export const LayoutContent = styled.div`
   flex: 1;
   transition: 0.3s;
-  min-width: ${props =>
-    props.isOpen ? 'calc(1440px - 200px)' : 'calc(1440px - 80px)'};
+  min-width: calc(1440px - 80px);
   display: flex;
   flex-direction: column;
 `
@@ -185,9 +183,8 @@ export const LayoutHeader = styled.div`
   z-index: 198;
 `
 
-export const MainContent = styled.div<{ isOpen?: boolean }>`
-  min-width: ${props =>
-    props.isOpen ? 'calc(1440px - 200px)' : 'calc(1440px - 80px)'};
+export const MainContent = styled.div`
+  min-width: calc(1440px - 80px);
   height: calc(100% - 56px);
   overflow-x: auto;
 `
@@ -209,24 +206,6 @@ export const NotOpenLogoWrap = styled.div`
   }
 `
 
-export const OpenLogoWrap = styled.div`
-  height: 40px;
-  width: 152px;
-  display: flex;
-  align-items: center;
-  border-radius: 8px;
-  padding: 0 12px;
-  .logo {
-    width: 28px;
-    height: 28px;
-  }
-  .img {
-    width: 96px;
-    height: 24px;
-    margin-left: 8px;
-  }
-`
-
 export const OtherSystemMenuNotOpen = styled.div`
   width: 40px;
   height: 40px;
@@ -236,20 +215,6 @@ export const OtherSystemMenuNotOpen = styled.div`
   border-radius: 50%;
   background: var(--neutral-n6-d1);
   justify-content: center;
-`
-
-export const OtherSystemMenuOpen = styled.div`
-  height: 40px;
-  width: 152px;
-  border-radius: 8px;
-  padding: 0 12px;
-  background: var(--neutral-n6-d1);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  .img {
-    margin-left: 12px;
-  }
 `
 
 export const notOpenSideMenu = css`
@@ -273,25 +238,6 @@ export const notOpenSideMenu = css`
   }
 `
 
-export const openSideMenu = css`
-  height: 48px;
-  width: 176px;
-  display: flex;
-  align-items: center;
-  border-radius: 8px;
-  padding: 0 12px;
-  cursor: pointer;
-  position: relative;
-  div {
-    margin-left: 12px;
-    color: var(--neutral-n1-d1);
-    font-size: 16px;
-  }
-  &:hover {
-    background: var(--hover-d1);
-  }
-`
-
 export const activeSideMenu = css`
   background: var(--selected) !important;
   border: none !important;
@@ -300,31 +246,6 @@ export const activeSideMenu = css`
   }
   div {
     color: var(--primary-d2) !important;
-  }
-`
-
-export const CollapseWrap = styled.div`
-  position: absolute;
-  bottom: 18px;
-`
-
-export const CollapseWrapItem = styled.div`
-  width: 176px;
-  display: flex;
-  align-items: center;
-  padding: 4px 8px;
-  cursor: pointer;
-  border-radius: 6px;
-  svg {
-    color: var(--neutral-n2);
-  }
-  div {
-    font-size: 16px;
-    color: var(--neutral-n1-d1);
-    margin-left: 8px;
-  }
-  &:hover {
-    background: var(--hover-d1);
   }
 `
 
