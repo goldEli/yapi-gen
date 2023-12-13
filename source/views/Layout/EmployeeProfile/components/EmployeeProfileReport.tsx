@@ -284,7 +284,7 @@ const ReportItem = (props: ReportItemProps) => {
                   : '--'}
               </DetailItem>
             </div>
-            <CommentFooter
+            {/* <CommentFooter
               placeholder={t('commentOnLog', { name: item?.user?.name })}
               personList={personArr}
               onConfirm={onComment}
@@ -296,7 +296,7 @@ const ReportItem = (props: ReportItemProps) => {
               }}
               maxHeight="72vh"
               isEmployee
-            />
+            /> */}
           </>
         )}
       </ReportItemWrap>
