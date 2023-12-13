@@ -42,7 +42,7 @@ const ProjectIndex = () => {
     keyword: '',
     pageObj: { page: 1, size: 30 },
     order: { value: '', key: '' },
-    isGrid: 1,
+    isGrid: 0,
   })
 
   // 获取数据

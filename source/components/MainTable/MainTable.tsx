@@ -211,6 +211,23 @@ const MainTable = (props: Props) => {
     {
       title: (
         <NewSort
+          fixedKey="member_count"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('numberOfMembers')}
+        </NewSort>
+      ),
+      dataIndex: 'member_count',
+      width: 110,
+      render: (text: string, record: any) => {
+        return <span>{text}</span>
+      },
+    },
+    {
+      title: (
+        <NewSort
           fixedKey="expected_start_at"
           nowKey={props.order.key}
           order={props.order.value}
@@ -240,34 +257,6 @@ const MainTable = (props: Props) => {
       width: 120,
       render: (text: string) => {
         return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="leader_name"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('project_leader')}
-        </NewSort>
-      ),
-      dataIndex: 'leader_name',
-      width: 110,
-      render: (text: string, record: any) => {
-        return (
-          <MultipleAvatar
-            max={1}
-            list={[
-              {
-                avatar: record.leader?.avatar,
-                id: record.leader?.id || 0,
-                name: record.leader?.name,
-              },
-            ]}
-          />
-        )
       },
     },
     {

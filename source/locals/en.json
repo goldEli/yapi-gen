@@ -2649,5 +2649,6 @@
   "theTaskHasBeenDeletedAndCannotBeViewed": "The task has been deleted and cannot be viewed",
   "theTaskHasBeenDeletedAndDetailsCannotBeViewed": "The task has been deleted and details cannot be viewed",
   "theProjectsIParticipatedIn": "The projects I participated in",
-  "searchProjectName": "Search project name"
+  "searchProjectName": "Search project name",
+  "numberOfMembers": "Number of members"
 }
