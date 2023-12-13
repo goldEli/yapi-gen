@@ -200,9 +200,9 @@ const CommentFooter = (props: CommentFooterProps) => {
                 }
           }
         >
-          {props.hasAvatar ? (
+          {/* {props.hasAvatar ? (
             <CommonUserAvatar size="large" avatar={userInfo.avatar} />
-          ) : null}
+          ) : null} */}
           <Input
             placeholder={props?.placeholder ?? String(t('postComment'))}
             style={{ width: '100%' }}
@@ -210,7 +210,7 @@ const CommentFooter = (props: CommentFooterProps) => {
           />
 
           <CommonButton type="primary" onClick={onFocus}>
-            评论
+            {t('requirements_review')}
           </CommonButton>
         </div>
       )}

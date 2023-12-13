@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector } from '@store/index'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InfoItem, Label, TextWrap, WrapLeft } from '../style'
 import { Editor, EditorRef } from 'ifunuikit'
@@ -12,6 +12,7 @@ import CommonButton from '@/components/CommonButton'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import DemandStatus from './DemandStatus'
 import {
+  addComment,
   addInfoDemand,
   deleteInfoDemand,
   getDemandInfo,
@@ -22,15 +23,19 @@ import { getMessage } from '@/components/Message'
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import ScheduleRecord from '@/components/ScheduleRecord'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
+import CommentFooter from '@/components/CommonComment/CommentFooter'
+import { getIdsForAt, removeNull } from '@/tools'
+import { getDemandCommentList } from '@store/demand/demand.thunk'
 
 const DemandDetail = () => {
   const dId = useRef<any>()
+  const commentDom: any = createRef()
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const LeftDom = useRef<HTMLInputElement>(null)
   const editorRef = useRef<EditorRef>(null)
   const editorRef2 = useRef<any>()
-  const { projectInfo, isDetailScreenModal } = useSelector(
+  const { projectInfo, isDetailScreenModal, projectInfoValues } = useSelector(
     store => store.project,
   )
   const { params, visible } = isDetailScreenModal
@@ -114,6 +119,27 @@ const DemandDetail = () => {
     onUpdate()
   }
 
+  // 提交评论
+  const onConfirmComment = async (value: any) => {
+    await addComment({
+      projectId: projectInfo.id,
+      demandId: demandInfo.id,
+      content: value.info,
+      attachment: value.attachment,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: t('p2.conSuccess') })
+    dispatch(
+      getDemandCommentList({
+        projectId: projectInfo.id,
+        demandId: demandInfo.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+    commentDom.current.cancel()
+  }
+
   useEffect(() => {
     setTagList(
       demandInfo?.tag?.map((i: any) => ({
@@ -143,11 +169,6 @@ const DemandDetail = () => {
           }}
         >
           <Label>{t('mine.demandInfo')}</Label>
-          {/* {params?.employeeCurrentId && (
-            <TextWrapEdit style={{ width: '100%' }}>
-              <span className={canEditHover}>--</span>
-            </TextWrapEdit>
-          )} */}
           {(isEditInfo || editInfo) && (
             <div className={params?.employeeCurrentId ? '' : canEditHover}>
               <Editor
@@ -279,6 +300,22 @@ const DemandDetail = () => {
           <DemandComment detail={demandInfo} isOpenInfo />
         </InfoItem>
       </div>
+      <CommentFooter
+        onRef={commentDom}
+        placeholder={t('postComment')}
+        personList={removeNull(projectInfoValues, 'user_name')?.map(
+          (k: any) => ({
+            label: k.content,
+            id: k.id,
+          }),
+        )}
+        padding="no"
+        onConfirm={onConfirmComment}
+        style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
+        maxHeight="60vh"
+        hasAvatar
+        isEmployee={location.pathname?.includes('/EmployeeProfile')}
+      />
     </WrapLeft>
   )
 }

@@ -1,5 +1,6 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector } from '@store/index'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import {
   BasicFooter,
   FlawInfoInfoItem,
@@ -12,9 +13,9 @@ import {
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { ConfigWrap } from '@/components/StyleCommon'
-import { detailTimeFormat } from '@/tools'
+import { detailTimeFormat, getIdsForAt, removeNull } from '@/tools'
 import { useTranslation } from 'react-i18next'
-import { getFlawInfo } from '@store/flaw/flaw.thunk'
+import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
@@ -23,8 +24,12 @@ import FlawStatus from './FlawStatus'
 import FlawBasic from './FlawBasic'
 import FlawDetail from './FlawDetail'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
+import CommentFooter from '@/components/CommonComment/CommentFooter'
+import { getMessage } from '@/components/Message'
+import { addFlawComment } from '@/services/flaw'
 
 const FlawInfo = () => {
+  const commentDom: any = createRef()
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -32,7 +37,7 @@ const FlawInfo = () => {
   const { flawInfo } = useSelector(store => store.flaw)
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
-  const { projectInfo, isDetailScreenModal } = useSelector(
+  const { projectInfo, isDetailScreenModal, projectInfoValues } = useSelector(
     store => store.project,
   )
   const { params, visible } = isDetailScreenModal
@@ -58,6 +63,27 @@ const FlawInfo = () => {
     navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
   }
 
+  // 提交评论
+  const onConfirmComment = async (value: any) => {
+    await addFlawComment({
+      projectId: projectInfo.id,
+      id: flawInfo.id || 0,
+      content: value.info,
+      attachment: value.attachment,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: t('p2.conSuccess') })
+    dispatch(
+      getFlawCommentList({
+        projectId: projectInfo.id,
+        id: flawInfo.id || 0,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+    commentDom.current.cancel()
+  }
+
   // 拖动线条
   const onDragLine = () => {
     document.onmousemove = e => {
@@ -75,7 +101,7 @@ const FlawInfo = () => {
 
   // 计算高度
   const a1 = flawInfo?.isExamine ? 91 : 130
-  const a2 = flawInfo?.isExamine ? 164 : 178
+  const a2 = flawInfo?.isExamine ? 164 : 186
   const a3 = 239
 
   return (
@@ -92,38 +118,57 @@ const FlawInfo = () => {
           : a3
       }
     >
-      <FlawInfoLeft
-        style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
+      <div
+        style={{ width: `calc(100% - ${leftWidth}px)`, position: 'relative' }}
       >
-        <FlawDetail
-          flawInfo={flawInfo as Model.Flaw.FlawInfo}
-          isInfoPage
-          isPreview={(params?.employeeCurrentId || 0) > 0}
-          userId={params?.employeeCurrentId}
-        />
-        {flawInfo.id && !params?.employeeCurrentId && (
+        <FlawInfoLeft style={{ width: '100%' }}>
+          <FlawDetail
+            flawInfo={flawInfo as Model.Flaw.FlawInfo}
+            isInfoPage
+            isPreview={(params?.employeeCurrentId || 0) > 0}
+            userId={params?.employeeCurrentId}
+          />
+          {flawInfo.id && !params?.employeeCurrentId && (
+            <div style={{ margin: '16px', background: '#f5f5f7' }}>
+              <FlawInfoInfoItem>
+                <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
+                <FlawStatus
+                  pid={projectInfo.id}
+                  sid={flawInfo.id}
+                  visible={visible}
+                />
+              </FlawInfoInfoItem>
+            </div>
+          )}
+          {flawInfo?.isExamine && (
+            <div className="review">
+              <CommonIconFont type="review" size={64} />
+            </div>
+          )}
           <div style={{ margin: '16px', background: '#f5f5f7' }}>
             <FlawInfoInfoItem>
-              <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-              <FlawStatus
-                pid={projectInfo.id}
-                sid={flawInfo.id}
-                visible={visible}
-              />
+              <FlawComment detail={flawInfo} isOpenInfo />
             </FlawInfoInfoItem>
           </div>
-        )}
-        {flawInfo?.isExamine && (
-          <div className="review">
-            <CommonIconFont type="review" size={64} />
-          </div>
-        )}
-        <div style={{ margin: '16px', background: '#f5f5f7' }}>
-          <FlawInfoInfoItem>
-            <FlawComment detail={flawInfo} isOpenInfo />
-          </FlawInfoInfoItem>
-        </div>
-      </FlawInfoLeft>
+        </FlawInfoLeft>
+        <CommentFooter
+          onRef={commentDom}
+          placeholder={t('postComment')}
+          personList={removeNull(projectInfoValues, 'user_name')?.map(
+            (k: any) => ({
+              label: k.content,
+              id: k.id,
+            }),
+          )}
+          padding="no"
+          onConfirm={onConfirmComment}
+          style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
+          maxHeight="60vh"
+          hasAvatar
+          isEmployee={location.pathname?.includes('/EmployeeProfile')}
+        />
+      </div>
+
       <WrapRight
         ref={basicInfoDom}
         style={{ position: 'relative', width: leftWidth }}

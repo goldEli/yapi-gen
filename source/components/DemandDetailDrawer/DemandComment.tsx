@@ -126,30 +126,6 @@ const DemandComment = (props: Props) => {
     }
   }
 
-  const onAddConfirm = async (params: any) => {
-    if (attachRef.current?.getAttachState() > 0) {
-      getMessage({
-        type: 'warning',
-        msg: t('theFileIsBeingPleaseWait'),
-      })
-      return
-    }
-    try {
-      await addComment({
-        projectId: props.detail.projectId,
-        demandId: props.detail.id,
-        content: params.content,
-        attachment: params.attachment,
-        a_user_ids: params.a_user_ids,
-      })
-      getMessage({ msg: t('project.replaySuccess'), type: 'success' })
-      onUpdateComment()
-      setIsVisibleComment(false)
-    } catch (error) {
-      //
-    }
-  }
-
   // 点击编辑评论按钮
   const onEdit = (item: any) => {
     const result =

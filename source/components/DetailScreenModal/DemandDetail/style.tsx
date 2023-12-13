@@ -306,7 +306,7 @@ export const BasicFooter = styled.div`
 
 export const WrapLeft = styled.div({
   width: '100%',
-  height: '100%',
+  height: 'calc(100% - 49px)',
   overflow: 'auto',
   padding: '0 0px 0px 0',
 })

@@ -219,7 +219,7 @@ export const FlawInfoWrap = styled.div<{ all?: boolean; height?: number }>`
 
 export const FlawInfoLeft = styled.div`
   width: 80%;
-  height: 100%;
+  height: calc(100% - 49px);
   overflow: auto;
   background-color: #f5f5f7;
   position: relative;
