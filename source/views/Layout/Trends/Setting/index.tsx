@@ -13,7 +13,7 @@ import { editMyAllNoteSet } from '@/services/SiteNotifications'
 import { setMyConfiguration } from '@store/SiteNotifications'
 import { getMessage } from '@/components/Message'
 
-const Setting = (props: { onClose(): void; onRef: any }) => {
+const Setting = (props: { onClose(): void }) => {
   const [t, i18n] = useTranslation()
   const dispatch = useDispatch()
   const [selectKeys, setSelectKeys] = useState<any>()
@@ -38,12 +38,6 @@ const Setting = (props: { onClose(): void; onRef: any }) => {
     }
     dispatch(setMyConfiguration(selectKeys))
   }
-
-  useImperativeHandle(props.onRef, () => {
-    return {
-      onSave,
-    }
-  })
 
   useEffect(() => {
     setSelectKeys(myConfiguration)

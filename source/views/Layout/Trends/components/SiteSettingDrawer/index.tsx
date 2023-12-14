@@ -75,67 +75,46 @@ const SiteSettingDrawer = (props: SiteSettingDrawerProps) => {
   const dispatch = useDispatch()
   const hasEdit = useSelector(store => store.siteNotifications.hasEdit)
   const { open, RepeatConfirmModal } = useRepeatConfirmModal()
-  const setRef = useRef<any>()
-  const emailRef = useRef<any>()
+  // const setRef = useRef<any>()
+  // const emailRef = useRef<any>()
 
   const onCloseDrawer = () => {
     onClose()
     setActiveKey('1')
-    dispatch(setHasEdit(false))
+    // dispatch(setHasEdit(false))
   }
 
-  useEffect(() => {
-    if (hasEdit) {
-      open({
-        title: '确认取消',
-        text: '当前编辑内容还未保存是否保存？',
-        hasIcon: true,
-        okText: '保存',
-        cancelText: '放弃保存',
-        onCancel: () => {
-          onCloseDrawer()
-        },
-        onConfirm: () => {
-          // props.onDeleteConfirm(item.id)
-          return Promise.resolve()
-        },
-      })
-    }
-  }, [hasEdit])
+  // useEffect(() => {
+  //   if (hasEdit) {
+  //     open({
+  //       title: '确认取消',
+  //       text: '当前编辑内容还未保存是否保存？',
+  //       hasIcon: true,
+  //       okText: '保存',
+  //       cancelText: '放弃保存',
+  //       onCancel: () => {
+  //         onCloseDrawer()
+  //       },
+  //       onConfirm: () => {
+  //         // props.onDeleteConfirm(item.id)
+  //         return Promise.resolve()
+  //       },
+  //     })
+  //   }
+  // }, [hasEdit])
 
   const tabList = [
     {
       key: '1',
       label: t('notificationItemSettings'),
-      children: <Setting onClose={onCloseDrawer} onRef={setRef} />,
+      children: <Setting onClose={onCloseDrawer} />,
     },
     {
       key: '2',
       label: t('settings'),
-      children: <Email onClose={onCloseDrawer} onRef={emailRef} />,
+      children: <Email onClose={onCloseDrawer} />,
     },
   ]
-
-  // const onCloseMyDrawer = (e: any) => {
-  //   console.log(e.target,'eeeeeee')
-  //   if (!isVisible) {
-  //     return
-  //   }
-  //   if (
-  //     typeof e.target?.parentElement?.className !== 'string' ||
-  //     typeof e.target?.className !== 'string' ||
-  //     (!e.target?.parentElement?.className?.includes('yp_siteSettingDrawer') &&
-  //       !e.target?.className?.includes('yp_siteSettingDrawer'))
-  //   ) {
-  //     onCloseDrawer()
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   document.querySelector('body')?.addEventListener('click', onCloseMyDrawer)
-  //   return
-  //   document.querySelector('body')?.addEventListener('click', onCloseMyDrawer)
-  // }, [document.querySelector('body')])
 
   return (
     <DrawerWrap
@@ -146,9 +125,8 @@ const SiteSettingDrawer = (props: SiteSettingDrawerProps) => {
       width={960}
       // closable={false}
       // maskClosable={false}
-      keyboard={false}
+      // keyboard={false}
       zIndex={100}
-      className="yp_siteSettingDrawer"
       title={
         <HeaderWrap>
           <TabsWrap

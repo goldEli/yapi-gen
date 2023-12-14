@@ -11,7 +11,7 @@ import { setHasEdit, setMyEmailConfiguration } from '@store/SiteNotifications'
 import { getMessage } from '@/components/Message'
 import EmailBox from '../components/EmailBox/EmailBox'
 
-const Email = (props: { onClose(): void; onRef: any }) => {
+const Email = (props: { onClose(): void }) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [choose, setChoose] = useState<any>([])
@@ -32,7 +32,6 @@ const Email = (props: { onClose(): void; onRef: any }) => {
     } else {
       setChoose([...choose, id])
     }
-    dispatch(setHasEdit(true))
   }
 
   const onSave = async () => {
@@ -44,12 +43,6 @@ const Email = (props: { onClose(): void; onRef: any }) => {
     }
     dispatch(setMyEmailConfiguration(choose))
   }
-
-  useImperativeHandle(props.onRef, () => {
-    return {
-      onSave,
-    }
-  })
 
   useEffect(() => {
     setChoose(myEmailConfiguration)

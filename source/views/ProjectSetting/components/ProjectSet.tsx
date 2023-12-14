@@ -232,12 +232,10 @@ export const PermissionItem = (props: ItemProps) => {
   const otherKeys = props.value?.filter((i: any) => !keys.includes(i)) || []
 
   const onChange = (newKeys: CheckboxValueType[]) => {
-    dispatch(setHasEdit(true))
     props.onChange?.([...new Set([...newKeys, ...otherKeys])])
   }
 
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    dispatch(setHasEdit(true))
     onChange(
       e.target.checked ? props.item.children.map((i: any) => i.value) : [],
     )
