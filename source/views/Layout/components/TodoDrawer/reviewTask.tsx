@@ -19,6 +19,9 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from '@store/index'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import moment from 'moment'
+import { setIsUpdateAddWorkItem } from '@store/project'
+import EditExamine from '@/components/EditExamine'
+import { setIsNewMsg } from '@store/mine'
 const GroupItems = (props: any) => {
   const { row, onOpenExamine, onClickItem, tabActive } = props
   const [page, setPage] = useState(1)
@@ -66,6 +69,10 @@ const GroupItems = (props: any) => {
 
 const ReviewTask = () => {
   const [isSpinning, setIsSpinning] = useState(false)
+  // 审核详情打开
+  const [isExamineVisible, setIsExamineVisible] = useState(false)
+  // 审核数据
+  const [verifyInfo, setVerifyInfo] = useState<any>({})
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -105,12 +112,12 @@ const ReviewTask = () => {
   }
   // 点击打开审核弹窗
   const onOpenExamine = (item: any) => {
-    // setVerifyInfo(item)
-    // setIsExamineVisible(true)
+    setVerifyInfo(item)
+    setIsExamineVisible(true)
   }
   // 点击跳转详情
   const onClickItem = async (row: any) => {
-    // dispatch(setIsUpdateAddWorkItem(0))
+    dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({
         id: row.project_id,
@@ -173,6 +180,26 @@ const ReviewTask = () => {
   }
   return (
     <div>
+      {isExamineVisible ? (
+        <EditExamine
+          isVisible={isExamineVisible}
+          onClose={() => {
+            setIsExamineVisible(false)
+            setVerifyInfo({})
+          }}
+          item={{
+            projectId: verifyInfo?.project_id,
+            storyVerifyId: verifyInfo?.story_verify_id,
+            id: verifyInfo?.id,
+            status: verifyInfo?.verify_status,
+          }}
+          isEdit
+          onUpdate={() => {
+            onGetMineNoFinishList(true, 1)
+            dispatch(setIsNewMsg(true))
+          }}
+        />
+      ) : null}
       <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
         <div id="scrollableDiv">
           <InfiniteScroll

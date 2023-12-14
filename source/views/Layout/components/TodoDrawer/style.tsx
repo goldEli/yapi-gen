@@ -142,3 +142,10 @@ export const StatusBox = styled.div`
   padding: 0 8px;
   color: var(--neutral-white-d7);
 `
+export const DrawerFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #6688ff;
+  cursor: pointer;
+`

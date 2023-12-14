@@ -59,9 +59,7 @@ export const getMsgListData: any = async (params: any) => {
 }
 
 export const setReadApi: any = async (params: any) => {
-  const response: any = await http.post<any>('/b/msg/setRead', {
-    msgIds: params,
-  })
+  const response: any = await http.post<any>('/b/msg/setRead', params)
   return response
 }
 export const setReadByClick: any = async (params: any) => {
