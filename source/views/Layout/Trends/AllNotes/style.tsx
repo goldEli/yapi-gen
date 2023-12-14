@@ -39,17 +39,31 @@ export const ItemBox = styled.div<{
   &:hover {
     background-color: var(--hover-d2);
   }
+  .icons {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(250, 151, 70, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .name {
     width: 120px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-family: SiYuanMedium;
     &:hover {
       color: var(--primary-d2);
     }
+    color: ${prop =>
+      prop.hasClick ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
   }
   .system {
     width: 120px;
+    color: ${prop =>
+      prop.hasClick ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
   }
 
   .content {

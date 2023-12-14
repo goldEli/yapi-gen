@@ -1,3 +1,4 @@
+import CommonIconFont from '@/components/CommonIconFont'
 import { ItemBox } from '../../AllNotes/style'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { Typography } from 'antd'
@@ -24,14 +25,19 @@ const MessageItem = (props: MessageItemProps) => {
   }, [])
   return (
     <ItemBox
+      hasClick={item?.read === 1}
       hasLink={item?.custom_data?.linkWebUrl}
       isFlexStart={isFlexStart}
       key={item.id}
-      onClick={() => {
-        onRead(item.id)
-      }}
     >
-      <CommonUserAvatar size="large" avatar={item.msg_body.optHeader} />
+      {item?.msg_body?.username ? (
+        <CommonUserAvatar size="small" avatar={item.msg_body.optHeader} />
+      ) : (
+        <div className="icons">
+          <CommonIconFont type="bell-sel" color="#FA9746" size={16} />
+        </div>
+      )}
+
       {item?.msg_body?.username ? (
         <Text
           className="name"
@@ -50,6 +56,12 @@ const MessageItem = (props: MessageItemProps) => {
         ref={itemRef}
         target="_target"
         href={item?.custom_data?.linkWebUrl}
+        onClick={() => {
+          if (item?.read === 1) {
+            return
+          }
+          onRead(item.id)
+        }}
       >
         {item?.msg_body?.username
           ? item?.msg_body?.content?.replace(item?.msg_body?.username, '')

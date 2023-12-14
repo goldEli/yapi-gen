@@ -4,28 +4,18 @@
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useDispatch, useSelector } from '@store/index'
-import {
-  changeNumber,
-  changeVisible,
-  changeVisibleFilter,
-} from '@store/SiteNotifications'
+import { useSelector } from '@store/index'
 import { useParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import {
-  getContactStatistics,
-  getMsgListData,
-  setReadByClick,
-} from '@/services/SiteNotifications'
+import { getMsgListData, setReadByClick } from '@/services/SiteNotifications'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import NoData from '@/components/NoData'
-import { ContentWrap, HeaderWrap, ItemBox, MessageListWrap } from './style'
+import { ContentWrap, HeaderWrap, MessageListWrap } from './style'
 import dayjs from 'dayjs'
 import InputSearch from '@/components/InputSearch'
 import { SelectWrapBedeck } from '@/components/StyleCommon'
 import RangePicker from '@/components/RangePicker'
 import MoreSelect from '@/components/MoreSelect'
-import CommonUserAvatar from '@/components/CommonUserAvatar'
 import PaginationBox from '../components/PaginationBox'
 import moment from 'moment'
 import { getMessage } from '@/components/Message'
@@ -34,15 +24,11 @@ import { useNavigate } from 'react-router-dom'
 import MessageItem from '../components/MessageItem'
 
 const Index = () => {
-  const lastId = useRef<any>(1)
   const all = useSelector(store => store.siteNotifications.all)
-  const friendUsername = useRef<any>(undefined)
-  const msgType = useRef<any>(undefined)
   const [dataList, setDataList] = useState<any>({
     list: [],
   })
   const [t] = useTranslation()
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { id } = useParams()
   const searchRef = useRef<any>({
@@ -61,78 +47,6 @@ const Index = () => {
     store => store.siteNotifications.configuration,
   )
   const timeDiff = useSelector(store => store.user.loginInfo.timeDiff)
-
-  // const fetchMoreData = async (type: number) => {
-  //   const re4 = await getMsg_list({
-  //     lastId: lastId.current,
-  //     read: id === '2' ? 0 : id === '3' ? 1 : undefined,
-  //     friendUsername: friendUsername.current,
-  //     msgType: msgType.current,
-  //   })
-  //   const maxPage = re4.pager.total
-  //   lastId.current += 1
-
-  //   if (type === 1 && lastId.current === maxPage + 1) {
-  //     setList(re4.list)
-  //   } else if (type === 1) {
-  //     setList(re4.list)
-  //     if (re4.list.length < 1) {
-  //     }
-  //   } else if (type === 2 && lastId.current === maxPage + 1) {
-  //     setList(e => e.concat(re4.list))
-  //   } else if (type === 2) {
-  //     setList(e => e.concat(re4.list))
-  //   }
-  // }
-
-  // const setReads = async (values: any) => {
-  //   const res = await setReadApi(values)
-  //   setList([])
-  //   lastId.current = 1
-  //   await new Promise(resolve => setTimeout(resolve, 2000))
-  //   fetchMoreData(1)
-
-  //   if (res.code === 0) {
-  //     const res2 = await getContactStatistics()
-  //     let num = 0
-  //     res2.list.slice(1, 6).forEach((i: any) => {
-  //       num += Number(i.nread)
-  //     })
-
-  //     dispatch(changeNumber(num))
-  //   }
-  // }
-  // const setReads2 = async (values: any) => {
-  //   const res = await setReadApi(values)
-  //   await new Promise(resolve => setTimeout(resolve, 2000))
-  //   if (res.code === 0) {
-  //     const res2 = await getContactStatistics()
-  //     let num = 0
-  //     res2.list.slice(1, 6).forEach((i: any) => {
-  //       num += Number(i.nread)
-  //     })
-
-  //     dispatch(changeNumber(num))
-  //   }
-  // }
-  // const setAllRead = () => {
-  //   // const arr = list.map((i: any) => i.id)
-  //   setReads(undefined)
-  // }
-
-  // const changeUser = (str: string, arr: any) => {
-  //   setList([])
-  //   msgType.current = id === '4' ? ['191', '132'].concat(arr ?? []) : arr
-  //   friendUsername.current = str
-  //   lastId.current = 1
-  //   fetchMoreData(1)
-  // }
-  // const changeMsg = (arr: any) => {
-  //   setList([])
-  //   msgType.current = id === '4' ? ['191', '132'].concat(arr ?? []) : arr
-  //   lastId.current = 1
-  //   fetchMoreData(1)
-  // }
 
   console.log(dataList)
 
@@ -176,6 +90,9 @@ const Index = () => {
 
   const onRead = async (id: string) => {
     const result = await setReadByClick([id])
+    if (result) {
+      getMessageList()
+    }
   }
 
   const getMessageList = async () => {
@@ -197,6 +114,20 @@ const Index = () => {
   useEffect(() => {
     setDataList({})
     getMessageList()
+    return () => {
+      searchRef.current = {
+        search: '',
+        customType: [],
+        page: 1,
+        pageSize: 10,
+        endTime: [],
+      }
+      setSearch('')
+      setCustomType([])
+      setPage(1)
+      setPageSize(10)
+      setEndTime([])
+    }
   }, [id, all])
 
   const formatMsgTime = useCallback(
