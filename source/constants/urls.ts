@@ -578,6 +578,8 @@ const urls = {
   getMineFinishListHeader: '/b/user/finish/story_group',
   // 顶部导航待审核接口
   getVerifyUserListHeader: '/b/user/verify/list/group',
+  // 未读消息统计
+  getNotReadMsgStatics: '/b/msg/classStatistics',
 }
 export default urls
 

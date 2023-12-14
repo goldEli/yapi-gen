@@ -11,7 +11,11 @@ import * as http from '../tools/http'
 import { getTreeList } from '@/services/demand'
 import { storyConfigCategoryList } from '@/services/project'
 import { getStaffListAll } from './staff'
-
+// 消息未读统计
+export const getNotReadMsgStatics: any = async (params: any) => {
+  const response = await http.get('getNotReadMsgStatics')
+  return response.data
+}
 // 顶部导航-待办列表
 export const getMineNoFinishListHeader: any = async (params: any) => {
   const response = await http.get('getMineNoFinishListHeader', {
