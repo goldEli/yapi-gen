@@ -103,8 +103,8 @@ const Index = () => {
       customType: customType?.length ? customType : undefined,
       page,
       pageSize,
-      latTime: endTime?.map?.((s: any) => moment(s).unix())?.[0],
-      endTime: endTime?.map?.((s: any) => moment(s).unix())?.[1],
+      latTime: endTime?.map?.((s: any) => moment(s).startOf('day').unix())?.[0],
+      endTime: endTime?.map?.((s: any) => moment(s).endOf('day').unix())?.[1],
     })
     if (result) {
       setDataList(result)

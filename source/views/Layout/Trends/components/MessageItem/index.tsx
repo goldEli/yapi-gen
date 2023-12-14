@@ -25,7 +25,7 @@ const MessageItem = (props: MessageItemProps) => {
   }, [])
   return (
     <ItemBox
-      hasClick={item?.read === 2}
+      hasClick={item?.read === '2'}
       hasLink={item?.custom_data?.linkWebUrl}
       isFlexStart={isFlexStart}
       key={item.id}
@@ -57,7 +57,7 @@ const MessageItem = (props: MessageItemProps) => {
         target="_target"
         href={item?.custom_data?.linkWebUrl}
         onClick={() => {
-          if (item?.read === 2) {
+          if (item?.read === '2') {
             return
           }
           onRead(item.id)
