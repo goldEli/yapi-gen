@@ -2,11 +2,12 @@ import { Button, Popover } from 'antd'
 import { NoticeTitleWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useSelector } from '@store/index'
-const useNoticePopoverTitle = (setMsgVisible: any) => {
+const useNoticePopoverTitle = (setMsgVisible: any, popoverRef: any) => {
   const { msgStatics } = useSelector(store => store.mine)
   const { dynamics } = msgStatics ?? {}
   const { total } = dynamics ?? {}
   const close = () => {
+    popoverRef.current.props.onPopupVisibleChange(false)
     setMsgVisible(false)
   }
   const TitleBox = (
