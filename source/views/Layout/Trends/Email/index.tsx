@@ -1,17 +1,17 @@
 /* eslint-disable new-cap */
 import CommonButton from '@/components/CommonButton'
 import { Switch } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useImperativeHandle, useState } from 'react'
 import { Wrap } from '../Setting/style'
 import { Content, FooterWrap } from './style'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { editMyAllNoteSet } from '@/services/SiteNotifications'
-import { setMyEmailConfiguration } from '@store/SiteNotifications'
+import { setHasEdit, setMyEmailConfiguration } from '@store/SiteNotifications'
 import { getMessage } from '@/components/Message'
 import EmailBox from '../components/EmailBox/EmailBox'
 
-const Email = (props: { onClose(): void }) => {
+const Email = (props: { onClose(): void; onRef: any }) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [choose, setChoose] = useState<any>([])
@@ -32,7 +32,9 @@ const Email = (props: { onClose(): void }) => {
     } else {
       setChoose([...choose, id])
     }
+    dispatch(setHasEdit(true))
   }
+
   const onSave = async () => {
     const res = await editMyAllNoteSet(
       Array.from(new Set([...myConfiguration, ...choose])),
@@ -42,6 +44,12 @@ const Email = (props: { onClose(): void }) => {
     }
     dispatch(setMyEmailConfiguration(choose))
   }
+
+  useImperativeHandle(props.onRef, () => {
+    return {
+      onSave,
+    }
+  })
 
   useEffect(() => {
     setChoose(myEmailConfiguration)
@@ -98,7 +106,7 @@ const Email = (props: { onClose(): void }) => {
             {emailConfigurations?.map((i: any) => (
               <div
                 style={{
-                  width: '300px',
+                  width: '270px',
                   display: 'flex',
                   alignItems: 'center',
                 }}

@@ -2664,5 +2664,7 @@
   "deleteAndName": "Are you sure to delete project",
   "history": "History ",
   "searchForDynamicContent": "Search for dynamic content",
-  "notificationMatters": "Notification matters"
+  "notificationMatters": "Notification matters",
+  "application": "Application",
+  "notificationItems": "Notification items"
 }
