@@ -573,7 +573,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             </RobotButton>
           </Popover>
         ) : null}
-        <Popover
+        {/* <Popover
           content={
             <Recently
               isVisible={isRecentlyVisible}
@@ -589,9 +589,9 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             <div>{t('recently')}</div>
             <CommonIconFont type="down" size={16} />
           </HeaderItemWrap>
-        </Popover>
+        </Popover> */}
 
-        <Popover
+        {/* <Popover
           content={
             <QuickMine
               isVisible={isMineVisible}
@@ -607,7 +607,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             <div>{t('container.mine')}</div>
             <CommonIconFont type="down" size={16} />
           </HeaderItemWrap>
-        </Popover>
+        </Popover> */}
 
         <Popover
           content={helpContent}
