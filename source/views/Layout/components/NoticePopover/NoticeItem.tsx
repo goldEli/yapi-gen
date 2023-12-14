@@ -5,7 +5,6 @@ import classNames from 'classnames'
 import dayjs from 'dayjs'
 const NoticeItem = (props: any) => {
   const { index, data, onReadClick } = props
-  console.log('data---', data)
   return (
     <NoticeItemWrap
       onClick={() => {
