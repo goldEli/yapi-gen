@@ -409,7 +409,7 @@ const Iteration = (props: Props) => {
             alignItems: 'center',
           }}
         >
-          <MyBreadcrumb />
+          <MyBreadcrumb headerParmas/>
         </div>
       )}
       <HeaderRow>

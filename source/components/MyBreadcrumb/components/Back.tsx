@@ -53,7 +53,7 @@ const urlAll = [
   '/ProjectDetail/KanBan',
 ]
 
-const Back = () => {
+const Back = (props:{headerParmas:boolean}) => {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -97,7 +97,7 @@ const Back = () => {
         return
       }
       navigate(`/ProjectDetail/Affair?data=${params}`)
-    } else if (urlAll.includes(location.pathname)) {
+    } else if (urlAll.includes(location.pathname) && props.headerParmas) {
       navigate('/Project')
     }
     localStorage.removeItem('projectRouteDetail')
@@ -115,7 +115,7 @@ const Back = () => {
         </BackWrap>,
       )
       return
-    } else if (urlAll.includes(location.pathname) && !backUrl && !visible) {
+    } else if (urlAll.includes(location.pathname) && props.headerParmas) {
       setHtml(
         <BackWrap onClick={onBack}>
           <div>
@@ -128,7 +128,7 @@ const Back = () => {
       return
     }
     setHtml(<div />)
-  }, [visible, location.pathname, localStorage.getItem('projectRouteDetail')])
+  }, [visible, location.pathname, localStorage.getItem('projectRouteDetail'),params])
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{html}</>
 }

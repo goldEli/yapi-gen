@@ -53,7 +53,7 @@ const MyBreadcrumb = (props: any) => {
 
   return (
     <div style={{display:'flex',alignItems:'align-items: baseline;'}}>
-      <Back/>
+      <Back headerParmas={props.headerParmas || false}/>
     <Breadcrumb
       separator={
         <CommonIconFont type="right" size={14} color="var(--neutral-n1-d1)" />
