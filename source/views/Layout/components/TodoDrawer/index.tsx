@@ -38,6 +38,33 @@ const TodoDrawer = (props: any) => {
   const { todoStatistics } = msgStatics ?? {}
   const { list } = todoStatistics ?? {}
   const navigate = useNavigate()
+
+  // 关闭抽屉
+  const onCloseDrawer = (e: any) => {
+    if (
+      !open ||
+      document.querySelector('#popover_todo')?.contains?.(e.target)
+    ) {
+      return
+    }
+    if (
+      document.querySelector('#LayoutSide')?.contains?.(e.target) ||
+      document.querySelector('#LayoutHeader')?.contains?.(e.target) ||
+      e.target?.className?.includes?.('ant-drawer-mask')
+    ) {
+      onCancel()
+    }
+  }
+
+  useEffect(() => {
+    if (open) {
+      document.querySelector('body')?.addEventListener('click', onCloseDrawer)
+    }
+    return document
+      .querySelector('body')
+      ?.addEventListener('click', onCloseDrawer)
+  }, [open])
+
   const footer = (
     <DrawerFooter
       onClick={() => {

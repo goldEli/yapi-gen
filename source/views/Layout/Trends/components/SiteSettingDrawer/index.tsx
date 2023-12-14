@@ -123,7 +123,7 @@ const SiteSettingDrawer = (props: SiteSettingDrawerProps) => {
       destroyOnClose
       placement="right"
       width={960}
-      // closable={false}
+      closable={false}
       // maskClosable={false}
       // keyboard={false}
       zIndex={100}
