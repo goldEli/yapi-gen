@@ -441,9 +441,11 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const operateClick = (type: number) => {
     console.log('type', type)
     if (type === 1) {
+      setRecomendDrawerOpen(false)
       setTodoDrawerOpen(true)
       return
     }
+    setTodoDrawerOpen(false)
     setRecomendDrawerOpen(true)
   }
   return (

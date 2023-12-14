@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from '@store/index'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import moment from 'moment'
+import { setIsUpdateAddWorkItem } from '@store/project'
 const GroupItems = (props: any) => {
   const { row, onOpenExamine, onClickItem, tabActive } = props
   const [page, setPage] = useState(1)
@@ -128,7 +129,7 @@ const AssignTask = () => {
   }
   // 点击跳转详情
   const onClickItem = async (row: any) => {
-    // dispatch(setIsUpdateAddWorkItem(0))
+    dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({
         id: row.project_id,

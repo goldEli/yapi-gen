@@ -37,6 +37,22 @@ export const NoticeItemWrap = styled.div`
   justify-content: flex-start;
   box-sizing: border-box;
   width: 100%;
+  position: relative;
+  .type_icon {
+    position: relative;
+    .dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background-color: var(--function-error);
+      border-radius: 50%;
+      right: -8px;
+      top: 2px;
+    }
+  }
+  &:hover {
+    background-color: var(--neutral-n8);
+  }
   img {
     width: 16px;
     height: 16px;
@@ -58,6 +74,9 @@ export const NoticeItemWrap = styled.div`
       color: var(--neutral-n4);
       font-size: var(--font12);
     }
+    span.read {
+      color: var(--neutral-n4);
+    }
   }
   .detail_content {
     margin-bottom: 8px;
@@ -70,12 +89,16 @@ export const NoticeItemWrap = styled.div`
       height: 16px;
     }
   }
+
   .detail_result {
     color: #323233;
     font-size: var(--font12);
     a {
       margin-left: 4px;
     }
+  }
+  .read {
+    color: var(--neutral-n4);
   }
 `
 export const FooterBox = styled.div`
@@ -96,6 +119,7 @@ export const FooterBox = styled.div`
     position: relative;
     margin-left: 24px;
     padding-bottom: 16px;
+    padding-top: 16px;
     &::after {
       position: absolute;
       content: '';

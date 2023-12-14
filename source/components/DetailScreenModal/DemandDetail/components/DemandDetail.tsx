@@ -151,7 +151,6 @@ const DemandDetail = () => {
     setEditInfo(demandInfo.info || '')
     dId.current = demandInfo?.id
   }, [demandInfo])
-
   return (
     <WrapLeft ref={LeftDom}>
       <div

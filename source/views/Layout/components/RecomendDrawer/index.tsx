@@ -1,5 +1,12 @@
 import { Button, Drawer, Space } from 'antd'
-import { ContentWrap, TabsBox, TabsWrap, TitleWrap, cusDrawer } from './style'
+import {
+  ContentWrap,
+  DrawerFooter,
+  TabsBox,
+  TabsWrap,
+  TitleWrap,
+  cusDrawer,
+} from './style'
 import CommonIconFont from '@/components/CommonIconFont'
 import NoticeItem from '../NoticePopover/NoticeItem'
 import { useEffect, useState } from 'react'
@@ -9,6 +16,7 @@ import MineNotice from './Report'
 import classNames from 'classnames'
 import { getNotReadMsgStatics } from '@/services/mine'
 import { useSelector } from '@store/index'
+import { useNavigate } from 'react-router-dom'
 interface IProps {}
 
 const RecomendDrawer = (props: any) => {
@@ -27,6 +35,21 @@ const RecomendDrawer = (props: any) => {
   const { msgStatics } = useSelector(store => store.mine)
   const { todoStatistics } = msgStatics ?? {}
   const { list } = todoStatistics ?? {}
+  const navigate = useNavigate()
+  const footer = (
+    <DrawerFooter
+      onClick={() => {
+        if (active === 1) {
+          navigate('Mine/Carbon')
+          return
+        }
+        navigate('Project')
+      }}
+    >
+      {active === 1 ? '查看所有日报' : '查看所有项目'}
+      <CommonIconFont type="right"></CommonIconFont>
+    </DrawerFooter>
+  )
   return (
     <div>
       <Drawer
@@ -38,6 +61,7 @@ const RecomendDrawer = (props: any) => {
         zIndex={196}
         drawerStyle={{ paddingTop: '56px' }}
         className={cusDrawer}
+        footer={footer}
       >
         <TitleWrap>
           <TabsWrap>

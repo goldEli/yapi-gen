@@ -30,7 +30,7 @@ const ProjectCommonOperation = (props: Props) => {
             alignItems: 'center',
           }}
         >
-          <MyBreadcrumb />
+          <MyBreadcrumb headerParmas />
         </div>
         <SearchOrProjectMember size={16}>
           <InputSearch

@@ -10,7 +10,6 @@ import {
 } from './style'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getVerifyUserListHeader } from '@/services/mine'
 import _ from 'lodash'
 import { Skeleton, Tooltip } from 'antd'
 import NoData from '@/components/NoData'

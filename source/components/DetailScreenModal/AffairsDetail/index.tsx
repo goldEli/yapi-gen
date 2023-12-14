@@ -50,7 +50,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { copyLink, getIsPermission } from '@/tools'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import StatusExamine from '@/components/StatusExamine'
 import { cancelVerify } from '@/services/mine'
 import CopyIcon from '@/components/CopyIcon'
@@ -85,6 +85,7 @@ const AffairsDetail = () => {
   } = useSelector(store => store.project)
   const { visible, params } = isDetailScreenModal
   const [form] = Form.useForm()
+  const locationV = useLocation()
   // 拖拽聚焦
   const [focus, setFocus] = useState(false)
   // 是否可改变类别弹窗
@@ -417,6 +418,13 @@ const AffairsDetail = () => {
   }
 
   useEffect(() => {
+    if (userPreferenceConfig.previewModel === 2) {
+      const value = encryptPhp(JSON.stringify({ id: params.id }))
+      localStorage.setItem(
+        'projectRouteDetail',
+        `${location.pathname}?data=${value}`,
+      )
+    }
     if (visible && params?.sprintId) {
       dispatch(
         getAffairsInfo({
@@ -432,6 +440,11 @@ const AffairsDetail = () => {
           pageSize: 999,
         }),
       )
+    } else {
+      localStorage.removeItem('projectRouteDetail')
+    }
+    return () => {
+      localStorage.removeItem('projectRouteDetail')
     }
   }, [visible, params])
 
@@ -673,7 +686,6 @@ const AffairsDetail = () => {
           </DetailTop>
         </>
       )}
-
       {affairsInfo?.isExamine && (
         <div
           style={{
@@ -691,7 +703,6 @@ const AffairsDetail = () => {
           />
         </div>
       )}
-
       <DetailMain
         all={aa}
         height={

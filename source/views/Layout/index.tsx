@@ -59,7 +59,7 @@ const LayoutIndex = () => {
   const { loginInfo, menuPermission } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [isNextVisible, setIsNextVisible] = useState(false)
-
+  const { isNewMsg } = useSelector(store => store.mine)
   const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
     visible: boolean
     type: 'user' | 'project'
@@ -159,8 +159,12 @@ const LayoutIndex = () => {
     dispatch(setMsgStatics(res))
   }
   useEffect(() => {
+    if (isNewMsg) {
+      _getNotReadMsgStatics()
+    }
     _getNotReadMsgStatics()
-  }, [])
+  }, [isNewMsg])
+
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>

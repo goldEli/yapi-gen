@@ -28,6 +28,7 @@ import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
 import NoticePopover from './NoticePopover'
 import useNoticePopoverTitle from './NoticePopover/hooks/useNoticeTitle'
 import { PopoverWrap, overlayClassNameStyle } from './NoticePopover/style'
+import { divide } from 'lodash'
 interface MorePopoverComponentProps {
   onClose(): void
   foldList: any
@@ -95,6 +96,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const childStateRef = useRef<any>()
+  const popoverRef: any = useRef(null)
   const { currentMenu, menuIconList, menuPermission } = useSelector(
     store => store.user,
   )
@@ -270,6 +272,24 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
     }
   }, [menuPermission, routerPath])
 
+  useEffect(() => {
+    // 在组件加载后，给根容器添加点击事件监听器
+    document.addEventListener('click', handleClickOutside)
+
+    return () => {
+      // 组件卸载时，移除点击事件监听器
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
+
+  const handleClickOutside = (event: any) => {
+    // 判断被点击的元素是否是 Popover 相关的元素
+    // if (popoverRef.current && !popoverRef.current.contains(event.target) && msgVisible) {
+    //   setMsgVisible(false)
+    // } else {
+    //   setMsgVisible(true)
+    // }
+  }
   return (
     <LayoutSide onClick={props.onClose} id="LayoutSide">
       <NotOpenLogoWrap>
@@ -355,7 +375,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
               <PopoverWrap
                 key={i.id}
                 overlayClassName={overlayClassNameStyle}
-                open={msgVisible}
+                ref={popoverRef}
                 content={
                   <NoticePopover
                     onHistoryStatics={() => {

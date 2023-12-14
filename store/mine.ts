@@ -7,12 +7,14 @@ export interface CounterState {
   verifyInfo: any
   isUpdateCreate: boolean
   msgStatics: any
+  isNewMsg: boolean
 }
 
 const initialState: CounterState = {
   verifyInfo: null,
   isUpdateCreate: false,
   msgStatics: {},
+  isNewMsg: false,
 }
 
 // 异步请求外部数据
@@ -21,7 +23,6 @@ export const getAsyncVerifyInfo = createAsyncThunk(
   'nameSpace/getMine',
   async (params: any) => {
     const res = await getVerifyInfo(params)
-
     return res
   },
 )
@@ -39,6 +40,9 @@ export const mineSlice = createSlice({
     setMsgStatics: (state: any, action) => {
       state.msgStatics = action.payload
     },
+    setIsNewMsg: (state: any, action) => {
+      state.isNewMsg = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getAsyncVerifyInfo.fulfilled, (state: any, action: any) => {
@@ -47,7 +51,7 @@ export const mineSlice = createSlice({
   },
 })
 
-export const { setIsUpdateCreate, setVerifyInfo, setMsgStatics } =
+export const { setIsUpdateCreate, setVerifyInfo, setMsgStatics, setIsNewMsg } =
   mineSlice.actions
 
 export default mineSlice.reducer

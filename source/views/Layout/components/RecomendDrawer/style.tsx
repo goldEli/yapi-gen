@@ -249,3 +249,10 @@ export const ReportItem = styled.div`
     background: var(--hover-d3);
   }
 `
+export const DrawerFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #6688ff;
+  cursor: pointer;
+`
