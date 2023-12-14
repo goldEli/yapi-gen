@@ -212,7 +212,7 @@ const Index = () => {
           </span>
           <MoreSelect
             getPopupContainer={(node: any) => node}
-            style={{ width: 184 }}
+            width={220}
             options={notificationMattersOptions?.map((s: any) => ({
               ...s,
               id: s.value,

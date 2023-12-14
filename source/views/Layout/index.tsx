@@ -170,7 +170,7 @@ const LayoutIndex = () => {
         <LayoutWrap id="layoutWrap">
           <LayoutSideIndex onClose={onClose} />
           <LayoutContent>
-            <LayoutHeader onClick={onClose}>
+            <LayoutHeader id="LayoutHeader" onClick={onClose}>
               <LayoutHeaderLeft />
               <LayoutSecondaryMenu />
               <LayoutHeaderRight

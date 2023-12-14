@@ -50,6 +50,33 @@ const RecomendDrawer = (props: any) => {
       <CommonIconFont type="right"></CommonIconFont>
     </DrawerFooter>
   )
+
+  // 关闭抽屉
+  const onCloseDrawer = (e: any) => {
+    if (
+      !open ||
+      document.querySelector('#popover_recommended')?.contains?.(e.target)
+    ) {
+      return
+    }
+    if (
+      document.querySelector('#LayoutSide')?.contains?.(e.target) ||
+      document.querySelector('#LayoutHeader')?.contains?.(e.target) ||
+      e.target?.className?.includes?.('ant-drawer-mask')
+    ) {
+      onCancel()
+    }
+  }
+
+  useEffect(() => {
+    if (open) {
+      document.querySelector('body')?.addEventListener('click', onCloseDrawer)
+    }
+    return document
+      .querySelector('body')
+      ?.addEventListener('click', onCloseDrawer)
+  }, [open])
+
   return (
     <div>
       <Drawer

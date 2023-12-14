@@ -534,7 +534,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         onConfirm={onToLoginOut}
       />
       {/* 待办 */}
-      <PopOverBox>
+      <PopOverBox id="popover_todo">
         <Popover
           placement="bottomLeft"
           trigger="hover"
@@ -554,7 +554,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         </Popover>
       </PopOverBox>
       {/* 为你推荐 */}
-      <PopOverBox>
+      <PopOverBox id="popover_recommended">
         <Popover
           placement="bottomLeft"
           trigger="hover"
