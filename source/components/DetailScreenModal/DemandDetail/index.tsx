@@ -64,7 +64,6 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
 import { css } from '@emotion/css'
 import LeftIcontButton from '@/components/LeftIcontButton'
-
 export const myTreeCss = css`
   &:hover {
     text-decoration: underline !important;
@@ -82,6 +81,7 @@ const DemandDetail = () => {
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   // 不能删除open方法
   const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const { demandInfo } = useSelector(store => store.demand)
   const { userInfo } = useSelector(store => store.user)
   const {
@@ -496,6 +496,13 @@ const DemandDetail = () => {
   }
 
   useEffect(() => {
+    if (userPreferenceConfig.previewModel === 2) {
+      const value = encryptPhp(JSON.stringify({ id: params.id }))
+      localStorage.setItem(
+        'projectRouteDetail',
+        `${location.pathname}?data=${value}`,
+      )
+    }
     if (visible && params.demandId) {
       dispatch(setDemandInfo({}))
       dispatch(getDemandInfo({ projectId: params.id, id: params.demandId }))
@@ -507,9 +514,13 @@ const DemandDetail = () => {
           pageSize: 999,
         }),
       )
+    }else{
+      localStorage.removeItem('projectRouteDetail')
     }
-  }, [visible, params])
-
+    return () => {
+      localStorage.removeItem('projectRouteDetail')
+    }
+  }, [visible, params, userPreferenceConfig.previewModel])
   useEffect(() => {
     // 获取项目信息中的需求类别
     const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
@@ -545,7 +556,6 @@ const DemandDetail = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
-
   return (
     <DemandWrap
       style={{ paddingTop: (params?.employeeCurrentId || 0) > 0 ? 0 : 20 }}
