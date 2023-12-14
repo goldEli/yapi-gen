@@ -45,13 +45,7 @@ export const getContactStatistics: any = async () => {
 // }
 
 export const getMsg_list: any = async (params: any) => {
-  const response: any = await http.post<any>('/b/msg/list', {
-    page: params.lastId ?? 1,
-    read: params.read,
-    friendUsername: params.friendUsername ? [params.friendUsername] : undefined,
-    customType: params.msgType,
-    latTime: params.latTime,
-  })
+  const response: any = await http.post<any>('/b/msg/list', params)
 
   return response.data
 }

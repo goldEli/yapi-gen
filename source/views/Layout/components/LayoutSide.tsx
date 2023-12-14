@@ -25,7 +25,9 @@ import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import { setProjectInfo } from '@store/project'
 import SiteNotifications from '../Trends/SiteNotifications'
 import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
-
+import NoticePopover from './NoticePopover'
+import useNoticePopoverTitle from './NoticePopover/hooks/useNoticeTitle'
+import { PopoverWrap, overlayClassNameStyle } from './NoticePopover/style'
 interface MorePopoverComponentProps {
   onClose(): void
   foldList: any
@@ -103,7 +105,8 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   const [notFoldList, setNotFoldList] = useState([])
   // 折叠菜单
   const [foldList, setFoldList] = useState([])
-
+  const [msgVisible, setMsgVisible] = useState(false)
+  const { TitleBox, close } = useNoticePopoverTitle(setMsgVisible)
   // 其他系统列表
   const otherSystemList = [
     { name: 'iFun BI', url: 'https://bi.ifun.com/', icon: 'BI' },
@@ -191,8 +194,11 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
 
     // 如果是动态则默认跳转全部
     if (item.url === '/Trends') {
+      setMsgVisible(true)
+
       dispatch(changeVisible(false))
       dispatch(changeVisibleFilter(false))
+      return
       navigateUrl = `${item.url}/AllNote/1`
     }
 
@@ -315,13 +321,12 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       <div style={{ width: 60, height: 16 }} />
 
       <MenusWrap>
-        {notFoldList?.map((i: any) => (
+        {/* {notFoldList?.map((i: any) => (
           <div
             key={i.id}
             onClick={() => onChangeCurrentMenu(i)}
-            className={`${notOpenSideMenu} ${
-              currentMenu?.url === i.url ? activeSideMenu : ''
-            }`}
+            className={`${notOpenSideMenu} ${currentMenu?.url === i.url ? activeSideMenu : ''
+              }`}
           >
             {i.url === '/Trends' && (
               <SiteNotifications ref={childStateRef} item={i} />
@@ -331,11 +336,11 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
                 type={
                   currentMenu?.id === i.id
                     ? menuIconList?.filter((k: any) =>
-                        String(i.url).includes(k.key),
-                      )[0]?.active
+                      String(i.url).includes(k.key),
+                    )[0]?.active
                     : menuIconList?.filter((k: any) =>
-                        String(i.url).includes(k.key),
-                      )[0]?.normal
+                      String(i.url).includes(k.key),
+                    )[0]?.normal
                 }
                 size={24}
                 color="var(--neutral-n2)"
@@ -343,8 +348,86 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
             )}
             <div>{i.isRegular ? t(i.name) : i.name}</div>
           </div>
-        ))}
-
+        ))} */}
+        {notFoldList.map((i: any) => {
+          if (i.id === 1) {
+            return (
+              <PopoverWrap
+                key={i.id}
+                overlayClassName={overlayClassNameStyle}
+                open={msgVisible}
+                content={
+                  <NoticePopover
+                    onHistoryStatics={() => {
+                      navigate('Trends/AllNote/1')
+                      setMsgVisible(false)
+                    }}
+                  ></NoticePopover>
+                }
+                title={TitleBox}
+                trigger="click"
+                placement="right"
+              >
+                <div
+                  key={i.id}
+                  onClick={() => onChangeCurrentMenu(i)}
+                  className={`${notOpenSideMenu} ${
+                    currentMenu?.url === i.url ? activeSideMenu : ''
+                  }`}
+                >
+                  {i.url === '/Trends' && (
+                    <SiteNotifications ref={childStateRef} item={i} />
+                  )}
+                  {i.url !== '/Trends' && (
+                    <CommonIconFont
+                      type={
+                        currentMenu?.id === i.id
+                          ? menuIconList?.filter((k: any) =>
+                              String(i.url).includes(k.key),
+                            )[0]?.active
+                          : menuIconList?.filter((k: any) =>
+                              String(i.url).includes(k.key),
+                            )[0]?.normal
+                      }
+                      size={24}
+                      color="var(--neutral-n2)"
+                    />
+                  )}
+                  <div>{i.isRegular ? t(i.name) : i.name}</div>
+                </div>
+              </PopoverWrap>
+            )
+          }
+          return (
+            <div
+              key={i.id}
+              onClick={() => onChangeCurrentMenu(i)}
+              className={`${notOpenSideMenu} ${
+                currentMenu?.url === i.url ? activeSideMenu : ''
+              }`}
+            >
+              {i.url === '/Trends' && (
+                <SiteNotifications ref={childStateRef} item={i} />
+              )}
+              {i.url !== '/Trends' && (
+                <CommonIconFont
+                  type={
+                    currentMenu?.id === i.id
+                      ? menuIconList?.filter((k: any) =>
+                          String(i.url).includes(k.key),
+                        )[0]?.active
+                      : menuIconList?.filter((k: any) =>
+                          String(i.url).includes(k.key),
+                        )[0]?.normal
+                  }
+                  size={24}
+                  color="var(--neutral-n2)"
+                />
+              )}
+              <div>{i.isRegular ? t(i.name) : i.name}</div>
+            </div>
+          )
+        })}
         {foldList?.length > 0 && (
           <Popover
             placement="right"

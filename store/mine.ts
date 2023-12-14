@@ -6,11 +6,13 @@ import { getVerifyInfo } from '@/services/mine'
 export interface CounterState {
   verifyInfo: any
   isUpdateCreate: boolean
+  msgStatics: any
 }
 
 const initialState: CounterState = {
   verifyInfo: null,
   isUpdateCreate: false,
+  msgStatics: {},
 }
 
 // 异步请求外部数据
@@ -34,6 +36,9 @@ export const mineSlice = createSlice({
     setVerifyInfo: (state: any, action) => {
       state.verifyInfo = action.payload
     },
+    setMsgStatics: (state: any, action) => {
+      state.msgStatics = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getAsyncVerifyInfo.fulfilled, (state: any, action: any) => {
@@ -42,6 +47,7 @@ export const mineSlice = createSlice({
   },
 })
 
-export const { setIsUpdateCreate, setVerifyInfo } = mineSlice.actions
+export const { setIsUpdateCreate, setVerifyInfo, setMsgStatics } =
+  mineSlice.actions
 
 export default mineSlice.reducer

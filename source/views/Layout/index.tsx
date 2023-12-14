@@ -42,7 +42,8 @@ import ProjectWarningModal from '@/components/ProjectWarningModal/ProjectWarning
 import { setProjectWarningModal } from '@store/project'
 import ReportAssistantModal from './Report/Review/components/ReportAssistantModal'
 import ProjectSystemReport from './Report/Review/components/ProjectSystemReport'
-
+import { getNotReadMsgStatics } from '@/services/mine'
+import { setMsgStatics } from '@store/mine'
 const LayoutIndex = () => {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -153,7 +154,13 @@ const LayoutIndex = () => {
       dispatch(setProjectWarningModal({ visible: true }))
     }
   }, [projectInfo])
-
+  const _getNotReadMsgStatics = async () => {
+    const res = await getNotReadMsgStatics()
+    dispatch(setMsgStatics(res))
+  }
+  useEffect(() => {
+    _getNotReadMsgStatics()
+  }, [])
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
