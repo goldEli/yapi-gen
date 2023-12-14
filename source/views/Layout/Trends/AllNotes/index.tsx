@@ -281,7 +281,10 @@ const Index = () => {
           <MoreSelect
             getPopupContainer={(node: any) => node}
             style={{ width: 184 }}
-            options={notificationMattersOptions}
+            options={notificationMattersOptions?.map((s: any) => ({
+              ...s,
+              id: s.value,
+            }))}
             hiddenFooter
             value={customType}
             onChange={(value: number[]) => {

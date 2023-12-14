@@ -91,6 +91,8 @@ const index = (props: any) => {
     return props.options
   }, [props.options, props.value])
 
+  console.log(props.options, 'xxxxx')
+
   // 判断赋予那些属性 renderChildren --- 是否需要自己渲染option
   const selectProps = props?.renderChildren
     ? {
