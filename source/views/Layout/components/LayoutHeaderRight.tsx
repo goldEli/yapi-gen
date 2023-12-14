@@ -32,7 +32,7 @@ import {
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDispatch, useSelector } from '@store/index'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LocaleKeys, changeLanguage } from '@/locals'
 import { getMessage } from '@/components/Message'
@@ -137,6 +137,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const todoDrawerRef = useRef<any>()
   // 待办
   const [todoDrawerOpen, setTodoDrawerOpen] = useState(false)
   // 为你推荐
@@ -450,6 +451,12 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     setTodoDrawerOpen(false)
     setRecomendDrawerOpen(true)
   }
+  useEffect(() => {
+    window.addEventListener('click', (e: any) => {})
+    return () => {
+      window.removeEventListener('click', () => {})
+    }
+  }, [])
   return (
     <LayoutHeaderRightWrap id="LayoutHeaderRightWrap">
       <KeyBoardDrawer />
@@ -648,7 +655,9 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         onCancel={() => {
           setTodoDrawerOpen(false)
         }}
+        ref={todoDrawerRef}
       ></TodoDrawer>
+
       <RecomendDrawer
         open={recomendDrawerOpen}
         onCancel={() => {

@@ -3,6 +3,7 @@ import NoticeItem from '../NoticePopover/NoticeItem'
 import { useEffect, useState } from 'react'
 import { setIsNewMsg } from '@store/mine'
 import { useDispatch, useSelector } from '@store/index'
+import NoData from '@/components/NoData'
 const MineNotice = () => {
   const [data, setData] = useState<any[]>([])
   const dispatch = useDispatch()
@@ -42,16 +43,20 @@ const MineNotice = () => {
   }
   return (
     <div>
-      {data.map((item: any, index: number) => {
-        return (
-          <NoticeItem
-            index={index}
-            key={index}
-            data={item}
-            onReadClick={onReadClick}
-          ></NoticeItem>
-        )
-      })}
+      {data.length ? (
+        data.map((item: any, index: number) => {
+          return (
+            <NoticeItem
+              index={index}
+              key={index}
+              data={item}
+              onReadClick={onReadClick}
+            ></NoticeItem>
+          )
+        })
+      ) : (
+        <NoData></NoData>
+      )}
     </div>
   )
 }
