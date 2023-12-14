@@ -1,6 +1,6 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Spin } from 'antd'
+import { Spin, Drawer } from 'antd'
 export const cusDrawer = css`
   .cusDrawer {
     .ant-drawer-body {
@@ -148,4 +148,8 @@ export const DrawerFooter = styled.div`
   justify-content: flex-end;
   color: #6688ff;
   cursor: pointer;
+`
+
+export const DrawerWrap = styled(Drawer)`
+  border: 1px solid;
 `

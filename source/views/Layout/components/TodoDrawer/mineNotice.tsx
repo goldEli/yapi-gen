@@ -20,7 +20,9 @@ const MineNotice = () => {
     setData(data)
     setTimeout(() => {
       for (const iterator of data) {
-        iterator.read = 1
+        if (parseInt(iterator.read, 10) === 0) {
+          iterator.read = 1
+        }
       }
       setData([...data])
     }, 3600)
