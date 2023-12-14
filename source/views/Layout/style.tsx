@@ -87,6 +87,7 @@ export const PopOverBox = styled.div`
   background: rgba(102, 136, 255, 0.12);
   border-radius: 20px;
   padding: 0px 8px;
+  margin-left: 8px;
 `
 // 引导页
 export const imgBoxCss = css`
