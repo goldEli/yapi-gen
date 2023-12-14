@@ -140,8 +140,8 @@ const MainTable = (props: Props) => {
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation({ page, size })
   }
-
-  const columns = [
+  let columns: any = null
+  let columnsData: any = [
     {
       dataIndex: 'name',
       title: (
@@ -316,6 +316,8 @@ const MainTable = (props: Props) => {
         )
       },
     },
+  ]
+  const dataCol = [
     {
       title: t('operate'),
       dataIndex: 'action',
@@ -393,7 +395,12 @@ const MainTable = (props: Props) => {
       },
     },
   ]
-
+  // 领导要求不要
+  if (location.pathname === '/Project') {
+    columns = columnsData
+  } else {
+    columns = [...columnsData, ...dataCol]
+  }
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight
