@@ -2,17 +2,18 @@ import { getMsg_list, setReadApi } from '@/services/SiteNotifications'
 import NoticeItem from '../NoticePopover/NoticeItem'
 import { useEffect, useState } from 'react'
 import { setIsNewMsg } from '@store/mine'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 const MineNotice = () => {
   const [data, setData] = useState<any[]>([])
   const dispatch = useDispatch()
+  const { isNewMsg } = useSelector(store => store.mine)
   const _getMsg_list = async () => {
     const res = await getMsg_list({
       business_type: 2,
       nowWhereReadAll: true,
     })
     if (res?.nowWhereReadAllNum) {
-      dispatch(setIsNewMsg(true))
+      dispatch(setIsNewMsg(isNewMsg + 1))
     }
     const data = res?.list
     setData(data)
@@ -26,9 +27,6 @@ const MineNotice = () => {
 
   useEffect(() => {
     _getMsg_list()
-    return () => {
-      dispatch(setIsNewMsg(false))
-    }
   }, [])
   const setRead = async (index: number, msgIds: string) => {
     const res = await setReadApi({ read: 2, msgIds: [msgIds] })

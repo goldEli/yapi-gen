@@ -159,9 +159,6 @@ const LayoutIndex = () => {
     dispatch(setMsgStatics(res))
   }
   useEffect(() => {
-    if (isNewMsg) {
-      _getNotReadMsgStatics()
-    }
     _getNotReadMsgStatics()
   }, [isNewMsg])
 

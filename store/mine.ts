@@ -7,14 +7,14 @@ export interface CounterState {
   verifyInfo: any
   isUpdateCreate: boolean
   msgStatics: any
-  isNewMsg: boolean
+  isNewMsg: number
 }
 
 const initialState: CounterState = {
   verifyInfo: null,
   isUpdateCreate: false,
   msgStatics: {},
-  isNewMsg: false,
+  isNewMsg: 0,
 }
 
 // 异步请求外部数据

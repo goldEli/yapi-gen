@@ -62,6 +62,7 @@ const TodoDrawer = (props: any) => {
         drawerStyle={{ paddingTop: '56px' }}
         className={cusDrawer}
         footer={footer}
+        destroyOnClose
       >
         <TitleWrap>
           <TabsWrap>

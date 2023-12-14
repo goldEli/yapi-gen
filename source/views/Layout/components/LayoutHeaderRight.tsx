@@ -26,6 +26,8 @@ import {
   CompanyCard,
   RobotButton,
   NumberBox,
+  PopOverBox,
+  NumberWrap,
 } from '../style'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -525,21 +527,25 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         onConfirm={onToLoginOut}
       />
       {/* 待办 */}
-      <Popover
-        placement="bottomLeft"
-        trigger="hover"
-        getPopupContainer={() => document.body}
-        overlayClassName="popover_yang"
-      >
-        <RobotButton id="robotButton" onClick={() => operateClick(1)}>
-          <img
-            className="img"
-            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
-          />
-          <div className="name">待办</div>
-          <NumberBox>{total}</NumberBox>
-        </RobotButton>
-      </Popover>
+      <PopOverBox>
+        <Popover
+          placement="bottomLeft"
+          trigger="hover"
+          getPopupContainer={() => document.body}
+          overlayClassName="popover_yang"
+        >
+          <RobotButton id="robotButton" onClick={() => operateClick(1)}>
+            <img
+              className="img"
+              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543680935/icon1.png"
+            />
+            <div className="name">待办</div>
+            <NumberWrap>
+              <NumberBox>{total > 100 ? '99+' : total}</NumberBox>
+            </NumberWrap>
+          </RobotButton>
+        </Popover>
+      </PopOverBox>
       {/* 为你推荐 */}
       <Popover
         placement="bottomLeft"
@@ -550,7 +556,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         <RobotButton id="robotButton" onClick={() => operateClick(2)}>
           <img
             className="img"
-            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
+            src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543715733/icon2.png"
           />
           <div className="name">为你推荐</div>
         </RobotButton>

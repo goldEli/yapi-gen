@@ -64,7 +64,7 @@ const SiteNotifications = (props: any, ref: any) => {
   const { total } = dynamics ?? {}
   const isRefresh = useSelector(store => store.user.isRefresh)
   const { currentMenu, menuIconList } = useSelector(store => store.user)
-
+  const { isNewMsg } = useSelector(store => store.mine)
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
     await new Promise(resolve => setTimeout(resolve, 2000))
@@ -446,11 +446,11 @@ const SiteNotifications = (props: any, ref: any) => {
       // 更新页面小铃铛预警任务数量
       dispatch(setProjectWarningModal({ visible: true }))
       // 更新消息统计
-      dispatch(setIsNewMsg(true))
       updateWarningCount(wsData?.data)
     } else {
       sendMsg()
     }
+    dispatch(setIsNewMsg(isNewMsg + 1))
   }, [wsData])
 
   useImperativeHandle(
