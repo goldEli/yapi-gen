@@ -178,7 +178,7 @@ const IterationList = (props: IterationListProps) => {
       dispatch(
         getIterateInfo({
           projectId: getProjectIdByUrl(),
-          id: iterateInfo.id ?? result?.list[0].id,
+          id: iterateInfo.id ?? result?.list[0]?.id,
         }),
       )
     }

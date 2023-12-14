@@ -15,6 +15,7 @@ const CommentEditor = (props: CommentEditorProps) => {
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
   const { projectInfoValues } = useSelector(store => store.project)
+  const { userInfo } = useSelector(store => store.user)
   const editorRef2 = useRef<any>()
   // 富文本失焦
   const onBlurEditor = async () => {
@@ -35,17 +36,24 @@ const CommentEditor = (props: CommentEditorProps) => {
 
   useEffect(() => {
     if (props.item.id) {
-      setEditInfo(
-        /(?<start>^<p>*)|(?<end><\p>*$)/g.test(props.item.content)
-          ? props.item.content
-          : `<p>${props.item.content}</p>`,
+      const tag = /(?<start>^<p>*)|(?<end><\p>*$)/g.test(props.item.content)
+        ? props.item.content
+        : `<p>${props.item.content}</p>`
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(tag, 'text/html')
+      const idStr = doc.querySelector('span')?.getAttribute('data-id')
+      const patt = /<span\b.*?<\/span>/g
+      const contextData = props.item.content.match(patt) || []
+      const newstr: string = contextData[0]?.replace(
+        '>',
+        ` ${userInfo.id === Number(idStr) ? 'data-me=\'my\' ' : ''}`,
       )
+      setEditInfo(newstr)
       if (props.item.isEdit) {
         onReadonlyClick()
       }
     }
-  }, [props.item])
-
+  }, [props.item, userInfo])
   return (
     <Editor
       upload={uploadFile}
