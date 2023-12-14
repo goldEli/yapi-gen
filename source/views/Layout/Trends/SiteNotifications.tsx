@@ -181,7 +181,7 @@ const SiteNotifications = (props: any, ref: any) => {
       })
     }
 
-    init2()
+    // init2()
   }
   const setNewName = (type: string, code: number) => {
     let name = ''
@@ -403,7 +403,7 @@ const SiteNotifications = (props: any, ref: any) => {
 
   useEffect(() => {
     init()
-    init2()
+    // init2()
   }, [isRefresh])
 
   // 更新页面小铃铛预警任务数量
