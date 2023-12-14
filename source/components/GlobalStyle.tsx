@@ -881,6 +881,7 @@ const GlobalStyle = () => {
     }
     .ant-breadcrumb {
       font-size: 12px;
+      padding-top:2px;
     }
     .ant-breadcrumb li:last-child {
       color: var(--neutral-n3);

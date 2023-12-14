@@ -11,6 +11,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { saveScreenDetailModal } from '@store/project/project.thunk'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import Back from './components/Back'
 const breadStyle = css`
   span {
     &:hover {
@@ -51,6 +52,8 @@ const MyBreadcrumb = (props: any) => {
   }
 
   return (
+    <div style={{display:'flex',alignItems:'align-items: baseline;'}}>
+      <Back headerParmas={props.headerParmas || false}/>
     <Breadcrumb
       separator={
         <CommonIconFont type="right" size={14} color="var(--neutral-n1-d1)" />
@@ -162,6 +165,7 @@ const MyBreadcrumb = (props: any) => {
         </Breadcrumb.Item>
       ) : null}
     </Breadcrumb>
+    </div>
   )
 }
 

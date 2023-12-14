@@ -5,7 +5,10 @@ import Setting from '../../Setting'
 import Email from '../../Email'
 import { CloseWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import useRepeatConfirmModal from '@/hooks/useRepeatConfirmModal'
+import { useDispatch, useSelector } from '@store/index'
+import { setHasEdit } from '@store/SiteNotifications'
 
 const DrawerWrap = styled(Drawer)({
   '.ant-drawer-title': {
@@ -69,24 +72,73 @@ const SiteSettingDrawer = (props: SiteSettingDrawerProps) => {
   const [t] = useTranslation()
   const { isVisible, onClose } = props
   const [activeKey, setActiveKey] = useState('1')
+  const dispatch = useDispatch()
+  const hasEdit = useSelector(store => store.siteNotifications.hasEdit)
+  const { open, RepeatConfirmModal } = useRepeatConfirmModal()
+  const setRef = useRef<any>()
+  const emailRef = useRef<any>()
 
   const onCloseDrawer = () => {
     onClose()
     setActiveKey('1')
+    dispatch(setHasEdit(false))
   }
+
+  useEffect(() => {
+    if (hasEdit) {
+      open({
+        title: '确认取消',
+        text: '当前编辑内容还未保存是否保存？',
+        hasIcon: true,
+        okText: '保存',
+        cancelText: '放弃保存',
+        onCancel: () => {
+          onCloseDrawer()
+        },
+        onConfirm: () => {
+          // props.onDeleteConfirm(item.id)
+          return Promise.resolve()
+        },
+      })
+    }
+  }, [hasEdit])
 
   const tabList = [
     {
       key: '1',
       label: t('notificationItemSettings'),
-      children: <Setting onClose={onCloseDrawer} />,
+      children: <Setting onClose={onCloseDrawer} onRef={setRef} />,
     },
     {
       key: '2',
       label: t('settings'),
-      children: <Email onClose={onCloseDrawer} />,
+      children: <Email onClose={onCloseDrawer} onRef={emailRef} />,
     },
   ]
+
+  const onCloseMyDrawer = (e: any) => {
+    if (!isVisible) {
+      return
+    }
+    if (
+      typeof e.target?.parentElement?.className !== 'string' ||
+      typeof e.target?.className !== 'string' ||
+      (!e.target?.parentElement?.className?.includes('yp_siteSettingDrawer') &&
+        !e.target?.className?.includes('yp_siteSettingDrawer'))
+    ) {
+      onCloseDrawer()
+    }
+  }
+
+  useEffect(() => {
+    document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseMyDrawer)
+    return document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseMyDrawer)
+  }, [document.getElementById('layoutWrap')])
+
   return (
     <DrawerWrap
       open={isVisible}
@@ -95,7 +147,10 @@ const SiteSettingDrawer = (props: SiteSettingDrawerProps) => {
       placement="right"
       width={960}
       closable={false}
+      // maskClosable={false}
+      // keyboard={false}
       zIndex={100}
+      className="yp_siteSettingDrawer"
       title={
         <HeaderWrap>
           <TabsWrap
@@ -111,6 +166,7 @@ const SiteSettingDrawer = (props: SiteSettingDrawerProps) => {
       headerStyle={{ width: '100%' }}
     >
       {tabList?.filter((i: any) => i.key === activeKey)[0]?.children}
+      <RepeatConfirmModal />
     </DrawerWrap>
   )
 }

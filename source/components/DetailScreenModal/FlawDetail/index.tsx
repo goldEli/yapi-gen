@@ -473,6 +473,13 @@ const FlawDetail = () => {
   }
 
   useEffect(() => {
+    if (userPreferenceConfig.previewModel === 2) {
+      const value = encryptPhp(JSON.stringify({ id: params.id }))
+      localStorage.setItem(
+        'projectRouteDetail',
+        `${location.pathname}?data=${value}`,
+      )
+    }
     if (visible && params.flawId) {
       dispatch(setFlawInfo({}))
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
@@ -484,8 +491,13 @@ const FlawDetail = () => {
           pageSize: 999,
         }),
       )
+    } else {
+      localStorage.removeItem('projectRouteDetail')
     }
-  }, [visible, params])
+    return () => {
+      localStorage.removeItem('projectRouteDetail')
+    }
+  }, [visible, params, userPreferenceConfig.previewModel])
 
   useEffect(() => {
     // 获取项目信息中的需求类别

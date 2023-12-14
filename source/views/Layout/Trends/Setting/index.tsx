@@ -5,7 +5,7 @@ import {
   PermissionItem,
   TitleGroup,
 } from '@/views/ProjectSetting/components/ProjectSet'
-import { useEffect, useState } from 'react'
+import { useEffect, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Wrap, MainWrap, FooterWrap } from './style'
 import { useDispatch, useSelector } from '@store/index'
@@ -13,8 +13,8 @@ import { editMyAllNoteSet } from '@/services/SiteNotifications'
 import { setMyConfiguration } from '@store/SiteNotifications'
 import { getMessage } from '@/components/Message'
 
-const Setting = (props: { onClose(): void }) => {
-  const [t] = useTranslation()
+const Setting = (props: { onClose(): void; onRef: any }) => {
+  const [t, i18n] = useTranslation()
   const dispatch = useDispatch()
   const [selectKeys, setSelectKeys] = useState<any>()
   const configurations = useSelector(
@@ -39,6 +39,12 @@ const Setting = (props: { onClose(): void }) => {
     dispatch(setMyConfiguration(selectKeys))
   }
 
+  useImperativeHandle(props.onRef, () => {
+    return {
+      onSave,
+    }
+  })
+
   useEffect(() => {
     setSelectKeys(myConfiguration)
   }, [myConfiguration])
@@ -46,9 +52,11 @@ const Setting = (props: { onClose(): void }) => {
   return (
     <Wrap>
       <TitleGroup>
-        <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
-        <OperationWrap>{t('operand')}</OperationWrap>
-        <span>{t('common.permission')}</span>
+        <OperationWrap className="text" isEn={i18n.language === 'en'}>
+          {t('application')}
+        </OperationWrap>
+        <CheckboxWrap className="text">{t('setting.all')}</CheckboxWrap>
+        <span className="text">{t('notificationItems')}</span>
       </TitleGroup>
       <MainWrap>
         {configurations.map((i: any) => {
