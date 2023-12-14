@@ -28,7 +28,7 @@ const MineNotice = () => {
 
   useEffect(() => {
     _getMsg_list()
-  }, [])
+  }, [isNewMsg])
   const setRead = async (index: number, msgIds: string) => {
     const res = await setReadApi({ read: 2, msgIds: [msgIds] })
     if (res.code === 0) {
