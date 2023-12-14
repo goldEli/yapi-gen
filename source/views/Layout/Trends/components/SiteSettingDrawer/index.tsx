@@ -116,28 +116,26 @@ const SiteSettingDrawer = (props: SiteSettingDrawerProps) => {
     },
   ]
 
-  const onCloseMyDrawer = (e: any) => {
-    if (!isVisible) {
-      return
-    }
-    if (
-      typeof e.target?.parentElement?.className !== 'string' ||
-      typeof e.target?.className !== 'string' ||
-      (!e.target?.parentElement?.className?.includes('yp_siteSettingDrawer') &&
-        !e.target?.className?.includes('yp_siteSettingDrawer'))
-    ) {
-      onCloseDrawer()
-    }
-  }
+  // const onCloseMyDrawer = (e: any) => {
+  //   console.log(e.target,'eeeeeee')
+  //   if (!isVisible) {
+  //     return
+  //   }
+  //   if (
+  //     typeof e.target?.parentElement?.className !== 'string' ||
+  //     typeof e.target?.className !== 'string' ||
+  //     (!e.target?.parentElement?.className?.includes('yp_siteSettingDrawer') &&
+  //       !e.target?.className?.includes('yp_siteSettingDrawer'))
+  //   ) {
+  //     onCloseDrawer()
+  //   }
+  // }
 
-  useEffect(() => {
-    document
-      .getElementById('layoutWrap')
-      ?.addEventListener('click', onCloseMyDrawer)
-    return document
-      .getElementById('layoutWrap')
-      ?.addEventListener('click', onCloseMyDrawer)
-  }, [document.getElementById('layoutWrap')])
+  // useEffect(() => {
+  //   document.querySelector('body')?.addEventListener('click', onCloseMyDrawer)
+  //   return
+  //   document.querySelector('body')?.addEventListener('click', onCloseMyDrawer)
+  // }, [document.querySelector('body')])
 
   return (
     <DrawerWrap
@@ -146,9 +144,9 @@ const SiteSettingDrawer = (props: SiteSettingDrawerProps) => {
       destroyOnClose
       placement="right"
       width={960}
-      closable={false}
+      // closable={false}
       // maskClosable={false}
-      // keyboard={false}
+      keyboard={false}
       zIndex={100}
       className="yp_siteSettingDrawer"
       title={
