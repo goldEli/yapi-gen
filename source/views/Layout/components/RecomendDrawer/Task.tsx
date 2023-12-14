@@ -1,5 +1,6 @@
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import {
+  AssignTaskWrap,
   CanClick,
   ItemWrap,
   LoadingMore,
@@ -231,7 +232,7 @@ const ReviewTask = () => {
   return (
     <div>
       <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
-        <div id="scrollableDiv">
+        <AssignTaskWrap id="scrollableDiv">
           <InfiniteScroll
             dataLength={
               dataList.list ? Object.values(dataList.list).flat(2).length : 0
@@ -257,7 +258,7 @@ const ReviewTask = () => {
           </InfiniteScroll>
           {(JSON.stringify(dataList.list) === '{}' ||
             dataList.list?.length <= 0) && <NoData />}
-        </div>
+        </AssignTaskWrap>
       </SpinWrap>
     </div>
   )

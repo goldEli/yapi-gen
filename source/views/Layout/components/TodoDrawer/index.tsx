@@ -52,6 +52,7 @@ const TodoDrawer = (props: any) => {
       查看我的工作<CommonIconFont type="right"></CommonIconFont>
     </DrawerFooter>
   )
+  const empty = <div style={{ height: '40px' }}></div>
   return (
     <div>
       <Drawer
@@ -63,7 +64,7 @@ const TodoDrawer = (props: any) => {
         zIndex={196}
         drawerStyle={{ paddingTop: '56px' }}
         className={cusDrawer}
-        footer={footer}
+        footer={active === 1 ? null : footer}
         destroyOnClose
       >
         <TitleWrap>

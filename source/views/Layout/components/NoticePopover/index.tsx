@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { getMsg_list, setReadApi } from '@/services/SiteNotifications'
 import dayjs from 'dayjs'
 import { useDispatch, useSelector } from '@store/index'
-import { setIsNewMsg } from '@store/mine'
+import { setIsNewMsg, setMsgStatics } from '@store/mine'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import _ from 'lodash'
 interface IProps {}
@@ -16,7 +16,7 @@ const NoticePopover = (props: any) => {
   const [data, setData] = useState<any>([])
   const dispatch = useDispatch()
   const [index, setIndex] = useState(-1)
-  const { isNewMsg } = useSelector(store => store.mine)
+  const { isNewMsg, msgStatics } = useSelector(store => store.mine)
   const _getMsg_list = async (isInit: boolean, page: number) => {
     const todayDate = dayjs(new Date()).format('YYYY-MM-DD')
     const lastSevenDays = dayjs(todayDate)
@@ -29,6 +29,7 @@ const NoticePopover = (props: any) => {
       pageSize: 50,
       page: page,
     })
+    dispatch(setMsgStatics({ ...msgStatics, allnews: res?.total }))
     const data = res?.list
     setData(data)
     // if (isInit) {
