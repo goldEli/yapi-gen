@@ -25,7 +25,10 @@ import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import { setProjectInfo } from '@store/project'
 import SiteNotifications from '../Trends/SiteNotifications'
 import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
-
+import NoticePopover from './NoticePopover'
+import useNoticePopoverTitle from './NoticePopover/hooks/useNoticeTitle'
+import { PopoverWrap, overlayClassNameStyle } from './NoticePopover/style'
+import { divide } from 'lodash'
 interface MorePopoverComponentProps {
   onClose(): void
   foldList: any
@@ -93,6 +96,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const childStateRef = useRef<any>()
+  const popoverRef: any = useRef(null)
   const { currentMenu, menuIconList, menuPermission } = useSelector(
     store => store.user,
   )
@@ -103,7 +107,8 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   const [notFoldList, setNotFoldList] = useState([])
   // 折叠菜单
   const [foldList, setFoldList] = useState([])
-
+  const [msgVisible, setMsgVisible] = useState(false)
+  const { TitleBox, close } = useNoticePopoverTitle(setMsgVisible)
   // 其他系统列表
   const otherSystemList = [
     { name: 'iFun BI', url: 'https://bi.ifun.com/', icon: 'BI' },
@@ -191,8 +196,11 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
 
     // 如果是动态则默认跳转全部
     if (item.url === '/Trends') {
+      setMsgVisible(true)
+
       dispatch(changeVisible(false))
       dispatch(changeVisibleFilter(false))
+      return
       navigateUrl = `${item.url}/AllNote/1`
     }
 
@@ -264,6 +272,24 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
     }
   }, [menuPermission, routerPath])
 
+  useEffect(() => {
+    // 在组件加载后，给根容器添加点击事件监听器
+    document.addEventListener('click', handleClickOutside)
+
+    return () => {
+      // 组件卸载时，移除点击事件监听器
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
+
+  const handleClickOutside = (event: any) => {
+    // 判断被点击的元素是否是 Popover 相关的元素
+    // if (popoverRef.current && !popoverRef.current.contains(event.target) && msgVisible) {
+    //   setMsgVisible(false)
+    // } else {
+    //   setMsgVisible(true)
+    // }
+  }
   return (
     <LayoutSide onClick={props.onClose} id="LayoutSide">
       <NotOpenLogoWrap>
@@ -315,13 +341,12 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       <div style={{ width: 60, height: 16 }} />
 
       <MenusWrap>
-        {notFoldList?.map((i: any) => (
+        {/* {notFoldList?.map((i: any) => (
           <div
             key={i.id}
             onClick={() => onChangeCurrentMenu(i)}
-            className={`${notOpenSideMenu} ${
-              currentMenu?.url === i.url ? activeSideMenu : ''
-            }`}
+            className={`${notOpenSideMenu} ${currentMenu?.url === i.url ? activeSideMenu : ''
+              }`}
           >
             {i.url === '/Trends' && (
               <SiteNotifications ref={childStateRef} item={i} />
@@ -331,11 +356,11 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
                 type={
                   currentMenu?.id === i.id
                     ? menuIconList?.filter((k: any) =>
-                        String(i.url).includes(k.key),
-                      )[0]?.active
+                      String(i.url).includes(k.key),
+                    )[0]?.active
                     : menuIconList?.filter((k: any) =>
-                        String(i.url).includes(k.key),
-                      )[0]?.normal
+                      String(i.url).includes(k.key),
+                    )[0]?.normal
                 }
                 size={24}
                 color="var(--neutral-n2)"
@@ -343,8 +368,86 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
             )}
             <div>{i.isRegular ? t(i.name) : i.name}</div>
           </div>
-        ))}
-
+        ))} */}
+        {notFoldList.map((i: any) => {
+          if (i.id === 1) {
+            return (
+              <PopoverWrap
+                key={i.id}
+                overlayClassName={overlayClassNameStyle}
+                ref={popoverRef}
+                content={
+                  <NoticePopover
+                    onHistoryStatics={() => {
+                      navigate('Trends/AllNote/1')
+                      setMsgVisible(false)
+                    }}
+                  ></NoticePopover>
+                }
+                title={TitleBox}
+                trigger="click"
+                placement="right"
+              >
+                <div
+                  key={i.id}
+                  onClick={() => onChangeCurrentMenu(i)}
+                  className={`${notOpenSideMenu} ${
+                    currentMenu?.url === i.url ? activeSideMenu : ''
+                  }`}
+                >
+                  {i.url === '/Trends' && (
+                    <SiteNotifications ref={childStateRef} item={i} />
+                  )}
+                  {i.url !== '/Trends' && (
+                    <CommonIconFont
+                      type={
+                        currentMenu?.id === i.id
+                          ? menuIconList?.filter((k: any) =>
+                              String(i.url).includes(k.key),
+                            )[0]?.active
+                          : menuIconList?.filter((k: any) =>
+                              String(i.url).includes(k.key),
+                            )[0]?.normal
+                      }
+                      size={24}
+                      color="var(--neutral-n2)"
+                    />
+                  )}
+                  <div>{i.isRegular ? t(i.name) : i.name}</div>
+                </div>
+              </PopoverWrap>
+            )
+          }
+          return (
+            <div
+              key={i.id}
+              onClick={() => onChangeCurrentMenu(i)}
+              className={`${notOpenSideMenu} ${
+                currentMenu?.url === i.url ? activeSideMenu : ''
+              }`}
+            >
+              {i.url === '/Trends' && (
+                <SiteNotifications ref={childStateRef} item={i} />
+              )}
+              {i.url !== '/Trends' && (
+                <CommonIconFont
+                  type={
+                    currentMenu?.id === i.id
+                      ? menuIconList?.filter((k: any) =>
+                          String(i.url).includes(k.key),
+                        )[0]?.active
+                      : menuIconList?.filter((k: any) =>
+                          String(i.url).includes(k.key),
+                        )[0]?.normal
+                  }
+                  size={24}
+                  color="var(--neutral-n2)"
+                />
+              )}
+              <div>{i.isRegular ? t(i.name) : i.name}</div>
+            </div>
+          )
+        })}
         {foldList?.length > 0 && (
           <Popover
             placement="right"

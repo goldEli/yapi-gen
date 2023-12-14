@@ -25,6 +25,7 @@ import {
   MineCreate,
   CompanyCard,
   RobotButton,
+  NumberBox,
 } from '../style'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -47,7 +48,8 @@ import QuickMine from './QuickMine'
 import Recently from './Recently'
 import KeyBoardDrawer from '../Trends/components/KeyBoardDrawer/KeyBoardDrawer'
 import { setLayoutSecondaryMenuRightWidth } from '@store/global'
-
+import TodoDrawer from './TodoDrawer'
+import RecomendDrawer from './RecomendDrawer'
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
   const { language } = useSelector(store => store.global)
@@ -133,7 +135,14 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  // 待办
+  const [todoDrawerOpen, setTodoDrawerOpen] = useState(false)
+  // 为你推荐
+  const [recomendDrawerOpen, setRecomendDrawerOpen] = useState(false)
   const { userInfo, isRefresh } = useSelector(store => store.user)
+  const { msgStatics } = useSelector(store => store.mine)
+  const { todoStatistics } = msgStatics ?? {}
+  const { total } = todoStatistics ?? {}
   // 帮助中心展开
   const [isHelpVisible, setIsHelpVisible] = useState(false)
   // 我的
@@ -426,7 +435,19 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
       )
     }
   }, [isRefresh, userInfo])
-
+  /**
+   * 待办和为你推荐
+   */
+  const operateClick = (type: number) => {
+    console.log('type', type)
+    if (type === 1) {
+      setRecomendDrawerOpen(false)
+      setTodoDrawerOpen(true)
+      return
+    }
+    setTodoDrawerOpen(false)
+    setRecomendDrawerOpen(true)
+  }
   return (
     <LayoutHeaderRightWrap id="LayoutHeaderRightWrap">
       <KeyBoardDrawer />
@@ -503,7 +524,37 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         onChangeVisible={() => setIsConfirmLogout(!isConfirmLogout)}
         onConfirm={onToLoginOut}
       />
-
+      {/* 待办 */}
+      <Popover
+        placement="bottomLeft"
+        trigger="hover"
+        getPopupContainer={() => document.body}
+        overlayClassName="popover_yang"
+      >
+        <RobotButton id="robotButton" onClick={() => operateClick(1)}>
+          <img
+            className="img"
+            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
+          />
+          <div className="name">待办</div>
+          <NumberBox>{total}</NumberBox>
+        </RobotButton>
+      </Popover>
+      {/* 为你推荐 */}
+      <Popover
+        placement="bottomLeft"
+        trigger="hover"
+        getPopupContainer={() => document.body}
+        overlayClassName="popover_yang"
+      >
+        <RobotButton id="robotButton" onClick={() => operateClick(2)}>
+          <img
+            className="img"
+            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
+          />
+          <div className="name">为你推荐</div>
+        </RobotButton>
+      </Popover>
       <Space size={8}>
         {/* 日报机器人 只有项目内部和汇报才有机器人 */}
         {location.href.includes('/ProjectDetail/') ||
@@ -524,7 +575,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             </RobotButton>
           </Popover>
         ) : null}
-        <Popover
+        {/* <Popover
           content={
             <Recently
               isVisible={isRecentlyVisible}
@@ -540,9 +591,9 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             <div>{t('recently')}</div>
             <CommonIconFont type="down" size={16} />
           </HeaderItemWrap>
-        </Popover>
+        </Popover> */}
 
-        <Popover
+        {/* <Popover
           content={
             <QuickMine
               isVisible={isMineVisible}
@@ -558,7 +609,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             <div>{t('container.mine')}</div>
             <CommonIconFont type="down" size={16} />
           </HeaderItemWrap>
-        </Popover>
+        </Popover> */}
 
         <Popover
           content={helpContent}
@@ -586,6 +637,18 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
           </HeaderUserInfoWrap>
         </Popover>
       </Space>
+      <TodoDrawer
+        open={todoDrawerOpen}
+        onCancel={() => {
+          setTodoDrawerOpen(false)
+        }}
+      ></TodoDrawer>
+      <RecomendDrawer
+        open={recomendDrawerOpen}
+        onCancel={() => {
+          setRecomendDrawerOpen(false)
+        }}
+      ></RecomendDrawer>
     </LayoutHeaderRightWrap>
   )
 }

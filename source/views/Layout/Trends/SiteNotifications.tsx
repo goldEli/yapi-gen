@@ -35,6 +35,7 @@ import NoteModal from '@/components/NoteModal'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { setProjectInfo, setProjectWarningModal } from '@store/project'
+import { setIsNewMsg } from '@store/mine'
 
 const mcs = css`
   overflow: hidden;
@@ -58,6 +59,9 @@ const SiteNotifications = (props: any, ref: any) => {
   const { wsData, creatWebSocket } = useWebsocket()
   const dispatch = useDispatch()
   const { isVisible, all } = useSelector(store => store.siteNotifications)
+  const { msgStatics } = useSelector(store => store.mine)
+  const { dynamics } = msgStatics ?? {}
+  const { total } = dynamics ?? {}
   const isRefresh = useSelector(store => store.user.isRefresh)
   const { currentMenu, menuIconList } = useSelector(store => store.user)
 
@@ -441,6 +445,8 @@ const SiteNotifications = (props: any, ref: any) => {
     ) {
       // 更新页面小铃铛预警任务数量
       dispatch(setProjectWarningModal({ visible: true }))
+      // 更新消息统计
+      dispatch(setIsNewMsg(true))
       updateWarningCount(wsData?.data)
     } else {
       sendMsg()
@@ -459,7 +465,7 @@ const SiteNotifications = (props: any, ref: any) => {
 
   return (
     <>
-      <Badge size="small" offset={[-2, 1]} count={all}>
+      <Badge size="small" offset={[-2, 1]} count={total}>
         <CommonIconFont
           type={
             currentMenu?.id === props?.item.id
@@ -474,7 +480,6 @@ const SiteNotifications = (props: any, ref: any) => {
           color="var(--neutral-n2)"
         />
       </Badge>
-
       <NoteModal
         onClose={() => setFirst(false)}
         data={first2}

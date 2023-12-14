@@ -1,7 +1,18 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Popover, Spin, Tabs } from 'antd'
-
+export const NumberBox = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--function-error);
+  color: var(--neutral-white-d7);
+  font-size: var(--font12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+`
 export const CompanyCard = styled.div<{ isActive?: boolean }>`
   height: 64px;
   display: flex;
