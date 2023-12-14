@@ -2,15 +2,21 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Popover, Spin, Tabs } from 'antd'
 export const NumberBox = styled.div`
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+  /* width: 24px;
+  height: 24px; */
+  padding: 0px 8px;
+  border-radius: 12px;
   background-color: var(--function-error);
   color: var(--neutral-white-d7);
   font-size: var(--font12);
   display: flex;
   align-items: center;
   justify-content: center;
+`
+export const NumberWrap = styled.div`
+  padding: 3px;
+  background-color: #fff;
+  border-radius: 12px;
   margin-left: 8px;
 `
 export const CompanyCard = styled.div<{ isActive?: boolean }>`
@@ -77,7 +83,12 @@ export const RobotButton = styled.div`
     background: var(--active);
   }
 `
-
+export const PopOverBox = styled.div`
+  background: rgba(102, 136, 255, 0.12);
+  border-radius: 20px;
+  padding: 0px 8px;
+  margin-left: 8px;
+`
 // 引导页
 export const imgBoxCss = css`
   box-sizing: border-box;

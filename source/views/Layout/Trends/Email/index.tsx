@@ -1,13 +1,13 @@
 /* eslint-disable new-cap */
 import CommonButton from '@/components/CommonButton'
 import { Switch } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useImperativeHandle, useState } from 'react'
 import { Wrap } from '../Setting/style'
 import { Content, FooterWrap } from './style'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { editMyAllNoteSet } from '@/services/SiteNotifications'
-import { setMyEmailConfiguration } from '@store/SiteNotifications'
+import { setHasEdit, setMyEmailConfiguration } from '@store/SiteNotifications'
 import { getMessage } from '@/components/Message'
 import EmailBox from '../components/EmailBox/EmailBox'
 
@@ -33,6 +33,7 @@ const Email = (props: { onClose(): void }) => {
       setChoose([...choose, id])
     }
   }
+
   const onSave = async () => {
     const res = await editMyAllNoteSet(
       Array.from(new Set([...myConfiguration, ...choose])),
@@ -98,7 +99,7 @@ const Email = (props: { onClose(): void }) => {
             {emailConfigurations?.map((i: any) => (
               <div
                 style={{
-                  width: '300px',
+                  width: '270px',
                   display: 'flex',
                   alignItems: 'center',
                 }}

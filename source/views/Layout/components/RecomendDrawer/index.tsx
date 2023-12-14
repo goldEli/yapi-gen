@@ -57,7 +57,7 @@ const RecomendDrawer = (props: any) => {
         width={480}
         open={open}
         closable={false}
-        mask={false}
+        maskStyle={{ background: 'transparent' }}
         zIndex={196}
         drawerStyle={{ paddingTop: '56px' }}
         className={cusDrawer}

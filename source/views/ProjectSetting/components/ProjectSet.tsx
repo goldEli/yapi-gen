@@ -30,6 +30,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import CommonButton from '@/components/CommonButton'
 import { CloseWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
+import { setHasEdit } from '@store/SiteNotifications'
 
 const Warp = styled.div({
   height: '100%',
@@ -139,6 +140,9 @@ export const TitleGroup = styled.div({
   color: 'var(--neutral-n2)',
   fontSize: 12,
   fontFamily: 'SiYuanMedium',
+  '.text': {
+    color: 'var(--neutral-n3)',
+  },
 })
 
 export const MainWrap = styled.div({
@@ -158,7 +162,18 @@ const MainWrapItem = styled.div({
   borderBottom: '1px solid var(--neutral-n6-d1)',
   padding: '24px 0',
   display: 'flex',
-
+  '.strong': {
+    fontFamily: 'SiYuanMedium',
+  },
+  '.lines': {
+    display: 'inline-block',
+    width: 1,
+    height: 16,
+    backgroundColor: 'var(--neutral-n5)',
+    position: 'absolute',
+    left: 52,
+    top: 2,
+  },
   '.ant-checkbox-wrapper': {
     margin: '0 !important',
   },
@@ -179,13 +194,16 @@ const ModalFooter = styled(Space)({
   justifyContent: 'flex-end',
 })
 
-export const CheckboxWrap = styled.div({ width: 100 })
-
-export const OperationWrap = styled.div({
-  minWidth: 100,
-  whiteSpace: 'nowrap',
-  width: 'fit-content',
+export const CheckboxWrap = styled.div({
+  width: 88,
+  position: 'relative',
 })
+
+export const OperationWrap = styled.div<{ isEn?: boolean }>`
+  min-width: ${props => (props.isEn ? '160px' : '100px')};
+  white-space: nowrap;
+  width: fit-content;
+`
 
 export const GroupWrap = styled.div({
   display: 'flex',
@@ -204,6 +222,8 @@ interface ItemProps {
 }
 
 export const PermissionItem = (props: ItemProps) => {
+  const [_, i18n] = useTranslation()
+  const dispatch = useDispatch()
   const keys =
     props.value?.filter(
       (i: any) => !!props.item.children.find((item: any) => item.value === i),
@@ -223,6 +243,9 @@ export const PermissionItem = (props: ItemProps) => {
 
   return (
     <MainWrapItem>
+      <OperationWrap className="strong" isEn={i18n.language === 'en'}>
+        {props.item.name}
+      </OperationWrap>
       <CheckboxWrap>
         <Checkbox
           disabled={props.activeDetail?.type === 1}
@@ -234,8 +257,8 @@ export const PermissionItem = (props: ItemProps) => {
             keys.length > 0 && keys.length === props.item.children.length
           }
         />
+        <span className="lines" />
       </CheckboxWrap>
-      <OperationWrap>{props.item.name}</OperationWrap>
       <GroupWrap>
         <Checkbox.Group value={keys} onChange={onChange}>
           {props.item.children.map((item: any) => {
@@ -299,7 +322,6 @@ const ProjectSet = () => {
     })
     setSelectKeys(keys)
   }
-
   const init = async (isInit?: boolean, str?: string) => {
     setIsSpinning(true)
     const result = await getProjectPermission({ projectId })

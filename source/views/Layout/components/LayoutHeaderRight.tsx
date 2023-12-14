@@ -26,11 +26,13 @@ import {
   CompanyCard,
   RobotButton,
   NumberBox,
+  PopOverBox,
+  NumberWrap,
 } from '../style'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDispatch, useSelector } from '@store/index'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LocaleKeys, changeLanguage } from '@/locals'
 import { getMessage } from '@/components/Message'
@@ -135,6 +137,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const todoDrawerRef = useRef<any>()
   // 待办
   const [todoDrawerOpen, setTodoDrawerOpen] = useState(false)
   // 为你推荐
@@ -448,6 +451,12 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     setTodoDrawerOpen(false)
     setRecomendDrawerOpen(true)
   }
+  useEffect(() => {
+    window.addEventListener('click', (e: any) => {})
+    return () => {
+      window.removeEventListener('click', () => {})
+    }
+  }, [])
   return (
     <LayoutHeaderRightWrap id="LayoutHeaderRightWrap">
       <KeyBoardDrawer />
@@ -525,55 +534,63 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         onConfirm={onToLoginOut}
       />
       {/* 待办 */}
-      <Popover
-        placement="bottomLeft"
-        trigger="hover"
-        getPopupContainer={() => document.body}
-        overlayClassName="popover_yang"
-      >
-        <RobotButton id="robotButton" onClick={() => operateClick(1)}>
-          <img
-            className="img"
-            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
-          />
-          <div className="name">待办</div>
-          <NumberBox>{total}</NumberBox>
-        </RobotButton>
-      </Popover>
+      <PopOverBox>
+        <Popover
+          placement="bottomLeft"
+          trigger="hover"
+          getPopupContainer={() => document.body}
+          overlayClassName="popover_yang"
+        >
+          <RobotButton id="robotButton" onClick={() => operateClick(1)}>
+            <img
+              className="img"
+              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543680935/icon1.png"
+            />
+            <div className="name">待办</div>
+            <NumberWrap>
+              <NumberBox>{total > 100 ? '99+' : total}</NumberBox>
+            </NumberWrap>
+          </RobotButton>
+        </Popover>
+      </PopOverBox>
       {/* 为你推荐 */}
-      <Popover
-        placement="bottomLeft"
-        trigger="hover"
-        getPopupContainer={() => document.body}
-        overlayClassName="popover_yang"
-      >
-        <RobotButton id="robotButton" onClick={() => operateClick(2)}>
-          <img
-            className="img"
-            src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
-          />
-          <div className="name">为你推荐</div>
-        </RobotButton>
-      </Popover>
+      <PopOverBox>
+        <Popover
+          placement="bottomLeft"
+          trigger="hover"
+          getPopupContainer={() => document.body}
+          overlayClassName="popover_yang"
+        >
+          <RobotButton id="robotButton" onClick={() => operateClick(2)}>
+            <img
+              className="img"
+              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543715733/icon2.png"
+            />
+            <div className="name">为你推荐</div>
+          </RobotButton>
+        </Popover>
+      </PopOverBox>
       <Space size={8}>
         {/* 日报机器人 只有项目内部和汇报才有机器人 */}
         {location.href.includes('/ProjectDetail/') ||
         location.href.includes('/Report') ? (
-          <Popover
-            placement="bottomLeft"
-            content={contents}
-            trigger="hover"
-            getPopupContainer={() => document.body}
-            overlayClassName="popover_yang"
-          >
-            <RobotButton id="robotButton">
-              <img
-                className="img"
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
-              />
-              <div className="name">{t('dailyAssistant')}</div>
-            </RobotButton>
-          </Popover>
+          <PopOverBox>
+            <Popover
+              placement="bottomLeft"
+              content={contents}
+              trigger="hover"
+              getPopupContainer={() => document.body}
+              overlayClassName="popover_yang"
+            >
+              <RobotButton id="robotButton">
+                <img
+                  className="img"
+                  src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
+                />
+                <div className="name">{t('dailyAssistant')}</div>
+              </RobotButton>
+            </Popover>
+          </PopOverBox>
         ) : null}
         {/* <Popover
           content={
@@ -642,7 +659,9 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         onCancel={() => {
           setTodoDrawerOpen(false)
         }}
+        ref={todoDrawerRef}
       ></TodoDrawer>
+
       <RecomendDrawer
         open={recomendDrawerOpen}
         onCancel={() => {

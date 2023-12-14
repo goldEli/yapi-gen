@@ -22,6 +22,7 @@ import { getMessage } from '@/components/Message'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
 import MessageItem from '../components/MessageItem'
+import _ from 'lodash'
 
 const Index = () => {
   const all = useSelector(store => store.siteNotifications.all)
@@ -88,12 +89,12 @@ const Index = () => {
     }
   }, [])
 
-  const onRead = async (id: string) => {
+  const onRead = _.debounce(async (id: string) => {
     const result = await setReadByClick([id])
     if (result) {
       getMessageList()
     }
-  }
+  }, 500)
 
   const getMessageList = async () => {
     const { search, customType, page, pageSize, endTime } = searchRef.current
@@ -103,8 +104,8 @@ const Index = () => {
       customType: customType?.length ? customType : undefined,
       page,
       pageSize,
-      latTime: endTime?.map?.((s: any) => moment(s).unix())?.[0],
-      endTime: endTime?.map?.((s: any) => moment(s).unix())?.[1],
+      latTime: endTime?.map?.((s: any) => moment(s).startOf('day').unix())?.[0],
+      endTime: endTime?.map?.((s: any) => moment(s).endOf('day').unix())?.[1],
     })
     if (result) {
       setDataList(result)
@@ -196,6 +197,8 @@ const Index = () => {
           onChangeSearch={(value: string) => {
             setSearch(value)
             searchRef.current.search = value
+            setPage(1)
+            searchRef.current.page = 1
             getMessageList()
           }}
           defaultValue={search}
@@ -219,6 +222,8 @@ const Index = () => {
             onChange={(value: number[]) => {
               setCustomType(value)
               searchRef.current.customType = value
+              setPage(1)
+              searchRef.current.page = 1
               getMessageList()
             }}
           />
@@ -234,6 +239,8 @@ const Index = () => {
             onChange={dates => {
               setEndTime(dates)
               searchRef.current.endTime = dates
+              setPage(1)
+              searchRef.current.page = 1
               getMessageList()
             }}
           />

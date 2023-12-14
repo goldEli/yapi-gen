@@ -30,6 +30,7 @@ export const NoticePopoverWrap = styled.div`
 export const ContentList = styled.div`
   padding: 0px 12px;
   padding-bottom: 100px;
+  /* border: 1px solid; */
 `
 export const NoticeItemWrap = styled.div`
   display: flex;

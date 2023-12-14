@@ -12,6 +12,7 @@ type SliceState = {
   myEmailConfiguration: any
   emailConfiguration: any
   msgType: any
+  hasEdit: boolean
 }
 
 const slice = createSlice({
@@ -24,6 +25,7 @@ const slice = createSlice({
     myEmailConfiguration: [],
     friendUsername: 'project',
     msgType: [],
+    hasEdit: false,
   } as SliceState,
   reducers: {
     changeNumber: (state, action) => {
@@ -53,6 +55,9 @@ const slice = createSlice({
     setEmailConfiguration: (state, action) => {
       state.emailConfiguration = action.payload
     },
+    setHasEdit: (state, action) => {
+      state.hasEdit = action.payload
+    },
   },
 
   //   extraReducers(builder) {},
@@ -67,6 +72,7 @@ export const {
   setEmailConfiguration,
   setMyEmailConfiguration,
   changeKeyBoardVisible,
+  setHasEdit,
 } = slice.actions
 
 export default slice.reducer

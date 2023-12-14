@@ -2,14 +2,16 @@ import { Button, Drawer, Space } from 'antd'
 import {
   ContentWrap,
   DrawerFooter,
+  DrawerWrap,
   TabsBox,
   TabsWrap,
   TitleWrap,
   cusDrawer,
 } from './style'
+
 import CommonIconFont from '@/components/CommonIconFont'
 import NoticeItem from '../NoticePopover/NoticeItem'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AssignTask from './assignTask'
 import ReviewTask from './reviewTask'
 import MineNotice from './mineNotice'
@@ -57,11 +59,12 @@ const TodoDrawer = (props: any) => {
         width={600}
         open={open}
         closable={false}
-        mask={false}
+        maskStyle={{ background: 'transparent' }}
         zIndex={196}
         drawerStyle={{ paddingTop: '56px' }}
         className={cusDrawer}
         footer={footer}
+        destroyOnClose
       >
         <TitleWrap>
           <TabsWrap>

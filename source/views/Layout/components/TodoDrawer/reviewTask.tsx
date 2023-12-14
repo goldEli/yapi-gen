@@ -77,6 +77,7 @@ const ReviewTask = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [dataList, setDataList] = useState<any>({})
+  const { isNewMsg } = useSelector(store => store.mine)
   // 待办
   const onGetMineNoFinishList = async (isInit: boolean, page: number) => {
     setIsSpinning(true)
@@ -196,7 +197,7 @@ const ReviewTask = () => {
           isEdit
           onUpdate={() => {
             onGetMineNoFinishList(true, 1)
-            dispatch(setIsNewMsg(true))
+            dispatch(setIsNewMsg(isNewMsg + 1))
           }}
         />
       ) : null}

@@ -2664,5 +2664,7 @@
   "deleteAndName": "确认删除项目",
   "history": "历史",
   "searchForDynamicContent": "搜索动态内容",
-  "notificationMatters": "通知事项"
+  "notificationMatters": "通知事项",
+  "application": "应用",
+  "notificationItems": "通知项"
 }

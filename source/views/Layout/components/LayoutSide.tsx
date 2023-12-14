@@ -108,7 +108,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
   // 折叠菜单
   const [foldList, setFoldList] = useState([])
   const [msgVisible, setMsgVisible] = useState(false)
-  const { TitleBox, close } = useNoticePopoverTitle(setMsgVisible)
+  const { TitleBox, close } = useNoticePopoverTitle(setMsgVisible, popoverRef)
   // 其他系统列表
   const otherSystemList = [
     { name: 'iFun BI', url: 'https://bi.ifun.com/', icon: 'BI' },
@@ -387,6 +387,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
                 title={TitleBox}
                 trigger="click"
                 placement="right"
+                destroyTooltipOnHide
               >
                 <div
                   key={i.id}
