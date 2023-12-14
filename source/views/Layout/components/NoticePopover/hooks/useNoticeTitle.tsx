@@ -4,7 +4,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { useSelector } from '@store/index'
 const useNoticePopoverTitle = (setMsgVisible: any, popoverRef: any) => {
   const { msgStatics } = useSelector(store => store.mine)
-  const { dynamics } = msgStatics ?? {}
+  const { dynamics, allnews } = msgStatics ?? {}
   const { total } = dynamics ?? {}
   const close = () => {
     popoverRef.current.props.onPopupVisibleChange(false)
@@ -12,7 +12,7 @@ const useNoticePopoverTitle = (setMsgVisible: any, popoverRef: any) => {
   }
   const TitleBox = (
     <NoticeTitleWrap>
-      <div>动态（{total}）</div>
+      <div>动态（{allnews}）</div>
       <CommonIconFont
         type="close"
         color="var(--neutral-n2)"

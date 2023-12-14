@@ -22,6 +22,7 @@ const MineNotice = () => {
       for (const iterator of data) {
         if (parseInt(iterator.read, 10) === 0) {
           iterator.read = 1
+          dispatch(setIsNewMsg(isNewMsg + 1))
         }
       }
       setData([...data])

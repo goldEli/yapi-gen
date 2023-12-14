@@ -547,9 +547,11 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
               src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543680935/icon1.png"
             />
             <div className="name">待办</div>
-            <NumberWrap>
-              <NumberBox>{total > 100 ? '99+' : total}</NumberBox>
-            </NumberWrap>
+            {total ? (
+              <NumberWrap>
+                <NumberBox>{total > 100 ? '99+' : total}</NumberBox>
+              </NumberWrap>
+            ) : null}
           </RobotButton>
         </Popover>
       </PopOverBox>

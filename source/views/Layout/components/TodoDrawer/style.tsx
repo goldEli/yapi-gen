@@ -3,8 +3,11 @@ import styled from '@emotion/styled'
 import { Spin, Drawer } from 'antd'
 export const cusDrawer = css`
   .cusDrawer {
-    .ant-drawer-body {
-      padding: 20px 16px;
+    .ant-drawer-content-wrapper {
+      .ant-drawer-body {
+        padding: 20px 16px;
+        border: 1px solid red !important;
+      }
     }
   }
 `
@@ -13,6 +16,9 @@ export const TitleWrap = styled.div`
   justify-content: space-between;
   height: 32px;
   align-items: center;
+  /* position: sticky;
+  top: 0px;
+  background-color: #fff; */
 `
 export const TabsWrap = styled.div`
   background: var(--neutral-n8);
@@ -36,7 +42,7 @@ export const TabsWrap = styled.div`
   }
 `
 export const AssignTaskWrap = styled.div`
-  height: calc(100vh - 0px);
+  height: calc(100vh - 60px);
   overflow-y: auto;
 `
 export const TabsBox = styled.div`

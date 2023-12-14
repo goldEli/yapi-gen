@@ -36,7 +36,7 @@ export const TabsWrap = styled.div`
   }
 `
 export const AssignTaskWrap = styled.div`
-  height: calc(100vh - 0px);
+  height: calc(100vh - 60px);
   overflow-y: auto;
 `
 export const TabsBox = styled.div`
