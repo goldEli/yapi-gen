@@ -554,39 +554,43 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         </Popover>
       </PopOverBox>
       {/* 为你推荐 */}
-      <Popover
-        placement="bottomLeft"
-        trigger="hover"
-        getPopupContainer={() => document.body}
-        overlayClassName="popover_yang"
-      >
-        <RobotButton id="robotButton" onClick={() => operateClick(2)}>
-          <img
-            className="img"
-            src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543715733/icon2.png"
-          />
-          <div className="name">为你推荐</div>
-        </RobotButton>
-      </Popover>
+      <PopOverBox>
+        <Popover
+          placement="bottomLeft"
+          trigger="hover"
+          getPopupContainer={() => document.body}
+          overlayClassName="popover_yang"
+        >
+          <RobotButton id="robotButton" onClick={() => operateClick(2)}>
+            <img
+              className="img"
+              src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543715733/icon2.png"
+            />
+            <div className="name">为你推荐</div>
+          </RobotButton>
+        </Popover>
+      </PopOverBox>
       <Space size={8}>
         {/* 日报机器人 只有项目内部和汇报才有机器人 */}
         {location.href.includes('/ProjectDetail/') ||
         location.href.includes('/Report') ? (
-          <Popover
-            placement="bottomLeft"
-            content={contents}
-            trigger="hover"
-            getPopupContainer={() => document.body}
-            overlayClassName="popover_yang"
-          >
-            <RobotButton id="robotButton">
-              <img
-                className="img"
-                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
-              />
-              <div className="name">{t('dailyAssistant')}</div>
-            </RobotButton>
-          </Popover>
+          <PopOverBox>
+            <Popover
+              placement="bottomLeft"
+              content={contents}
+              trigger="hover"
+              getPopupContainer={() => document.body}
+              overlayClassName="popover_yang"
+            >
+              <RobotButton id="robotButton">
+                <img
+                  className="img"
+                  src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
+                />
+                <div className="name">{t('dailyAssistant')}</div>
+              </RobotButton>
+            </Popover>
+          </PopOverBox>
         ) : null}
         {/* <Popover
           content={

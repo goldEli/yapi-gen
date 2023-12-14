@@ -20,7 +20,9 @@ const MineNotice = () => {
     setData(data)
     setTimeout(() => {
       for (const iterator of data) {
-        iterator.read = 1
+        if (parseInt(iterator.read, 10) === 0) {
+          iterator.read = 1
+        }
       }
       setData([...data])
     }, 3600)
@@ -28,7 +30,7 @@ const MineNotice = () => {
 
   useEffect(() => {
     _getMsg_list()
-  }, [])
+  }, [isNewMsg])
   const setRead = async (index: number, msgIds: string) => {
     const res = await setReadApi({ read: 2, msgIds: [msgIds] })
     if (res.code === 0) {
