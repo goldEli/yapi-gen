@@ -2661,5 +2661,8 @@
   "afterDeletioncommaItCannotBeRestoredPleaseOperateWithCaution": "After deletion, it cannot be restored. Please operate with caution",
   "entryName": "Entry name",
   "pleaseEnterTheCurrentProjectName": "Please enter the current project name",
-  "deleteAndName": "Are you sure to delete project"
+  "deleteAndName": "Are you sure to delete project",
+  "history": "History ",
+  "searchForDynamicContent": "Search for dynamic content",
+  "notificationMatters": "Notification matters"
 }

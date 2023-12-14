@@ -35,6 +35,10 @@ const LayoutHeaderLeft = () => {
       />
       <div>
         {/* 单独处理后台得翻译 */}
+        {currentMenu?.url === '/Trends' &&
+        currentMenu?.name === 'container.dynamics'
+          ? t('history')
+          : null}
         {currentMenu?.url === '/AdminManagement'
           ? t('managementBackend')
           : currentMenu?.isRegular

@@ -993,3 +993,7 @@ export const MoreMenuWrap = styled.div`
     }
   }
 `
+
+export const TabTitleWrap = styled.span`
+  font-size: 14px;
+`

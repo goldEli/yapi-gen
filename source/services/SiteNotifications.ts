@@ -56,11 +56,25 @@ export const getMsg_list: any = async (params: any) => {
   return response.data
 }
 
+export const getMsgListData: any = async (params: any) => {
+  const response: any = await http.post<any>('/b/msg/list', {
+    ...params,
+    business_type: 1,
+  })
+  return response.data
+}
+
 export const setReadApi: any = async (params: any) => {
   const response: any = await http.post<any>('/b/msg/setRead', {
     msgIds: params,
   })
-
+  return response
+}
+export const setReadByClick: any = async (params: any) => {
+  const response: any = await http.post<any>('/b/msg/setRead', {
+    msgIds: params,
+    read: 2,
+  })
   return response
 }
 // --------------------------------------------------------------------------消息

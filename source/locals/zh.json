@@ -2661,5 +2661,8 @@
   "afterDeletioncommaItCannotBeRestoredPleaseOperateWithCaution": "删除后不可恢复请谨慎操作",
   "entryName": "项目名称",
   "pleaseEnterTheCurrentProjectName": "请输入当前项目名称",
-  "deleteAndName": "确认删除项目"
+  "deleteAndName": "确认删除项目",
+  "history": "历史",
+  "searchForDynamicContent": "搜索动态内容",
+  "notificationMatters": "通知事项"
 }
