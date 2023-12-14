@@ -31,8 +31,7 @@ import moment from 'moment'
 import { getMessage } from '@/components/Message'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
-import { Typography } from 'antd'
-const { Text } = Typography
+import MessageItem from '../components/MessageItem'
 
 const Index = () => {
   const lastId = useRef<any>(1)
@@ -175,7 +174,7 @@ const Index = () => {
     }
   }, [])
 
-  const onRead = async (id: number) => {
+  const onRead = async (id: string) => {
     const result = await setReadByClick([id])
   }
 
@@ -237,9 +236,8 @@ const Index = () => {
   )
 
   // 跳转到员工概况
-  const onToEmployee = (e: any, body: any) => {
+  const onToEmployee = useCallback((e: any, body: any) => {
     e.stopPropagation()
-
     if (!body?.user_id) {
       // 历史数据
       getMessage({
@@ -258,7 +256,7 @@ const Index = () => {
       )
       navigate(`/EmployeeProfile?data=${params}`)
     }
-  }
+  }, [])
 
   return (
     <MessageListWrap>
@@ -313,33 +311,13 @@ const Index = () => {
       <ContentWrap>
         {dataList?.list?.length ? null : <NoData />}
         {dataList?.list?.map((i: any) => (
-          <ItemBox
-            hasLink
+          <MessageItem
             key={i.id}
-            onClick={() => {
-              onRead(i.id)
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <CommonUserAvatar size="large" avatar={i.msg_body.optHeader} />
-              {i?.msg_body?.username ? (
-                <Text
-                  className="name"
-                  ellipsis={{ tooltip: i?.msg_body?.username }}
-                >
-                  {i?.msg_body?.username}
-                </Text>
-              ) : (
-                <span className="system">【系统消息】</span>
-              )}
-            </div>
-            <div className="content">
-              {i?.msg_body?.username
-                ? i?.msg_body?.content?.replace(i?.msg_body?.username, '')
-                : i?.msg_body?.content}
-            </div>
-            <div className="time">{formatMsgTime(i.create_time * 1000)}</div>
-          </ItemBox>
+            item={i}
+            onRead={onRead}
+            formatMsgTime={formatMsgTime}
+            onToEmployee={onToEmployee}
+          />
         ))}
       </ContentWrap>
       <PaginationBox
