@@ -919,7 +919,6 @@ export const StatusBox = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 8px;
-  color: var(--neutral-white-d7);
 `
 
 export const ProjectTypeBox = styled.div<{ type: number }>`

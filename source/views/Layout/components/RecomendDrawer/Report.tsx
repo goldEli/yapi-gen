@@ -1,15 +1,10 @@
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import {
   AssignTaskWrap,
-  CanClick,
   ItemWrap,
   LoadingMore,
-  ProjectItem,
-  ProjectTypeBox,
   ReportItem,
   SpinWrap,
-  StatusBox,
-  TaskItem,
   TimeName,
 } from './style'
 import { useEffect, useMemo, useState } from 'react'
