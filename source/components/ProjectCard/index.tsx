@@ -90,45 +90,40 @@ const Index = (props: any) => {
     },
   ]
 
-  const getItems = () => {
-    const isDel = (
-      userInfo.company_permissions?.map((i: any) => i.identity) || []
-    ).includes('b/project/delete')
+  // const getItems = () => {
+  //   const isDel = (
+  //     userInfo.company_permissions?.map((i: any) => i.identity) || []
+  //   ).includes('b/project/delete')
 
-    const isEdit = (
-      userInfo.company_permissions?.map((i: any) => i.identity) || []
-    ).includes('b/project/update')
+  //   const isEdit = (
+  //     userInfo.company_permissions?.map((i: any) => i.identity) || []
+  //   ).includes('b/project/update')
 
-    // 项目负责人或者是超管
-    const isRolePermission =
-      userInfo?.is_company_super_admin !== 1 &&
-      props.item?.leader?.id !== userInfo?.id
+  //   const items: any = [
+  //     {
+  //       key: 'over',
+  //       label: <span>{props.item.status === 1 ? t('pause') : t('start')}</span>,
+  //       isHave: isRolePermission,
+  //     },
+  //     {
+  //       key: 'close',
+  //       label: <span>{t('closure')}</span>,
+  //       isHave: isRolePermission || [4, 2].includes(props.item.status),
+  //     },
+  //     {
+  //       key: 'edit',
+  //       label: <span>{t('common.edit')}</span>,
+  //       isHave: props.item.team_id === 0 ? isEdit : props.item.isTeam,
+  //     },
+  //     {
+  //       key: 'del',
+  //       label: <span>{t('common.del')}</span>,
+  //       isHave: isDel,
+  //     },
+  //   ]
 
-    const items: any = [
-      {
-        key: 'over',
-        label: <span>{props.item.status === 1 ? t('pause') : t('start')}</span>,
-        isHave: isRolePermission,
-      },
-      {
-        key: 'close',
-        label: <span>{t('closure')}</span>,
-        isHave: isRolePermission || [4, 2].includes(props.item.status),
-      },
-      {
-        key: 'edit',
-        label: <span>{t('common.edit')}</span>,
-        isHave: props.item.team_id === 0 ? isEdit : props.item.isTeam,
-      },
-      {
-        key: 'del',
-        label: <span>{t('common.del')}</span>,
-        isHave: isDel,
-      },
-    ]
-
-    return items.filter((i: any) => i.isHave)
-  }
+  //   return items.filter((i: any) => i.isHave)
+  // }
 
   const onClick: MenuProps['onClick'] = ({ key, domEvent }) => {
     domEvent.stopPropagation()
@@ -260,26 +255,6 @@ const Index = (props: any) => {
           </ShowWrap>
         </TransformWrap>
       </CardRight>
-      {(isDel2 || isEdit2) && (
-        <Dropdown
-          trigger={['hover']}
-          menu={{
-            items: getItems(),
-            onClick,
-          }}
-          placement="bottomRight"
-          // getPopupContainer={(i: any) => i.parentNode}
-        >
-          <HoverIcon>
-            <IconFont
-              style={{
-                color: 'var(--neutral-n3)',
-              }}
-              type="more"
-            />
-          </HoverIcon>
-        </Dropdown>
-      )}
 
       {props.item.status === 2 && <EndTag>End</EndTag>}
     </ProjectCard>

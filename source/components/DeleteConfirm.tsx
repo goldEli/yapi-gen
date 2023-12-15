@@ -141,7 +141,10 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
             {props?.cancelText ? props?.cancelText : t('cancel')}
           </CommonButton>
         )}
-        <CommonButton type="dangerDel" onClick={props.onConfirm}>
+        <CommonButton
+          type={props?.isRed ? 'dangerDel' : 'primary'}
+          onClick={props.onConfirm}
+        >
           {props?.okText ? props?.okText : t('confirm')}
         </CommonButton>
       </ModalFooter>

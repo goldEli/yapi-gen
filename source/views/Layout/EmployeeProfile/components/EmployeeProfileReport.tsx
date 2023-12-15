@@ -247,56 +247,7 @@ const ReportItem = (props: ReportItemProps) => {
                   )}
                 </div>
               ))}
-              <DetailItem>
-                <Title style={{ marginBottom: 8 }}>{t('common.comment')}</Title>
-                {commentList && commentList.length
-                  ? commentList.map((i: any) => (
-                      <CommentBox key={i.id}>
-                        <div className="headWrap">
-                          <div className="header">
-                            <CommonUserAvatar name={i.comment_user.name} />
-                            <div className="time">{i.created_at || '--'}</div>
-                          </div>
-                          {userInfo?.id === i.comment_user.id ? (
-                            <CloseWrap
-                              width={24}
-                              height={24}
-                              onClick={() => onDeleteComment(i)}
-                            >
-                              <IconFont
-                                className="deleteIcon"
-                                type="delete"
-                                style={{ fontSize: 16 }}
-                              />
-                            </CloseWrap>
-                          ) : null}
-                        </div>
-                        <div className="content">
-                          <Editor
-                            at
-                            readonly
-                            disableUpdateValue
-                            value={i?.content}
-                          />
-                        </div>
-                      </CommentBox>
-                    ))
-                  : '--'}
-              </DetailItem>
             </div>
-            {/* <CommentFooter
-              placeholder={t('commentOnLog', { name: item?.user?.name })}
-              personList={personArr}
-              onConfirm={onComment}
-              padding="no"
-              style={{
-                position: 'sticky',
-                bottom: 0,
-                padding: '16px 4% 16px 4%',
-              }}
-              maxHeight="72vh"
-              isEmployee
-            /> */}
           </>
         )}
       </ReportItemWrap>
