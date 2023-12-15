@@ -7,6 +7,7 @@ const slice = createSlice({
   },
   reducers: {
     changeFreedVisibleVisible(state, action) {
+      console.log(1111111111111, action.payload)
       state.freedVisible = action.payload
     },
   },

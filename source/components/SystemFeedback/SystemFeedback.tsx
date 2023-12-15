@@ -198,7 +198,9 @@ const SystemFeedback = () => {
               }}
             >
               <CommonButton
-                onClick={() => dispatch(changeFreedVisibleVisible(false))}
+                onClick={() => {
+                  dispatch(changeFreedVisibleVisible(false))
+                }}
                 type="light"
               >
                 {t('common.cancel')}
