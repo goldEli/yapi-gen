@@ -119,7 +119,9 @@ const NoticePopover = (props: any) => {
     _getMsg_list(false, pages)
   }
   return (
-    <NoticePopoverWrap>
+    <NoticePopoverWrap
+      style={{ overflowY: data?.list?.length ? 'scroll' : 'hidden' }}
+    >
       <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
         <ContentList id="scrollableDiv">
           {data?.list?.length ? (
@@ -148,13 +150,15 @@ const NoticePopover = (props: any) => {
           ) : (
             <NewNoData
               text="来自项目日志、汇报记录、系统日志等消息会收集在「动态」"
-              url="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/noData.png"
+              url="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702635983091/%E5%8A%A8%E6%80%81.png"
             ></NewNoData>
           )}
         </ContentList>
       </SpinWrap>
       <FooterBox>
-        <div className="current-week">已为您显示近一周的动态信息</div>
+        <div className="current-week">
+          {data?.list?.length ? '已为您显示近一周的动态信息' : null}
+        </div>
         <div className="more-notice" onClick={onHistoryStatics}>
           历史动态<CommonIconFont type="right"></CommonIconFont>
         </div>
