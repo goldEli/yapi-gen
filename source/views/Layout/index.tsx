@@ -161,7 +161,7 @@ const LayoutIndex = () => {
   useEffect(() => {
     setTimeout(() => {
       _getNotReadMsgStatics()
-    }, 400)
+    }, 900)
   }, [isNewMsg])
 
   return (

@@ -281,7 +281,7 @@ const LayoutSecondaryMenu = () => {
             ? `calc(100% - ${
                 layoutSecondaryMenuLeftWidth +
                 layoutSecondaryMenuRightWidth +
-                120
+                200
               }px)`
             : 'auto',
       }}
