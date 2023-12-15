@@ -2667,5 +2667,7 @@
   "searchForDynamicContent": "搜索动态内容",
   "notificationMatters": "通知事项",
   "application": "应用",
-  "notificationItems": "通知项"
+  "notificationItems": "通知项",
+  "needToBeDealtWith": "待办",
+  "recommendToYou": "为您推荐"
 }

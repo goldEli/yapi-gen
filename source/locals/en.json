@@ -2667,5 +2667,7 @@
   "searchForDynamicContent": "Search for dynamic content",
   "notificationMatters": "Notification matters",
   "application": "Application",
-  "notificationItems": "Notification items"
+  "notificationItems": "Notification items",
+  "needToBeDealtWith": "Need to be dealt with",
+  "recommendToYou": "Recommend to you"
 }

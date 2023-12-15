@@ -7,6 +7,7 @@ export const PopoverWrap = styled(Popover)`
   }
 `
 export const overlayClassNameStyle = css`
+  top: 59px !important;
   .ant-popover-title {
     padding: 0;
   }
