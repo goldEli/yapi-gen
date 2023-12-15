@@ -569,7 +569,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
           getPopupContainer={() => document.body}
           overlayClassName="popover_yang"
         >
-          <RobotButton id="robotButton" onClick={() => operateClick(1)}>
+          <RobotButton onClick={() => operateClick(1)}>
             <img
               className="img"
               src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543680935/icon1.png"
@@ -595,7 +595,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
           getPopupContainer={() => document.body}
           overlayClassName="popover_yang"
         >
-          <RobotButton id="robotButton" onClick={() => operateClick(2)}>
+          <RobotButton onClick={() => operateClick(2)}>
             <img
               className="img"
               src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543715733/icon2.png"
@@ -616,7 +616,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
               getPopupContainer={() => document.body}
               overlayClassName="popover_yang"
             >
-              <RobotButton id="robotButton">
+              <RobotButton>
                 <img
                   className="img"
                   src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/reportAssistant.png"
