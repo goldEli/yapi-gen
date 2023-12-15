@@ -100,6 +100,20 @@ const secondaryText = css`
     color: var(--auxiliary-text-t2-d2) !important;
   }
 `
+const extraText = css`
+  background: transparent !important;
+  color: var(--auxiliary-text-t2-d1) !important;
+  border: 1px solid transparent !important;
+  &:hover {
+    background: var(--neutral-white-d1) !important;
+    color: var(--neutral-n1-d1) !important;
+  }
+  &:active {
+    background: var(--neutral-white-d1) !important;
+    color: var(--neutral-n1-d1) !important;
+  }
+`
+
 const icon = css`
   width: auto !important;
   padding: 0 6px !important;
@@ -139,6 +153,7 @@ interface Props {
     | 'secondaryText'
     | 'icon'
     | 'dangerDel'
+    | 'extraText'
 
   //   图标位置
   iconPlacement?: 'left' | 'right'
@@ -167,6 +182,7 @@ const CommonButton = (props: Props) => {
     secondaryText,
     icon,
     dangerDel,
+    extraText,
   }
 
   const commonCss = css`
