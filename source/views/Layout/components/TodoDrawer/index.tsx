@@ -16,7 +16,6 @@ import AssignTask from './assignTask'
 import ReviewTask from './reviewTask'
 import MineNotice from './mineNotice'
 import classNames from 'classnames'
-import { getNotReadMsgStatics } from '@/services/mine'
 import { useSelector } from '@store/index'
 import { useNavigate } from 'react-router-dom'
 interface IProps {}

@@ -159,7 +159,9 @@ const LayoutIndex = () => {
     dispatch(setMsgStatics(res))
   }
   useEffect(() => {
-    _getNotReadMsgStatics()
+    setTimeout(() => {
+      _getNotReadMsgStatics()
+    }, 400)
   }, [isNewMsg])
 
   return (
