@@ -87,7 +87,6 @@ export const PopOverBox = styled.div`
   }
   border-radius: 20px;
   padding: 0px 6px;
-  margin-left: 8px;
 `
 
 // 引导页
