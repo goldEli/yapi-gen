@@ -158,13 +158,15 @@ export const getSearchField: any = async (params: any) => {
   const allList = filter_fidlds.map((item: any) => {
     if (item.content === 'iterate_name') {
       item.values = [
-        { id: -1, content: '空', content_txt: '空' },
+        // TODO 2023年12月15日15:20:39 何尧让去掉的
+        // { id: -1, content: '空', content_txt: '空' },
         ...filterIterateList,
       ]
     }
     if (item.content === 'priority' || item.content === 'tag') {
       item.values = [
-        { id: -1, content: '空', content_txt: '空' },
+        // TODO 2023年12月15日15:20:39 何尧让去掉的
+        // { id: -1, content: '空', content_txt: '空' },
         ...item.values,
       ]
     }
@@ -174,7 +176,8 @@ export const getSearchField: any = async (params: any) => {
       item.content === 'users_copysend_name'
     ) {
       item.values = [
-        { id: -1, content: '空', content_txt: '空' },
+        // TODO 2023年12月15日15:20:39 何尧让去掉的
+        // { id: -1, content: '空', content_txt: '空' },
         ...filterMemberList,
       ]
     }
@@ -225,7 +228,8 @@ export const getSearchField: any = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
         children: [
-          { id: -1, content: '空', content_txt: '空' },
+          // TODO 2023年12月15日15:20:39 何尧让去掉的
+          // { id: -1, content: '空', content_txt: '空' },
           ...newLieBieData,
         ],
       }
@@ -243,7 +247,8 @@ export const getSearchField: any = async (params: any) => {
             isDefault: item.is_default_filter,
             contentTxt: item.content_txt,
             children: [
-              { id: -1, content: '空', content_txt: '空' },
+              // TODO 2023年12月15日15:20:39 何尧让去掉的
+              // { id: -1, content: '空', content_txt: '空' },
               ...filterMemberList,
             ],
           }
@@ -258,7 +263,8 @@ export const getSearchField: any = async (params: any) => {
             isDefault: item.is_default_filter,
             contentTxt: item.content_txt,
             children: [
-              { id: -1, content: '空', content_txt: '空' },
+              // TODO 2023年12月15日15:20:39 何尧让去掉的
+              // { id: -1, content: '空', content_txt: '空' },
               ...filterCompanyList,
             ],
           }
@@ -275,7 +281,8 @@ export const getSearchField: any = async (params: any) => {
             isDefault: item.is_default_filter,
             contentTxt: item.content_txt,
             children: [
-              { id: -1, content: '空', content_txt: '空' },
+              // TODO 2023年12月15日15:20:39 何尧让去掉的
+              // { id: -1, content: '空', content_txt: '空' },
               ...filterMemberList,
             ],
           }
@@ -290,7 +297,8 @@ export const getSearchField: any = async (params: any) => {
             isDefault: item.is_default_filter,
             contentTxt: item.content_txt,
             children: [
-              { id: -1, content: '空', content_txt: '空' },
+              // TODO 2023年12月15日15:20:39 何尧让去掉的
+              // { id: -1, content: '空', content_txt: '空' },
               ...filterCompanyList,
             ],
           }
@@ -306,7 +314,10 @@ export const getSearchField: any = async (params: any) => {
         type: item.attr,
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
-        children: [{ id: -1, content: '空', content_txt: '空' }, ...filterData],
+        children: [
+          // TODO 2023年12月15日15:20:39 何尧让去掉的
+          // { id: -1, content: '空', content_txt: '空' },
+         ...filterData],
       }
     }
     return {

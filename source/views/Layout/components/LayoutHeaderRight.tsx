@@ -393,6 +393,9 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
               <CommonIconFont type="question" />
               <div>{t('helpCenter')}</div>
             </MenuLeft>
+            <MenuRight>
+              <CommonIconFont type="right" />
+            </MenuRight>
           </MenuItem>
         </MenuItems>
       </Popover>
