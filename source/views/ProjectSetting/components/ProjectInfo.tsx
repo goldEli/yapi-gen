@@ -23,7 +23,6 @@ import {
 import { getMessage } from '@/components/Message'
 import { getProjectInfoStore } from '@store/project/project.thunk'
 import { useNavigate } from 'react-router-dom'
-import { get } from 'lodash'
 
 const Wrap = styled.div({
   background: 'white',
@@ -33,6 +32,7 @@ const Wrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   padding: '24px',
+  overflow: 'auto',
 })
 
 const InfoLeft = styled.div({
@@ -295,8 +295,6 @@ const ProjectInfo = () => {
   const isRolePermission =
     loginInfo?.is_company_super_admin !== 1 &&
     projectInfo.leaderId !== userInfo?.id
-
-  console.log(projectInfo)
 
   return (
     <Wrap>
