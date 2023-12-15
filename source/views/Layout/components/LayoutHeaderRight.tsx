@@ -493,6 +493,20 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     <LayoutHeaderRightWrap id="LayoutHeaderRightWrap">
       <KeyBoardDrawer />
       <SystemFeedback />
+      <TodoDrawer
+        open={todoDrawerOpen}
+        onCancel={() => {
+          setTodoDrawerOpen(false)
+        }}
+        ref={todoDrawerRef}
+      />
+
+      <RecomendDrawer
+        open={recomendDrawerOpen}
+        onCancel={() => {
+          setRecomendDrawerOpen(false)
+        }}
+      />
       {/* 切换公司 */}
       <CommonModal
         isVisible={isChangeCompany}
@@ -654,20 +668,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
           </HeaderUserInfoWrap>
         </Popover>
       </Space>
-      <TodoDrawer
-        open={todoDrawerOpen}
-        onCancel={() => {
-          setTodoDrawerOpen(false)
-        }}
-        ref={todoDrawerRef}
-      ></TodoDrawer>
-
-      <RecomendDrawer
-        open={recomendDrawerOpen}
-        onCancel={() => {
-          setRecomendDrawerOpen(false)
-        }}
-      ></RecomendDrawer>
     </LayoutHeaderRightWrap>
   )
 }

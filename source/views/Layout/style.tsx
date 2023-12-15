@@ -79,16 +79,19 @@ export const RobotButton = styled.div`
     font-size: 14px;
     color: var(--neutral-n1-d1);
   }
-  &:hover {
+  /* &:hover {
     background: var(--active);
-  }
+  } */
 `
 export const PopOverBox = styled.div`
   background: rgba(102, 136, 255, 0.12);
   border-radius: 20px;
   padding: 0px 8px;
-  margin-left: 8px;
+  &:hover {
+    background: rgba(102, 136, 255, 0.2);
+  }
 `
+
 // 引导页
 export const imgBoxCss = css`
   box-sizing: border-box;
@@ -408,6 +411,7 @@ export const LayoutHeaderLeftWrap = styled.div`
 export const LayoutHeaderRightWrap = styled.div`
   display: flex;
   align-items: center;
+  gap: 12px;
 `
 
 export const UserInfoWrap = styled.div`

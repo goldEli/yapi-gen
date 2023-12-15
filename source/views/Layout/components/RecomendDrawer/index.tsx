@@ -90,6 +90,8 @@ const RecomendDrawer = (props: any) => {
         drawerStyle={{ paddingTop: '56px' }}
         className={cusDrawer}
         footer={footer}
+        bodyStyle={{ padding: '20px 0 0', overflow: 'hidden' }}
+        footerStyle={{ padding: '0 16px' }}
       >
         <TitleWrap>
           <TabsWrap>
