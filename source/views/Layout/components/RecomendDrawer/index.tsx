@@ -53,16 +53,12 @@ const RecomendDrawer = (props: any) => {
 
   // 关闭抽屉
   const onCloseDrawer = (e: any) => {
-    if (
-      !open ||
-      document.querySelector('#popover_recommended')?.contains?.(e.target)
-    ) {
+    if (!open) {
       return
     }
     if (
       document.querySelector('#LayoutSide')?.contains?.(e.target) ||
-      document.querySelector('#LayoutHeader')?.contains?.(e.target) ||
-      e.target?.className?.includes?.('ant-drawer-mask')
+      document.querySelector('#LayoutHeader')?.contains?.(e.target)
     ) {
       onCancel()
     }
@@ -78,12 +74,18 @@ const RecomendDrawer = (props: any) => {
   }, [open])
 
   return (
-    <div>
+    <div
+      onClick={(e: any) => {
+        e.stopPropagation()
+      }}
+    >
       <Drawer
         title={null}
         width={480}
         open={open}
         closable={false}
+        onClose={onCancel}
+        maskClosable
         maskStyle={{ background: 'transparent' }}
         zIndex={196}
         drawerStyle={{ paddingTop: '56px' }}
