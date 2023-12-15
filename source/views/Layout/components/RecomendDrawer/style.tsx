@@ -30,10 +30,16 @@ export const TabsWrap = styled.div`
     height: 28px;
     display: flex;
     align-items: center;
+    &:hover {
+      color: var(--primary-d2);
+      font-family: SiYuanMedium;
+    }
   }
   .activity {
     background-color: var(--neutral-white-d6);
     border-radius: 4px;
+    color: var(--primary-d2);
+    font-family: SiYuanMedium;
   }
 `
 export const AssignTaskWrap = styled.div`
@@ -256,4 +262,7 @@ export const DrawerFooter = styled.div`
   color: #6688ff;
   cursor: pointer;
   height: 52px;
+  &:hover {
+    text-decoration: underline;
+  }
 `
