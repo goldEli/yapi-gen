@@ -54,6 +54,14 @@ export const NoticeItemWrap = styled.div`
   }
   &:hover {
     background-color: var(--neutral-n8);
+    border-radius: 6px;
+    a {
+      text-decoration: underline;
+    }
+    .user_name {
+      color: var(--primary-d1);
+      cursor: pointer;
+    }
   }
   img {
     width: 16px;
@@ -84,19 +92,28 @@ export const NoticeItemWrap = styled.div`
     margin-bottom: 8px;
     margin-top: 8px;
     color: var(--neutral-n2);
-    font-size: var(--font12);
+    font-size: var(--font14);
+    display: flex;
+    align-items: center;
     img {
-      margin-right: 12px;
+      margin-right: 4px;
       width: 16px;
       height: 16px;
+    }
+    span:nth-child(2) {
+      position: relative;
+      top: 2px;
     }
   }
 
   .detail_result {
     color: #323233;
-    font-size: var(--font12);
+    font-size: var(--font14);
     a {
       margin-left: 4px;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
   .read {
@@ -112,6 +129,7 @@ export const FooterBox = styled.div`
   height: 80px;
   background: #fff;
   padding-right: 16px;
+  border-radius: 6px;
   .current-week {
     display: flex;
     align-items: center;
@@ -140,5 +158,8 @@ export const FooterBox = styled.div`
     color: var(--primary-d2);
     height: 52px;
     cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `

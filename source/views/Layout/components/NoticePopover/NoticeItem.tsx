@@ -3,8 +3,21 @@ import { ICON_TYPE_DATA } from './constant'
 import { NoticeItemWrap } from './style'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useNavigate } from 'react-router-dom'
 const NoticeItem = (props: any) => {
-  const { index, data, onReadClick } = props
+  const { index, data, onReadClick, onCancel } = props
+  const navigate = useNavigate()
+  // 点击人员
+  const gomember = (d: any) => {
+    onCancel()
+    const params = encryptPhp(
+      JSON.stringify({
+        user_id: d.msg_body.user_id,
+      }),
+    )
+    navigate(`/EmployeeProfile?data=${params}`)
+  }
   return (
     <NoticeItemWrap
       onClick={() => {
@@ -49,7 +62,16 @@ const NoticeItem = (props: any) => {
               />
             )}
           </span>
-          <span>{data?.msg_body?.title}</span>
+          <span>
+            <label
+              htmlFor=""
+              className="user_name"
+              onClick={() => gomember(data)}
+            >
+              {data?.msg_body?.username}
+            </label>
+            <label htmlFor="">{data?.msg_body?.title_msg}</label>
+          </span>
         </div>
         <div
           className={classNames('detail_result', {

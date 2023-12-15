@@ -2,6 +2,8 @@ import { Button, Popover } from 'antd'
 import { NoticeTitleWrap } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useSelector } from '@store/index'
+import { CloseWrap } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
 const useNoticePopoverTitle = (setMsgVisible: any, popoverRef: any) => {
   const { msgStatics } = useSelector(store => store.mine)
   const { dynamics, allnews } = msgStatics ?? {}
@@ -13,11 +15,17 @@ const useNoticePopoverTitle = (setMsgVisible: any, popoverRef: any) => {
   const TitleBox = (
     <NoticeTitleWrap>
       <div>动态（{allnews}）</div>
-      <CommonIconFont
-        type="close"
+      <CloseWrap
         color="var(--neutral-n2)"
         onClick={close}
-      ></CommonIconFont>
+        width={32}
+        height={32}
+      >
+        <IconFont
+          style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+          type="close"
+        />
+      </CloseWrap>
     </NoticeTitleWrap>
   )
   return {
