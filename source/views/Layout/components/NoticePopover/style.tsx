@@ -26,7 +26,7 @@ export const NoticePopoverWrap = styled.div`
   height: 80vh;
   width: 480px;
   padding-bottom: 100px;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 `
 export const ContentList = styled.div`
   padding: 0px 12px;

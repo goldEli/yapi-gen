@@ -123,7 +123,7 @@ const NoticePopover = (props: any) => {
   }
   return (
     <NoticePopoverWrap
-      style={{ overflowY: data?.list?.length ? 'scroll' : 'hidden' }}
+    // style={{ overflowY: data?.list?.length ? 'scroll' : 'hidden' }}
     >
       <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
         <ContentList id="scrollableDiv">
