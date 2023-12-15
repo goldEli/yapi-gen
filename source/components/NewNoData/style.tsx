@@ -15,4 +15,5 @@ export const Box = styled.div`
 export const Text = styled.div`
   color: var(--neutral-n3);
   font-size: var(--font14);
+  padding: 0px 40px;
 `

@@ -152,7 +152,9 @@ const NoticePopover = (props: any) => {
             </InfiniteScroll>
           ) : (
             <NewNoData
-              text="来自项目日志、汇报记录、系统日志等消息会收集在「动态」"
+              text={t(
+                'messagesFromProjectLogscommaReportRecordscommaSystemLogscommaEtcWillBeCollectedInDynamic',
+              )}
               url="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702635983091/%E5%8A%A8%E6%80%81.png"
             ></NewNoData>
           )}
@@ -160,10 +162,13 @@ const NoticePopover = (props: any) => {
       </SpinWrap>
       <FooterBox>
         <div className="current-week">
-          {data?.list?.length ? '已为您显示近一周的动态信息' : null}
+          {data?.list?.length
+            ? t('weHaveShownYouTheLatestUpdatesForThePastWeek')
+            : null}
         </div>
         <div className="more-notice" onClick={onHistoryStatics}>
-          历史动态<CommonIconFont type="right"></CommonIconFont>
+          {t('historicalDynamics')}
+          <CommonIconFont type="right"></CommonIconFont>
         </div>
       </FooterBox>
     </NoticePopoverWrap>

@@ -5,9 +5,11 @@ import classNames from 'classnames'
 import dayjs from 'dayjs'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 const NoticeItem = (props: any) => {
   const { index, data, onReadClick, onCancel } = props
   const navigate = useNavigate()
+  const [t] = useTranslation()
   // 点击人员
   const gomember = (d: any) => {
     onCancel()
@@ -93,7 +95,7 @@ const NoticeItem = (props: any) => {
         >
           {data?.msg_body?.content}
           {data?.custom_data?.linkWebUrl ? (
-            <a href={data?.custom_data?.linkWebUrl}>前往查看</a>
+            <a href={data?.custom_data?.linkWebUrl}>{t('goToCheck')}</a>
           ) : null}
         </div>
       </div>

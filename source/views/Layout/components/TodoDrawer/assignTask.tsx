@@ -227,7 +227,9 @@ const AssignTask = () => {
           {(JSON.stringify(dataList.list) === '{}' ||
             dataList.list?.length <= 0) && (
             <NewNoData
-              text="来自项目的任务指派消息都会收集在「指派我的任务」里面"
+              text={t(
+                'taskAssignmentMessagesFromTheProjectWillBeCollectedInTheAssignMyTasksSection',
+              )}
               url="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702629546569/%E6%8C%87%E6%B4%BE.png"
             ></NewNoData>
           )}

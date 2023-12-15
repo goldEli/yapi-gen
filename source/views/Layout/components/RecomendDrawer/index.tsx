@@ -18,15 +18,17 @@ import { useSelector } from '@store/index'
 import { useNavigate } from 'react-router-dom'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import { useTranslation } from 'react-i18next'
 interface IProps {}
 
 const RecomendDrawer = (props: any) => {
   const { open = false, onCancel } = props
+  const [t] = useTranslation()
   const [active, setActive] = useState(1)
-  const tabs = [
-    { name: '日报', value: 1, fields: 'at' },
-    { name: '项目', value: 2, fields: 'handle' },
-    { name: '任务', value: 3, fields: 'verify' },
+  const tabs: any[] = [
+    { name: t('daily'), value: 1, fields: 'at' },
+    { name: t('projectName'), value: 2, fields: 'handle' },
+    { name: t('task'), value: 3, fields: 'verify' },
   ]
   const content: any = {
     1: <MineNotice></MineNotice>,
@@ -47,7 +49,9 @@ const RecomendDrawer = (props: any) => {
         navigate('Project')
       }}
     >
-      <span>{active === 1 ? '查看所有日报' : '查看所有项目'}</span>
+      <span>
+        {active === 1 ? t('viewAllDailyReports') : t('viewAllProjects')}
+      </span>
       <CommonIconFont type="right"></CommonIconFont>
     </DrawerFooter>
   )

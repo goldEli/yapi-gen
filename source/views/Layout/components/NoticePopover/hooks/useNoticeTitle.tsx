@@ -4,17 +4,25 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { useSelector } from '@store/index'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import { useTranslation } from 'react-i18next'
 const useNoticePopoverTitle = (setMsgVisible: any, popoverRef: any) => {
   const { msgStatics } = useSelector(store => store.mine)
   const { dynamics, allnews } = msgStatics ?? {}
   const { total } = dynamics ?? {}
+  const [t] = useTranslation()
   const close = () => {
     popoverRef.current.props.onPopupVisibleChange(false)
     setMsgVisible(false)
   }
   const TitleBox = (
     <NoticeTitleWrap>
-      {allnews ? <div>动态（{allnews}）</div> : <div>动态</div>}
+      {allnews ? (
+        <div>
+          {t('dynamic')}（{allnews}）
+        </div>
+      ) : (
+        <div>{t('dynamic')}</div>
+      )}
       <CloseWrap
         color="var(--neutral-n2)"
         onClick={close}

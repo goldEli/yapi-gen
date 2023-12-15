@@ -20,15 +20,17 @@ import { useSelector } from '@store/index'
 import { useNavigate } from 'react-router-dom'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import { useTranslation } from 'react-i18next'
 interface IProps {}
 
 const TodoDrawer = (props: any) => {
   const { open = false, onCancel } = props
+  const [t] = useTranslation()
   const [active, setActive] = useState(1)
   const tabs = [
-    { name: '@我的', value: 1, fields: 'at' },
-    { name: '指派我的任务', value: 2, fields: 'handle' },
-    { name: '待我审核任务', value: 3, fields: 'verify' },
+    { name: t('my'), value: 1, fields: 'at' },
+    { name: t('assignMyTasks'), value: 2, fields: 'handle' },
+    { name: t('waitingForMeToReviewTheTask'), value: 3, fields: 'verify' },
   ]
   const content: any = {
     1: <MineNotice></MineNotice>,
@@ -51,7 +53,8 @@ const TodoDrawer = (props: any) => {
         }
       }}
     >
-      查看我的工作<CommonIconFont type="right"></CommonIconFont>
+      {t('viewMyWork')}
+      <CommonIconFont type="right"></CommonIconFont>
     </DrawerFooter>
   )
   const empty = <div style={{ height: '40px' }}></div>

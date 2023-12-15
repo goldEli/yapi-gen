@@ -11,9 +11,11 @@ import { ContentList } from '../NoticePopover/style'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Skeleton } from 'antd'
 import NewNoData from '@/components/NewNoData'
+import { useTranslation } from 'react-i18next'
 const MineNotice = () => {
   const [data, setData] = useState<any>()
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const { isNewMsg, msgStatics } = useSelector(store => store.mine)
   const [isSpinning, setIsSpinning] = useState(false)
   const [page, setPage] = useState(1)
@@ -137,7 +139,7 @@ const MineNotice = () => {
         </SpinWrap>
       ) : (
         <NewNoData
-          text="来自任务的评论消息都会收集在「@我的」里面"
+          text={t('commentMessagesFromTasksWillBeCollectedInMySection')}
           url="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702629603194/%E6%88%91%E7%9A%84.png"
         ></NewNoData>
       )}

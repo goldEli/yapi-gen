@@ -49,8 +49,6 @@ const Index = () => {
   )
   const timeDiff = useSelector(store => store.user.loginInfo.timeDiff)
 
-  console.log(dataList)
-
   const notificationMattersOptions = useMemo(() => {
     if (configuration?.length) {
       if (id === '1') {
@@ -194,21 +192,25 @@ const Index = () => {
     [
       '1',
       {
-        text: '来自项目任务相关的消息都会收集在「项目管理」里面',
+        text: t(
+          'messagesRelatedToProjectTasksWillBeCollectedInProjectManagement',
+        ),
         url: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702630268758/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86.png',
       },
     ],
     [
       '2',
       {
-        text: '来自系统操作相关的消息都会收集在「系统通知」里面',
+        text: t(
+          'messagesRelatedToSystemOperationsWillBeCollectedInTheSystemNotificationSection',
+        ),
         url: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702630511985/%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%9F%A5.png',
       },
     ],
     [
       '4',
       {
-        text: '来自日报相关的消息都会收集在「工作汇报」里面',
+        text: t('newsRelatedToDailyNewspapersWillBeCollectedInTheWorkReport'),
         url: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702630535664/%E5%B7%A5%E4%BD%9C%E6%B1%87%E6%8A%A5.png',
       },
     ],
