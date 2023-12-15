@@ -11,6 +11,8 @@ import CommonMember from '../CommonMember'
 interface Props {
   onInputSearch(value: string): void
   title?: string
+  // 是否需要padding
+  notPadding?: boolean
 }
 
 const ProjectCommonOperation = (props: Props) => {
@@ -24,7 +26,7 @@ const ProjectCommonOperation = (props: Props) => {
       <SearchBox>
         <div
           style={{
-            paddingLeft: '24px',
+            paddingLeft: props?.notPadding ? 0 : '24px',
             height: '32px',
             display: 'flex',
             alignItems: 'center',

@@ -18,6 +18,7 @@ const TopArea: React.FC<TopAreaProps> = props => {
   })
   return (
     <ProjectCommonOperation
+      notPadding
       title={title}
       onInputSearch={async val => {
         dispatch(onFilter())

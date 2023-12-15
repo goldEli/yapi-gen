@@ -110,7 +110,7 @@ const MainTable = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { userInfo } = useSelector(store => store.user)
+  const { userInfo, loginInfo } = useSelector(store => store.user)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
@@ -119,20 +119,6 @@ const MainTable = (props: Props) => {
     userInfo?.company_permissions,
     'b/project/save',
   )
-
-  const hasEdit = getIsPermission(
-    userInfo?.company_permissions,
-    'b/project/update',
-  )
-
-  const hasDelete = getIsPermission(
-    userInfo?.company_permissions,
-    'b/project/delete',
-  )
-
-  // 当前登录这是否是超级管理员
-  const isSuperAdmin = userInfo?.is_company_super_admin === 1
-
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
   }
@@ -140,8 +126,7 @@ const MainTable = (props: Props) => {
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation({ page, size })
   }
-  let columns: any = null
-  let columnsData: any = [
+  let columns: any = [
     {
       dataIndex: 'name',
       title: (
@@ -171,9 +156,7 @@ const MainTable = (props: Props) => {
             )}
             <Tooltip title={`${text}-【${record.prefix}】`}>
               <ListNameWrap isName isClose={record.status === 2}>
-                <span className="controlMaxWidth">
-                  {text}-【{record.prefix}】
-                </span>
+                <span className="controlMaxWidth">{text}</span>
               </ListNameWrap>
             </Tooltip>
           </div>
@@ -317,90 +300,7 @@ const MainTable = (props: Props) => {
       },
     },
   ]
-  const dataCol = [
-    {
-      title: t('operate'),
-      dataIndex: 'action',
-      width: 200,
-      fixed: 'right',
-      render: (text: number, record: any) => {
-        // 项目负责人或者是超管
-        const isRolePermission =
-          !isSuperAdmin && record.leader?.id !== userInfo?.id
 
-        return (
-          <TableActionWrap>
-            <Tooltip
-              title={
-                isRolePermission
-                  ? t('onlyTheProjectLeaderCanPausestartTheProject')
-                  : null
-              }
-            >
-              <TableActionItem
-                isDisable={isRolePermission}
-                onClick={e => {
-                  e.stopPropagation()
-                  isRolePermission
-                    ? void 0
-                    : props.onChangeOperation('', record)
-                }}
-              >
-                {record.status === 1 ? t('pause') : t('start')}
-              </TableActionItem>
-            </Tooltip>
-            <Tooltip
-              title={
-                isRolePermission
-                  ? t('onlyTheProjectLeaderCanCloseTheProject')
-                  : [4, 2].includes(record.status)
-                  ? t('theProjectCannotBeClosedInTheState')
-                  : null
-              }
-            >
-              <TableActionItem
-                isDisable={isRolePermission || [4, 2].includes(record.status)}
-                onClick={e => {
-                  e.stopPropagation()
-                  isRolePermission || [4, 2].includes(record.status)
-                    ? void 0
-                    : props.onChangeOperation('close', record)
-                }}
-              >
-                {t('closure')}
-              </TableActionItem>
-            </Tooltip>
-
-            <TableActionItem
-              isDisable={record.team_id === 0 ? hasEdit : record.isTeam}
-              onClick={e => {
-                e.stopPropagation()
-                !(record.team_id === 0 ? hasEdit : record.isTeam) &&
-                  dispatch(editProject({ visible: true, id: record.id }))
-              }}
-            >
-              {t('edit')}
-            </TableActionItem>
-            <TableActionItem
-              isDisable={hasDelete}
-              onClick={e => {
-                e.stopPropagation()
-                hasDelete ? void 0 : props.onChangeOperation('delete', record)
-              }}
-            >
-              {t('common.del')}
-            </TableActionItem>
-          </TableActionWrap>
-        )
-      },
-    },
-  ]
-  // 领导要求不要
-  if (location.pathname === '/Project') {
-    columns = columnsData
-  } else {
-    columns = [...columnsData, ...dataCol]
-  }
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight

@@ -176,7 +176,7 @@ const ProjectInfo = () => {
   const navigate = useNavigate()
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
-  const { userInfo } = useSelector(store => store.user)
+  const { userInfo, loginInfo } = useSelector(store => store.user)
   const { language } = useSelector(store => store.global)
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
@@ -293,8 +293,10 @@ const ProjectInfo = () => {
 
   // 项目负责人或者是超管
   const isRolePermission =
-    userInfo?.is_company_super_admin !== 1 &&
-    projectInfo.leader?.id !== userInfo?.id
+    loginInfo?.is_company_super_admin !== 1 &&
+    projectInfo.leaderId !== userInfo?.id
+
+  console.log(projectInfo)
 
   return (
     <Wrap>

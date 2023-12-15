@@ -222,7 +222,7 @@ export const ChangeIconBox = styled.div`
 
 export const Content = styled.div<{ isReview?: boolean }>`
   height: ${props =>
-    props.isReview ? 'calc(100% - 336px)' : 'calc(100% - 134px)'};
+    props.isReview ? 'calc(100% - 254px)' : 'calc(100% - 52px)'};
   overflow: auto;
   padding: 16px 24px;
   position: relative;
