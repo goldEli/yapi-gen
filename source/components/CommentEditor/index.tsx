@@ -39,16 +39,16 @@ const CommentEditor = (props: CommentEditorProps) => {
       const tag = /(?<start>^<p>*)|(?<end><\p>*$)/g.test(props.item.content)
         ? props.item.content
         : `<p>${props.item.content}</p>`
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(tag, 'text/html')
-      const idStr = doc.querySelector('span')?.getAttribute('data-id')
-      const patt = /<span\b.*?<\/span>/g
-      const contextData = props.item.content.match(patt) || []
-      const newstr: string = contextData[0]?.replace(
-        '>',
-        ` ${userInfo.id === Number(idStr) ? 'data-me=\'my\' ' : ''}`,
-      )
-      setEditInfo(newstr)
+      // const parser = new DOMParser()
+      // const doc = parser.parseFromString(tag, 'text/html')
+      // const idStr = doc.querySelector('span')?.getAttribute('data-id')
+      // const patt = /<span\b.*?<\/span>/g
+      // const contextData = props.item.content.match(patt) || []
+      // const newstr: string = contextData[0]?.replace(
+      //   '>',
+      //   ` ${userInfo.id === Number(idStr) ? "data-me='my' " : ''}`,
+      // )
+      setEditInfo(tag)
       if (props.item.isEdit) {
         onReadonlyClick()
       }
