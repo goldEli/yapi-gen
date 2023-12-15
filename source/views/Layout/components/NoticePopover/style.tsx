@@ -86,7 +86,6 @@ export const NoticeItemWrap = styled.div`
     color: var(--neutral-n2);
     font-size: var(--font12);
     img {
-      margin-right: 12px;
       width: 16px;
       height: 16px;
     }

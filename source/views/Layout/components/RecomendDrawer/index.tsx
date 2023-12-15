@@ -45,7 +45,7 @@ const RecomendDrawer = (props: any) => {
         navigate('Project')
       }}
     >
-      {active === 1 ? '查看所有日报' : '查看所有项目'}
+      <span>{active === 1 ? '查看所有日报' : '查看所有项目'}</span>
       <CommonIconFont type="right"></CommonIconFont>
     </DrawerFooter>
   )
@@ -80,7 +80,7 @@ const RecomendDrawer = (props: any) => {
     >
       <Drawer
         title={null}
-        width={480}
+        width={528}
         open={open}
         closable={false}
         onClose={onCancel}
@@ -90,7 +90,7 @@ const RecomendDrawer = (props: any) => {
         drawerStyle={{ paddingTop: '56px' }}
         className={cusDrawer}
         footer={footer}
-        bodyStyle={{ padding: '20px 0 0', overflow: 'hidden' }}
+        bodyStyle={{ padding: '16px 0 0', overflow: 'hidden' }}
         footerStyle={{ padding: '0 16px' }}
       >
         <TitleWrap>
