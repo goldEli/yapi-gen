@@ -18,10 +18,10 @@ const NoticePopover = (props: any) => {
   const [index, setIndex] = useState(-1)
   const { isNewMsg, msgStatics } = useSelector(store => store.mine)
   const _getMsg_list = async (isInit: boolean, page: number) => {
-    const todayDate = dayjs(new Date()).format('YYYY-MM-DD')
+    const todayDate = dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
     const lastSevenDays = dayjs(todayDate)
       .subtract(7, 'days')
-      .format('YYYY-MM-DD')
+      .format('YYYY-MM-DD HH:mm:ss')
     const res = await getMsg_list({
       business_type: 1,
       latTime: new Date(lastSevenDays).valueOf() / 1000,
@@ -44,16 +44,16 @@ const NoticePopover = (props: any) => {
     //   })
     // }
     if (res?.nowWhereReadAllNum) {
+      setTimeout(() => {
+        for (const iterator of data) {
+          if (parseInt(iterator.read, 10) === 0) {
+            iterator.read = 1
+          }
+        }
+        setData([...data])
+      }, 6000)
       dispatch(setIsNewMsg(isNewMsg + 1))
     }
-    setTimeout(() => {
-      for (const iterator of data) {
-        if (parseInt(iterator.read, 10) === 0) {
-          iterator.read = 1
-        }
-      }
-      setData([...data])
-    }, 3600)
   }
   const addMore = (oldData: any, newData: any) => {
     Object.keys(newData).forEach((i: string) => {
