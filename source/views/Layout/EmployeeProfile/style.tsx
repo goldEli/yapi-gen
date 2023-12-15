@@ -607,7 +607,6 @@ export const TabWrap = styled(Tabs)`
 `
 export const TitleBox = styled.div`
   color: var(--neutral-n2);
-  cursor: pointer;
   position: relative;
   background: var(--hover-d2);
   height: 32px;

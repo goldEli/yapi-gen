@@ -16,6 +16,8 @@ import MineNotice from './Report'
 import classNames from 'classnames'
 import { useSelector } from '@store/index'
 import { useNavigate } from 'react-router-dom'
+import { CloseWrap } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
 interface IProps {}
 
 const RecomendDrawer = (props: any) => {
@@ -111,7 +113,12 @@ const RecomendDrawer = (props: any) => {
               })}
             </TabsBox>
           </TabsWrap>
-          <CommonIconFont type="close" onClick={onCancel}></CommonIconFont>
+          <CloseWrap width={32} height={32} onClick={onCancel}>
+            <IconFont
+              style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+              type="close"
+            />
+          </CloseWrap>
         </TitleWrap>
         <ContentWrap>{content[active]}</ContentWrap>
       </Drawer>

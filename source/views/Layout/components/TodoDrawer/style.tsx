@@ -163,6 +163,9 @@ export const DrawerFooter = styled.div`
   color: #6688ff;
   cursor: pointer;
   height: 52px;
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 export const DrawerWrap = styled(Drawer)`

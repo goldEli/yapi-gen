@@ -110,7 +110,7 @@ const TodoDrawer = (props: any) => {
                     })}
                     onClick={() => setActive(item.value)}
                   >
-                    {item.name}（{list && list[item.fields]}）
+                    {item.name}({list && list[item.fields]})
                   </div>
                 )
               })}
