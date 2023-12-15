@@ -596,7 +596,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
               className="img"
               src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543680935/icon1.png"
             />
-            <div className="name">待办</div>
+            <div className="name">{t('needToBeDealtWith')}</div>
             {total ? (
               <NumberWrap>
                 <NumberBox>{total > 100 ? '99+' : total}</NumberBox>
@@ -622,7 +622,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
               className="img"
               src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702543715733/icon2.png"
             />
-            <div className="name">为你推荐</div>
+            <div className="name">{t('recommendToYou')}</div>
           </RobotButton>
         </Popover>
       </PopOverBox>
