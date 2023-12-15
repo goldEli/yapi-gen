@@ -912,7 +912,8 @@ export const getProjectInfoValues: any = async (params: any, all?: number) => {
       }))
     }
     allValues = [
-      { id: -1, content: '空', content_txt: '空', status: 1 },
+      // TODO 2023年12月15日15:20:39 何尧让去掉的
+      // { id: -1, content: '空', content_txt: '空', status: 1 },
       ...resultValues,
     ]
     return allValues

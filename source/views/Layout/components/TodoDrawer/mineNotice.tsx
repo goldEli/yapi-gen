@@ -47,14 +47,18 @@ const MineNotice = () => {
     // 只有未读消息才走这个逻辑
     if (res?.nowWhereReadAllNum) {
       setTimeout(() => {
-        for (const iterator of data) {
+        const newData = res?.list ?? []
+        for (const iterator of newData) {
           if (parseInt(iterator.read, 10) === 0) {
             iterator.read = 1
             // 更新统计
             dispatch(setIsNewMsg(isNewMsg + 1))
           }
         }
-        setData([...data])
+        setData({
+          pager: total,
+          list: [...newData],
+        })
       }, 6000)
     }
     // setData(data)
@@ -64,11 +68,18 @@ const MineNotice = () => {
     _getMsg_list(true, 1)
   }, [todoStatistics?.total])
   const setRead = async (index: number, msgIds: string) => {
+    const newData = data.list
+    const total = {
+      total: data?.pager?.total,
+    }
     const res = await setReadApi({ read: 2, msgIds: [msgIds] })
     if (res.code === 0) {
-      data[index].read = 2
+      newData[index].read = 2
       setTimeout(() => {
-        setData([...data])
+        setData({
+          pager: total,
+          list: [...newData],
+        })
       })
     }
   }
