@@ -23,7 +23,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
 import MessageItem from '../components/MessageItem'
 import _ from 'lodash'
-
+import NewNoData from '@/components/NewNoData'
 const Index = () => {
   const all = useSelector(store => store.siteNotifications.all)
   const [dataList, setDataList] = useState<any>({
@@ -190,7 +190,29 @@ const Index = () => {
       navigate(`/EmployeeProfile?data=${params}`)
     }
   }, [])
-
+  const maps: any = new Map([
+    [
+      '1',
+      {
+        text: '来自项目任务相关的消息都会收集在「项目管理」里面',
+        url: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702630268758/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86.png',
+      },
+    ],
+    [
+      '2',
+      {
+        text: '来自系统操作相关的消息都会收集在「系统通知」里面',
+        url: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702630511985/%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%9F%A5.png',
+      },
+    ],
+    [
+      '4',
+      {
+        text: '来自日报相关的消息都会收集在「工作汇报」里面',
+        url: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702630535664/%E5%B7%A5%E4%BD%9C%E6%B1%87%E6%8A%A5.png',
+      },
+    ],
+  ])
   return (
     <MessageListWrap>
       <HeaderWrap>
@@ -248,7 +270,9 @@ const Index = () => {
         </SelectWrapBedeck>
       </HeaderWrap>
       <ContentWrap>
-        {dataList?.list?.length ? null : <NoData />}
+        {dataList?.list?.length ? null : (
+          <NewNoData text={maps.get(id)?.text} url={maps.get(id)?.url} />
+        )}
         {dataList?.list?.map((i: any) => (
           <MessageItem
             key={i.id}
