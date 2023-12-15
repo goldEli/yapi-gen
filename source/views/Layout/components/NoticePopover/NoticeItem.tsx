@@ -41,7 +41,14 @@ const NoticeItem = (props: any) => {
         >
           <span>
             {' '}
-            <img src={data?.msg_body?.optHeader} alt="" />
+            {data?.msg_body?.optHeader ? (
+              <img src={data?.msg_body?.optHeader} alt="" />
+            ) : (
+              <img
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png"
+                alt=""
+              />
+            )}
           </span>
           <span>{data?.msg_body?.title}</span>
         </div>
