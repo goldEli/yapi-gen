@@ -2418,6 +2418,7 @@
   "totalPerson": "{{total}}人",
   "totalNumber": "{{total}}次",
   "return": "返回",
+  "returnNew": "返回",
   "removeEmployee": "移除人员",
   "removeProjectMembersInBatches": "批量移除项目成员",
   "areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding": "确认要移除选中员工？移除后的员工将无法再访问该项目，但是他/她的历史记录仍然会保留。如您需要修改某员工相关任务记录，请在对应任务下进行变更.",

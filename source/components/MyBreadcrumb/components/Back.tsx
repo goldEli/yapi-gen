@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
@@ -89,7 +89,7 @@ const Back = (props: { headerParmas: boolean; onBackSecond(): void }) => {
         <BackWrap onClick={onBack}>
           <div>
             <IconFont className="icon" type="return" />
-            <span>{t('return')}</span>
+            <span>{t('returnNew')}</span>
           </div>
           <span className="line" />
         </BackWrap>,

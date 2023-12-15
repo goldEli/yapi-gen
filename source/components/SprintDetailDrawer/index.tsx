@@ -424,6 +424,7 @@ const SprintDetailDrawer = () => {
     })
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     onCancel()
+    setIsVisible(false)
     // 更新列表
     dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
