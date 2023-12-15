@@ -13,12 +13,17 @@ import {
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { ConfigWrap } from '@/components/StyleCommon'
-import { detailTimeFormat, getIdsForAt, removeNull } from '@/tools'
+import {
+  detailTimeFormat,
+  getIdsForAt,
+  getParamsData,
+  removeNull,
+} from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setActiveCategory } from '@store/category'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import FlawComment from './FlawComment'
 import FlawStatus from './FlawStatus'
 import FlawBasic from './FlawBasic'
@@ -31,15 +36,18 @@ import { addFlawComment } from '@/services/flaw'
 const FlawInfo = () => {
   const commentDom: any = createRef()
   const [t] = useTranslation()
+  const routerPath = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const basicInfoDom = useRef<HTMLDivElement>(null)
+  const [searchParams] = useSearchParams()
   const { flawInfo } = useSelector(store => store.flaw)
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
   const { projectInfo, isDetailScreenModal, projectInfoValues } = useSelector(
     store => store.project,
   )
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const { params, visible } = isDetailScreenModal
 
   //   刷新缺陷详情
@@ -97,7 +105,21 @@ const FlawInfo = () => {
       setFocus(false)
     }
   }
-  const { userPreferenceConfig } = useSelector(store => store.user)
+
+  useEffect(() => {
+    // 判断从消息跳转到详情定位评论  只有全屏及弹窗会触发
+    if (routerPath?.pathname === '/ProjectDetail/Defect' && flawInfo?.id) {
+      const routerParams = getParamsData(searchParams)
+      if (routerParams?.anchorPoint) {
+        setTimeout(() => {
+          const dom = document.getElementById('sprint-activity')
+          dom?.scrollIntoView({
+            behavior: 'smooth',
+          })
+        }, 1500)
+      }
+    }
+  }, [routerPath, flawInfo])
 
   // 计算高度
   const a1 = flawInfo?.isExamine ? 91 : 130
@@ -146,7 +168,7 @@ const FlawInfo = () => {
             </div>
           )}
           <div style={{ margin: '16px', background: '#f5f5f7' }}>
-            <FlawInfoInfoItem>
+            <FlawInfoInfoItem id="sprint-activity">
               <FlawComment detail={flawInfo} isOpenInfo />
             </FlawInfoInfoItem>
           </div>

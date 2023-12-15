@@ -174,13 +174,6 @@ const AffairsDetail = (props: AffairsDetailProps) => {
           isInfoPage={props?.isInfoPage}
         >
           <Label>{t('describe')}</Label>
-          {/* {props.isPreview && (
-            <TextWrapEdit style={{ width: '100%' }}>
-              <span className={canEditHover}>--</span>
-            </TextWrapEdit>
-          )} */}
-          {/* {!props.isPreview && (
-            <> */}
           {(isEditInfo || editInfo) && (
             <div className={props.isPreview ? '' : canEditHover}>
               <Editor
