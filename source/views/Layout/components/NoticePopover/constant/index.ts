@@ -12,11 +12,18 @@ export const ICON_TYPE_DATA = new Map([
       color: '#6688FF',
       type: 'project',
       text: '项目管理',
+      bgColor: '#ECF0FF',
     },
   ],
   [
     'sys',
-    { icon: 'bell-sel', color: '#FA9746', type: 'sys', text: '系统通知' },
+    {
+      icon: 'bell-sel',
+      color: '#FA9746',
+      type: 'sys',
+      text: '系统通知',
+      bgColor: '#FEF4EB',
+    },
   ],
   [
     'calendar',
@@ -25,10 +32,17 @@ export const ICON_TYPE_DATA = new Map([
       color: '#A176FB',
       type: 'calendar',
       text: '日程管理',
+      bgColor: '#F5F0FF',
     },
   ],
   [
     'report',
-    { icon: 'log-sel', color: '#43BA9A', type: 'report', text: '工作汇报' },
+    {
+      icon: 'log-sel',
+      color: '#43BA9A',
+      type: 'report',
+      text: '工作汇报',
+      bgColor: '#E7F6F2',
+    },
   ],
 ])

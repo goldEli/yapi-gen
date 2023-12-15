@@ -32,6 +32,7 @@ export const ContentList = styled.div`
   /* padding-bottom: 100px; */
   height: 100%;
   overflow-y: scroll;
+  margin-top: 12px;
 `
 export const NoticeItemWrap = styled.div`
   display: flex;
@@ -42,6 +43,18 @@ export const NoticeItemWrap = styled.div`
   position: relative;
   .type_icon {
     position: relative;
+    .icon_wrap {
+      width: 24px;
+      height: 24px;
+      /* border: 1px solid ; */
+      border-radius: 50%;
+      display: inline-block;
+      text-align: center;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .dot {
       position: absolute;
       width: 6px;

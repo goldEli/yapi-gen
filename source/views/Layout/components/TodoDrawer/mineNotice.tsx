@@ -75,6 +75,7 @@ const MineNotice = () => {
     }
     const res = await setReadApi({ read: 2, msgIds: [msgIds] })
     if (res.code === 0) {
+      dispatch(setIsNewMsg(isNewMsg + 1))
       newData[index].read = 2
       setTimeout(() => {
         setData({

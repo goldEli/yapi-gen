@@ -29,15 +29,23 @@ const NoticeItem = (props: any) => {
       }}
     >
       <div className="type_icon">
-        <CommonIconFont
-          type={
-            ICON_TYPE_DATA.get(data?.send_user?.username)?.icon ??
-            'folder-open-sel'
-          }
-          color={
-            ICON_TYPE_DATA.get(data?.send_user?.username)?.color ?? '#FA9746'
-          }
-        ></CommonIconFont>
+        <span
+          className="icon_wrap"
+          style={{
+            background: ICON_TYPE_DATA.get(data?.send_user?.username)?.bgColor,
+          }}
+        >
+          <CommonIconFont
+            type={
+              ICON_TYPE_DATA.get(data?.send_user?.username)?.icon ??
+              'folder-open-sel'
+            }
+            size={16}
+            color={
+              ICON_TYPE_DATA.get(data?.send_user?.username)?.color ?? '#FA9746'
+            }
+          ></CommonIconFont>
+        </span>
         {parseInt(data.read, 10) === 0 ? <div className="dot"></div> : null}
       </div>
       <div className="detail">

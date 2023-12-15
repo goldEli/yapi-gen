@@ -14,7 +14,7 @@ const useNoticePopoverTitle = (setMsgVisible: any, popoverRef: any) => {
   }
   const TitleBox = (
     <NoticeTitleWrap>
-      <div>动态（{allnews}）</div>
+      {allnews ? <div>动态（{allnews}）</div> : <div>动态</div>}
       <CloseWrap
         color="var(--neutral-n2)"
         onClick={close}

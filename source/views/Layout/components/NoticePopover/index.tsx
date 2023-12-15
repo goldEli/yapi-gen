@@ -84,6 +84,7 @@ const NoticePopover = (props: any) => {
       total: data?.pager?.total,
     }
     const res = await setReadApi({ read: 2, msgIds: [msgIds] })
+    dispatch(setIsNewMsg(isNewMsg + 1))
     if (res.code === 0) {
       newData[index].read = 2
       setTimeout(() => {
