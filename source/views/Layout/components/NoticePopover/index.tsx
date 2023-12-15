@@ -13,6 +13,7 @@ import _ from 'lodash'
 import { SpinWrap } from '../../style'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
+import NewNoData from '@/components/NewNoData'
 interface IProps {}
 const NoticePopover = (props: any) => {
   const { onHistoryStatics } = props
@@ -120,15 +121,15 @@ const NoticePopover = (props: any) => {
     <NoticePopoverWrap>
       <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
         <ContentList id="scrollableDiv">
-          <InfiniteScroll
-            dataLength={data?.list?.length ? data?.list?.length : 0}
-            next={fetchMoreData}
-            hasMore={onComputedTab(2)}
-            loader={<Skeleton paragraph={{ rows: 1 }} active />}
-            scrollableTarget="scrollableDiv"
-          >
-            {data?.list?.length ? (
-              data?.list?.map((item: any, index: number) => {
+          {data?.list?.length ? (
+            <InfiniteScroll
+              dataLength={data?.list?.length ? data?.list?.length : 0}
+              next={fetchMoreData}
+              hasMore={onComputedTab(2)}
+              loader={<Skeleton paragraph={{ rows: 1 }} active />}
+              scrollableTarget="scrollableDiv"
+            >
+              {data?.list?.map((item: any, index: number) => {
                 return (
                   <NoticeItem
                     index={index}
@@ -137,11 +138,14 @@ const NoticePopover = (props: any) => {
                     onReadClick={onReadClick}
                   ></NoticeItem>
                 )
-              })
-            ) : (
-              <NoData></NoData>
-            )}
-          </InfiniteScroll>
+              })}
+            </InfiniteScroll>
+          ) : (
+            <NewNoData
+              text="来自项目日志、汇报记录、系统日志等消息会收集在「动态」"
+              url="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/noData.png"
+            ></NewNoData>
+          )}
         </ContentList>
       </SpinWrap>
       <FooterBox>

@@ -60,6 +60,7 @@ export const TabsBox = styled.div`
 export const ContentWrap = styled.div`
   margin-top: 8px;
   overflow: hidden;
+  height: 100%;
   /* height: calc(100% - 60px); */
   /* overflow: auto; */
 `
