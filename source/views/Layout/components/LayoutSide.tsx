@@ -383,6 +383,9 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
                       popoverRef?.current?.props?.onPopupVisibleChange(false)
                       setMsgVisible(false)
                     }}
+                    onClose={() => {
+                      popoverRef?.current?.props?.onPopupVisibleChange(false)
+                    }}
                   ></NoticePopover>
                 }
                 title={TitleBox}

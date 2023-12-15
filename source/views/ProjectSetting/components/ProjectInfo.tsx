@@ -420,7 +420,10 @@ const ProjectInfo = () => {
             <InfoItem>
               <div>{t('project.projectStatus')}：</div>
               <span>
-                {projectInfo.status === 1 ? t('common.open') : t('common.stop')}
+                {
+                  statusArr?.filter((i: any) => i.id === projectInfo?.status)[0]
+                    ?.name
+                }
               </span>
             </InfoItem>
             <InfoItem>

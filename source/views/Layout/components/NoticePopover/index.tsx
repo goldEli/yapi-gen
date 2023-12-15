@@ -16,7 +16,7 @@ import NoData from '@/components/NoData'
 import NewNoData from '@/components/NewNoData'
 interface IProps {}
 const NoticePopover = (props: any) => {
-  const { onHistoryStatics } = props
+  const { onHistoryStatics, onClose } = props
   const [data, setData] = useState<any>([])
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
@@ -84,6 +84,7 @@ const NoticePopover = (props: any) => {
       total: data?.pager?.total,
     }
     const res = await setReadApi({ read: 2, msgIds: [msgIds] })
+    dispatch(setIsNewMsg(isNewMsg + 1))
     if (res.code === 0) {
       newData[index].read = 2
       setTimeout(() => {
@@ -136,6 +137,10 @@ const NoticePopover = (props: any) => {
                     key={index}
                     data={item}
                     onReadClick={onReadClick}
+                    onCancel={() => {
+                      console.log(1111)
+                      onClose()
+                    }}
                   ></NoticeItem>
                 )
               })}
