@@ -39,32 +39,6 @@ const TodoDrawer = (props: any) => {
   const { list } = todoStatistics ?? {}
   const navigate = useNavigate()
 
-  // 关闭抽屉
-  const onCloseDrawer = (e: any) => {
-    if (
-      !open ||
-      document.querySelector('#popover_todo')?.contains?.(e.target)
-    ) {
-      return
-    }
-    if (
-      document.querySelector('#LayoutSide')?.contains?.(e.target) ||
-      document.querySelector('#LayoutHeader')?.contains?.(e.target) ||
-      e.target?.className?.includes?.('ant-drawer-mask')
-    ) {
-      onCancel()
-    }
-  }
-
-  useEffect(() => {
-    if (open) {
-      document.querySelector('body')?.addEventListener('click', onCloseDrawer)
-    }
-    return document
-      .querySelector('body')
-      ?.addEventListener('click', onCloseDrawer)
-  }, [open])
-
   const footer = (
     <DrawerFooter
       onClick={() => {
@@ -80,13 +54,42 @@ const TodoDrawer = (props: any) => {
     </DrawerFooter>
   )
   const empty = <div style={{ height: '40px' }}></div>
+
+  // 关闭抽屉
+  const onCloseDrawer = (e: any) => {
+    if (!open) {
+      return
+    }
+    if (
+      document.querySelector('#LayoutSide')?.contains?.(e.target) ||
+      document.querySelector('#LayoutHeader')?.contains?.(e.target)
+    ) {
+      onCancel()
+    }
+  }
+
+  useEffect(() => {
+    if (open) {
+      document.querySelector('body')?.addEventListener('click', onCloseDrawer)
+    }
+    return document
+      .querySelector('body')
+      ?.addEventListener('click', onCloseDrawer)
+  }, [open])
+
   return (
-    <div>
+    <div
+      onClick={(e: any) => {
+        e.stopPropagation()
+      }}
+    >
       <Drawer
         title={null}
         width={600}
         open={open}
         closable={false}
+        onClose={onCancel}
+        maskClosable
         maskStyle={{ background: 'transparent' }}
         zIndex={196}
         drawerStyle={{ paddingTop: '56px' }}
