@@ -40,7 +40,6 @@ const NoticeItem = (props: any) => {
           })}
         >
           <span>
-            {' '}
             {data?.msg_body?.optHeader ? (
               <img src={data?.msg_body?.optHeader} alt="" />
             ) : (

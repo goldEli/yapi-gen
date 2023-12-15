@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { DetailInfoWrap, InfoWrap, ButtonGroupWrap, TabsWrap1 } from '../style'
 import { useTranslation } from 'react-i18next'
-import { getIdsForAt, removeNull } from '@/tools'
+import { getIdsForAt, getParamsData, removeNull } from '@/tools'
 import { addAffairsComment } from '@/services/affairs'
 import {
   getAffairsCommentList,
@@ -26,7 +26,7 @@ import ChildSprint from './ChildSprint'
 import CommonButton from '@/components/CommonButton'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import { Tabs } from 'antd'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 interface Props {
   onRef: any
   employeeCurrentId?: number
@@ -113,6 +113,8 @@ const ButtonGroup = (props: {
 const AffairsInfo = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const routerPath = useLocation()
+  const [searchParams] = useSearchParams()
   const { userPreferenceConfig } = useSelector(store => store.user)
   const LeftDomDetailInfo = useRef<HTMLDivElement>(null)
   const commentDom: any = createRef()
@@ -234,6 +236,21 @@ const AffairsInfo = (props: Props) => {
       LeftDomC?.removeEventListener('scroll', handleScroll, false)
     }
   }, [LeftDomC])
+
+  useEffect(() => {
+    // 判断从消息跳转到详情定位评论  只有全屏及弹窗会触发
+    if (routerPath?.pathname === '/ProjectDetail/Affair' && affairsInfo?.id) {
+      const routerParams = getParamsData(searchParams)
+      if (routerParams?.anchorPoint) {
+        setTimeout(() => {
+          const dom = document.getElementById('sprint-activity')
+          dom?.scrollIntoView({
+            behavior: 'smooth',
+          })
+        }, 1500)
+      }
+    }
+  }, [routerPath, affairsInfo])
 
   const aa =
     userPreferenceConfig.previewModel === 3 ||
