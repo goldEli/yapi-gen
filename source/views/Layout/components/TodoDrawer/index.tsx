@@ -84,7 +84,7 @@ const TodoDrawer = (props: any) => {
     >
       <Drawer
         title={null}
-        width={600}
+        width={528}
         open={open}
         closable={false}
         onClose={onCancel}
@@ -95,7 +95,7 @@ const TodoDrawer = (props: any) => {
         className={cusDrawer}
         footer={active === 1 ? null : footer}
         destroyOnClose
-        bodyStyle={{ padding: '20px 0 0', overflow: 'hidden' }}
+        bodyStyle={{ padding: '16px 0 0', overflow: 'hidden' }}
         footerStyle={{ padding: '0 16px' }}
       >
         <TitleWrap>
@@ -110,7 +110,7 @@ const TodoDrawer = (props: any) => {
                     })}
                     onClick={() => setActive(item.value)}
                   >
-                    {item.name}（{list && list[item.fields]}）
+                    {item.name}({list && list[item.fields]})
                   </div>
                 )
               })}

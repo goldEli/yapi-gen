@@ -41,9 +41,14 @@ const NoticeItem = (props: any) => {
         >
           <span>
             {data?.msg_body?.optHeader ? (
-              <img src={data?.msg_body?.optHeader} alt="" />
+              <img
+                src={data?.msg_body?.optHeader}
+                alt=""
+                style={{ borderRadius: '50%' }}
+              />
             ) : (
               <img
+                style={{ borderRadius: '50%' }}
                 src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png"
                 alt=""
               />

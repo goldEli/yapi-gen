@@ -16,6 +16,8 @@ import MineNotice from './Report'
 import classNames from 'classnames'
 import { useSelector } from '@store/index'
 import { useNavigate } from 'react-router-dom'
+import { CloseWrap } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
 interface IProps {}
 
 const RecomendDrawer = (props: any) => {
@@ -45,7 +47,7 @@ const RecomendDrawer = (props: any) => {
         navigate('Project')
       }}
     >
-      {active === 1 ? '查看所有日报' : '查看所有项目'}
+      <span>{active === 1 ? '查看所有日报' : '查看所有项目'}</span>
       <CommonIconFont type="right"></CommonIconFont>
     </DrawerFooter>
   )
@@ -80,7 +82,7 @@ const RecomendDrawer = (props: any) => {
     >
       <Drawer
         title={null}
-        width={480}
+        width={528}
         open={open}
         closable={false}
         onClose={onCancel}
@@ -90,7 +92,7 @@ const RecomendDrawer = (props: any) => {
         drawerStyle={{ paddingTop: '56px' }}
         className={cusDrawer}
         footer={footer}
-        bodyStyle={{ padding: '20px 0 0', overflow: 'hidden' }}
+        bodyStyle={{ padding: '16px 0 0', overflow: 'hidden' }}
         footerStyle={{ padding: '0 16px' }}
       >
         <TitleWrap>
@@ -111,7 +113,12 @@ const RecomendDrawer = (props: any) => {
               })}
             </TabsBox>
           </TabsWrap>
-          <CommonIconFont type="close" onClick={onCancel}></CommonIconFont>
+          <CloseWrap width={32} height={32} onClick={onCancel}>
+            <IconFont
+              style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+              type="close"
+            />
+          </CloseWrap>
         </TitleWrap>
         <ContentWrap>{content[active]}</ContentWrap>
       </Drawer>
