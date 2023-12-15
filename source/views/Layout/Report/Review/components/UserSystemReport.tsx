@@ -46,7 +46,6 @@ import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { setUpdateList } from '@store/workReport'
 import { getMessage } from '@/components/Message'
-import CommentFooter from '@/components/CommonComment/CommentFooter'
 
 interface TargetTabsProps {
   list: any
@@ -490,15 +489,6 @@ const UserSystemReport = () => {
           </>
         )}
       </Content>
-      <CommentFooter
-        placeholder={`${t('common.comment')}${
-          drawerInfo?.user?.name || '--'
-        }${t('report.list.log')}`}
-        personList={arr}
-        onConfirm={onComment}
-        style={{ padding: 24 }}
-        maxHeight="72vh"
-      />
       <DeleteConfirm
         text={t('mark.cd')}
         isVisible={isVisible}
