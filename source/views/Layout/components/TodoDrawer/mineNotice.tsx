@@ -10,6 +10,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { ContentList } from '../NoticePopover/style'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Skeleton } from 'antd'
+import NewNoData from '@/components/NewNoData'
 const MineNotice = () => {
   const [data, setData] = useState<any>()
   const dispatch = useDispatch()
@@ -107,7 +108,7 @@ const MineNotice = () => {
     _getMsg_list(false, pages)
   }
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       {data?.list?.length ? (
         <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
           <MyList id="scrollableDiv">
@@ -134,8 +135,12 @@ const MineNotice = () => {
           </MyList>
         </SpinWrap>
       ) : (
-        <NoData></NoData>
+        <NewNoData
+          text="来自任务的评论消息都会收集在「@我的」里面"
+          url="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702629603194/%E6%88%91%E7%9A%84.png"
+        ></NewNoData>
       )}
+      {/* <NewNoData text='来自任务的评论消息都会收集在「@我的」里面' url='https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702629603194/%E6%88%91%E7%9A%84.png'></NewNoData> */}
     </div>
   )
 }

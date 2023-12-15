@@ -21,6 +21,7 @@ import moment from 'moment'
 import { setIsUpdateAddWorkItem } from '@store/project'
 import EditExamine from '@/components/EditExamine'
 import { setIsNewMsg } from '@store/mine'
+import NewNoData from '@/components/NewNoData'
 const GroupItems = (props: any) => {
   const { row, onOpenExamine, onClickItem, tabActive } = props
   const [page, setPage] = useState(1)
@@ -229,7 +230,12 @@ const ReviewTask = () => {
               : null}
           </InfiniteScroll>
           {(JSON.stringify(dataList.list) === '{}' ||
-            dataList.list?.length <= 0) && <NoData />}
+            dataList.list?.length <= 0) && (
+            <NewNoData
+              text="来自任务的审核消息都会收集在「待我审核任务」里面"
+              url="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702629603194/%E6%88%91%E7%9A%84.png"
+            ></NewNoData>
+          )}
         </div>
       </SpinWrap>
     </div>
