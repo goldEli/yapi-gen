@@ -298,7 +298,7 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
   )
 
   return {
-    isStar: response.data.is_star === 1,
+    isStar: response.data?.is_star === 1,
     category_attachment: response.data.category_attachment,
     id: response.data.id,
     name: response.data.name || '--',
