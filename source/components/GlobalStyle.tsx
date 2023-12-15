@@ -5,6 +5,7 @@ import { useSelector } from '@store/index'
 
 const GlobalStyle = () => {
   const { theme } = useSelector(store => store.global)
+  const { userInfo } = useSelector(store => store.user)
   const white = css`
     :root {
       --font12: 12px;
@@ -162,7 +163,15 @@ const GlobalStyle = () => {
       color: var(--neutral-n1-d1);
       font-size: var(--font14);
     }
-
+    #myEditor span[data-type='mention']{
+      border:none;
+      padding:0;
+    }
+    #myEditor span[data-id="${userInfo.id}"]{
+      background:var(--auxiliary-text-t1-d2) !important;
+      color:#fff;
+      padding:0 5px;
+    }
     :root {
       .dia_y {
         position: relative;

@@ -84,6 +84,11 @@ const GroupItems = (props: GroupItemsProps) => {
                         i.actionable?.category_status?.is_end === 2
                       ? 'var(--function-success)'
                       : '',
+                  color:
+                    i.actionable?.category_status?.is_end === 1 &&
+                    i.actionable?.category_status?.is_start === 2
+                      ? 'var(--neutral-white-d7)'
+                      : 'var(--neutral-n1-d1)',
                 }}
               >
                 <Tooltip title={i.actionable?.category_status?.status?.content}>

@@ -58,6 +58,11 @@ const GroupItems = (props: any) => {
                     i.category_status?.is_end === 2
                   ? 'var(--function-success)'
                   : '',
+              color:
+                i.category_status?.is_end === 1 &&
+                i.category_status?.is_start === 2
+                  ? 'var(--neutral-n1-d1)'
+                  : 'var(--neutral-white-d7)',
             }}
           >
             {i.category_status?.status?.content}
