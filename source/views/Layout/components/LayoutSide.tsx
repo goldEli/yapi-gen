@@ -380,6 +380,7 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
                   <NoticePopover
                     onHistoryStatics={() => {
                       navigate('Trends/AllNote/1')
+                      popoverRef?.current?.props?.onPopupVisibleChange(false)
                       setMsgVisible(false)
                     }}
                   ></NoticePopover>

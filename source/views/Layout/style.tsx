@@ -14,7 +14,7 @@ export const NumberBox = styled.div`
   justify-content: center;
 `
 export const NumberWrap = styled.div`
-  padding: 3px;
+  padding: 1px;
   background-color: #fff;
   border-radius: 12px;
   margin-left: 8px;
