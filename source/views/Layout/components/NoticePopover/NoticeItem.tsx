@@ -39,20 +39,21 @@ const NoticeItem = (props: any) => {
             read: parseInt(data.read, 10) === 2,
           })}
         >
-          {data?.msg_body?.optHeader ? (
-            <img
-              style={{ borderRadius: '50%' }}
-              src={data?.msg_body?.optHeader}
-              alt=""
-            />
-          ) : (
-            <img
-              style={{ borderRadius: '50%' }}
-              src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png"
-              alt=""
-            />
-          )}
-
+          <span>
+            {data?.msg_body?.optHeader ? (
+              <img
+                src={data?.msg_body?.optHeader}
+                alt=""
+                style={{ borderRadius: '50%' }}
+              />
+            ) : (
+              <img
+                style={{ borderRadius: '50%' }}
+                src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/light.png"
+                alt=""
+              />
+            )}
+          </span>
           <span>{data?.msg_body?.title}</span>
         </div>
         <div

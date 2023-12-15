@@ -24,17 +24,20 @@ import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import ScheduleRecord from '@/components/ScheduleRecord'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
-import { getIdsForAt, removeNull } from '@/tools'
+import { getIdsForAt, getParamsData, removeNull } from '@/tools'
 import { getDemandCommentList } from '@store/demand/demand.thunk'
+import { useLocation, useSearchParams } from 'react-router-dom'
 
 const DemandDetail = () => {
   const dId = useRef<any>()
   const commentDom: any = createRef()
   const dispatch = useDispatch()
+  const routerPath = useLocation()
   const [t] = useTranslation()
   const LeftDom = useRef<HTMLInputElement>(null)
   const editorRef = useRef<EditorRef>(null)
   const editorRef2 = useRef<any>()
+  const [searchParams] = useSearchParams()
   const { projectInfo, isDetailScreenModal, projectInfoValues } = useSelector(
     store => store.project,
   )
@@ -151,6 +154,22 @@ const DemandDetail = () => {
     setEditInfo(demandInfo.info || '')
     dId.current = demandInfo?.id
   }, [demandInfo])
+
+  useEffect(() => {
+    // 判断从消息跳转到详情定位评论  只有全屏及弹窗会触发
+    if (routerPath?.pathname === '/ProjectDetail/Demand' && demandInfo?.id) {
+      const routerParams = getParamsData(searchParams)
+      if (routerParams?.anchorPoint) {
+        setTimeout(() => {
+          const dom = document.getElementById('sprint-activity')
+          dom?.scrollIntoView({
+            behavior: 'smooth',
+          })
+        }, 1500)
+      }
+    }
+  }, [routerPath, demandInfo])
+
   return (
     <WrapLeft ref={LeftDom}>
       <div
@@ -295,7 +314,7 @@ const DemandDetail = () => {
             />
           </InfoItem>
         )}
-        <InfoItem>
+        <InfoItem id="sprint-activity">
           <DemandComment detail={demandInfo} isOpenInfo />
         </InfoItem>
       </div>
