@@ -16,12 +16,13 @@ export const TitleWrap = styled.div`
   justify-content: space-between;
   height: 32px;
   align-items: center;
+  padding: 0 16px;
   /* position: sticky;
   top: 0px;
   background-color: #fff; */
 `
 export const MyList = styled.div`
-  height: 80vh;
+  height: calc(100vh - 168px);
   overflow-y: scroll;
 `
 export const TabsWrap = styled.div`
@@ -46,7 +47,7 @@ export const TabsWrap = styled.div`
   }
 `
 export const AssignTaskWrap = styled.div`
-  height: calc(100vh - 60px);
+  height: calc(100vh - 168px);
   overflow-y: auto;
 `
 export const TabsBox = styled.div`
@@ -58,6 +59,9 @@ export const TabsBox = styled.div`
 `
 export const ContentWrap = styled.div`
   margin-top: 8px;
+  overflow: hidden;
+  /* height: calc(100% - 60px); */
+  /* overflow: auto; */
 `
 export const SpinWrap = styled(Spin)`
   position: absolute;
@@ -157,6 +161,7 @@ export const DrawerFooter = styled.div`
   justify-content: flex-end;
   color: #6688ff;
   cursor: pointer;
+  height: 52px;
 `
 
 export const DrawerWrap = styled(Drawer)`

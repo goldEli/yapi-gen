@@ -13,6 +13,7 @@ export const TitleWrap = styled.div`
   justify-content: space-between;
   height: 32px;
   align-items: center;
+  padding: 0 16px;
 `
 export const TabsWrap = styled.div`
   background: var(--neutral-n8);
@@ -36,7 +37,7 @@ export const TabsWrap = styled.div`
   }
 `
 export const AssignTaskWrap = styled.div`
-  height: calc(100vh - 60px);
+  height: calc(100vh - 168px);
   overflow-y: auto;
 `
 export const TabsBox = styled.div`
@@ -254,4 +255,5 @@ export const DrawerFooter = styled.div`
   justify-content: flex-end;
   color: #6688ff;
   cursor: pointer;
+  height: 52px;
 `

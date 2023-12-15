@@ -201,7 +201,10 @@ const ReviewTask = () => {
         />
       ) : null}
       <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
-        <div id="scrollableDiv">
+        <div
+          id="scrollableDiv"
+          style={{ height: 'calc(100vh - 168px)', overflow: 'auto' }}
+        >
           <InfiniteScroll
             dataLength={
               dataList.list ? Object.values(dataList.list).flat(2).length : 0

@@ -89,6 +89,7 @@ export const PopOverBox = styled.div`
   padding: 0px 12px;
   margin-left: 12px;
 `
+
 // 引导页
 export const imgBoxCss = css`
   box-sizing: border-box;
@@ -408,6 +409,7 @@ export const LayoutHeaderLeftWrap = styled.div`
 export const LayoutHeaderRightWrap = styled.div`
   display: flex;
   align-items: center;
+  gap: 12px;
 `
 
 export const UserInfoWrap = styled.div`

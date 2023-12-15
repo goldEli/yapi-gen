@@ -240,7 +240,9 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   ]
 
   // 点击下拉 key:2 个人资料，3：退出登录
-  const onClickMenu = (key: number) => {
+  const onClickMenu = (key: number, e: any) => {
+    setIsVisible(false)
+    e.stopPropagation()
     switch (key) {
       case 2:
         setIsInfoVisible(true)
@@ -248,11 +250,13 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
       case 3:
         setIsConfirmLogout(true)
         break
+      case 4:
+        dispatch(changeFreedVisibleVisible(true))
+        break
       default:
         setIsChangeCompany(true)
         break
     }
-    setIsVisible(false)
   }
 
   // 获取公司列表
@@ -300,9 +304,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         window.open(
           'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/Agile.pdf',
         )
-        break
-      case 'draft':
-        dispatch(changeFreedVisibleVisible(true))
         break
       default:
         dispatch(changeKeyBoardVisible(true))
@@ -363,7 +364,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
               <ChangeComponent item={i} onClose={() => setIsVisible(false)} />
             )}
             {i.key !== 0 && (
-              <MenuItem key={i.key} onClick={() => onClickMenu(i.key)}>
+              <MenuItem key={i.key} onClick={(e: any) => onClickMenu(i.key, e)}>
                 <MenuLeft className="menuLeft" style={{ width: '80%' }}>
                   <CommonIconFont type={i.icon} />
                   <div>{i.name}</div>
@@ -379,7 +380,14 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         ))}
       </MenuItems>
       <Provider />
-
+      <MenuItems style={{ marginTop: '8px' }}>
+        <MenuItem onClick={e => onClickMenu(4, e)}>
+          <MenuLeft className="menuLeft" style={{ width: '80%' }}>
+            <CommonIconFont type="draft" />
+            <div>{t('usageFeedback')}</div>
+          </MenuLeft>
+        </MenuItem>
+      </MenuItems>
       <Popover
         content={helpContent}
         open={isHelpVisible}
@@ -387,7 +395,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         placement="leftTop"
         trigger="hover"
       >
-        <MenuItems style={{ margin: '8px 0' }}>
+        <MenuItems style={{ margin: '0 0 8px 0' }}>
           <MenuItem>
             <MenuLeft className="menuLeft" style={{ width: '80%' }}>
               <CommonIconFont type="question" />
@@ -401,7 +409,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
       </Popover>
       <Provider />
       <MenuItems style={{ marginTop: '8px' }}>
-        <MenuItem onClick={() => onClickMenu(3)}>
+        <MenuItem onClick={e => onClickMenu(3, e)}>
           <MenuLeft className="menuLeft" style={{ width: '80%' }}>
             <CommonIconFont type="login" />
             <div>{t('container.logout')}</div>
@@ -485,6 +493,20 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     <LayoutHeaderRightWrap id="LayoutHeaderRightWrap">
       <KeyBoardDrawer />
       <SystemFeedback />
+      <TodoDrawer
+        open={todoDrawerOpen}
+        onCancel={() => {
+          setTodoDrawerOpen(false)
+        }}
+        ref={todoDrawerRef}
+      />
+
+      <RecomendDrawer
+        open={recomendDrawerOpen}
+        onCancel={() => {
+          setRecomendDrawerOpen(false)
+        }}
+      />
       {/* 切换公司 */}
       <CommonModal
         isVisible={isChangeCompany}
@@ -646,20 +668,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
           </HeaderUserInfoWrap>
         </Popover>
       </Space>
-      <TodoDrawer
-        open={todoDrawerOpen}
-        onCancel={() => {
-          setTodoDrawerOpen(false)
-        }}
-        ref={todoDrawerRef}
-      ></TodoDrawer>
-
-      <RecomendDrawer
-        open={recomendDrawerOpen}
-        onCancel={() => {
-          setRecomendDrawerOpen(false)
-        }}
-      ></RecomendDrawer>
     </LayoutHeaderRightWrap>
   )
 }

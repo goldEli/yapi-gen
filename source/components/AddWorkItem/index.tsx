@@ -143,7 +143,6 @@ const AddWorkItem = () => {
     }
     // 全局创建和快速创建获取最近项目
     if (!params?.projectId) {
-      console.log(111111111)
       getRecentlyList(res.list)
     }
   }

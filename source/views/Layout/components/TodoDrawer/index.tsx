@@ -95,6 +95,8 @@ const TodoDrawer = (props: any) => {
         className={cusDrawer}
         footer={active === 1 ? null : footer}
         destroyOnClose
+        bodyStyle={{ padding: '20px 0 0', overflow: 'hidden' }}
+        footerStyle={{ padding: '0 16px' }}
       >
         <TitleWrap>
           <TabsWrap>

@@ -317,7 +317,8 @@ export const getSearchField: any = async (params: any) => {
         children: [
           // TODO 2023年12月15日15:20:39 何尧让去掉的
           // { id: -1, content: '空', content_txt: '空' },
-         ...filterData],
+          ...filterData,
+        ],
       }
     }
     return {
