@@ -1,12 +1,9 @@
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useMemo, useCallback, useEffect, useState } from 'react'
-import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
-import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { saveScreenDetailModal } from '@store/project/project.thunk'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const BackWrap = styled.div`
@@ -51,76 +48,48 @@ const urlAll = [
   '/ProjectDetail/WorkHours',
   '/ProjectDetail/Performance',
   '/ProjectDetail/KanBan',
+  '/ProjectDetail/IterationDetail',
 ]
 
-const Back = (props:{headerParmas:boolean}) => {
-  const location = useLocation()
+const Back = (props: { headerParmas: boolean; onBackSecond(): void }) => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const projectInfo = useSelector(state => state.project.projectInfo)
-  const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
+  const location = useLocation()
   const { userPreferenceConfig } = useSelector(store => store.user)
-  const { isDetailScreenModal } = useSelector(store => store.project)
+  const { isDetailScreenModal, projectInfo } = useSelector(
+    store => store.project,
+  )
   const { visible, params } = isDetailScreenModal
   const [html, setHtml] = useState<any>('')
 
-  const getProjectInfoValuesData = async () => {
-    const result = await getProjectInfoValues({ projectId: projectInfo.id })
-    dispatch(setProjectInfoValues(result))
-  }
-  const getInfo = async () => {
-    getProjectInfoValuesData()
-    const result = await getProjectInfo({
-      projectId: projectInfo.id,
-      isBug: location.pathname.includes('/Defect') ? 1 : 2,
-    })
-    dispatch(setProjectInfo(result))
-  }
-
-  // 关闭全屏详情弹层
-  const onCloseModal = () => {
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
-    closeScreenModal()
-  }
   //   返回
   const onBack = useCallback(() => {
     const backUrl = localStorage.getItem('projectRouteDetail') || ''
     if (backUrl && userPreferenceConfig.previewModel === 2) {
-      getInfo()
-      onCloseModal()
+      props?.onBackSecond()
+    } else if (
+      location.pathname === '/ProjectDetail/IterationDetail' &&
+      urlAll.includes(location.pathname)
+    ) {
       const params = encryptPhp(JSON.stringify({ id: projectInfo.id }))
-      if (projectInfo.projectType === 1) {
-        // 之前需求迭代跳转统一跳到了需求，需要区分迭代是迭代的，需求是需求的
-        location.pathname.includes('/ProjectDetail/Iteration')
-          ? navigate(`/ProjectDetail/Iteration?data=${params}`)
-          : navigate(`/ProjectDetail/Demand?data=${params}`)
-        return
-      }
-      navigate(`/ProjectDetail/Affair?data=${params}`)
+      navigate(`/ProjectDetail/Iteration?data=${params}`)
     } else if (urlAll.includes(location.pathname) && props.headerParmas) {
       navigate('/Project')
     }
     localStorage.removeItem('projectRouteDetail')
   }, [])
+
   useEffect(() => {
     const backUrl = localStorage.getItem('projectRouteDetail') || ''
-    if (backUrl && userPreferenceConfig.previewModel === 2 && visible) {
+    if (
+      (backUrl && userPreferenceConfig.previewModel === 2 && visible) ||
+      (urlAll.includes(location.pathname) && props.headerParmas)
+    ) {
       setHtml(
         <BackWrap onClick={onBack}>
           <div>
             <IconFont className="icon" type="return" />
-            <span>返回</span>
-          </div>
-          <span className="line" />
-        </BackWrap>,
-      )
-      return
-    } else if (urlAll.includes(location.pathname) && props.headerParmas) {
-      setHtml(
-        <BackWrap onClick={onBack}>
-          <div>
-            <IconFont className="icon" type="return" />
-            <span>返回</span>
+            <span>{t('return')}</span>
           </div>
           <span className="line" />
         </BackWrap>,
@@ -128,7 +97,12 @@ const Back = (props:{headerParmas:boolean}) => {
       return
     }
     setHtml(<div />)
-  }, [visible, location.pathname, localStorage.getItem('projectRouteDetail'),params])
+  }, [
+    visible,
+    location.pathname,
+    localStorage.getItem('projectRouteDetail'),
+    params,
+  ])
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{html}</>
 }

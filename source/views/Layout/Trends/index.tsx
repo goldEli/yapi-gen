@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import SiteSettingDrawer from './components/SiteSettingDrawer'
 import { TabTitleWrap } from '../style'
+import NotFound from '@/components/ErrorPage/404'
 
 const Trends = () => {
   const [t] = useTranslation()
@@ -23,10 +24,10 @@ const Trends = () => {
       label: <TabTitleWrap>{t('systematic_notification')}</TabTitleWrap>,
       key: '2',
     },
-    {
-      label: <TabTitleWrap>{t('schedule_management')}</TabTitleWrap>,
-      key: '3',
-    },
+    // {
+    //   label: <TabTitleWrap>{t('schedule_management')}</TabTitleWrap>,
+    //   key: '3',
+    // },
     {
       label: <TabTitleWrap>{t('work_report')}</TabTitleWrap>,
       key: '4',
@@ -48,6 +49,10 @@ const Trends = () => {
       setActiveKey(currentRouterKey)
     }
   }, [routerPath])
+
+  if (activeKey !== '1' && activeKey !== '2' && activeKey !== '4') {
+    return <NotFound />
+  }
 
   return (
     <HaveTabsContentWrap>

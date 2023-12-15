@@ -571,7 +571,7 @@ const SprintProjectSprint: React.FC = () => {
     >
       <div>
         <SearchBox>
-          <MyBreadcrumb />
+          <MyBreadcrumb headerParmas />
         </SearchBox>
         <ContentWrap>
           {isExpand ? (

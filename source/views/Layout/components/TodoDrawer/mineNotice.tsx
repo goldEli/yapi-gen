@@ -7,31 +7,33 @@ import NoData from '@/components/NoData'
 const MineNotice = () => {
   const [data, setData] = useState<any[]>([])
   const dispatch = useDispatch()
-  const { isNewMsg } = useSelector(store => store.mine)
+  const { isNewMsg, msgStatics } = useSelector(store => store.mine)
+  const { todoStatistics } = msgStatics
   const _getMsg_list = async () => {
     const res = await getMsg_list({
       business_type: 2,
       nowWhereReadAll: true,
     })
-    if (res?.nowWhereReadAllNum) {
-      dispatch(setIsNewMsg(isNewMsg + 1))
-    }
     const data = res?.list
-    setData(data)
-    setTimeout(() => {
-      for (const iterator of data) {
-        if (parseInt(iterator.read, 10) === 0) {
-          iterator.read = 1
-          dispatch(setIsNewMsg(isNewMsg + 1))
+    // 只有未读消息才走这个逻辑
+    if (res?.nowWhereReadAllNum) {
+      setTimeout(() => {
+        for (const iterator of data) {
+          if (parseInt(iterator.read, 10) === 0) {
+            iterator.read = 1
+            // 更新统计
+            dispatch(setIsNewMsg(isNewMsg + 1))
+          }
         }
-      }
-      setData([...data])
-    }, 3600)
+        setData([...data])
+      }, 6000)
+    }
+    setData(data)
   }
-
+  // 消息推送更新
   useEffect(() => {
     _getMsg_list()
-  }, [isNewMsg])
+  }, [todoStatistics?.total])
   const setRead = async (index: number, msgIds: string) => {
     const res = await setReadApi({ read: 2, msgIds: [msgIds] })
     if (res.code === 0) {

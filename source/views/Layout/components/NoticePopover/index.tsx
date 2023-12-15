@@ -10,61 +10,65 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsNewMsg, setMsgStatics } from '@store/mine'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import _ from 'lodash'
+import { SpinWrap } from '../../style'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 interface IProps {}
 const NoticePopover = (props: any) => {
   const { onHistoryStatics } = props
   const [data, setData] = useState<any>([])
+  const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const [index, setIndex] = useState(-1)
+  const [page, setPage] = useState(1)
   const { isNewMsg, msgStatics } = useSelector(store => store.mine)
   const _getMsg_list = async (isInit: boolean, page: number) => {
-    const todayDate = dayjs(new Date()).format('YYYY-MM-DD')
+    setIsSpinning(true)
+    const todayDate = dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
     const lastSevenDays = dayjs(todayDate)
       .subtract(7, 'days')
-      .format('YYYY-MM-DD')
+      .format('YYYY-MM-DD HH:mm:ss')
     const res = await getMsg_list({
       business_type: 1,
       latTime: new Date(lastSevenDays).valueOf() / 1000,
       nowWhereReadAll: true,
-      pageSize: 50,
+      pageSize: 10,
       page: page,
     })
+    setIsSpinning(false)
     dispatch(setMsgStatics({ ...msgStatics, allnews: res?.total }))
-    const data = res?.list
-    setData(data)
-    // if (isInit) {
-    //   setData(data)
-    // } else {
-    //   const oldData = _.cloneDeep(data.list)
-    //   const newData = _.cloneDeep(res.list)
-    //   addMore(oldData, newData)
-    //   setData({
-    //     pager: res.pager,
-    //     list: oldData,
-    //   })
-    // }
+
+    const total = {
+      total: res?.total,
+    }
+    if (isInit) {
+      setData({
+        pager: total,
+        list: res?.list,
+      })
+    } else {
+      const oldData = _.cloneDeep(data.list)
+      const newData = _.cloneDeep(res.list)
+      const total = {
+        total: res?.total,
+      }
+      setData({
+        pager: total,
+        list: [...oldData, ...newData],
+      })
+    }
     if (res?.nowWhereReadAllNum) {
+      setTimeout(() => {
+        for (const iterator of data) {
+          if (parseInt(iterator.read, 10) === 0) {
+            iterator.read = 1
+          }
+        }
+        setData([...data])
+      }, 6000)
       dispatch(setIsNewMsg(isNewMsg + 1))
     }
-    setTimeout(() => {
-      for (const iterator of data) {
-        if (parseInt(iterator.read, 10) === 0) {
-          iterator.read = 1
-        }
-      }
-      setData([...data])
-    }, 3600)
   }
-  const addMore = (oldData: any, newData: any) => {
-    Object.keys(newData).forEach((i: string) => {
-      if (Object.keys(oldData).includes(i)) {
-        const temp = [...oldData[i], ...newData[i]]
-        oldData[i] = temp
-      } else {
-        oldData[i] = newData[i]
-      }
-    })
-  }
+
   useEffect(() => {
     _getMsg_list(true, 1)
   }, [])
@@ -84,7 +88,7 @@ const NoticePopover = (props: any) => {
     if (!data?.list) {
       return false
     }
-    const allTask = data
+    const allTask = data?.list
     if (allTask?.length < data?.pager?.total) {
       return true
     }
@@ -96,44 +100,36 @@ const NoticePopover = (props: any) => {
     return result
   }
   const fetchMoreData = () => {
-    _getMsg_list(false, 1)
+    const pages = page + 1
+    setPage(pages)
+    _getMsg_list(false, pages)
   }
   return (
     <NoticePopoverWrap>
-      <ContentList>
-        {data.map((item: any, index: number) => {
-          return (
-            <NoticeItem
-              index={index}
-              key={index}
-              data={item}
-              onReadClick={onReadClick}
-            ></NoticeItem>
-          )
-        })}
-        {/* <InfiniteScroll
-          dataLength={
-            data?.list?.length ? data?.list?.length : 0
-          }
-          next={fetchMoreData}
-          hasMore={onComputedTab(2)}
-          loader={<Skeleton paragraph={{ rows: 1 }} active />}
-          scrollableTarget="scrollableDiv"
-        >
-          {data?.list?.length
-            ? data?.list?.map((item: any, index: number) => {
-              return (
-                <NoticeItem
-                  index={index}
-                  key={index}
-                  data={item}
-                  onReadClick={onReadClick}
-                ></NoticeItem>
-              )
-            })
-            : null}
-        </InfiniteScroll> */}
-      </ContentList>
+      <SpinWrap indicator={<NewLoadingTransition />} spinning={isSpinning}>
+        <ContentList id="scrollableDiv">
+          <InfiniteScroll
+            dataLength={data?.list?.length ? data?.list?.length : 0}
+            next={fetchMoreData}
+            hasMore={onComputedTab(2)}
+            loader={<Skeleton paragraph={{ rows: 1 }} active />}
+            scrollableTarget="scrollableDiv"
+          >
+            {data?.list?.length
+              ? data?.list?.map((item: any, index: number) => {
+                  return (
+                    <NoticeItem
+                      index={index}
+                      key={index}
+                      data={item}
+                      onReadClick={onReadClick}
+                    ></NoticeItem>
+                  )
+                })
+              : null}
+          </InfiniteScroll>
+        </ContentList>
+      </SpinWrap>
       <FooterBox>
         <div className="current-week">已为您显示近一周的动态信息</div>
         <div className="more-notice" onClick={onHistoryStatics}>

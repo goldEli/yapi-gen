@@ -24,13 +24,14 @@ export const NoticeTitleWrap = styled.div`
 export const NoticePopoverWrap = styled.div`
   height: 80vh;
   width: 480px;
-  padding-bottom: 100;
+  padding-bottom: 100px;
   overflow-y: scroll;
 `
 export const ContentList = styled.div`
   padding: 0px 12px;
-  padding-bottom: 100px;
-  /* border: 1px solid; */
+  /* padding-bottom: 100px; */
+  height: 100%;
+  overflow-y: scroll;
 `
 export const NoticeItemWrap = styled.div`
   display: flex;

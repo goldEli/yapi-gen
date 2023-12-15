@@ -106,6 +106,7 @@ const Index = () => {
       pageSize,
       latTime: endTime?.map?.((s: any) => moment(s).startOf('day').unix())?.[0],
       endTime: endTime?.map?.((s: any) => moment(s).endOf('day').unix())?.[1],
+      orderBy: 'create_time',
     })
     if (result) {
       setDataList(result)

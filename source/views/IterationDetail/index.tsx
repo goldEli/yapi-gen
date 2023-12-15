@@ -433,6 +433,15 @@ const IterationDetail = () => {
         ...projectInfo.titleList3,
       ])
       onUpdateDetail()
+      const value = encryptPhp(JSON.stringify({ id: projectInfo.id }))
+      localStorage.setItem(
+        'projectRouteDetail',
+        `${location.pathname}?data=${value}`,
+      )
+
+      return () => {
+        localStorage.removeItem('projectRouteDetail')
+      }
     }
   }, [projectInfo])
 
@@ -462,7 +471,7 @@ const IterationDetail = () => {
         />
       )}
       <DetailTop>
-        <MyBreadcrumb />
+        <MyBreadcrumb headerParmas />
         {['2', '3'].includes(tabActive) && (
           <div>
             <InputSearch
