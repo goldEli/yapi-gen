@@ -59,7 +59,7 @@ const LayoutIndex = () => {
   const { loginInfo, menuPermission } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const { isNewMsg } = useSelector(store => store.mine)
+  const { isNewMsg, msgStatics } = useSelector(store => store.mine)
   const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
     visible: boolean
     type: 'user' | 'project'
@@ -156,7 +156,7 @@ const LayoutIndex = () => {
   }, [projectInfo])
   const _getNotReadMsgStatics = async () => {
     const res = await getNotReadMsgStatics()
-    dispatch(setMsgStatics(res))
+    dispatch(setMsgStatics({ ...msgStatics, ...res }))
   }
   useEffect(() => {
     setTimeout(() => {

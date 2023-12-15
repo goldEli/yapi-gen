@@ -62,6 +62,7 @@ export const ItemBox = styled.div<{
   }
   .system {
     width: 120px;
+    font-family: SiYuanMedium;
     color: ${prop =>
       prop.hasClick ? 'var(--neutral-n4)' : 'var(--neutral-n1-d1)'};
   }

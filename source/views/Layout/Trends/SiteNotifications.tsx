@@ -143,7 +143,9 @@ const SiteNotifications = (props: any, ref: any) => {
     if (!isMobile.any()) {
       Notification?.requestPermission().then(result => {
         // 如果传输消息为空则不提示任何消息
-        if (!wsData) return
+        if (!wsData) {
+          return
+        }
         if (result === 'granted') {
           const n: any = new Notification(wsData.data.msgBody.title, {
             body: wsData.data.msgBody.content,
@@ -423,25 +425,41 @@ const SiteNotifications = (props: any, ref: any) => {
     }
   }
 
+  const isNeedToastUrl = () => {
+    // 以下是新老路由混合
+    // f1必须要在项目路由下
+    const f1 =
+      window.location.href.includes('/ProjectManagement/') ||
+      window.location.href.includes('/SprintProjectManagement/') ||
+      window.location.href.includes('/ProjectDetail/')
+
+    // f2过滤项目中不要的路由
+    const f2 =
+      window.location.href.includes('/SprintProjectManagement/Setting') ||
+      window.location.href.includes('/ProjectManagement/Mine') ||
+      window.location.href.includes('/SprintProjectManagement/DemandSetting') ||
+      window.location.href.includes('/ProjectDetail/Member') ||
+      window.location.href.includes('/ProjectDetail/Setting')
+    // f3额外能显示的路由
+    const f3 =
+      window.location.href.includes('/ProjectManagement/Setting') ||
+      window.location.href.includes('/ProjectManagement/Mine') ||
+      window.location.href.includes('/ProjectManagement/DemandSetting') ||
+      window.location.href.includes('/ProjectManagement/Project') ||
+      window.location.href.includes('/SprintProjectManagement/Project')
+
+    if ((f1 || f3) && !f2) {
+      return true
+    }
+    return false
+  }
+
   useEffect(() => {
     if (
       (wsData?.data?.customType === '1207' ||
         wsData?.data?.customType === '2207') &&
       projectInfo?.id === Number(wsData?.data?.customData?.project_id) &&
-      (window.location.href.includes('/ProjectManagement/') ||
-        window.location.href.includes('/SprintProjectManagement/')) &&
-      !(
-        window.location.href.includes('/SprintProjectManagement/Setting') ||
-        window.location.href.includes('/ProjectManagement/Mine') ||
-        window.location.href.includes(
-          '/SprintProjectManagement/DemandSetting',
-        ) ||
-        window.location.href.includes('/ProjectManagement/Setting') ||
-        window.location.href.includes('/ProjectManagement/Mine') ||
-        window.location.href.includes('/ProjectManagement/DemandSetting') ||
-        window.location.href.includes('/ProjectManagement/Project') ||
-        window.location.href.includes('/SprintProjectManagement/Project')
-      )
+      isNeedToastUrl()
     ) {
       // 更新页面小铃铛预警任务数量
       dispatch(setProjectWarningModal({ visible: true }))

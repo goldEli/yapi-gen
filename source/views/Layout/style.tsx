@@ -79,17 +79,15 @@ export const RobotButton = styled.div`
     font-size: 14px;
     color: var(--neutral-n1-d1);
   }
-  /* &:hover {
-    background: var(--active);
-  } */
 `
 export const PopOverBox = styled.div`
   background: rgba(102, 136, 255, 0.12);
-  border-radius: 20px;
-  padding: 0px 8px;
   &:hover {
     background: rgba(102, 136, 255, 0.2);
   }
+  border-radius: 20px;
+  padding: 0px 6px;
+  margin-left: 8px;
 `
 
 // 引导页
