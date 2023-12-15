@@ -46,8 +46,6 @@ import SystemFeedback from '@/components/SystemFeedback/SystemFeedback'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
-import QuickMine from './QuickMine'
-import Recently from './Recently'
 import KeyBoardDrawer from '../Trends/components/KeyBoardDrawer/KeyBoardDrawer'
 import { setLayoutSecondaryMenuRightWidth } from '@store/global'
 import TodoDrawer from './TodoDrawer'
@@ -148,10 +146,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const { total } = todoStatistics ?? {}
   // 帮助中心展开
   const [isHelpVisible, setIsHelpVisible] = useState(false)
-  // 我的
-  const [isMineVisible, setIsMineVisible] = useState(false)
-  // 最近
-  const [isRecentlyVisible, setIsRecentlyVisible] = useState(false)
   // 头像展开
   const [isVisible, setIsVisible] = useState(false)
   // 打开个人资料
@@ -173,7 +167,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     { name: userInfo?.company_name, isRight: true, icon: 'enterprise', key: 1 },
     { name: t('language'), isRight: true, icon: 'earth', key: 0 },
     { name: t('personal_data'), isRight: false, icon: 'user', key: 2 },
-    { name: t('container.logout'), isRight: false, icon: 'login', key: 3 },
+    // { name: t('container.logout'), isRight: false, icon: 'login', key: 3 },
   ]
 
   // 帮助中心下拉列表
@@ -327,6 +321,26 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     }
   }
 
+  const helpContent = (
+    <ChangeItems>
+      {helpList.map((i: any) => (
+        <ChangeItem
+          key={i.key}
+          height={40}
+          onClick={(e: any) => {
+            e.stopPropagation()
+            onClickHelp(i.key)
+          }}
+        >
+          <Space size={8}>
+            <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
+            {i.name}
+          </Space>
+        </ChangeItem>
+      ))}
+    </ChangeItems>
+  )
+
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
@@ -342,7 +356,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
         </UserInfoBox>
       </UserInfoTop>
       <Provider />
-      <MenuItems>
+      <MenuItems style={{ margin: '12px 0 8px' }}>
         {userList.map((i: any) => (
           <div key={i.icon}>
             {i.isRight && !i.key && (
@@ -364,27 +378,37 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
           </div>
         ))}
       </MenuItems>
-    </UserInfoWrap>
-  )
+      <Provider />
 
-  const helpContent = (
-    <ChangeItems>
-      {helpList.map((i: any) => (
-        <ChangeItem
-          key={i.key}
-          height={40}
-          onClick={(e: any) => {
-            e.stopPropagation()
-            onClickHelp(i.key)
-          }}
-        >
-          <Space size={8}>
-            <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
-            {i.name}
-          </Space>
-        </ChangeItem>
-      ))}
-    </ChangeItems>
+      <Popover
+        content={helpContent}
+        open={isHelpVisible}
+        onOpenChange={setIsHelpVisible}
+        placement="leftTop"
+        trigger="hover"
+      >
+        <MenuItems style={{ margin: '8px 0' }}>
+          <MenuItem>
+            <MenuLeft className="menuLeft" style={{ width: '80%' }}>
+              <CommonIconFont type="question" />
+              <div>{t('helpCenter')}</div>
+            </MenuLeft>
+            <MenuRight>
+              <CommonIconFont type="right" />
+            </MenuRight>
+          </MenuItem>
+        </MenuItems>
+      </Popover>
+      <Provider />
+      <MenuItems style={{ marginTop: '8px' }}>
+        <MenuItem onClick={() => onClickMenu(3)}>
+          <MenuLeft className="menuLeft" style={{ width: '80%' }}>
+            <CommonIconFont type="login" />
+            <div>{t('container.logout')}</div>
+          </MenuLeft>
+        </MenuItem>
+      </MenuItems>
+    </UserInfoWrap>
   )
 
   // 日报机器人
@@ -602,54 +626,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
             </Popover>
           </PopOverBox>
         ) : null}
-        {/* <Popover
-          content={
-            <Recently
-              isVisible={isRecentlyVisible}
-              onClose={() => setIsRecentlyVisible(false)}
-            />
-          }
-          open={isRecentlyVisible}
-          onOpenChange={setIsRecentlyVisible}
-          placement="bottomRight"
-          trigger="click"
-        >
-          <HeaderItemWrap isActive={isRecentlyVisible}>
-            <div>{t('recently')}</div>
-            <CommonIconFont type="down" size={16} />
-          </HeaderItemWrap>
-        </Popover> */}
-
-        {/* <Popover
-          content={
-            <QuickMine
-              isVisible={isMineVisible}
-              onClose={() => setIsMineVisible(false)}
-            />
-          }
-          open={isMineVisible}
-          onOpenChange={setIsMineVisible}
-          placement="bottomLeft"
-          trigger="click"
-        >
-          <HeaderItemWrap isActive={isMineVisible}>
-            <div>{t('container.mine')}</div>
-            <CommonIconFont type="down" size={16} />
-          </HeaderItemWrap>
-        </Popover> */}
-
-        <Popover
-          content={helpContent}
-          open={isHelpVisible}
-          onOpenChange={setIsHelpVisible}
-          placement="bottomLeft"
-          trigger="click"
-        >
-          <HeaderItemWrap isActive={isHelpVisible}>
-            <div>{t('helpCenter')}</div>
-            <CommonIconFont type="down" size={16} />
-          </HeaderItemWrap>
-        </Popover>
 
         <Popover
           content={userContent}
@@ -659,7 +635,13 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
           trigger="click"
         >
           <HeaderUserInfoWrap isActive={isVisible}>
-            <CommonUserAvatar avatar={userInfo.avatar} size="large" />
+            <div className="avatar">
+              <CommonUserAvatar
+                avatar={userInfo.avatar}
+                size="large"
+                notBorder
+              />
+            </div>
             <CommonIconFont type="down-icon" size={12} />
           </HeaderUserInfoWrap>
         </Popover>

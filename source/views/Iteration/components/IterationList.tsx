@@ -38,6 +38,7 @@ import {
   setIsCreateIterationVisible,
   setIsRefreshList,
   setIsUpdateList,
+  setIterateInfo,
 } from '@store/iterate'
 import NoData from '@/components/NoData'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -173,12 +174,15 @@ const IterationList = (props: IterationListProps) => {
         }),
       )
     }
-    // 当前操作的id跟当前展示的id一致则更新详情或者没有迭代id
-    if (operationId === iterateInfo.id || !iterateInfo.id) {
+    // 当前操作的id跟当前展示的id一致则更新详情或者 没有迭代id时获取列表第一个的详情
+    if (
+      operationId === iterateInfo.id ||
+      (!iterateInfo.id && result?.list?.length > 0)
+    ) {
       dispatch(
         getIterateInfo({
           projectId: getProjectIdByUrl(),
-          id: iterateInfo.id ?? result?.list[0]?.id,
+          id: iterateInfo?.id ?? result?.list[0]?.id,
         }),
       )
     }
@@ -431,6 +435,12 @@ const IterationList = (props: IterationListProps) => {
   useEffect(() => {
     getList()
   }, [currentSort])
+
+  useEffect(() => {
+    return () => {
+      dispatch(setIterateInfo({}))
+    }
+  }, [])
 
   return (
     <IterationListBox isShowLeft={props.isShowLeft}>

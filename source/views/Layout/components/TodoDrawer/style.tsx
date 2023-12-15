@@ -20,6 +20,10 @@ export const TitleWrap = styled.div`
   top: 0px;
   background-color: #fff; */
 `
+export const MyList = styled.div`
+  height: 80vh;
+  overflow-y: scroll;
+`
 export const TabsWrap = styled.div`
   background: var(--neutral-n8);
   border-radius: 4px;

@@ -12,6 +12,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import _ from 'lodash'
 import { SpinWrap } from '../../style'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import NoData from '@/components/NoData'
 interface IProps {}
 const NoticePopover = (props: any) => {
   const { onHistoryStatics } = props
@@ -58,12 +59,16 @@ const NoticePopover = (props: any) => {
     }
     if (res?.nowWhereReadAllNum) {
       setTimeout(() => {
-        for (const iterator of data) {
+        for (const iterator of data?.list) {
           if (parseInt(iterator.read, 10) === 0) {
             iterator.read = 1
           }
         }
-        setData([...data])
+        setData({
+          pager: total,
+          list: [...data?.list],
+        })
+        // setData([...data])
       }, 6000)
       dispatch(setIsNewMsg(isNewMsg + 1))
     }
@@ -115,18 +120,20 @@ const NoticePopover = (props: any) => {
             loader={<Skeleton paragraph={{ rows: 1 }} active />}
             scrollableTarget="scrollableDiv"
           >
-            {data?.list?.length
-              ? data?.list?.map((item: any, index: number) => {
-                  return (
-                    <NoticeItem
-                      index={index}
-                      key={index}
-                      data={item}
-                      onReadClick={onReadClick}
-                    ></NoticeItem>
-                  )
-                })
-              : null}
+            {data?.list?.length ? (
+              data?.list?.map((item: any, index: number) => {
+                return (
+                  <NoticeItem
+                    index={index}
+                    key={index}
+                    data={item}
+                    onReadClick={onReadClick}
+                  ></NoticeItem>
+                )
+              })
+            ) : (
+              <NoData></NoData>
+            )}
           </InfiniteScroll>
         </ContentList>
       </SpinWrap>

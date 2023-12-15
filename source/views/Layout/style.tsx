@@ -14,7 +14,7 @@ export const NumberBox = styled.div`
   justify-content: center;
 `
 export const NumberWrap = styled.div`
-  padding: 3px;
+  padding: 1px;
   background-color: #fff;
   border-radius: 12px;
   margin-left: 8px;
@@ -384,6 +384,12 @@ export const MoreOtherSystemItem = styled.div<{ disable?: boolean }>`
   }
 `
 
+export const SpinWrap = styled(Spin)`
+  position: absolute;
+  top: 145px;
+  width: 100%;
+`
+
 // 头部导航样式
 export const LayoutHeaderLeftWrap = styled.div`
   display: flex;
@@ -522,9 +528,22 @@ export const HeaderUserInfoWrap = styled.div<{ isActive?: boolean }>`
   gap: 8px;
   cursor: pointer;
   margin-left: 12px;
+  .avatar {
+    border: ${props =>
+      props.isActive ? '1px solid var(--primary-d1)' : '1px solid transparent'};
+    border-radius: 50%;
+  }
   svg {
     color: ${props =>
       props.isActive ? 'var(--primary-d1)' : 'var(--neutral-n3)'};
+  }
+  &:hover {
+    .avatar {
+      border: 1px solid var(--primary-d2);
+    }
+    svg {
+      color: var(--primary-d2) !important;
+    }
   }
 `
 
@@ -623,330 +642,6 @@ export const MineCreate = styled.div`
     font-size: 14px;
     color: var(--neutral-n1-d1);
   }
-`
-
-// 快捷-我的模块样式 和 最近的样式
-export const QuickPopover = styled.div<{ local?: string }>`
-  width: ${props => (props.local === 'zh' ? '320px' : '400px')};
-  background: var(--neutral-white-d1);
-  border-radius: 6px;
-  padding: 20px 0px 0;
-`
-
-export const HeaderWrap = styled.div`
-  padding: 0 16px;
-  width: 100%;
-`
-
-export const TabsWrap = styled.div`
-  position: relative;
-  width: 100%;
-  height: 32px;
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  background-color: var(--hover-d2);
-  border-radius: 4px;
-  margin-bottom: 2px;
-`
-
-export const TabsWrapItem = styled.div<{ active: boolean }>`
-  white-space: nowrap;
-  height: 28px;
-  z-index: 1;
-  padding: 4px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  color: ${props => (props.active ? 'var(--primary-d2);' : '')};
-  transition: all 0.5s;
-`
-
-export const ActiveTab = styled.div`
-  position: absolute;
-  bottom: 2px;
-  left: 2px;
-  min-width: 56px;
-  padding: 4px 16px;
-  border-radius: 4px;
-  height: 28px;
-  background: var(--neutral-white-d6);
-  transition: left 0.4s;
-`
-
-export const ContentWrap = styled.div`
-  height: calc(100vh - 350px);
-  overflow-y: auto;
-`
-
-// 待审核样式
-export const VerifyItem = styled.div`
-  height: 56px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .left {
-    display: flex;
-    align-items: center;
-    width: 78%;
-    cursor: pointer;
-    .img {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-    }
-    .name {
-      display: flex;
-      flex-direction: column;
-      width: 70%;
-      span {
-        display: inline-block;
-        width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .title {
-        font-size: 14px;
-        color: var(--neutral-n1-d1);
-      }
-      .sub {
-        font-size: 12px;
-        color: var(--neutral-n3);
-      }
-    }
-  }
-  &:hover {
-    background: var(--hover-d3);
-  }
-`
-
-export const Border = styled.div`
-  margin: 0 16px;
-  text-align: center;
-  border-bottom: 1px solid var(--neutral-n6-d1);
-`
-
-export const Footer = styled.div`
-  height: 52px;
-  width: 100%;
-  cursor: pointer;
-  line-height: 52px;
-  padding-left: 24px;
-  color: var(--neutral-n1-d1);
-  font-size: 14px;
-  &:hover {
-    color: var(--primary-d1);
-  }
-`
-
-export const ItemWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-export const TimeName = styled.div`
-  margin-top: 16px;
-  color: var(--neutral-n3);
-  font-size: 12px;
-  padding-left: 16px;
-`
-
-export const CanClick = styled.div`
-  height: 24px;
-  border-radius: 6px;
-  padding: 0 8px;
-  cursor: pointer;
-  color: var(--neutral-white-d7);
-  font-size: 12px;
-  background: var(--primary-d2);
-  line-height: 24px;
-  width: fit-content;
-`
-
-export const TaskItem = styled.div`
-  height: 56px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 7px 16px;
-  cursor: pointer;
-  width: 100%;
-  .left {
-    display: flex;
-    align-items: flex-start;
-    width: calc(100% - 52px);
-    .icon {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-    }
-    .info {
-      display: flex;
-      flex-direction: column;
-      width: calc(100% - 40px);
-      .name {
-        font-size: 14px;
-        color: var(--neutral-n1-d1);
-        width: 100%;
-        display: inline-block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      .sub {
-        font-size: 12px;
-        color: var(--neutral-n3);
-        width: 100%;
-        display: inline-block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-    }
-  }
-  &:hover {
-    background: var(--hover-d3);
-  }
-`
-
-export const ReportItem = styled.div`
-  height: 56px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 7px 16px;
-  cursor: pointer;
-  .left {
-    display: flex;
-    align-items: center;
-    width: calc(100% - 36px);
-    .info {
-      display: flex;
-      flex-direction: column;
-      width: calc(100% - 50px);
-      margin-left: 12px;
-      .name {
-        font-size: 14px;
-        color: var(--neutral-n1-d1);
-        width: 100%;
-        display: inline-block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      .sub {
-        font-size: 12px;
-        color: var(--neutral-n3);
-        width: 100%;
-        display: inline-block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-    }
-  }
-  .right {
-    font-size: 12px;
-    color: var(--neutral-n3);
-  }
-  &:hover {
-    background: var(--hover-d3);
-  }
-`
-
-export const ProjectItem = styled.div<{ local?: string }>`
-  height: 56px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 7px 16px;
-  cursor: pointer;
-  .left {
-    display: flex;
-    align-items: flex-start;
-    width: ${props =>
-      props.local === 'zh' ? 'calc(100% - 32px)' : 'calc(100% - 56px)'};
-    .icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .info {
-      display: flex;
-      flex-direction: column;
-      width: calc(100% - 50px);
-      margin-left: 12px;
-      .name {
-        font-size: 14px;
-        color: var(--neutral-n1-d1);
-        width: 100%;
-        display: inline-block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      .sub {
-        font-size: 12px;
-        color: var(--neutral-n3);
-        width: 100%;
-        display: inline-block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-    }
-  }
-  .right {
-    /* font-size: 12px;
-    color: var(--neutral-n3); */
-  }
-  &:hover {
-    background: var(--hover-d3);
-  }
-`
-
-export const StatusBox = styled.div`
-  width: 52px;
-  height: 24px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 400;
-  text-align: center;
-  line-height: 24px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 0 8px;
-`
-
-export const ProjectTypeBox = styled.div<{ type: number }>`
-  height: 16px;
-  background: ${props =>
-    props.type === 1
-      ? 'linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%)'
-      : 'linear-gradient(225deg, #FFA29C 0%, #F6856C 100%);'};
-  border-radius: 4px 4px 4px 4px;
-  font-size: 12px;
-  padding: 0px 4px;
-  color: var(--neutral-white-d1);
-  line-height: 16px;
-`
-
-export const SpinWrap = styled(Spin)`
-  position: absolute;
-  top: 145px;
-  width: 100%;
-`
-
-export const LoadingMore = styled.div`
-  margin-top: 8px;
-  text-align: center;
-  width: 100%;
-  font-size: 12px;
-  color: var(--primary-d1);
-  cursor: pointer;
 `
 
 // 二级菜单样式

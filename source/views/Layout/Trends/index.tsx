@@ -62,9 +62,11 @@ const Trends = () => {
         activeKey={activeKey}
         tabBarExtraContent={
           <CommonButton
-            type="secondaryText"
+            size="small"
+            type="extraText"
             icon="settings"
             onClick={() => setIsVisible(true)}
+            style={{ position: 'relative', marginTop: -7, padding: '0px 8px' }}
           >
             {t('notificationSettings')}
           </CommonButton>
