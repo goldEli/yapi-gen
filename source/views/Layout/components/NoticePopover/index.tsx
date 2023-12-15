@@ -14,6 +14,7 @@ import { SpinWrap } from '../../style'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from '@/components/NoData'
 import NewNoData from '@/components/NewNoData'
+import { useTranslation } from 'react-i18next'
 interface IProps {}
 const NoticePopover = (props: any) => {
   const { onHistoryStatics, onClose } = props
@@ -22,6 +23,8 @@ const NoticePopover = (props: any) => {
   const dispatch = useDispatch()
   const [index, setIndex] = useState(-1)
   const [page, setPage] = useState(1)
+  const [t] = useTranslation()
+
   const { isNewMsg, msgStatics } = useSelector(store => store.mine)
   const _getMsg_list = async (isInit: boolean, page: number) => {
     setIsSpinning(true)

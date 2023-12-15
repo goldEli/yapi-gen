@@ -233,7 +233,7 @@ const ReviewTask = () => {
             dataList.list?.length <= 0) && (
             <NewNoData
               text="来自任务的审核消息都会收集在「待我审核任务」里面"
-              url="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702629603194/%E6%88%91%E7%9A%84.png"
+              url="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/1702636955304/%E5%AE%A1%E6%A0%B8.png"
             ></NewNoData>
           )}
         </div>
