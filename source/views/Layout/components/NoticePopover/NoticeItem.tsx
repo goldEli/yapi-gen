@@ -41,7 +41,7 @@ const NoticeItem = (props: any) => {
         >
           <span>
             {' '}
-            <img src={data?.send_user?.head} alt="" />
+            <img src={data?.msg_body?.optHeader} alt="" />
           </span>
           <span>{data?.msg_body?.title}</span>
         </div>
