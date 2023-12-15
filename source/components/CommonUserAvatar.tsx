@@ -8,13 +8,19 @@ const UserAvatarWrap = styled.div`
   height: max-content;
 `
 
-const AvatarBox = styled.div<{ size?: string; isBorder?: boolean }>`
+const AvatarBox = styled.div<{
+  size?: string
+  isBorder?: boolean
+  notBorder?: boolean
+}>`
   border-radius: 50%;
   display: flex;
   width: ${props => (props.size === 'large' ? 32 : 24)}px;
   height: ${props => (props.size === 'large' ? 32 : 24)}px;
   border: ${props =>
-    props.isBorder
+    props?.notBorder
+      ? 'none'
+      : props.isBorder
       ? '1px solid var(--neutral-white-d2)'
       : '1px solid var(--avatar-border)'};
   img {
@@ -40,6 +46,8 @@ interface UserAvatarProps {
   size?: 'large' | 'small'
   fontSize?: number
   positionName?: string
+  // 没有描边
+  notBorder?: boolean
 }
 
 const CommonUserAvatar = (props: UserAvatarProps) => {
@@ -47,7 +55,11 @@ const CommonUserAvatar = (props: UserAvatarProps) => {
 
   return (
     <UserAvatarWrap>
-      <AvatarBox size={props.size} isBorder={props.isBorder}>
+      <AvatarBox
+        size={props.size}
+        isBorder={props.isBorder}
+        notBorder={props?.notBorder}
+      >
         {props.avatar && <img src={props.avatar} />}
         {!props.avatar && theme === 1 && (
           <img src="https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/dark.pnp" />
