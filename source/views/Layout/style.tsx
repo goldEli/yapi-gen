@@ -69,7 +69,7 @@ export const RobotButton = styled.div`
   display: flex;
   align-items: center;
   height: 32px;
-  padding: 0 8px;
+  padding: 0 0px;
   border-radius: 4px;
   .img {
     height: 24px;
@@ -86,7 +86,7 @@ export const PopOverBox = styled.div`
     background: rgba(102, 136, 255, 0.2);
   }
   border-radius: 20px;
-  padding: 0px 6px;
+  padding: 0px 12px;
 `
 
 // 引导页
@@ -528,7 +528,6 @@ export const HeaderUserInfoWrap = styled.div<{ isActive?: boolean }>`
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  margin-left: 12px;
   .avatar {
     border: ${props =>
       props.isActive ? '1px solid var(--primary-d1)' : '1px solid transparent'};
