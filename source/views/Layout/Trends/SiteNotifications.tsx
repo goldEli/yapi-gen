@@ -36,6 +36,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { setProjectInfo, setProjectWarningModal } from '@store/project'
 import { setIsNewMsg } from '@store/mine'
+import { setUpdateModal } from '@store/encephalogram'
 
 const mcs = css`
   overflow: hidden;
@@ -65,6 +66,7 @@ const SiteNotifications = (props: any, ref: any) => {
   const isRefresh = useSelector(store => store.user.isRefresh)
   const { currentMenu, menuIconList } = useSelector(store => store.user)
   const { isNewMsg } = useSelector(store => store.mine)
+
   const init2 = async () => {
     // eslint-disable-next-line no-promise-executor-return
     await new Promise(resolve => setTimeout(resolve, 2000))
@@ -94,8 +96,6 @@ const SiteNotifications = (props: any, ref: any) => {
             const childNode = element[i]
             childNode.remove()
           }
-
-          // dispatch(changeVisible(!isVisible))
         },
       })
     } else if (
@@ -153,7 +153,7 @@ const SiteNotifications = (props: any, ref: any) => {
           n.onclick = function () {
             if (wsData.data.customData.linkWebUrl) {
               // 当点击事件触发，打开指定的url
-              window.open(wsData.data.customData.linkWebUrl)
+              window.open(wsData.data?.customData?.linkWebUrl)
             }
           }
         } else {
@@ -169,7 +169,7 @@ const SiteNotifications = (props: any, ref: any) => {
             ),
             description: (
               <div className={mcs} style={{ marginLeft: '-12px' }}>
-                {wsData.data.msgBody.content}
+                {wsData.data?.msgBody?.content}
               </div>
             ),
             onClick: () => {
@@ -185,6 +185,7 @@ const SiteNotifications = (props: any, ref: any) => {
 
     // init2()
   }
+
   const setNewName = (type: string, code: number) => {
     let name = ''
     if (type === 'project') {

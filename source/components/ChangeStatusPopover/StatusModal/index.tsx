@@ -6,12 +6,13 @@ import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import { ModalFooter } from '@/components/StyleCommon'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
-import { getShapeRight } from '@/services/demand'
+import { getShapeRight, flowDate } from '@/services/demand'
 import {
   DatePicker,
   Divider,
   Form,
   Input,
+  InputNumber,
   Select,
   Tooltip,
   TreeSelect,
@@ -19,14 +20,15 @@ import {
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FormWrap, MyDiv } from '../style'
+import { FormWrap, MyDiv, StatusTitle } from '../style'
 import Excessive from './Excessive'
 import WanderVerify from './Verify'
 import { getProjectMember } from '@/services/project'
 import { getShapeAffairsRight } from '@/services/affairs'
 import { getShapeFlawRight } from '@/services/flaw'
 import { getMessage } from '@/components/Message'
-
+import { copyLink } from '@/tools'
+import CommonIconFont from '@/components/CommonIconFont'
 interface StatusModalProps {
   // 弹窗显示状态
   isVisible: boolean
@@ -63,9 +65,15 @@ const LabelComponent = (props: any) => {
 }
 const DateInput = (props: any) => {
   const { onChange: set, type } = props
-
-  const change = (key: any, dates: any) => {
+  const change = async (key: any, dates: any) => {
+    const params = {
+      project_id: props.record?.project_id,
+      story_id: props.record?.id,
+      [props.id]: dates,
+    }
     set(dates)
+    const res = await flowDate(params)
+    props.onChangeCb(res, props.id)
   }
   useEffect(() => {
     set(props.dvalue)
@@ -74,7 +82,7 @@ const DateInput = (props: any) => {
   if (type === 'datetime') {
     return (
       <DatePicker
-        defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
+        value={props.value ? moment(props.value) : moment(props.dvalue)}
         onChange={change}
         style={{ width: '100%' }}
         format="YYYY-MM-DD HH:mm:ss"
@@ -86,7 +94,7 @@ const DateInput = (props: any) => {
   }
   return (
     <DatePicker
-      defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
+      value={props.value ? moment(props.value) : moment(props.dvalue)}
       onChange={change}
       style={{ width: '100%' }}
       format="YYYY-MM-DD "
@@ -150,6 +158,7 @@ const TagSelect = (props: any) => {
   )
 }
 const NumericInput = (props: any) => {
+  console.log('-----', props)
   const [t] = useTranslation()
   const { value, onChange, onPress, type } = props
   const enter = (e: any) => {
@@ -197,7 +206,7 @@ const StatusModal = (props: StatusModalProps) => {
   // const [active, setActive] = useState<number>()
   const [form] = Form.useForm()
   const info = useGetloginInfo()
-
+  const [statusData, setStatusData] = useState({})
   const setValue = (res: any) => {
     const form1Obj: any = {}
     for (const key in res?.fields) {
@@ -390,6 +399,7 @@ const StatusModal = (props: StatusModalProps) => {
   }
 
   useEffect(() => {
+    setStatusData(props.record)
     if (props.isVisible && props.checkStatusItem?.id) {
       getConfig()
     }
@@ -421,6 +431,17 @@ const StatusModal = (props: StatusModalProps) => {
     >
       <div style={{ paddingRight: 4 }}>
         <Excessive checkStatusItem={props.checkStatusItem} />
+        <StatusTitle>
+          <img src={props.record?.category_attachment}></img>
+          {props.record?.name}【{props.record?.storyPrefixKey}】
+          <CommonIconFont
+            type="copy"
+            onClick={() => {
+              const text = `${props.record?.name}【${props.record?.storyPrefixKey}】`
+              copyLink(text, '复制成功', t('common.copyFail'))
+            }}
+          ></CommonIconFont>
+        </StatusTitle>
         <FormWrap>
           <Form
             labelAlign="left"
@@ -606,7 +627,39 @@ const StatusModal = (props: StatusModalProps) => {
                       },
                     ]}
                   >
-                    <DateInput type={i.type} dvalue={i.true_value} />
+                    <DateInput
+                      type={i.type}
+                      dvalue={i.true_value}
+                      record={props.record}
+                      onChangeCb={(res: any, type: any) => {
+                        setConfigData((pre: any) => {
+                          const { fields } = pre
+                          if (type === 'expected_start_at') {
+                            fields.find(
+                              (item: any) => item.content === 'expected_end_at',
+                            ).true_value = res.end_date
+                            fields.find(
+                              (item: any) =>
+                                item.content === 'expected_start_at',
+                            ).true_value = res.start_date
+                          }
+                          if (type === 'expected_end_at') {
+                            fields.find(
+                              (item: any) =>
+                                item.content === 'expected_start_at',
+                            ).true_value = res.start_date
+                            fields.find(
+                              (item: any) => item.content === 'expected_end_at',
+                            ).true_value = res.end_date
+                          }
+                          setTimeout(() => {
+                            form.setFieldsValue(setValue(pre))
+                          })
+                          console.log('pre----', pre, setValue(pre))
+                          return pre
+                        })
+                      }}
+                    />
                   </Form.Item>
                 )}
                 {i.type === 'tag' && (
@@ -649,7 +702,18 @@ const StatusModal = (props: StatusModalProps) => {
                       },
                     ]}
                   >
-                    <NumericInput type={i.value[0]} />
+                    {i.content === 'work_hours' ? (
+                      <InputNumber
+                        placeholder={t('common.pleaseEnter')}
+                        autoComplete="off"
+                        style={{ width: '100%' }}
+                        min={1}
+                        precision={1}
+                        disabled={i.is_readOnly === 1}
+                      />
+                    ) : (
+                      <NumericInput type={i.value ? i.value[0] : ''} />
+                    )}
                   </Form.Item>
                 )}
                 {/* 分类值未验证 */}

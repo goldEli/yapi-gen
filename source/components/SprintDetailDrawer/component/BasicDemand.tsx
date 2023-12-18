@@ -6,7 +6,7 @@
 import { getCategoryConfigList } from '@/services/demand'
 import { getCustomNormalValue } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { message, Tooltip } from 'antd'
+import { InputNumber, message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -78,6 +78,7 @@ const BasicDemand = (props: Props) => {
   const { affairsDetailDrawer } = useSelector(store => store.affairs)
   const { userId } = useSelector(store => store.employeeProfile)
 
+  const [workHoursValue, setWorkHoursValue] = useState<any>()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -138,7 +139,27 @@ const BasicDemand = (props: Props) => {
       props.onUpdate?.()
     }
   }
-
+  // 快速更新工时
+  const updateWorkHours = async (item: any) => {
+    const res = await updateAffairsTableParams({
+      id: props.detail.id,
+      projectId: props.detail.projectId,
+      otherParams: {
+        work_hours: workHoursValue,
+      },
+    })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
+    if (props.isInfoPage) {
+      dispatch(
+        getAffairsInfo({
+          projectId: props.detail.projectId,
+          sprintId: props.detail?.id,
+        }),
+      )
+    } else {
+      props.onUpdate?.()
+    }
+  }
   const getFieldData = async () => {
     const result = await getCategoryConfigList({
       projectId: props.detail?.projectId,
@@ -273,7 +294,11 @@ const BasicDemand = (props: Props) => {
     }
 
     // 如果不属于下列字段的则渲染
-    if (!['parent_id', 'priority', 'severity'].includes(item.content)) {
+    if (
+      !['parent_id', 'priority', 'severity', 'work_hours'].includes(
+        item.content,
+      )
+    ) {
       const filterContent = basicFieldList?.filter(
         (i: any) => i.content === item.content,
       )[0]
@@ -400,6 +425,22 @@ const BasicDemand = (props: Props) => {
           </div>
         </ChangeSeverityPopover>
       )
+    } else if (item.content === 'work_hours') {
+      // 工时统计
+      nodeComponent = (
+        <InputNumber
+          placeholder={t('common.pleaseEnter')}
+          autoComplete="off"
+          style={{ width: '100%' }}
+          min={1}
+          value={workHoursValue}
+          onBlur={updateWorkHours}
+          precision={1}
+          onChange={e => {
+            setWorkHoursValue(e)
+          }}
+        />
+      )
     }
 
     return nodeComponent
@@ -438,6 +479,9 @@ const BasicDemand = (props: Props) => {
   useEffect(() => {
     if (props.detail?.category) {
       getFieldData()
+    }
+    if (props.detail?.work_hours) {
+      setWorkHoursValue(props.detail?.work_hours)
     }
   }, [props.detail])
 

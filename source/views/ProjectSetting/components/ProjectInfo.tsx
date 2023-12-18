@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 // 项目设置-项目信息
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -22,23 +23,24 @@ import {
 } from '@/services/project'
 import { getMessage } from '@/components/Message'
 import { getProjectInfoStore } from '@store/project/project.thunk'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useNavigate } from 'react-router-dom'
 
 const Wrap = styled.div({
   background: 'white',
   height: '100%',
-  width: '100%',
+  width: '784px',
+  margin: '0 auto',
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
-  padding: '24px',
-  overflow: 'auto',
+  padding: '64px 0px 24px 0px',
 })
 
 const InfoLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  width: 396,
+  width: '100%',
   fontSize: 16,
   color: 'black',
   marginBottom: 40,
@@ -71,10 +73,10 @@ const Title = styled.div({
 })
 const InfoItem = styled.div({
   display: 'flex',
-  alignItems: 'center',
-  marginBottom: 14,
+  marginBottom: 24,
+  flexDirection: 'column',
   div: {
-    minWidth: 120,
+    minWidth: 184,
     color: 'var(--neutral-n3)',
     fontSize: 14,
     fontWeight: 400,
@@ -83,6 +85,7 @@ const InfoItem = styled.div({
     color: 'var(--neutral-n1-d1)',
     fontSize: 14,
     fontWeight: 400,
+    marginTop: 8,
   },
 })
 
@@ -90,6 +93,7 @@ const CardGroup = styled(Space)({
   display: 'flex',
   alignItems: 'center',
   marginTop: 16,
+  justifyContent: 'space-between',
 })
 
 const CardItem = styled.div({
@@ -194,6 +198,7 @@ const ProjectInfo = () => {
     'b/project/update',
   )
 
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const hasDelete = getIsPermission(
     userInfo?.company_permissions,
     'b/project/delete',
@@ -356,6 +361,10 @@ const ProjectInfo = () => {
         <Title>{t('v2_1_1.projectInformation')}</Title>
         <CardGroup size={32}>
           <CardItem>
+            <div>{projectInfo.memberCount || 0}</div>
+            <span>{t('project.projectMember')}</span>
+          </CardItem>
+          <CardItem>
             <div>{projectInfo.demandCount || 0}</div>
             <span>{t('common.demand')}</span>
           </CardItem>
@@ -367,20 +376,24 @@ const ProjectInfo = () => {
             <div>{projectInfo.iterateCount || 0}</div>
             <span>{t('project.iterateEdition')}</span>
           </CardItem>
-          <CardItem>
-            <div>{projectInfo.memberCount || 0}</div>
-            <span>{t('project.projectMember')}</span>
-          </CardItem>
         </CardGroup>
       </InfoLeft>
       <InfoRight>
-        <Title
+        <div
           style={{
-            marginBottom: 16,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          {t('project.projectInformation')}
-        </Title>
+          <Title
+            style={{
+              marginBottom: 16,
+            }}
+          >
+            {t('project.projectInformation')}
+          </Title>
+        </div>
         <div
           style={{
             display: 'flex',
@@ -418,6 +431,28 @@ const ProjectInfo = () => {
               <span>{projectInfo.leaderName || '--'}</span>
             </InfoItem>
             <InfoItem>
+              <div
+                style={{
+                  alignSelf: 'start',
+                }}
+              >
+                {t('project_belong')}：
+              </div>
+              <span>{projectInfo.affiliation || '--'}</span>
+            </InfoItem>
+          </Line>
+          <Line>
+            <InfoItem>
+              <div>{t('new_p1.a8')}：</div>
+              <span>{projectInfo.userName || '--'}</span>
+            </InfoItem>
+            <InfoItem>
+              <div>{t('serial_number')}：</div>
+              <span>{projectInfo.prefix || '--'}</span>
+            </InfoItem>
+          </Line>
+          <Line>
+            <InfoItem>
               <div>{t('project.projectStatus')}：</div>
               <span>
                 {
@@ -426,6 +461,12 @@ const ProjectInfo = () => {
                 }
               </span>
             </InfoItem>
+            <InfoItem>
+              <div>{t('project_creation_time')}：</div>
+              <span>{projectInfo.createTime || '--'}</span>
+            </InfoItem>
+          </Line>
+          <Line>
             <InfoItem>
               <div>{t('project_type')}：</div>
               <span>
@@ -443,32 +484,6 @@ const ProjectInfo = () => {
                           : t('sprintProject.sprint'),
                     })}
               </span>
-            </InfoItem>
-          </Line>
-          <Line>
-            <InfoItem>
-              <div>{t('new_p1.a8')}：</div>
-              <span>{projectInfo.userName || '--'}</span>
-            </InfoItem>
-            <InfoItem>
-              <div>{t('project_creation_time')}：</div>
-              <span>{projectInfo.createTime || '--'}</span>
-            </InfoItem>
-            <InfoItem>
-              <div
-                style={{
-                  alignSelf: 'start',
-                }}
-              >
-                {t('project_belong')}：
-              </div>
-              <span>{projectInfo.affiliation || '--'}</span>
-            </InfoItem>
-          </Line>
-          <Line>
-            <InfoItem>
-              <div>{t('serial_number')}：</div>
-              <span>{projectInfo.prefix || '--'}</span>
             </InfoItem>
             <InfoItem>
               <div>{t('project_completion_time')}：</div>

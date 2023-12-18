@@ -1,3 +1,4 @@
+import { StatusTagColor } from '@/constants'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Timeline } from 'antd'
@@ -172,22 +173,24 @@ export const PopoverStatusWrap = styled.div<{
     width: 'max-content',
   },
   ({ state }) => ({
-    color:
-      state === 1
-        ? 'var(--neutral-white-d7)'
-        : state === 2
-        ? 'var(--neutral-n1-d1)'
-        : state === 3
-        ? 'var(--neutral-white-d7)'
-        : '',
-    background:
-      state === 1
-        ? 'var(--auxiliary-b1)'
-        : state === 2
-        ? 'var(--neutral-n7)'
-        : state === 3
-        ? 'var(--function-success)'
-        : '',
+    //   color:
+    //   state === 1
+    //     ? 'var(--neutral-white-d7)'
+    //     : state === 2
+    //     ? 'var(--neutral-n1-d1)'
+    //     : state === 3
+    //     ? 'var(--neutral-white-d7)'
+    //     : '',
+    // background:
+    //   state === 1
+    //     ? 'var(--auxiliary-b1)'
+    //     : state === 2
+    //     ? 'var(--neutral-n7)'
+    //     : state === 3
+    //     ? 'var(--function-success)'
+    //     : '',
+    background: StatusTagColor.get(state)?.bg,
+    color: StatusTagColor.get(state)?.color,
   }),
 )
 
@@ -196,5 +199,18 @@ export const TimelineWrap = styled(Timeline)`
     .ant-timeline-item-head-blue {
       border-color: var(--neutral-n5);
     }
+  }
+`
+
+export const StatusTitle = styled.div`
+  padding-left: 24px;
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
   }
 `

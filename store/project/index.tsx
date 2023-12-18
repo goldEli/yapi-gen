@@ -8,7 +8,6 @@ import {
   getProjectInfoValuesStore,
   getWarningConfigInfo,
 } from './project.thunk'
-
 export interface CounterState {
   projectInfo: any
   workList: any

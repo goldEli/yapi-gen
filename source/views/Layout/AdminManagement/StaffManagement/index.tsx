@@ -5,15 +5,17 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import IconFont from '@/components/IconFont'
-import { Checkbox, Menu, message, Space, Table, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
-import { HoverWrap, DividerWrap } from '@/components/StyleCommon'
+import {
+  DividerWrap,
+  TableActionItem,
+  TableActionWrap,
+} from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import { getIsPermission } from '@/tools/index'
 import NoData from '@/components/NoData'
@@ -22,7 +24,6 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import DropDownMenu from '@/components/DropDownMenu'
 import {
@@ -45,7 +46,8 @@ import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 import { getMessage } from '@/components/Message'
-import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
+import BatchAction from '@/components/BatchOperation/BatchAction'
+import { Tooltip } from 'antd'
 
 export const tableWrapP = css`
   display: flex;
@@ -53,7 +55,27 @@ export const tableWrapP = css`
   justify-content: space-between;
   overflow: hidden;
 `
-
+const boxItem = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 52px;
+  align-items: center;
+  height: 32px;
+  cursor: pointer;
+  color: white;
+  border-radius: 6px;
+  div {
+    font-size: 12px;
+    font-weight: 400;
+  }
+  svg {
+    font-size: 24px;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+`
 export const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
@@ -81,8 +103,10 @@ const StaffManagement = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
   const dispatch = useDispatch()
-  const { userInfo, isRefresh } = useSelector(store => store.user)
-  const { menuPermission } = useSelector(store => store.user)
+  const { userInfo, isRefresh, menuPermission } = useSelector(
+    store => store.user,
+  )
+  const { language } = useSelector(store => store.global)
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
@@ -222,42 +246,6 @@ const StaffManagement = () => {
     updateOrderkey,
   })
 
-  const menuTable = (record: any) => {
-    const items = [
-      {
-        key: '1',
-        label: (
-          <div onClick={() => controlStaffPersonalVisible(record)}>
-            {t('staff.setPermission')}
-          </div>
-        ),
-      },
-      {
-        key: '12',
-        label: (
-          <div onClick={() => controlStaffPersonalVisibleA(record)}>
-            {t('quitAndHandover')}
-          </div>
-        ),
-      },
-      {
-        key: '123',
-        label: (
-          <div onClick={() => controlStaffPersonalVisibleC(record)}>
-            {t('the_handover_state_is_restored')}
-          </div>
-        ),
-      },
-    ]
-    let newArr: any = []
-    if (record.handover_status === 1) {
-      newArr = items.slice(0, 2)
-    } else if (record.handover_status === 2) {
-      newArr = items.slice(2, 3)
-    }
-    return <Menu items={newArr} />
-  }
-
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
       navigate('/Mine/Carbon')
@@ -306,59 +294,71 @@ const StaffManagement = () => {
       }
     }
 
-    const initColumns = [
-      {
-        width: 40,
-        render: (_text: any, record: any) => {
-          const isEdit = (
-            userInfo.company_permissions?.map((i: any) => i.identity) || []
-          ).includes('b/companyuser/update')
-          return (
-            isEdit && (
-              <div>
-                <MoreDropdown menu={menuTable(record)} />
-              </div>
-            )
-          )
-        },
-      },
-    ]
-
-    initColumns.push(Table.SELECTION_COLUMN as any)
+    const isEdit = (
+      userInfo.company_permissions?.map((i: any) => i.identity) || []
+    ).includes('b/companyuser/update')
 
     const lastList = [
       {
         title: t('newlyAdd.operation'),
         dataIndex: 'action',
-        width: 120,
         fixed: 'right',
+        width: language === 'zh' ? 260 : 480,
         render: (_text: string, record: any) => {
           return (
-            <>
-              {!hasCheck ? (
-                '--'
-              ) : (
-                <span
-                  onClick={() => onToDetail(record)}
-                  style={{
-                    fontSize: 14,
-                    color: 'var(--primary-d2)',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
+            <TableActionWrap>
+              <Tooltip
+                title={hasCheck ? null : t('viewPermissionIsRequiredToOperate')}
+              >
+                <TableActionItem
+                  isDisable={!hasCheck}
+                  onClick={e => {
+                    e.stopPropagation()
+                    hasCheck ? onToDetail(record) : void 0
                   }}
                 >
                   {t('project.checkInfo')}
-                </span>
-              )}
-            </>
+                </TableActionItem>
+              </Tooltip>
+              <Tooltip
+                title={
+                  isEdit ? null : t('editingPermissionIsRequiredToOperate')
+                }
+              >
+                <TableActionItem
+                  isDisable={!isEdit}
+                  onClick={e => {
+                    e.stopPropagation()
+                    isEdit ? controlStaffPersonalVisibleA(record) : void 0
+                  }}
+                >
+                  {t('staff.setPermission')}
+                </TableActionItem>
+              </Tooltip>
+              <Tooltip
+                title={
+                  isEdit ? null : t('editingPermissionIsRequiredToOperate')
+                }
+              >
+                <TableActionItem
+                  isDisable={!isEdit}
+                  onClick={e => {
+                    e.stopPropagation()
+                    isEdit ? controlStaffPersonalVisibleC(record) : void 0
+                  }}
+                >
+                  {t('the_handover_state_is_restored')}
+                </TableActionItem>
+              </Tooltip>
+            </TableActionWrap>
           )
         },
       },
     ]
 
     const resultLast = isHaveCheck ? lastList : []
-    return [...initColumns, ...newList, ...resultLast]
-  }, [titleList, titleList2, columns])
+    return [...newList, ...resultLast]
+  }, [titleList, titleList2, columns, language])
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -464,26 +464,17 @@ const StaffManagement = () => {
             padding: '0 24px',
           }}
         >
-          <div
-            style={{
-              fontSize: '16px',
-              fontFamily: 'SiYuanMedium',
-              color: 'var(--neutral-n1-d1)',
-            }}
-          >
-            {t('staff.companyStaff')}
-          </div>
-
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div className={inputSearch}>
               <InputSearch
                 leftIcon
-                width={184}
+                width={220}
                 placeholder={t('staff.pleaseKey')}
                 onChangeSearch={onPressEnter}
               />
             </div>
-
+          </div>
+          <div style={{ display: 'flex' }}>
             <ScreenMinHover
               label={t('common.search')}
               icon="filter"
@@ -491,7 +482,6 @@ const StaffManagement = () => {
               isActive={isShow}
               style={{ margin: '0 8px' }}
             />
-
             <DividerWrap type="vertical" />
 
             <ScreenMinHover
@@ -525,26 +515,14 @@ const StaffManagement = () => {
             padding: '0 24px',
           }}
         >
-          {isShow && (
-            <ResizeTable
-              isSpinning={isSpinning}
-              dataWrapNormalHeight="100%"
-              col={selectColum}
-              rowSelection={rowSelection}
-              dataSource={listData}
-              noData={<NoData />}
-            />
-          )}
-          {!isShow && (
-            <ResizeTable
-              isSpinning={isSpinning}
-              dataWrapNormalHeight="100%"
-              col={selectColum}
-              rowSelection={rowSelection}
-              dataSource={listData}
-              noData={<NoData />}
-            />
-          )}
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="100%"
+            col={selectColum}
+            rowSelection={rowSelection}
+            dataSource={listData}
+            noData={<NoData />}
+          />
         </div>
         <PaginationBox
           total={total}
@@ -607,15 +585,13 @@ const StaffManagement = () => {
           open={selectedRowKeys.length > 0}
           onCancel={() => setSelectedRowKeys([])}
         >
-          <Tooltip
-            placement="top"
-            getPopupContainer={node => node}
-            title={t('common.permissionGroup')}
+          <div
+            className={boxItem}
+            style={{ color: 'var(--neutral-white-d7)', cursor: 'pointer' }}
+            onClick={() => setBatchEditVisible(true)}
           >
-            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
-              <IconFont type="lock" />
-            </div>
-          </Tooltip>
+            {t('common.permission')}
+          </div>
         </BatchAction>
       </StaffManagementWrap>
     </PermissionWrap>

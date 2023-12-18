@@ -26,8 +26,8 @@ const batchBox = css`
   display: flex;
   align-items: center;
   padding: 0 32px;
-  height: 64px;
-  border-radius: 16px;
+  height: 52px;
+  border-radius: 8px;
   background: rgba(4, 4, 4, 0.6);
   width: fit-content;
 `
@@ -36,12 +36,10 @@ const boxItem = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 12px;
-  width: 52px;
-  height: 52px;
+  padding: 4px 12px;
   cursor: pointer;
   color: white;
-  border-radius: 12px;
+  border-radius: 4px;
   div {
     font-size: 12px;
     font-weight: 400;
@@ -139,33 +137,15 @@ const FloatBatch = (props: Props) => {
         <div className={batchAllBox}>
           <div className={batchBox}>
             <Space size={8}>
-              <Tooltip
-                placement="top"
-                getPopupContainer={node => node}
-                title={t('common.edit')}
-              >
-                <div className={boxItem} onClick={() => onClickItem('edit')}>
-                  <IconFont type="edit-square" />
-                </div>
-              </Tooltip>
-              <Tooltip
-                placement="top"
-                getPopupContainer={node => node}
-                title={t('common.del')}
-              >
-                <div className={boxItem} onClick={() => onClickItem('delete')}>
-                  <IconFont type="delete" />
-                </div>
-              </Tooltip>
-              <Tooltip
-                placement="top"
-                getPopupContainer={node => node}
-                title={t('version2.link')}
-              >
-                <div className={boxItem} onClick={onCopy}>
-                  <IconFont type="attachment" />
-                </div>
-              </Tooltip>
+              <div className={boxItem} onClick={() => onClickItem('edit')}>
+                {t('common.edit')}
+              </div>
+              <div className={boxItem} onClick={() => onClickItem('delete')}>
+                {t('common.del')}
+              </div>
+              <div className={boxItem} onClick={onCopy}>
+                {t('other.copy')}
+              </div>
             </Space>
             <IconFont
               onClick={props.onClose}

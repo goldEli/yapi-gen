@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   clearValue,
   onTapSearchChoose,
+  saveInputKey,
   saveScreen,
   saveValue,
 } from '@store/view'
@@ -30,11 +31,15 @@ import {
   onChangeSortByView,
   onRefreshKanBan,
   openSaveAsViewModel,
+  onFilter,
 } from '@store/kanBan/kanBan.thunk'
 import SelectOptionsNormal from '@/components/SelectOptionsNormal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { setSortByGroupOptions, setSpinning } from '@store/kanBan'
 import { getMessage } from '@/components/Message'
+import CommonInput from '@/components/CommonInput'
+import InputSearch from '@/components/InputSearch'
+import { setViewList } from '@store/kanbanConfig'
 const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
@@ -234,6 +239,20 @@ const Operation = (props: Props) => {
       <DeleteConfirmModal />
       <OperationWrap>
         <LeftBox>
+          <div>
+            <InputSearch
+              isDemand
+              leftIcon
+              placeholder={t('search_for_the_requirement_name_or_number')}
+              onChangeSearch={data => {
+                if (!data) {
+                  console.log('data---', data)
+                  dispatch(saveInputKey(''))
+                }
+                dispatch(onFilter())
+              }}
+            />
+          </div>
           <SelectOptionsNormal
             title={t('group')}
             options={sortByGroupOptions ?? []}

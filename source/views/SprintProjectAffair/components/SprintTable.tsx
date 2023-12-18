@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import { createRef, useEffect, useMemo, useState } from 'react'
-import { Menu, Table } from 'antd'
+import { Dropdown, Menu, Space, Table } from 'antd'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
@@ -23,18 +23,28 @@ import { getMessage } from '@/components/Message'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
-import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
 import {
   updateAffairsPriority,
   updateAffairsStatus,
   updateAffairsTableParams,
 } from '@/services/affairs'
+import { TableActionItem } from '@/components/StyleCommon'
+import TableMoreDropdown from '@/components/TableMoreDropdown'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
   height: 100%;
 `
-
+const DropdownWrap = styled(Dropdown)({
+  cursor: 'pointer',
+  svg: {
+    color: 'var(--auxiliary-b1)',
+  },
+  '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+    textAlign: 'left',
+  },
+})
 interface Props {
   data: any
   onDelete(item: any): void
@@ -154,12 +164,6 @@ const SprintTable = (props: Props) => {
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  // 点击删除
-  const onDeleteChange = (item: any) => {
-    setIsShowMore(false)
-    props.onDelete(item)
-  }
-
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setIsShowMore(false)
@@ -236,15 +240,6 @@ const SprintTable = (props: Props) => {
     'b/transaction/batch',
   )
 
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/transaction/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/transaction/delete',
-  )
-
   //  点击批量
   const onClickBatch = (e: any, type: any) => {
     setIsShowMore(false)
@@ -256,46 +251,6 @@ const SprintTable = (props: Props) => {
     }
   }
 
-  const menuBatch = () => {
-    const batchItems = [
-      {
-        key: '0',
-        disabled: true,
-        label: (
-          <div>
-            {t('version2.checked', {
-              count: selectedRowKeys?.map((i: any) => i.id)?.length,
-            })}
-          </div>
-        ),
-      },
-      {
-        key: '1',
-        label: (
-          <div onClick={e => onClickBatch(e, 'edit')}>
-            {t('version2.batchEdit')}
-          </div>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={e => onClickBatch(e, 'delete')}>
-            {t('version2.batchDelete')}
-          </div>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <div onClick={e => onClickBatch(e, 'copy')}>
-            {t('version2.batchCopyLink')}
-          </div>
-        ),
-      },
-    ]
-    return <Menu style={{ minWidth: 56 }} items={batchItems} />
-  }
   const selectColum: any = useMemo(() => {
     const arr = props.allTitleList
     const newList = []
@@ -309,39 +264,27 @@ const SprintTable = (props: Props) => {
 
     const arrList = [
       {
-        width: 48,
+        title: t('operate'),
+        dataIndex: 'action',
+        width: 180,
+        fixed: 'right',
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel && hasCreate ? null : (
-                <MoreDropdown
-                  isMoreVisible={isShowMore}
-                  menu={
-                    selectedRowKeys
-                      ?.map((i: any) => i.id)
-                      .includes(record.id) ? (
-                      menuBatch()
-                    ) : (
-                      <SprintDropdownMenu
-                        onDeleteChange={onDeleteChange}
-                        onCreateChild={onCreateChild}
-                        onEditChange={onEditChange}
-                        record={record}
-                      />
-                    )
-                  }
-                  onChangeVisible={setIsShowMore}
-                />
-              )}
-            </div>
+            <CommonTableOperation
+              selectedRowKeys={selectedRowKeys}
+              record={record}
+              onEditChange={onEditChange}
+              onCreateChild={onCreateChild}
+              onDeleteChange={props?.onDelete}
+              init={props?.onUpdate}
+              onClickBatch={onClickBatch}
+            />
           )
         },
       },
     ]
-    if (!hasBatch) {
-      arrList.push(Table.SELECTION_COLUMN as any)
-    }
-    return [...arrList, ...newList]
+
+    return [...newList, ...arrList]
   }, [
     props.titleList,
     props.titleList2,

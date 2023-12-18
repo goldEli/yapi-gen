@@ -7,17 +7,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import {
-  Form,
-  Radio,
-  Select,
-  Space,
-  Spin,
-  Switch,
-  Table,
-  Tooltip,
-  message,
-} from 'antd'
+import { Form, Radio, Space, Spin, Switch, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useImperativeHandle, useState } from 'react'
@@ -27,17 +17,18 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import AddWorkflow from './AddWorkflow'
 import { CategoryWrap, HiddenText } from '@/components/StyleCommon'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import {
   deleteStoryConfigWorkflow,
   getWorkflowList,
   sortchangeWorkflow,
   updateStoryConfigWorkflow,
 } from '@/services/project'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch } from '@store/index'
 import { setWorkList } from '@store/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
@@ -81,11 +72,13 @@ interface Props {
 
 const StepPageOne = (propsOne: Props) => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isSaveVisible, setIsSaveVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
@@ -94,6 +87,7 @@ const StepPageOne = (propsOne: Props) => {
   const [dataSource, setDataSource] = useState<any>({
     list: undefined,
   })
+  const [nowDataSourceList, setNowDataSourceList] = useState<any>()
   const dispatch = useDispatch()
 
   const getList = async (isUpdateList?: any) => {
@@ -104,8 +98,10 @@ const StepPageOne = (propsOne: Props) => {
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
     })
+
     dispatch(setWorkList(result))
     setDataSource(result)
+    setNowDataSourceList(result.list)
     setIsSpinning(false)
     return result
   }
@@ -146,15 +142,47 @@ const StepPageOne = (propsOne: Props) => {
       getList(isUpdateList)
     }
   }
+  // 比较两个数据的变化
+  const compareArrays = (arr1: any, arr2: any) => {
+    if (arr1.length !== arr2.length) {
+      return false
+    }
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false
+      }
+    }
+    return true
+  }
 
-  const onSave = () => {
+  const onSave = (str?: string) => {
     if (!dataSource?.list?.length) {
       getMessage({ msg: t('newlyAdd.onlyDemandStatus'), type: 'warning' })
       return
     }
     try {
-      onSaveMethod()
-      getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
+      // 点击取消的保存
+      if (str === 'cancel') {
+        const routerParams = {
+          id: paramsData.id,
+          categoryItem: categoryItem,
+        }
+        onSaveMethod()
+        getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
+        navigate(
+          `/ProjectDetail/Setting/TypeConfiguration?data=${encryptPhp(
+            JSON.stringify(routerParams),
+          )}`,
+        )
+        return
+      }
+      const nowList = nowDataSourceList.map((el: { id: any }) => el.id)
+      const newList = dataSource?.list.map((el: { id: any }) => el.id)
+      // 如果没有操作不走保存接口
+      if (!compareArrays(nowList, newList)) {
+        onSaveMethod()
+        getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
+      }
       propsOne?.onChangeStep(2)
     } catch (error) {
       //
@@ -359,8 +387,47 @@ const StepPageOne = (propsOne: Props) => {
   const onUpdateEdit = () => {
     onSaveMethod()
   }
+
+  const onCancel = () => {
+    const nowList = nowDataSourceList.map((el: { id: any }) => el.id)
+    const newList = dataSource?.list.map((el: { id: any }) => el.id)
+    if (compareArrays(nowList, newList)) {
+      const routerParams = {
+        id: paramsData.id,
+        categoryItem: categoryItem,
+      }
+      navigate(
+        `/ProjectDetail/Setting/TypeConfiguration?data=${encryptPhp(
+          JSON.stringify(routerParams),
+        )}`,
+      )
+    } else {
+      setIsSaveVisible(true)
+    }
+  }
+
   return (
     <>
+      <DeleteConfirm
+        text={t('other.isSave')}
+        title={t('sprintProject.confirmCancel')}
+        isVisible={isSaveVisible}
+        onChangeVisible={() => {
+          const routerParams = {
+            id: paramsData.id,
+            categoryItem: categoryItem,
+          }
+          navigate(
+            `/ProjectDetail/Setting/TypeConfiguration?data=${encryptPhp(
+              JSON.stringify(routerParams),
+            )}`,
+          ),
+            setIsSaveVisible(false)
+        }}
+        onConfirm={() => {
+          onSave('cancel'), setIsSaveVisible(false)
+        }}
+      />
       <AddWorkflow
         isVisible={isAddVisible}
         onUpdate={onUpdate}
@@ -483,13 +550,20 @@ const StepPageOne = (propsOne: Props) => {
             ))}
         </Spin>
       </TableWrap>
-      {dataSource?.list?.length > 0 && (
-        <Space size={16} style={{ position: 'absolute', top: 68, right: 24 }}>
-          <CommonButton type="primary" onClick={onSave}>
-            {t('newlyAdd.saveAndNext')}
+      <div
+        style={{ position: 'absolute', display: 'flex', top: 68, right: 24 }}
+      >
+        <Space size={16}>
+          <CommonButton type="secondaryText1" onClick={onCancel}>
+            {t('cancel')}
           </CommonButton>
+          {dataSource?.list?.length > 0 && (
+            <CommonButton type="primary" onClick={onSave}>
+              {t('newlyAdd.saveAndNext')}
+            </CommonButton>
+          )}
         </Space>
-      )}
+      </div>
     </>
   )
 }

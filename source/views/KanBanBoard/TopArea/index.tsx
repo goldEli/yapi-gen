@@ -23,6 +23,7 @@ const TopArea: React.FC<TopAreaProps> = props => {
       onInputSearch={async val => {
         dispatch(onFilter())
       }}
+      showSearchInput={false}
     />
   )
 }

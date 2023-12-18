@@ -301,7 +301,10 @@ export const getShapeRight = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
-    } else if (item.title.includes('需求进度') && !item.attr) {
+    } else if (
+      (item.title.includes('需求进度') && !item.attr) ||
+      (item.content.includes('work_hours') && !item.attr)
+    ) {
       return {
         ...item,
         id: item.id,
@@ -619,6 +622,7 @@ export const getDemandInfo: any = async (params: any) => {
       { value: response.data.parent?.id, label: response.data.parent?.name },
     ],
     deleted_at: response.data.deleted_at,
+    work_hours: response?.data?.work_hours ? response?.data?.work_hours : '',
   }
 }
 
@@ -740,6 +744,7 @@ export const getDemandList: any = async (params: any) => {
         id: k.status_id,
         isStart: k.is_start,
         isEnd: k.is_end,
+        work_hours: k.work_hours,
       })),
     }
   } else if (params.all) {
@@ -767,6 +772,7 @@ export const getDemandList: any = async (params: any) => {
       copy_send_users: i.copy_send_users,
       // 父需求列表
       parent: [{ value: i.id, label: i.name }],
+      work_hours: i.work_hours,
     }))
   } else if (params?.isChildren) {
     return {
@@ -824,7 +830,9 @@ export const getDemandList: any = async (params: any) => {
         copy_send_users: i.copy_send_users,
         // 父需求列表
         parent: [{ value: i.id, label: i.name }],
+        work_hours: i.work_hours,
       })),
+      statistics: response.data?.statistics,
     }
   }
 }
@@ -939,6 +947,7 @@ export const addDemand: any = async (params: any) => {
     class_id: params?.class || 0,
     schedule: params?.schedule,
     status: params?.status,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -977,6 +986,7 @@ export const updateDemand: any = async (params: any) => {
     custom_field: params?.customField,
     class_id: params?.class || 0,
     schedule: params?.schedule,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -1311,5 +1321,11 @@ export const addChild = async (params: any) => {
 // 子需求排序
 export const sortChild = async (params: any) => {
   const response = await http.post('sortChild', params)
+  return response.data
+}
+
+// 需求流转获取预计时间
+export const flowDate = async (params: any) => {
+  const response = await http.get('flowDate', params)
   return response.data
 }

@@ -162,6 +162,7 @@ const urls = {
   getCompanyUserPreferenceConfig: '/b/preference/config',
   updateCompanyUserPreferenceConfig: '/b/preference/config',
   deleteCommentAttach: '/b/story/comment/delete_att',
+  flowDate: '/b/project/story/flow_date',
   /**
    * 日历管理
    */
@@ -513,7 +514,7 @@ const urls = {
   updateOverdue: '/b/story/work_time/update_overdue',
   workTimeExport: '/b/story/work_time/export',
   updateWorkTime: '/b/story/work_time/set_daily',
-
+  getWorkTimeInfo: '/b/story/work_time/story/detail',
   /**
    * 项目日报
    */
@@ -572,6 +573,25 @@ const urls = {
   getReportViewLogList: '/b/user/reportViewLogList',
   // 获取最近的任务
   getRecentStory: '/b/user/recent/story',
+  /**
+   * 导图相关接口
+   */
+  getMapList: '/b/project/map',
+  getMapMembers: '/b/project/map_members',
+  getMapStatisticInfo: '/b/project/map_statistics',
+  mapGetList: '/b/iterate/mapGetList',
+  // 例外时间列表
+  getExceptionTimeList: '/b/project/work_config/work_dates_list',
+  // 工作时间查询
+  getWorkTimeList: '/b/project/work_config/work_time_config',
+  // 添加例外时间
+  addExceptionTime: '/b/project/work_config/add_work_dates',
+  // 编辑例外时间
+  editExceptionTime: '/b/project/work_config/edit_work_dates',
+  // 删除例外时间
+  delExceptionTime: '/b/project/work_config/del_work_dates',
+  // 编辑工作时间
+  editWorkTime: '/b/project/work_config/set_work_time_config',
   // 顶部导航待办接口
   getMineNoFinishListHeader: '/b/user/abeyance/story_group',
   // 顶部导航已办接口
@@ -580,6 +600,35 @@ const urls = {
   getVerifyUserListHeader: '/b/user/verify/list/group',
   // 未读消息统计
   getNotReadMsgStatics: '/b/msg/classStatistics',
+
+  /**
+   * 成员 -部门模块
+   */
+  // 获取部门列表
+  getDepartmentList: '/b/project_department/list',
+  // 添加部门
+  addDepartment: '/b/project_department/create',
+  // 编辑部门列表
+  editDepartment: '/b/project_department/update',
+  // 删除部门
+  delDepartment: '/b/project_department/batch',
+  // 获取所有部门
+  getAllDepartment: '/b/project_department/all',
+  // 设置员工部门
+  updateUserDepartment: '/b/project_department/member/set',
+
+  // 获取职位列表
+  getPositionList: '/b/project/position/list',
+  // 添加职位
+  addPosition: '/b/project/position/create',
+  // 编辑职位
+  editPosition: '/b/project/position/update',
+  // 删除职位
+  delPosition: '/b/project/position/batch_del',
+  // 设置员工职位
+  updateUserPosition: '/b/project/position/member_set',
+  // 设置员工职位状态
+  updateUserPositionStatus: '/b/project/position/on_off',
 }
 export default urls
 

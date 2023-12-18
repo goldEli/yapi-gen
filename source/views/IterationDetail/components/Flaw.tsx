@@ -14,11 +14,8 @@ import {
 } from '@store/project'
 import { setIsRefresh } from '@store/user'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
-import IconFont from '@/components/IconFont'
-import styled from '@emotion/styled'
 import { getMessage } from '@/components/Message'
 import { useTranslation } from 'react-i18next'
-import MoreDropdown from '@/components/MoreDropdown'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import CommonButton from '@/components/CommonButton'
 import {
@@ -28,8 +25,8 @@ import {
   updateFlawStatus,
   updateFlawTableParams,
 } from '@/services/flaw'
-import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
 import { getIterateInfo } from '@store/iterate/iterate.thunk'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 interface FlawProps {
   activeKey: string
@@ -263,26 +260,24 @@ const Flaw = (props: FlawProps) => {
 
     const arrList = [
       {
+        title: t('operate'),
+        dataIndex: 'action',
+        width: 180,
+        fixed: 'right',
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasDel ? null : (
-                <MoreDropdown
-                  menu={
-                    <DefectDropdownMenu
-                      onDeleteChange={onDeleteChange}
-                      onEditChange={onEditChange}
-                      record={record}
-                    />
-                  }
-                />
-              )}
-            </div>
+            <CommonTableOperation
+              record={record}
+              onEditChange={onEditChange}
+              onDeleteChange={onDeleteChange}
+              init={onUpdate}
+            />
           )
         },
       },
     ]
-    return [...arrList, ...newList]
+
+    return [...newList, ...arrList]
   }, [props?.checkList, props?.checkList2, props?.checkList3, columns])
 
   useEffect(() => {

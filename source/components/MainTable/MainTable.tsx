@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Progress, Tooltip } from 'antd'
+import { Dropdown, Progress, Tooltip } from 'antd'
 import {
   ListNameWrap,
   TableActionWrap,
@@ -25,6 +25,7 @@ import CommonButton from '../CommonButton'
 import { Tags } from '../ProjectCard/style'
 import DragTable from '../DragTable'
 import MultipleAvatar from '../MultipleAvatar'
+import CommonIconFont from '../CommonIconFont'
 
 interface Props {
   onChangeOperation(type: string, item: any, e?: any): void
@@ -38,7 +39,15 @@ interface Props {
   onChangeProjectList(value: any, idx?: number): void
   filterParams?: any
 }
-
+const DropdownWrap = styled(Dropdown)({
+  cursor: 'pointer',
+  svg: {
+    color: 'var(--auxiliary-b1)',
+  },
+  '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+    textAlign: 'left',
+  },
+})
 const StatusWrap = styled.div({
   display: 'flex',
   alignItems: 'center',

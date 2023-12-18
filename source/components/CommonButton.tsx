@@ -114,6 +114,19 @@ const extraText = css`
   }
 `
 
+const secondaryText1 = css`
+  background: var(--auxiliary-b4) !important;
+  color: var(--auxiliary-text-t2-d1) !important ;
+  border: 1px solid transparent !important;
+  &:hover {
+    background: var(--auxiliary-b5) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
+  }
+  &:active {
+    background: var(--auxiliary-b6) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
+  }
+`
 const icon = css`
   width: auto !important;
   padding: 0 6px !important;
@@ -154,6 +167,7 @@ interface Props {
     | 'icon'
     | 'dangerDel'
     | 'extraText'
+    | 'secondaryText1'
 
   //   图标位置
   iconPlacement?: 'left' | 'right'
@@ -180,6 +194,7 @@ const CommonButton = (props: Props) => {
     danger,
     primaryText,
     secondaryText,
+    secondaryText1,
     icon,
     dangerDel,
     extraText,
@@ -221,7 +236,10 @@ const CommonButton = (props: Props) => {
       >
         {props.iconPlacement !== 'right' && (
           <Space size={8}>
-            <IconFont type={props.icon} />
+            <IconFont
+              style={{ fontSize: props.size === 'small' ? 14 : 16 }}
+              type={props.icon}
+            />
             {props.children}
           </Space>
         )}
@@ -229,7 +247,10 @@ const CommonButton = (props: Props) => {
         {props.iconPlacement === 'right' && (
           <Space size={8}>
             {props.children}
-            <IconFont type={props.icon} />
+            <IconFont
+              type={props.icon}
+              style={{ fontSize: props.size === 'small' ? 14 : 16 }}
+            />
           </Space>
         )}
       </ButtonWrap>

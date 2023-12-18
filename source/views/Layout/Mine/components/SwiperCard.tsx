@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
-import { t } from 'i18next'
+import { useTranslation } from 'react-i18next'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -35,7 +35,7 @@ const Warp = styled.div<{ show?: boolean }>(
     cursor: 'pointer',
     background: 'var(--neutral-white-d2)',
     '&: hover': {
-      border: '1px solid var(--primary-d1) !important',
+      borderTop: '2px solid var(--primary-d1) !important',
       [DropdownWrap.toString()]: {
         display: 'block',
       },
@@ -43,9 +43,10 @@ const Warp = styled.div<{ show?: boolean }>(
   },
 
   ({ show }) => ({
-    border: show
-      ? '1px solid var(--primary-d1) !important'
-      : '1px solid var(--neutral-n6-d1)',
+    borderTop: show
+      ? '2px solid var(--primary-d1) !important'
+      : '2px solid var(--neutral-white-d2)',
+    boxShadow: show ? '0px 0px 14px 4px rgba(0,0,0,0.08)' : 'none',
     [Triangle.toString()]: {
       visibility: show ? 'visible' : 'hidden',
     },
@@ -105,6 +106,7 @@ export const SwiperCard = (props: {
   project_type?: any
   permission_type?: any
 }) => {
+  const [t] = useTranslation()
   const changeNames1 = () => {
     let str: string
     switch (props.project_type) {

@@ -19,7 +19,7 @@ const Create = () => {
     <MainIndex
       title={t('newlyAdd.hisCreate')}
       type="create"
-      subTitle={t('common.createDemand')}
+      subTitle={t('createTask')}
     />
   )
 }

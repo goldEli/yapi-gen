@@ -2,7 +2,6 @@
 // 需求详情-子需求
 
 import IconFont from '@/components/IconFont'
-import { message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useMemo, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -13,7 +12,6 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData } from '@/tools'
-import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
@@ -24,9 +22,7 @@ import {
   updatePriority,
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
@@ -34,6 +30,7 @@ import { setAddWorkItemModal, setIsUpdateAddWorkItem } from '@store/project'
 import { getDemandInfo } from '@store/demand/demand.thunk'
 import { ComputedWrap } from '../style'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 const Operation = styled.div({
   display: 'flex',
@@ -244,15 +241,6 @@ const ChildDemand = (props: ChildDemandProps) => {
     onUpdate,
   })
 
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/delete',
-  )
-
   // 点击编辑
   const onEditChange = (item: any) => {
     dispatch(
@@ -304,28 +292,25 @@ const ChildDemand = (props: ChildDemandProps) => {
     }
     const arrList = [
       {
-        width: 40,
+        title: t('operate'),
+        dataIndex: 'action',
+        width: 180,
+        fixed: 'right',
         render: (text: any, record: any) => {
           return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
-                <MoreDropdown
-                  menu={
-                    <DemandOperationDropdownMenu
-                      onEditChange={onEditChange}
-                      onDeleteChange={onDeleteChange}
-                      onCreateChild={onCreateChild}
-                      record={record}
-                    />
-                  }
-                />
-              )}
-            </div>
+            <CommonTableOperation
+              record={record}
+              onEditChange={onEditChange}
+              onCreateChild={onCreateChild}
+              onDeleteChange={onDeleteChange}
+              init={onUpdate}
+            />
           )
         },
       },
     ]
-    return [...arrList, ...newList]
+
+    return [...newList, ...arrList]
   }, [titleList, titleList2, titleList3, columns])
 
   const aa =

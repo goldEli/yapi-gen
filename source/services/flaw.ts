@@ -188,7 +188,9 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       copy_send_users: i.copy_send_users,
       // 父需求列表
       parent: [{ value: i.id, label: i.name }],
+      work_hours: i.work_hours ? i.work_hours : '',
     })),
+    statistics: response.data?.statistics,
   }
 }
 
@@ -402,6 +404,7 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
       { value: response.data.parent?.id, label: response.data.parent?.name },
     ],
     deleted_at: response.data.deleted_at,
+    work_hours: response?.data?.work_hours ? response?.data?.work_hours : '',
   }
 }
 
@@ -437,6 +440,7 @@ export const addFlaw: any = async (params: any) => {
     solution: params.solution,
     severity: params.severity || 0,
     discovery_version: params.discovery_version,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -479,6 +483,7 @@ export const updateFlaw: any = async (params: any) => {
     solution: params.solution,
     severity: params.severity || 0,
     discovery_version: params.discovery_version,
+    work_hours: params?.work_hours,
   })
 }
 
@@ -1070,7 +1075,10 @@ export const getShapeFlawRight = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
-    } else if (item.title.includes('需求进度') && !item.attr) {
+    } else if (
+      (item.title.includes('需求进度') && !item.attr) ||
+      (item.content.includes('work_hours') && !item.attr)
+    ) {
       return {
         ...item,
         id: item.id,

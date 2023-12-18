@@ -97,7 +97,6 @@ const LayoutSecondaryMenu = () => {
     }
     navigate(resultUrl)
   }
-
   useEffect(() => {
     let resultItems: any = []
     if (currentMenu?.id && routerPath?.pathname && userInfo?.id) {
@@ -111,7 +110,15 @@ const LayoutSecondaryMenu = () => {
         setParamsData(getParamsData(searchParams))
         // 显示项目下的菜单，例需求 oldKey 是特殊处理老路由得key
         const resultMenu = [
-          // { id: 'map', name: t('map'), url: '', isPermisson: true  },
+          {
+            id: 'map',
+            name: '导图',
+            url: '/ProjectDetail/Encephalogram',
+            isPermisson:
+              projectInfo?.projectPermissions?.filter((i: any) =>
+                String(i.group_name).includes('导图'),
+              ).length > 0,
+          },
           {
             id: 'iteration',
             oldKey: 'Iteration',
@@ -270,6 +277,12 @@ const LayoutSecondaryMenu = () => {
       setActiveKey(
         currentHavePath?.length > 0 ? String(currentHavePath[0]?.id) : '0',
       )
+      if (
+        routerPath?.pathname === '/ProjectDetail/Department' ||
+        routerPath?.pathname === '/ProjectDetail/Position'
+      ) {
+        setActiveKey('member')
+      }
     }
   }, [currentMenu, routerPath, userInfo, projectInfo])
 

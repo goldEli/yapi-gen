@@ -14,6 +14,7 @@ export const MyHead = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-left: 24px;
+  border-bottom: 1px solid var(--neutral-n6-d1);
 `
 
 export const MyIconModeWrap = styled.div`

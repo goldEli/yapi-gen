@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 // 需求主页-操作栏
 
 /* eslint-disable camelcase */
@@ -7,11 +8,18 @@
 import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+  forwardRef,
+} from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Popover, Space, Tooltip } from 'antd'
+import { Popover, Select, Space, Tooltip } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from '@/components/CommonExport'
@@ -35,12 +43,19 @@ import {
 import {
   IconWrap,
   LiWrap,
-  MoreItem,
-  MoreWrap,
   OperationWrap,
+  StatusGroup,
+  StatusItems,
   StickyWrap,
 } from '../style'
 import { useHotkeys } from 'react-hotkeys-hook'
+import InputSearch from '@/components/InputSearch'
+import { SelectWrapBedeck } from '@/components/StyleCommon'
+import MoreSelect from '@/components/MoreSelect'
+import RangePicker from '@/components/RangePicker'
+import dayjs from 'dayjs'
+import moment from 'moment'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
 interface Props {
   isGrid: any
@@ -54,9 +69,11 @@ interface Props {
   otherParams: any
   dataLength: any
   pid: any
+  statistics: any
+  onInputSearch?(value?: string): void
 }
 
-const Operation = (props: Props) => {
+const Operation = (props: Props, ref: any) => {
   const [t, i18n] = useTranslation()
   const [isShow, setIsShow] = useState(false)
   const [isShow2, setIsShow2] = useState(false)
@@ -72,11 +89,15 @@ const Operation = (props: Props) => {
   const { projectInfo, filterKeys, projectInfoValues, filterParams } =
     useSelector(store => store.project)
   const { searchChoose } = useSelector(store => store.view)
+  const { userInfo } = useSelector(store => store.user)
+  const [activityIndex, setActivityIndex] = useState(0)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
   const [searchVal, setSearchVal] = useState('')
+  const [boxMaps, setBoxMaps] = useState<any>()
+  const [date, setDate] = useState<any>()
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -92,19 +113,55 @@ const Operation = (props: Props) => {
     finishAt: [],
     searchValue: '',
   })
+
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
+  const info = useGetloginInfo()
+  const splitArrayByValue = (arr: any) => {
+    let arr1 = arr.filter((x: any) => x.status === 1)
+    // 已离职
+    let arr2 = arr
+      .filter((x: any) => x.status === 2)
+      .map((item: any, index: number) => ({ ...item, isFirst: index === 0 }))
+    const a = {
+      label: t('working'),
+      children: arr1,
+    }
+    const b = {
+      label: t('resigned'),
+      children: arr2,
+    }
+    return [...arr1, ...arr2]
+    return arr2.length >= 1 ? [...arr1, b] : [...arr1]
+  }
+  function deWeight(arr: any) {
+    const map = new Map()
+    for (const item of arr || []) {
+      if (!map.has(item.id)) {
+        map.set(item.id, item)
+      }
+    }
+    arr = [...map.values()]
+    return arr
+  }
+  const format = (arr: any) => {
+    const newA = arr.filter((j: any) => {
+      return j.value === info
+    })
 
-  const hasImport = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
-  )
+    const newB = arr.filter((j: any) => {
+      return j.value !== info
+    })
 
-  const hasExport = getIsPermission(
-    projectInfo?.projectPermissions,
-    projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
-  )
-
+    return newA
+      .map((i: any) => ({
+        ...i,
+        id: i.id,
+        value: i.value,
+        label: `${i.label}（${t('myself')}）`,
+      }))
+      .concat(newB)
+  }
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
       statusId: e.category_status_ids,
@@ -189,7 +246,17 @@ const Operation = (props: Props) => {
       getSearchKey()
     }
   }, [projectInfo])
-
+  useLayoutEffect(() => {
+    const map: any = new Map()
+    // time-spanTag
+    const box = document.querySelectorAll('.SelectWrapBedeck')
+    box.forEach(item => {
+      const attr = item.getAttribute('datatype')
+      const w = item.getBoundingClientRect().width
+      map.set(attr, w)
+    })
+    setBoxMaps(map)
+  }, [props])
   const onChangeFilter = () => {
     setFilterState(!filterState)
   }
@@ -229,38 +296,12 @@ const Operation = (props: Props) => {
     },
     [],
   )
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        minWidth: i18n.language === 'zh' ? 110 : 151,
-      }}
-    >
-      {projectInfoValues
-        ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1 && i.work_type === 1)
-        ?.map((k: any) => {
-          return (
-            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
-              <img
-                src={k.category_attachment ? k.category_attachment : ' '}
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-              <span>{k.content}</span>
-            </LiWrap>
-          )
-        })}
-    </div>
-  )
-
+  //   状态类型列表
+  const statusList = [
+    { name: '全部', key: 0, field: '' },
+    { name: '指派我的', key: 1, field: 'users_name', type: 'handler_count' },
+    { name: '我创建的', key: 2, field: 'user_name', type: 'user_create_count' },
+  ]
   const onImportClick = () => {
     setIsVisible(false)
     setIsShowImport(true)
@@ -277,30 +318,12 @@ const Operation = (props: Props) => {
     setIsShowExport(true)
     setIsVisibleMore(false)
   }
-
-  const moreOperation = (
-    <div
-      style={{
-        padding: '4px 0',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {hasImport ? null : (
-        <MoreItem onClick={onImportClick}>
-          <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
-        </MoreItem>
-      )}
-      {hasExport ? null : (
-        <MoreItem onClick={onExportClick}>
-          <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.exportDemand')}</span>
-        </MoreItem>
-      )}
-    </div>
-  )
-
+  useImperativeHandle(ref, () => {
+    return {
+      onImportClick,
+      onExportClick,
+    }
+  })
   const onImportClose = () => {
     setIsShowImport(false)
   }
@@ -408,47 +431,132 @@ const Operation = (props: Props) => {
               <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
-          {getIsPermission(
-            projectInfo?.projectPermissions,
-            'b/story/save',
-          ) ? null : (
-            <Popover
-              content={changeStatus}
+          <StatusGroup>
+            {statusList?.map((i: any, index: number) => (
+              <StatusItems
+                key={i.key}
+                isActive={i.key === activityIndex}
+                onClick={() => {
+                  console.log(userInfo)
+                  // 处理人users_name 创建人user_name
+                  const { field } = i
+                  const { id } = userInfo
+                  onFilterSearch({ [field]: id }, {})
+                  setActivityIndex(index)
+                }}
+              >
+                {i.name}
+                {i.type ? props?.statistics?.[i.type] : null}
+              </StatusItems>
+            ))}
+          </StatusGroup>
+          <InputSearch
+            placeholder="搜索事务名称或编号"
+            onChangeSearch={(value: any) => {
+              props.onInputSearch && props.onInputSearch(value)
+            }}
+          ></InputSearch>
+          <SelectWrapBedeck
+            key="users_name"
+            datatype="users_name"
+            className="SelectWrapBedeck"
+          >
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>处理人</span>
+            <MoreSelect
+              onChange={(value: any) => {
+                onFilterSearch({ users_name: value }, {})
+              }}
+              width={boxMaps?.get('users_name')}
+              renderChildren
+              options={splitArrayByValue(
+                format(
+                  deWeight(
+                    projectInfoValues
+                      ?.filter((k: any) => k.key === 'users_name')[0]
+                      ?.children?.map((v: any) => ({
+                        ...v,
+                        label: v.content_txt || v.content,
+                        value: v.id,
+                        id: v.id,
+                      })),
+                  ),
+                ),
+              )}
+            >
+              {splitArrayByValue(
+                format(
+                  deWeight(
+                    projectInfoValues
+                      ?.filter((k: any) => k.key === 'user_name')[0]
+                      ?.children?.map((v: any) => ({
+                        ...v,
+                        label: v.content_txt || v.content,
+                        value: v.id,
+                        id: v.id,
+                      })),
+                  ),
+                ),
+              )?.map((item: any) => {
+                return (
+                  <Select.Option
+                    key={item.id}
+                    value={item.id}
+                    label={item.label}
+                    className={
+                      item.status === 2 && item.isFirst ? 'removeStyle' : ''
+                    }
+                  >
+                    {item.label ?? item.content}
+                    <span>{item.status === 1 ? '' : t('removed')}</span>
+                  </Select.Option>
+                )
+              })}
+            </MoreSelect>
+          </SelectWrapBedeck>
+
+          <SelectWrapBedeck
+            key="date"
+            datatype="date"
+            className="SelectWrapBedeck"
+          >
+            <span style={{ marginLeft: '16px', fontSize: '14px' }}>时间</span>
+            <RangePicker
+              onChange={dates => {
+                if (!dates) {
+                  setDate('')
+                  onFilterSearch({}, {})
+                  return
+                }
+                const [expected_start_at, expected_end_at] = dates
+                setDate(dates)
+                onFilterSearch(
+                  {
+                    expected_start_at:
+                      dayjs(expected_start_at).format('YYYY-MM-DD'),
+                    expected_end_at:
+                      dayjs(expected_end_at).format('YYYY-MM-DD'),
+                  },
+                  {},
+                )
+              }}
+              isShowQuick
               placement="bottomLeft"
-              getPopupContainer={node => node}
-              visible={isVisible}
-              onVisibleChange={visible => setIsVisible(visible)}
-            >
-              <MoreWrap type="create">
-                <Tooltip placement="top" title={`${t('create')} (C)`}>
-                  {t('common.createDemand')}
-                </Tooltip>
-                {/* <span>{t('common.createDemand')}</span> */}
-                <IconFont
-                  style={{ fontSize: 16, marginLeft: 8 }}
-                  type={isVisible ? 'up' : 'down'}
-                />
-              </MoreWrap>
-            </Popover>
-          )}
-          {hasExport && hasImport ? null : (
-            <Popover
-              content={moreOperation}
-              placement="bottom"
-              getPopupContainer={node => node}
-              key={isVisibleMore.toString()}
-              visible={isVisibleMore}
-              onVisibleChange={visible => setIsVisibleMore(visible)}
-            >
-              <MoreWrap>
-                <span>{t('newlyAdd.moreOperation')}</span>
-                <IconFont
-                  style={{ fontSize: 16, marginLeft: 8 }}
-                  type={isVisibleMore ? 'up' : 'down'}
-                />
-              </MoreWrap>
-            </Popover>
-          )}
+              dateValue={
+                date
+                  ? [
+                      moment(date[0]).unix()
+                        ? moment(date[0])
+                        : moment('1970-01-01'),
+                      moment(date[1]).unix() === 1893427200 ||
+                      moment(date[1]).unix() === 0
+                        ? moment('2030-01-01')
+                        : moment(date[1]),
+                    ]
+                  : null
+              }
+              w={boxMaps?.get('date')}
+            ></RangePicker>
+          </SelectWrapBedeck>
         </Space>
 
         <OperationGroup
@@ -485,4 +593,4 @@ const Operation = (props: Props) => {
   )
 }
 
-export default Operation
+export default forwardRef(Operation)

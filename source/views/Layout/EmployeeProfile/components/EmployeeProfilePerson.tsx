@@ -326,7 +326,7 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
     )
   }
   const projectEle = (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100%', overflowX: 'auto' }}>
       <CheckboxAll
         checked={checkAll}
         indeterminate={indeterminate}

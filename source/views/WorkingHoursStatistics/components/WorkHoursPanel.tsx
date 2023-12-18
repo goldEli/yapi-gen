@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, forwardRef, useLayoutEffect } from 'react'
-import { Popover, Radio, Space, InputNumber } from 'antd'
-import { updateWorkTime } from '@/services/project'
+import { Popover, Radio, Space, InputNumber, Tooltip } from 'antd'
+import { updateWorkTime, getWorkTimeInfo } from '@/services/project'
 import { useTranslation } from 'react-i18next'
 import {
   PanelWrap,
@@ -16,6 +16,7 @@ import {
   lastDay,
   UpdateTask,
   HeaderWrap,
+  MemberTipBOX,
 } from '../style'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
@@ -48,11 +49,11 @@ const WorkHoursPanel = (props: any, ref: any) => {
   const [scrollWidth, setScrollWidth] = useState(0)
   const { projectInfo } = useSelector(state => state.project)
   const { projectPermissions } = projectInfo
-  const { columns, map, reduceMonth } = usePanelData(
+  const { columns, map, reduceMonth, projectId } = usePanelData(
     dataSource[0]?.work_times,
     dataSource,
   )
-
+  const [memberToolTip, setMemberToolTip] = useState(<div></div>)
   useEffect(() => {
     setWeekdayString({
       1: t('onMonday'),
@@ -256,60 +257,123 @@ const WorkHoursPanel = (props: any, ref: any) => {
                   language={language}
                   className="custom-col"
                 >
-                  <Popover
-                    title=""
-                    content={Content}
-                    trigger="click"
-                    ref={popoverRef}
-                    open={col.id === id && item === record.date}
-                    getPopupContainer={node => node}
-                  >
-                    <WorkHourLabel
-                      data-type={record?.date}
-                      className={classNames({
-                        [Working]: col.time !== 1 && col.time !== -2,
-                        [Leave]: col.time === -1,
-                        [NotWorking]: col.time === -2,
-                        'custom-col': true,
-                      })}
-                      onClick={() => {
-                        if (
-                          !projectPermissions
-                            ?.map((item: { identity: any }) => item.identity)
-                            ?.includes('b/story/work_time')
-                        ) {
-                          getMessage({
-                            type: 'warning',
-                            msg: t('youDoNotHavePermissionToEdit'),
+                  {props.status === 'member' ? (
+                    <Tooltip
+                      open={col.id === id && item === record.date}
+                      placement="bottom"
+                      title={memberToolTip}
+                      trigger={['click']}
+                      color="#585859"
+                      onOpenChange={async open => {
+                        console.log(open, props)
+                        if (open) {
+                          const res = await getWorkTimeInfo({
+                            project_id: projectId,
+                            date: item,
+                            user_id: col.id,
+                            is_overdue: props.is_overdue,
                           })
-                          return
+                          const { list } = res
+                          if (list?.length === 0) {
+                            setId('')
+                            setMemberToolTip(<div></div>)
+                            return
+                          }
+                          const box = list.map((item: any, index: number) => (
+                            <MemberTipBOX key={item.id}>
+                              {index + 1}. {item.story?.name}(
+                              {item.schedule?.schedule}%{' '}
+                              {item.total_time / 3600}h)
+                            </MemberTipBOX>
+                          ))
+                          setMemberToolTip(box)
+                          console.log(res, box)
                         }
-
-                        // time -1请假 -2 未上报
-                        let value = 2
-                        const { time, id } = col
-                        if (time === -1) {
-                          value = 3
-                        }
-                        if (time === -2) {
-                          value = 1
-                        }
-                        setCacheValue(value)
-                        setValue(value)
-                        setDayTaskTime(time > 0 ? time / 3600 : '')
-                        setRecord({ ...row, date: item })
-                        setId(id)
                       }}
                     >
-                      <div>
-                        {col.time === -2
-                          ? t('notReported')
-                          : col.time === -1
-                          ? t('askForLeave')
-                          : `${col.time / 3600}${t('workingHours')}`}
-                      </div>
-                    </WorkHourLabel>
-                  </Popover>
+                      <WorkHourLabel
+                        data-type={record?.date}
+                        className={classNames({
+                          [Working]: col.time !== 1 && col.time !== -2,
+                          [Leave]: col.time === -1,
+                          [NotWorking]: col.time === -2,
+                          'custom-col': true,
+                        })}
+                        onClick={() => {
+                          const { id } = col
+                          setId(id)
+                          setRecord({ ...row, date: item })
+                        }}
+                      >
+                        <div>
+                          {col.time === -2
+                            ? '--'
+                            : col.time === -1
+                            ? t('askForLeave')
+                            : col.time === -3
+                            ? '节假日'
+                            : `${col.time / 3600}${t('workingHours')}`}
+                        </div>
+                      </WorkHourLabel>
+                    </Tooltip>
+                  ) : (
+                    <Popover
+                      title=""
+                      content={Content}
+                      trigger="click"
+                      ref={popoverRef}
+                      open={col.id === id && item === record.date}
+                      getPopupContainer={node => node}
+                    >
+                      <WorkHourLabel
+                        data-type={record?.date}
+                        className={classNames({
+                          [Working]: col.time !== 1 && col.time !== -2,
+                          [Leave]: col.time === -1,
+                          [NotWorking]: col.time === -2,
+                          'custom-col': true,
+                        })}
+                        onClick={() => {
+                          if (
+                            !projectPermissions
+                              ?.map((item: { identity: any }) => item.identity)
+                              ?.includes('b/story/work_time')
+                          ) {
+                            getMessage({
+                              type: 'warning',
+                              msg: t('youDoNotHavePermissionToEdit'),
+                            })
+                            return
+                          }
+
+                          // time -1请假 -2 未上报 -3节假日
+                          let value = 2
+                          const { time, id } = col
+                          if (time === -1) {
+                            value = 3
+                          }
+                          if (time === -2) {
+                            value = 1
+                          }
+                          setCacheValue(value)
+                          setValue(value)
+                          setDayTaskTime(time > 0 ? time / 3600 : '')
+                          setRecord({ ...row, date: item })
+                          setId(id)
+                        }}
+                      >
+                        <div>
+                          {col.time === -2
+                            ? '--'
+                            : col.time === -1
+                            ? t('askForLeave')
+                            : col.time === -3
+                            ? '节假日'
+                            : `${col.time / 3600}${t('workingHours')}`}
+                        </div>
+                      </WorkHourLabel>
+                    </Popover>
+                  )}
                 </Cols>
               )
             })}

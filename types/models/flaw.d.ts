@@ -412,6 +412,7 @@ declare namespace Model.Flaw {
   }
 
   interface FlawInfoResult {
+    work_hours: number
     is_star: number
     id: number
     name: string

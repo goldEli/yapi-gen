@@ -15,6 +15,7 @@ const Email = (props: { onClose(): void }) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [choose, setChoose] = useState<any>([])
+  const { language } = useSelector(store => store.global)
   const email = useSelector(store => store.user.loginInfo.email)
   const myConfiguration = useSelector(
     store => store.siteNotifications.myConfiguration,
@@ -99,7 +100,7 @@ const Email = (props: { onClose(): void }) => {
             {emailConfigurations?.map((i: any) => (
               <div
                 style={{
-                  width: '270px',
+                  width: language === 'zh' ? '196px' : '270px',
                   display: 'flex',
                   alignItems: 'center',
                 }}

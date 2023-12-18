@@ -50,6 +50,10 @@ const TableWrap = styled(Table)`
   }
   .ant-table-row {
     height: 52px;
+    .controlMaxWidth {
+      border-bottom: 1px solid transparent;
+      max-width: 386px;
+    }
   }
 
   .ant-table-row-selected {
@@ -67,6 +71,10 @@ const TableWrap = styled(Table)`
   .ant-table-row:hover {
     .dropdownIcon {
       visibility: visible;
+    }
+    .controlMaxWidth {
+      border-bottom: 1px solid var(--primary-d1);
+      color: var(--primary-d1);
     }
   }
   .ant-table-row:not(.ant-table-row-selected) {
@@ -227,6 +235,7 @@ const ResizeTable = (props: ResizeTableProps) => {
             })
           }
         }
+        // 如果是日报
         if (column.key === 'report_precis') {
           const doms = document.querySelectorAll<HTMLSpanElement>(
             '.reportPrecisMaxWidth',

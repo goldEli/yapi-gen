@@ -35,6 +35,9 @@ const rangPicker = css`
   .customPopup3 {
     left: -166px !important;
   }
+  .customPopup4 {
+    left: -44px !important;
+  }
 `
 interface Props {
   onChange(values: any): void
@@ -100,6 +103,7 @@ const RangePicker = (props: Props) => {
       84: 'customPopup1',
       88: 'customPopup2',
       132: 'customPopup3',
+      318: 'customPopup4',
     }
     return map[Math.ceil(w)]
   }

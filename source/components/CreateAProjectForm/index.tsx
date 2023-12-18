@@ -383,12 +383,12 @@ const CreateAProjectForm = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            marginTop: '42px',
+            marginTop: '24px',
           }}
         >
           <div
             style={{
-              marginBottom: '48px',
+              marginBottom: '24px',
             }}
           >
             <RowStyle>
@@ -445,7 +445,7 @@ const CreateAProjectForm = () => {
               op={step === 3}
               style={{
                 display: 'flex',
-                padding: '0 0px 0 24px',
+                maxHeight: '60vh',
               }}
             >
               <CoverAreaWrap>
@@ -531,6 +531,12 @@ const CreateAProjectForm = () => {
                         behavior: 'smooth',
                       })
                     }, 100)
+                  }}
+                  style={{
+                    maxHeight: '63vh',
+                    overflowY: 'auto',
+                    width: '100%',
+                    paddingRight: 24,
                   }}
                 >
                   <Form.Item
@@ -640,6 +646,7 @@ const CreateAProjectForm = () => {
                   <Form.Item
                     label={<FormTitleSmall text={t('project_description')} />}
                     name="info"
+                    style={{ marginBottom: 0 }}
                   >
                     <Input.TextArea
                       placeholder={t('please_enter_project_description')}

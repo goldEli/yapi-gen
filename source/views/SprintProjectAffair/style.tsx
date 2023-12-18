@@ -39,3 +39,30 @@ export const ContentMain = styled.div`
   width: 100%;
   height: calc(100% - 72px);
 `
+export const StatusGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`
+
+export const StatusItems = styled.div<{ isActive?: boolean }>`
+  height: 32px;
+  line-height: 32px;
+  border-radius: 4px;
+  padding: 0 8px;
+  border: ${props =>
+    props.isActive
+      ? '1px solid var(--neutral-n2)!important'
+      : '1px solid var(--neutral-n5)'};
+  font-size: 14px;
+  color: ${props =>
+    props.isActive ? 'var(--neutral-white-d1)!important' : 'var(--neutral-n2)'};
+  background: ${props =>
+    props.isActive ? 'var(--neutral-n2)!important' : 'transparent'};
+  cursor: pointer;
+  &:hover {
+    background-color: #ebedf0;
+    border: 1px solid #ebedf0;
+    color: var(--neutral-n1-d1);
+  }
+`

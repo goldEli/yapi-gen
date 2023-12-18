@@ -5,7 +5,10 @@ import * as http from '../tools/http'
 import { onlySysNotice } from './sysNotice'
 
 // 获取人员信息
-export const getUserIntroList = async (params: { ids: string }) => {
+export const getUserIntroList = async (params: {
+  ids: string
+  project_id: any
+}) => {
   const response: any = await http.get<any, any>('getUserIntroList', params)
 
   return {

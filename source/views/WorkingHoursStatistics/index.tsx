@@ -18,6 +18,7 @@ import PaginationBox from '@/components/TablePagination'
 import { getMessage } from '@/components/Message'
 import { Spin } from 'antd'
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonInput from '@/components/CommonInput'
 interface IProps {}
 const WorkHours: React.FC<IProps> = props => {
   const panelRef = useRef<any>()
@@ -37,6 +38,7 @@ const WorkHours: React.FC<IProps> = props => {
   const [key, setKey] = useState<any>('')
   const [type, setType] = useState<any>(1)
   const [hoverStyle, setHoverStyle] = useState<boolean>(false)
+  const [isOverdue, setIsOverdue] = useState(0)
   // eslint-disable-next-line react/hook-use-state
   const [stat, setStat] = useState<any>({
     report: 0,
@@ -44,6 +46,7 @@ const WorkHours: React.FC<IProps> = props => {
     absence: 0,
     leave: 0,
   })
+  const [styleStatus, setStyleStatus] = useState('')
   const onInputSearch = (val: any) => {
     setKey(val)
     onSearch(formVal, type, val)
@@ -72,6 +75,7 @@ const WorkHours: React.FC<IProps> = props => {
     setFormVal(val)
     setType(type)
     setSpinning(true)
+    setIsOverdue(val.state)
     const start_at = val.time ? val.time[0] : val.date[0]
     const end_at = type === 0 ? start_at : val.time ? val.time[1] : val.date[1]
     const parmas = {
@@ -88,7 +92,8 @@ const WorkHours: React.FC<IProps> = props => {
           : '',
       page: page ? page : pageObj.currentPage,
       pagesize: pageSize ? pageSize : pageObj.pageSize,
-      keyword: keyVal,
+      keyword: val.keyword,
+      style: val?.style,
     }
     const res = await workTimeList(parmas)
     setPageObj({
@@ -149,10 +154,10 @@ const WorkHours: React.FC<IProps> = props => {
   }
   return (
     <WorkHoursWrap>
-      <ProjectCommonOperation
+      {/* <ProjectCommonOperation
         onInputSearch={onInputSearch}
         title={t('search_for_transaction_name_or_number')}
-      />
+      /> */}
       <Spin spinning={spinning}>
         <WorkHoursHeader
           id={paramsData.id}
@@ -166,7 +171,11 @@ const WorkHours: React.FC<IProps> = props => {
               width: `calc(100% - ${leftWidth}px)`,
             }}
           >
-            <TableLeft data={data} updateOverdue={updateOverdueApi} />
+            <TableLeft
+              data={data}
+              updateOverdue={updateOverdueApi}
+              type={formVal?.style}
+            />
             <div className="openIconBox">
               <CommonIconFont
                 type={direction ? 'indent' : 'outdent'}
@@ -205,6 +214,8 @@ const WorkHours: React.FC<IProps> = props => {
                 onSearch(formVal, type, key)
               }}
               type={type}
+              status={formVal?.style}
+              is_overdue={isOverdue}
             />
           </div>
         </MianWrap>

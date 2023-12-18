@@ -1,6 +1,6 @@
 import { getCustomNormalValue } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { message, Tooltip } from 'antd'
+import { InputNumber, message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -67,6 +67,7 @@ const FlawBasic = (props: Props) => {
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
   const { affairsDetailDrawer } = useSelector(store => store.affairs)
   const { userId } = useSelector(store => store.employeeProfile)
+  const [workHoursValue, setWorkHoursValue] = useState<any>()
   useEffect(() => {
     setSchedule(props.detail?.schedule)
   }, [props.detail?.schedule])
@@ -103,7 +104,18 @@ const FlawBasic = (props: Props) => {
     getMessage({ msg: t('successfullyModified'), type: 'success' })
     props.onUpdate?.()
   }
-
+  // 快速更新工时
+  const updateWorkHours = async (item: any) => {
+    const res = await updateFlawTableParams({
+      id: props.detail.id,
+      projectId: props.detail.projectId,
+      otherParams: {
+        work_hours: workHoursValue,
+      },
+    })
+    getMessage({ msg: t('successfullyModified'), type: 'success' })
+    props.onUpdate?.()
+  }
   // 提交参数需改变的 key
   const onChangeBasicKey = (key: any) => {
     const needChangeList: any = {
@@ -244,7 +256,11 @@ const FlawBasic = (props: Props) => {
       tempUserList = tempUserList?.filter((l: any) => l.id !== userId)
     }
     // 如果不属于下列字段的则渲染
-    if (!['parent_id', 'priority', 'severity'].includes(item.content)) {
+    if (
+      !['parent_id', 'priority', 'severity', 'work_hours'].includes(
+        item.content,
+      )
+    ) {
       const filterContent = basicFieldList?.filter(
         (i: any) => i.content === item.content,
       )[0]
@@ -376,6 +392,22 @@ const FlawBasic = (props: Props) => {
           </div>
         </ChangeSeverityPopover>
       )
+    } else if (item.content === 'work_hours') {
+      // 工时统计
+      nodeComponent = (
+        <InputNumber
+          placeholder={t('common.pleaseEnter')}
+          autoComplete="off"
+          style={{ width: '100%' }}
+          min={1}
+          value={workHoursValue}
+          onBlur={updateWorkHours}
+          onChange={e => {
+            setWorkHoursValue(e)
+          }}
+          precision={1}
+        />
+      )
     }
 
     return nodeComponent
@@ -415,6 +447,9 @@ const FlawBasic = (props: Props) => {
   useEffect(() => {
     if (props.detail?.category) {
       getFieldData()
+    }
+    if (props.detail?.work_hours) {
+      setWorkHoursValue(props.detail?.work_hours)
     }
   }, [props.detail])
 

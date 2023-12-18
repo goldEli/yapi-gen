@@ -40,6 +40,7 @@ import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 import CommonProgress from '@/components/CommonProgress'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import NoData from '@/components/NoData'
+import CommonTableOperation from '@/components/TableDropdownMenu/CommonTableOperation'
 
 const MoveFont = styled(IconFont)`
   font-size: 16;
@@ -364,33 +365,33 @@ const DndKitTable = (props: any) => {
     copyLink(text, t('common.copySuccess'), t('common.copyFail'))
   }
   const columns: TableColumnProps<any>[] = [
-    {
-      width: 50,
-      align: 'center',
-      render: (text: any, record: any) => {
-        return (
-          <CustomMoreDropdownWrap>
-            {!isCanEdit && !hasDel && (
-              <MoreDropdown
-                hasChild
-                isMoreVisible={isShowMore}
-                menu={
-                  <SprintDropdownMenu
-                    onDeleteChange={() => {
-                      onDeleteChange(record)
-                    }}
-                    onEditItem={onEditItem}
-                    onRemoveSprintItem={onRemoveSprintItem}
-                    record={record}
-                  />
-                }
-                onChangeVisible={setIsShowMore}
-              />
-            )}
-          </CustomMoreDropdownWrap>
-        )
-      },
-    },
+    // {
+    //   width: 50,
+    //   align: 'center',
+    //   render: (text: any, record: any) => {
+    //     return (
+    //       <CustomMoreDropdownWrap>
+    //         {!isCanEdit && !hasDel && (
+    //           <MoreDropdown
+    //             hasChild
+    //             isMoreVisible={isShowMore}
+    //             menu={
+    //               <SprintDropdownMenu
+    //                 onDeleteChange={() => {
+    //                   onDeleteChange(record)
+    //                 }}
+    //                 onEditItem={onEditItem}
+    //                 onRemoveSprintItem={onRemoveSprintItem}
+    //                 record={record}
+    //               />
+    //             }
+    //             onChangeVisible={setIsShowMore}
+    //           />
+    //         )}
+    //       </CustomMoreDropdownWrap>
+    //     )
+    //   },
+    // },
     {
       dataIndex: 'sort',
       width: 50,
@@ -735,6 +736,29 @@ const DndKitTable = (props: any) => {
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
+        )
+      },
+    },
+    {
+      title: t('operate'),
+      dataIndex: 'action',
+      width: 180,
+      fixed: 'right',
+      render: (text: any, record: any) => {
+        return (
+          <CommonTableOperation
+            record={record}
+            onEditChange={onEditItem}
+            onDeleteChange={onDeleteChange}
+            onRemoveSprintItem={onRemoveSprintItem}
+            init={onUpdate}
+            rightSprintList={rightSprintList.filter(
+              (k: any) =>
+                k.id !== 0 &&
+                (k.status === 1 || k.status === 4) &&
+                k.id !== Number(record?.id?.split('_')?.[0]),
+            )}
+          />
         )
       },
     },

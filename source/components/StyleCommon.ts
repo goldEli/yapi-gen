@@ -1,3 +1,4 @@
+import { get } from './../tools/http'
 /* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -8,6 +9,7 @@ import styled from '@emotion/styled'
 import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
+import { StatusTagColor } from '@/constants'
 
 const TableActionWrap = styled.div`
   display: flex;
@@ -122,12 +124,18 @@ const ChartsItem2 = styled.span`
   height: 56px;
   border-right: 1px solid var(--neutral-n6-d1);
 `
-const ChartsItem = styled.span`
+const ChartsItem = styled.div`
   cursor: pointer;
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  width: 12%;
+  height: 88px;
+  padding: 16px 0;
+  border-radius: 6px;
+  &:hover {
+    background: var(--hover-d2);
+  }
 `
 const ChartsItem333 = styled.span`
   /* cursor: pointer; */
@@ -136,12 +144,21 @@ const ChartsItem333 = styled.span`
   flex-direction: column;
   justify-content: space-between;
 `
-const ChartsItem1 = styled.span`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`
+
+const ChartsItem1 = styled.div<{ background: string }>(
+  {
+    width: '12%',
+    height: '88px',
+    padding: '16px 0',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    borderRadius: '6px',
+  },
+  ({ background }) => ({
+    background,
+  }),
+)
 const titleCss = css`
   color: var(--neutral-n1-d1);
   padding-left: 8px;
@@ -579,7 +596,11 @@ const HiddenText = styled.div({
   display: 'flex',
   alignItems: 'center',
 })
-const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+const ClickWrap = styled.div<{
+  isClose?: boolean
+  isName?: boolean
+  colorState?: any
+}>(
   {
     width: '80%',
     display: 'flex',
@@ -609,8 +630,12 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
       },
     },
   },
-  ({ isClose, isName }) => ({
-    color: isClose ? 'var(--neutral-n3)' : '',
+  ({ isClose, isName, colorState }) => ({
+    color: colorState
+      ? 'rgb(250, 151, 70)'
+      : isClose
+      ? 'var(--neutral-n3)'
+      : '',
     textDecoration: isName && isClose ? 'line-through' : '',
   }),
 )
@@ -698,7 +723,7 @@ const ListNameWrap = styled.div<{
   }),
 )
 
-const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
+const StatusWrap = styled.div<{ isShow?: boolean; state?: number | undefined }>(
   {
     height: 22,
     borderRadius: 6,
@@ -711,22 +736,25 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
   },
   ({ isShow, state }) => ({
     cursor: isShow ? 'pointer' : 'inherit',
-    color:
-      state === 1
-        ? 'var(--neutral-white-d7)'
-        : state === 2
-        ? 'var(--neutral-n1-d1)'
-        : state === 3
-        ? 'var(--neutral-white-d7)'
-        : '',
-    background:
-      state === 1
-        ? 'var(--auxiliary-b1)'
-        : state === 2
-        ? 'var(--neutral-n7)'
-        : state === 3
-        ? 'var(--function-success)'
-        : '',
+    // color:
+    //   state === 1
+    //     ? 'var(--neutral-white-d7)'
+    //     : state === 2
+    //     ? 'var(--neutral-n1-d1)'
+    //     : state === 3
+    //     ? 'var(--neutral-white-d7)'
+    //     : '',
+
+    // background:
+    //   state === 1
+    //     ? 'var(--auxiliary-b1)'
+    //     : state === 2
+    //     ? 'var(--neutral-n7)'
+    //     : state === 3
+    //     ? 'var(--function-success)'
+    //     : '',
+    background: StatusTagColor.get(state)?.bg,
+    color: StatusTagColor.get(state)?.color,
   }),
 )
 
@@ -1118,7 +1146,7 @@ const HaveTabsContentWrap = styled.div<{ height?: any }>`
   height: ${props => props.height ?? 'calc(100vh - 56px)'};
   background: #f0f0f5;
   .ant-tabs-nav {
-    padding: 0px 24px;
+    padding: 0px 16px;
     margin: 6px 0 0;
     .ant-tabs-tab {
       padding: 5px 16px;
@@ -1151,7 +1179,28 @@ const HaveTabsContentWrap = styled.div<{ height?: any }>`
   }
 `
 
+const TabsBarExtraButton = styled.div<{ isPrimary?: boolean }>`
+  margin-top: -6px;
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  font-size: var(--font14);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: ${props =>
+    props.isPrimary
+      ? 'var(--auxiliary-text-t2-d2)'
+      : 'var(--auxiliary-text-t2-d1)'};
+  &:hover {
+    background: var(--neutral-white-d1) !important;
+  }
+`
+
 export {
+  TabsBarExtraButton,
   TableActionWrap,
   TableActionItem,
   HaveTabsContentWrap,

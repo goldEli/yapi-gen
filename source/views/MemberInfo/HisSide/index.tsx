@@ -6,15 +6,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import {
-  InfoItem,
-  InfoWrap,
-  Menu,
-  MenuItem,
-  MyDiv,
-  NameWrap,
-  Side,
-} from './style'
+import { InfoItem, InfoWrap, Menu, MenuItem, BackBox, Side } from './style'
 
 const HisSide = () => {
   const [t] = useTranslation()
@@ -87,7 +79,16 @@ const HisSide = () => {
   }
 
   return (
-    <Side>
+    <Side style={{ padding: `${isMember ? 0 : 20}px 16px 0` }}>
+      <BackBox onClick={onGoBack}>
+        <IconFont
+          style={{
+            fontSize: '18px',
+          }}
+          type="left-md"
+        />
+        <span className="label">{t('back')}</span>
+      </BackBox>
       <InfoWrap>
         <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
         <InfoItem>
@@ -95,35 +96,7 @@ const HisSide = () => {
           <span>{mainInfo?.phone}</span>
         </InfoItem>
       </InfoWrap>
-      <MyDiv
-        onClick={onGoBack}
-        style={{
-          height: '48px',
-          display: 'flex',
-          alignItems: 'center',
-          borderBottom: '1px solid var(--neutral-n6-d1)',
-          margin: ' 0 16px',
-          cursor: 'pointer',
-        }}
-      >
-        <IconFont
-          style={{
-            fontSize: '16px',
-          }}
-          type="left-md"
-        />
-        <span
-          style={{
-            fontSize: '12px',
-            fontWeight: 400,
 
-            marginLeft: '8px',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {t('back')}
-        </span>
-      </MyDiv>
       <Menu>
         {menuList.map(item => (
           <MenuItem

@@ -1,6 +1,6 @@
 /* eslint-disable no-duplicate-imports */
 import { createSlice } from '@reduxjs/toolkit'
-import { getLoginDetail } from './user.thunk'
+import { getLoginDetail, getAllDepartment, getAllPosition } from './user.thunk'
 
 export interface CounterState {
   loginInfo: any
@@ -11,6 +11,8 @@ export interface CounterState {
   currentMenu: any
   menuIconList: any
   companyList: any
+  departmentList?: any
+  positionList?: any
 }
 
 const initialState: CounterState = {
@@ -35,6 +37,8 @@ const initialState: CounterState = {
     { key: '/Mine', normal: 'user', active: 'user-sel' },
     { key: '/AdminManagement', normal: 'management', active: 'management' },
   ],
+  departmentList: [],
+  positionList: [],
 }
 
 export const counterSlice = createSlice({
@@ -83,7 +87,13 @@ export const counterSlice = createSlice({
       }
 
       state.userPreferenceConfig = action.payload.userPreferenceConfig
-    })
+    }),
+      builder.addCase(getAllDepartment.fulfilled, (state, action) => {
+        state.departmentList = action.payload
+      }),
+      builder.addCase(getAllPosition.fulfilled, (state, action) => {
+        state.positionList = action.payload
+      })
   },
 })
 

@@ -13,6 +13,8 @@ interface Props {
   title?: string
   // 是否需要padding
   notPadding?: boolean
+  showSearchInput?: boolean
+  children?: React.ReactNode
 }
 
 const ProjectCommonOperation = (props: Props) => {
@@ -20,7 +22,7 @@ const ProjectCommonOperation = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-
+  const { showSearchInput = true } = props
   return (
     <>
       <SearchBox>
@@ -34,20 +36,26 @@ const ProjectCommonOperation = (props: Props) => {
         >
           <MyBreadcrumb headerParmas />
         </div>
-        <SearchOrProjectMember size={16}>
-          <InputSearch
-            isDemand
-            leftIcon
-            placeholder={
-              props?.title ??
-              (t('search_for_the_requirement_name_or_number') as string)
-            }
-            onChangeSearch={props.onInputSearch}
-          />
-          <MemberIcon onClick={() => setMemberVisible(true)}>
-            <CommonIconFont type="team" color="var(--neutral-n2)" size={20} />
-          </MemberIcon>
-        </SearchOrProjectMember>
+        <div style={{ display: 'flex' }}>
+          {props.children ? props.children : null}
+        </div>
+
+        {showSearchInput ? (
+          <SearchOrProjectMember size={16}>
+            <InputSearch
+              isDemand
+              leftIcon
+              placeholder={
+                props?.title ??
+                (t('search_for_the_requirement_name_or_number') as string)
+              }
+              onChangeSearch={props.onInputSearch}
+            />
+            <MemberIcon onClick={() => setMemberVisible(true)}>
+              <CommonIconFont type="team" color="var(--neutral-n2)" size={20} />
+            </MemberIcon>
+          </SearchOrProjectMember>
+        ) : null}
       </SearchBox>
       <CommonMember
         visible={memberVisible}

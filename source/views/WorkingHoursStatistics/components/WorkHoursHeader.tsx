@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-handler-names */
 import styled from '@emotion/styled'
-import { Form } from 'antd'
+import { Form, Input } from 'antd'
 import MoreSelect from '@/components/MoreSelect'
 import moment from 'moment'
 import RangePicker from '@/components/RangePicker'
@@ -11,7 +11,10 @@ import CommonButton from '@/components/CommonButton'
 import { useEffect, useState, useLayoutEffect } from 'react'
 import Export from '@/components/Export'
 import { getProjectMember } from '@/services/project'
-
+import { cos } from '@/services'
+import CommonInput from '@/components/CommonInput'
+import InputSearch from '@/components/InputSearch'
+import CommonIconFont from '@/components/CommonIconFont'
 const WorkHoursHeaderWrap = styled.div`
   padding: 20px 0px 0px 0;
   margin-left: 24px;
@@ -53,11 +56,13 @@ const WorkHoursHeader = (props: {
   const [open, setOpen] = useState(false)
   const [time, setTime] = useState<any>([])
   const [dateType, setDateType] = useState<any>(1)
+  const [dateTypeStyle, setDateTypeStyle] = useState<any>(1)
   const [state, setState] = useState<any>(0)
   const [state1, setState1] = useState<any>(3)
   const [memberList, setMemberList] = useState<any>([])
   const [dropdownMatchSelectWidth, setDropdownMatchSelectWidth] =
     useState<any>(0)
+  const [statusWidth, setStatusWidth] = useState<any>(0)
   const confirm = () => {
     props.onSearch(form.getFieldsValue(), dateType)
   }
@@ -69,6 +74,7 @@ const WorkHoursHeader = (props: {
       date: getWeekDates(),
       type: 0,
       state: 1,
+      style: 'story',
     })
     setDateType(1)
     setState(0)
@@ -80,6 +86,11 @@ const WorkHoursHeader = (props: {
       .querySelector('#SelectWrap')
       ?.getBoundingClientRect().width
     setDropdownMatchSelectWidth(w)
+    const statusW = document
+      .querySelector('#statusSelectWrap')
+      ?.getBoundingClientRect().width
+    setDropdownMatchSelectWidth(w)
+    setStatusWidth(statusW)
   }, [window.localStorage.getItem('language')])
   // 人员接口
   const getList = async () => {
@@ -131,18 +142,26 @@ const WorkHoursHeader = (props: {
     {
       id: 3,
       text: t('askForLeave'),
+      label: t('askForLeave'),
+      value: 3,
     },
     {
       id: 2,
       text: t('reportNormally'),
+      label: t('reportNormally'),
+      value: 2,
     },
     {
       id: 1,
       text: t('notReported'),
+      label: t('notReported'),
+      value: 1,
     },
     {
       id: 0,
       text: t('all'),
+      label: t('all'),
+      value: 0,
     },
   ]
   const tabsValue2 = [
@@ -157,6 +176,17 @@ const WorkHoursHeader = (props: {
     {
       id: 0,
       text: t('all'),
+    },
+  ]
+  // 按人员和按项目
+  const tabsValuePersonAndTask = [
+    {
+      id: 0,
+      text: '按人员',
+    },
+    {
+      id: 1,
+      text: '任务',
     },
   ]
   const onGetExportApi = () => {
@@ -240,12 +270,37 @@ const WorkHoursHeader = (props: {
       : form.setFieldValue('state', val)
     props.onSearch(form.getFieldsValue(), dateType)
   }
-
+  const onChangeMode = (type: string) => {
+    form.setFieldValue('style', type ? 'story' : 'member')
+    props.onSearch(form.getFieldsValue(), dateType)
+  }
   return (
     <>
       <WorkHoursHeaderWrap>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <LeftWrap>
+            <div style={{ margin: '0 16px 20px 0px' }}>
+              <Form.Item name="keyword">
+                <Input
+                  placeholder={t('search_for_transaction_name_or_number')}
+                  onPressEnter={confirm}
+                  allowClear
+                  onChange={e => {
+                    console.log('11', e.target.value)
+                    if (!e.target.value) {
+                      confirm()
+                    }
+                  }}
+                  prefix={
+                    <CommonIconFont
+                      type="search"
+                      size={16}
+                      color="var(--neutral-n4)"
+                    />
+                  }
+                ></Input>
+              </Form.Item>
+            </div>
             <SelectWrapBedeck style={{ marginBottom: 20 }} id="SelectWrap">
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('personnel')}
@@ -258,6 +313,21 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
+            <SelectWrapBedeck
+              style={{ margin: '0 0px 20px 16px' }}
+              id="statusSelectWrap"
+            >
+              <Form.Item name={'type'}>
+                <MoreSelect
+                  onConfirm={confirm}
+                  options={tabsValue1}
+                  width={statusWidth}
+                  more
+                  hiddernfooter
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+
             <SelectWrapBedeck style={{ marginLeft: 16, marginBottom: 20 }}>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('time')}
@@ -280,6 +350,18 @@ const WorkHoursHeader = (props: {
               </Form.Item>
             </SelectWrapBedeck>
             <SelectWrapBedeck
+              style={{ marginLeft: 16, marginBottom: 20, border: 'none' }}
+            >
+              <Form.Item name="style">
+                <Tabs
+                  tabsValue={tabsValuePersonAndTask}
+                  active={dateTypeStyle}
+                  onChange={onChangeMode}
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+
+            <SelectWrapBedeck
               style={{ margin: '0 16px 20px 16px', border: 'none' }}
             >
               <Form.Item name={'date'}>
@@ -290,17 +372,7 @@ const WorkHoursHeader = (props: {
                 />
               </Form.Item>
             </SelectWrapBedeck>
-            <SelectWrapBedeck
-              style={{ margin: '0 16px 20px 0px', border: 'none' }}
-            >
-              <Form.Item name={'type'}>
-                <Tabs
-                  tabsValue={tabsValue1}
-                  active={form.getFieldValue('type')}
-                  onChange={val => onChangeType(val, 1)}
-                />
-              </Form.Item>
-            </SelectWrapBedeck>
+
             <SelectWrapBedeck
               style={{ margin: '0 16px 20px 0', border: 'none' }}
             >

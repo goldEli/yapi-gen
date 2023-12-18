@@ -13,6 +13,24 @@ export const AFFAIRS_CHILD_TYPE: any = { 3: [4, 5], 4: [6], 5: [6] }
 
 export const PHONE_NUMBER_REGEXP = /^\d+$/u
 
+export const TYPE_ENCEPHALOGRAM = [
+  {
+    text: '已完成',
+    color: '#BBFFBA',
+  },
+  {
+    text: '进行中',
+    color: '#FFF383 ',
+  },
+  {
+    text: '新增',
+    color: '#E4D8FF',
+  },
+  {
+    text: '逾期',
+    color: '#FFC8A0',
+  },
+]
 export const ROUTERS_URL: any = {
   '/SprintProjectManagement/Affair': '/ProjectDetail/Affair',
   '/ProjectManagement/Demand': '/ProjectDetail/Demand',
@@ -23,3 +41,11 @@ export const ROUTERS_URL: any = {
   '/ProjectManagement/ProjectSetting': '/ProjectDetail/Setting',
   '/SprintProjectManagement/Setting': '/ProjectDetail/Setting',
 }
+/**
+ * 1规划中  2 已完成 3 实现中
+ */
+export const StatusTagColor: any = new Map([
+  [1, { color: 'var(--neutral-n1-d1)', bg: '#CBECFF' }],
+  [2, { color: 'var(--neutral-n1-d1)', bg: '#BBFFBA' }],
+  [3, { color: 'var(--neutral-n1-d1)', bg: '#FFF383' }],
+])

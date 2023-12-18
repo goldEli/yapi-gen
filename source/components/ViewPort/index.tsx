@@ -12,11 +12,17 @@ import {
 import { getViewList } from '@store/view/thunk'
 import { Divider, Dropdown } from 'antd'
 import { t } from 'i18next'
-import { useEffect, useMemo, useState } from 'react'
+import {
+  useEffect,
+  useMemo,
+  useState,
+  useImperativeHandle,
+  forwardRef,
+} from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
 
-const ViewPort = (props: any) => {
+const ViewPort = (props: any, ref: any) => {
   const [show, setShow] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const dispatch = useDispatch()
@@ -101,6 +107,12 @@ const ViewPort = (props: any) => {
     dispatch(changeViewVisible(true))
     dispatch(setCreateViewPort({ type: props.type }))
   }
+  useImperativeHandle(ref, () => {
+    return {
+      onChangeCreate,
+      onChangeView,
+    }
+  })
   return (
     <Dropdown
       open={isVisible}
@@ -127,14 +139,14 @@ const ViewPort = (props: any) => {
         </div>
       )}
     >
-      <ViewPortWrap show={show}>
-        <CommonIconFont size={18} type="view-n" />
+      <ViewPortWrap show={false}>
+        {/* <CommonIconFont size={18} type="view-n" />
         <Name>
           {t('view')}：{name}{' '}
-        </Name>
+        </Name> */}
       </ViewPortWrap>
     </Dropdown>
   )
 }
 
-export default ViewPort
+export default forwardRef(ViewPort)

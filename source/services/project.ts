@@ -215,6 +215,9 @@ export const getProjectInfo: any = async (params: any) => {
     )
   }
   return {
+    expected_start_at: response.data.expected_start_at,
+    expected_end_at: response.data.expected_end_at,
+    storyCount: response.data.story_count,
     cover: response.data.cover,
     name: response.data.name,
     info: response.data.info,
@@ -1050,7 +1053,11 @@ export const updateWorkTime: any = async (params: any) => {
   const response: any = await http.post<any>('updateWorkTime', params)
   return response
 }
-
+// 获取工时详情
+export const getWorkTimeInfo: any = async (params: any) => {
+  const response: any = await http.get<any>('getWorkTimeInfo', params)
+  return response?.data
+}
 // 更新需求感悟
 export const updateStoryPerception = async (params: {
   project_id: number

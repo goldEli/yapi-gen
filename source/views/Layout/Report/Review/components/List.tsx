@@ -90,7 +90,7 @@ const ClearButton = styled.div`
   font-weight: 400;
   color: #6688ff;
   line-height: 22px;
-  margin-left: 24px;
+  margin-left: 8px;
   margin-bottom: 16px;
   white-space: nowrap;
   cursor: pointer;
@@ -413,7 +413,7 @@ const List = () => {
     {
       width: 120,
       title: t('report.list.readState'),
-      align: 'center',
+      align: 'left',
       dataIndex: 'user_copysend_type',
       render: (text: number, record: any) => {
         return id === 1 ? (
@@ -428,7 +428,7 @@ const List = () => {
     {
       width: 100,
       title: t('report.list.operation'),
-      align: 'center',
+      align: 'left',
       fixed: 'right',
       render: (_: string, record: any) => {
         return record?.is_submitter_edit === 1 && !record?.delete_time ? (
@@ -707,9 +707,10 @@ const List = () => {
             />
             <CommonButton
               type="primary"
-              icon="plus"
+              icon="edit"
               iconPlacement="left"
               onClick={handleReport}
+              size="large"
             >
               {t('report.list.writeReport')}
             </CommonButton>
@@ -758,13 +759,12 @@ const List = () => {
               onChange={date => onChangeTime('submit', date)}
             />
           </SelectWrapForList>
-          <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
+          <ClearButton onClick={restQuery}>{t('reset')}</ClearButton>
         </ListHead>
 
-        {/* <Divider style={{ margin: '4px 0px 20px 0px' }} /> */}
         <ResizeTable
           isSpinning={isSpinning}
-          dataWrapNormalHeight="calc(100% - 200px)"
+          dataWrapNormalHeight="calc(100% - 168px)"
           col={
             id === 1
               ? columns?.filter(
@@ -787,6 +787,7 @@ const List = () => {
             pageSize={pageObj.pagesize}
             currentPage={pageObj.page}
             onChange={onChangePage}
+            hasPadding
           />
         ) : null}
 

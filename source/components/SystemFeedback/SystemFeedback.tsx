@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import CommonModal2 from '../CommonModal2'
 import styled from '@emotion/styled'
-import { Checkbox, Form, Input, Select } from 'antd'
+import { Checkbox, Form, Input, Modal, Select } from 'antd'
 import { Editor } from 'ifunuikit'
 import { uploadFile } from '../AddWorkItem/CreateWorkItemLeft'
 import CommonButton from '../CommonButton'
@@ -11,6 +10,7 @@ import { changeFreedVisibleVisible } from '@store/feedback'
 import { sendFeedback } from '@/services/sysNotice'
 import { getMessage } from '../Message'
 import { LabelTitle } from '@/views/Layout/Report/Review/components/style'
+import CommonModal from '../CommonModal'
 
 const { Option } = Select
 const ModalFooter = styled.div({
@@ -104,21 +104,15 @@ const SystemFeedback = () => {
   }, [freedVisible])
 
   return (
-    <CommonModal2
-      noFooter
-      bodyStyle={{
-        height: '100vh',
-        minWidth: '1400px',
-      }}
-      onConfirm={() => onConfirm()}
+    <CommonModal
+      isVisible={freedVisible}
       onClose={() => {
         dispatch(changeFreedVisibleVisible(false))
       }}
-      width="100vw"
-      dex={143}
-      isShowMask={false}
-      isVisible={freedVisible}
-      // title={isEditId ? t('edit_item') : t('common.createProject')}
+      onConfirm={onConfirm}
+      isShowFooter
+      isHeader
+      width={784}
     >
       <Wrap
         onClick={e => {
@@ -134,6 +128,7 @@ const SystemFeedback = () => {
               fontSize: '20px',
               color: 'var(--neutral-n1-d1)',
               lineHeight: '28px',
+              marginBottom: 40,
             }}
           >
             {t('agile_growth_suggestion')}
@@ -179,7 +174,7 @@ const SystemFeedback = () => {
               ]}
             >
               <Editor
-                height="366px"
+                height="336px"
                 maxHeight="340px"
                 upload={uploadFile}
                 getSuggestions={() => []}
@@ -213,7 +208,7 @@ const SystemFeedback = () => {
           </Footer>
         </LessWrap>
       </Wrap>
-    </CommonModal2>
+    </CommonModal>
   )
 }
 

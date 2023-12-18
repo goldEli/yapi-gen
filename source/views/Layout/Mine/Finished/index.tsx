@@ -12,7 +12,7 @@ const Create = () => {
     <MainIndex
       title={t('mine.mineFinish')}
       type="finish"
-      subTitle={t('mine.finishDemand')}
+      subTitle={t('completedTasks')}
     />
   )
 }

@@ -10,12 +10,23 @@ import {
   HoverWrap,
   SelectWrap,
   DividerWrap,
+  TableActionWrap,
+  TableActionItem,
 } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { Menu, message, Form, Space, Checkbox, Tooltip, Table } from 'antd'
+import {
+  Menu,
+  message,
+  Form,
+  Space,
+  Checkbox,
+  Tooltip,
+  Table,
+  Popover,
+} from 'antd'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -38,6 +49,7 @@ import {
 } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateMember, setProjectInfo } from '@store/project'
+import { updateUserDepartment, updateUserPosition } from '@/services/department'
 import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
@@ -52,7 +64,12 @@ import { updateProjectRole } from '@/services/sprint'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
 import { confirmProjectHand, confirmProjectHandAll } from '@/services/handover'
-
+import { getAllDepartment, getAllPosition } from '@store/user/user.thunk'
+import UpdateUserDepartment from '@/components/UpdateUserDepartment'
+import UpdateUserPosition from '@/components/UpdateUserPosition'
+import BatchSetDepartment from './BatchSetDepartment'
+import BatchSetPosition from './BatchSetPosition'
+import { AnyAction } from '@reduxjs/toolkit'
 const Wrap = styled.div({
   padding: '24px 24px 0',
   display: 'flex',
@@ -79,7 +96,22 @@ const SearchWrap = styled(Space)({
   alignItems: 'center',
   flexWrap: 'wrap',
 })
-
+const MoreOperate = styled.div`
+  width: 112px;
+  color: var(--neutral-n2);
+  font-size: var(--font14);
+  padding-left: 16px;
+  box-sizing: border-box;
+  div {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+`
+const LabelText = styled.span`
+  margin-left: 8px;
+`
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -106,6 +138,7 @@ const ProjectMember = () => {
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const { userInfo } = useSelector(store => store.user)
+  const { language } = useSelector(store => store.global)
   const { projectInfo, isUpdateMember } = useSelector(store => store.project)
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const paramsData = getParamsData(searchParams)
@@ -119,6 +152,11 @@ const ProjectMember = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [batchEditVisible, setBatchEditVisible] = useState(false)
+  const [batchDepartmentVisible, setBatchDepartmentVisible] = useState(false)
+  const [batchPositionVisible, setBatchPositionVisible] = useState(false)
+  const [departments, setDepartments] = useState([])
+  const [member, setMember] = useState<any>()
+  const [popoverOpen, setPopoverOpen] = useState(false)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
@@ -180,6 +218,17 @@ const ProjectMember = () => {
     )
   }
 
+  useEffect(() => {
+    getJobList()
+    getPermission()
+    dispatch(getAllDepartment({ project_id: projectId }))
+    dispatch(getAllPosition({ project_id: projectId, is_all: 1 }))
+  }, [])
+
+  useEffect(() => {
+    getList(order, { ...pageObj, page: 1 })
+  }, [searchValue])
+
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
     getList(order, { page, size })
@@ -213,6 +262,8 @@ const ProjectMember = () => {
     setSearchValue('')
     setJobIds([])
     setUserGroupIds([])
+    form.resetFields()
+    getList(order, { page: 1, size: pageObj.size })
   }
 
   const menu = (item: any) => {
@@ -277,7 +328,28 @@ const ProjectMember = () => {
       navigate(`/ProjectDetail/MemberInfo/Carbon?data=${params}`)
     }
   }
-
+  // 更新部门
+  const _updateUserDepartment = async ({ data, record }: any) => {
+    const params = {
+      user_ids: selectedRowKeys.length ? selectedRowKeys : [record?.id],
+      department_id: data?.id,
+      project_id: projectId,
+    }
+    await updateUserDepartment(params)
+    setBatchDepartmentVisible(false)
+    getList(order, { page: 1, size: pageObj.size })
+  }
+  // 更新职务
+  const _updateUserPosition = async ({ data, record }: any) => {
+    const params = {
+      user_ids: selectedRowKeys.length ? selectedRowKeys : [record?.id],
+      id: data?.id,
+      project_id: projectId,
+    }
+    await updateUserPosition(params)
+    setBatchPositionVisible(false)
+    getList(order, { page: 1, size: pageObj.size })
+  }
   const onOperationCheckbox = (keys: number[]) => {
     const redClassElements = document.getElementsByClassName(
       'ant-checkbox-wrapper',
@@ -294,12 +366,42 @@ const ProjectMember = () => {
       }
     }
   }
-
   const onSelectChange = (keys: number[]) => {
     setSelectedRowKeys(keys)
     onOperationCheckbox(keys)
   }
 
+  // 权限
+  const hasPermission = (item: any, type: string) => {
+    let menuItems = [
+      {
+        key: '1',
+        name: t('common.edit'),
+      },
+      {
+        key: '2',
+        name: t('common.move'),
+      },
+    ]
+    if (hasEdit || item.is_super_admin === 1) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasDel || item.is_super_admin === 1) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    const hasUser = memberList?.list?.filter(
+      (i: any) => i.roleName === '管理员',
+    ).length
+
+    if (hasUser === 1 && item.roleName === '管理员') {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+    return menuItems?.filter((i: any) => i.key === type)?.length
+  }
+
+  // 新加操作移除和编辑，去掉点点
   const columns = [
     {
       title: (
@@ -363,8 +465,15 @@ const ProjectMember = () => {
       ),
       dataIndex: 'departmentName',
       width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any, index: number) => {
+        return (
+          <UpdateUserDepartment
+            roleName={text}
+            callBack={data => {
+              _updateUserDepartment({ data, record })
+            }}
+          />
+        )
       },
     },
     {
@@ -380,8 +489,15 @@ const ProjectMember = () => {
       ),
       dataIndex: 'positionName',
       width: 180,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <UpdateUserPosition
+            roleName={text}
+            callBack={data => {
+              _updateUserPosition({ data, record })
+            }}
+          />
+        )
       },
     },
     {
@@ -451,26 +567,61 @@ const ProjectMember = () => {
     {
       title: t('newlyAdd.operation'),
       dataIndex: 'action',
-      width: 120,
+      width: language === 'zh' ? 170 : 220,
       fixed: 'right',
       render: (text: string, record: any) => {
         return (
-          <>
-            {hasCheck ? (
-              '--'
-            ) : (
-              <span
-                onClick={() => onToDetail(record)}
-                style={{
-                  fontSize: 14,
-                  color: 'var(--primary-d2)',
-                  cursor: 'pointer',
+          <TableActionWrap>
+            <Tooltip
+              title={hasCheck ? t('viewPermissionIsRequiredToOperate') : null}
+            >
+              <TableActionItem
+                isDisable={hasCheck}
+                onClick={() => {
+                  hasCheck ? void 0 : onToDetail(record)
                 }}
               >
                 {t('project.checkInfo')}
-              </span>
-            )}
-          </>
+              </TableActionItem>
+            </Tooltip>
+
+            <Tooltip
+              title={
+                hasPermission(record, '1')
+                  ? null
+                  : t('editingPermissionIsRequiredToOperate')
+              }
+            >
+              <TableActionItem
+                isDisable={!hasPermission(record, '1')}
+                onClick={() => {
+                  hasPermission(record, '1')
+                    ? onOperationMember(record, 'edit')
+                    : void 0
+                }}
+              >
+                {t('common.edit')}
+              </TableActionItem>
+            </Tooltip>
+            <Tooltip
+              title={
+                hasPermission(record, '2')
+                  ? null
+                  : t('needToHaveRemovalPermissionToOperate')
+              }
+            >
+              <TableActionItem
+                isDisable={!hasPermission(record, '2')}
+                onClick={() => {
+                  hasPermission(record, '2')
+                    ? onOperationMember(record, 'del')
+                    : void 0
+                }}
+              >
+                {t('common.move')}
+              </TableActionItem>
+            </Tooltip>
+          </TableActionWrap>
         )
       },
     },
@@ -492,20 +643,8 @@ const ProjectMember = () => {
   }
 
   const selectColumns: any = useMemo(() => {
-    const initColumns = [
-      {
-        width: 40,
-        render: (text: string, record: any) => {
-          // 超管不允许编辑权限
-          return (hasDel && hasEdit) || record.is_super_admin === 1 ? null : (
-            <MoreDropdown menu={menu(record)} />
-          )
-        },
-      },
-    ]
-    initColumns.push(Table.SELECTION_COLUMN as any)
-    return [...initColumns, ...columns]
-  }, [columns])
+    return [...columns]
+  }, [columns, language])
 
   const onChangeUpdate = () => {
     setOperationItem({})
@@ -517,6 +656,34 @@ const ProjectMember = () => {
     setIsAddVisible(!isAddVisible)
   }
 
+  const init = async () => {
+    const res2 = await getAddDepartMember(projectId)
+    const arr = res2.companyList.map((i: any) => {
+      return {
+        id: i.id,
+        code: '234234',
+        name: i.name,
+        avatar: i.avatar,
+        phoneNumber: '123123213',
+        departmentId: i.department_id,
+        jobName: '',
+        jobId: '1584818157136687105',
+        cardType: '',
+        cardNumber: '',
+        hiredate: '2022-11-26',
+        type: 1,
+        gender: 0,
+        companyId: '1504303190303051778',
+      }
+    })
+
+    const obj = {
+      list: arr,
+    }
+    setMember(obj)
+
+    setDepartments(res2.departments)
+  }
   const onClickCancel = () => {
     setIsAddVisible(false)
   }
@@ -615,7 +782,42 @@ const ProjectMember = () => {
   // 判断是否详情回来，并且权限是不是有
   const isLength =
     projectInfo?.id && projectInfo?.projectPermissions?.length <= 0
-
+  const content = (
+    <MoreOperate>
+      <div>
+        <CommonIconFont type="position"></CommonIconFont>
+        <LabelText
+          onClick={() => {
+            const params = encryptPhp(
+              JSON.stringify({
+                id: projectId,
+                type: 'department',
+              }),
+            )
+            navigate(`/ProjectDetail/Position?data=${params}`)
+          }}
+        >
+          职位设置
+        </LabelText>
+      </div>
+      <div>
+        <CommonIconFont type="apartment02"></CommonIconFont>
+        <LabelText
+          onClick={() => {
+            const params = encryptPhp(
+              JSON.stringify({
+                id: projectId,
+                type: 'department',
+              }),
+            )
+            navigate(`/ProjectDetail/Department?data=${params}`)
+          }}
+        >
+          部门设置
+        </LabelText>
+      </div>
+    </MoreOperate>
+  )
   return (
     <PermissionWrap
       auth="b/project/member"
@@ -644,6 +846,28 @@ const ProjectMember = () => {
           projectId={projectId}
           onConfirm={onConfirmBatchEdit}
         />
+        <BatchSetDepartment
+          isVisible={batchDepartmentVisible}
+          onClose={() => {
+            setBatchDepartmentVisible(false)
+          }}
+          projectState
+          projectId={projectId}
+          onConfirm={id => {
+            _updateUserDepartment({ data: { id: id } })
+          }}
+        />
+        <BatchSetPosition
+          isVisible={batchPositionVisible}
+          onClose={() => {
+            setBatchPositionVisible(false)
+          }}
+          projectState
+          projectId={projectId}
+          onConfirm={id => {
+            _updateUserPosition({ data: { id: id } })
+          }}
+        />
         <DeleteConfirmModal />
         <NewAddUserModalForTandD
           isPermisGroup
@@ -661,47 +885,47 @@ const ProjectMember = () => {
           open={selectedRowKeys.length > 0}
           onCancel={() => setSelectedRowKeys([])}
         >
-          <Tooltip
-            placement="top"
-            getPopupContainer={node => node}
-            title={t('common.permissionGroup')}
+          <div
+            className={boxItem}
+            onClick={() => setBatchPositionVisible(true)}
           >
-            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
-              <IconFont type="lock" />
-            </div>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            getPopupContainer={node => node}
-            title={t('removeProjectMembersInBatches')}
+            职位
+          </div>
+          <div
+            className={boxItem}
+            onClick={() => setBatchDepartmentVisible(true)}
           >
-            <div
-              className={boxItem}
-              onClick={() =>
-                open({
-                  title: t('removeEmployee'),
-                  text: t(
-                    'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
-                  ),
-                  async onConfirm() {
-                    await confirmProjectHandAll({
-                      id: selectedRowKeys,
-                      project_id: projectId,
-                    })
-                    getList(order, { ...pageObj, page: 1 })
-                    getMessage({
-                      msg: t('removedSuccessfully'),
-                      type: 'success',
-                    })
+            部门
+          </div>
+          <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
+            权限
+          </div>
+          <div
+            className={boxItem}
+            onClick={() =>
+              open({
+                title: t('removeEmployee'),
+                text: t(
+                  'areYouSureYouWantToRemoveTheSelectedTheRemovedEmployeeWillNoLongerHaveAccessToTheButHistoryWillIfYouNeedToModifyTheTaskRecordsRelatedToAnPleaseMakeChangesUnderTheCorresponding',
+                ),
+                async onConfirm() {
+                  await confirmProjectHandAll({
+                    id: selectedRowKeys,
+                    project_id: projectId,
+                  })
+                  getList(order, { ...pageObj, page: 1 })
+                  getMessage({
+                    msg: t('removedSuccessfully'),
+                    type: 'success',
+                  })
 
-                    return Promise.resolve()
-                  },
-                })
-              }
-            >
-              <IconFont type="delete" />
-            </div>
-          </Tooltip>
+                  return Promise.resolve()
+                },
+              })
+            }
+          >
+            移除
+          </div>
         </BatchAction>
 
         <Header>
@@ -760,7 +984,7 @@ const ProjectMember = () => {
               }}
               onClick={onReset}
             >
-              {t('common.clearForm')}
+              {t('reset')}
             </div>
           </SearchWrap>
           <Space size={16}>
@@ -769,6 +993,23 @@ const ProjectMember = () => {
               icon="sync"
               onClick={refresh}
             />
+            <Popover
+              content={content}
+              placement="bottom"
+              onOpenChange={open => {
+                setPopoverOpen(open)
+              }}
+            >
+              <div>
+                <CommonButton
+                  type="light"
+                  icon={popoverOpen ? 'up' : 'down'}
+                  iconPlacement="right"
+                >
+                  更多操作
+                </CommonButton>
+              </div>
+            </Popover>
             {!hasAdd && (
               <CommonButton
                 type="primary"

@@ -18,7 +18,7 @@ const Finish = () => {
     <MainIndex
       title={t('newlyAdd.hisFinish')}
       type="finish"
-      subTitle={t('mine.finishDemand')}
+      subTitle={t('completedTasks')}
     />
   )
 }

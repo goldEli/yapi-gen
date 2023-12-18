@@ -18,8 +18,8 @@ const batchBox = css`
   display: flex;
   align-items: center;
   padding: 0 32px;
-  height: 64px;
-  border-radius: 16px;
+  height: 52px;
+  border-radius: 8px;
   background: rgba(4, 4, 4, 0.6);
   width: fit-content;
 `
@@ -28,12 +28,11 @@ export const boxItem = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 12px;
-  width: 52px;
-  height: 52px;
+  align-items: center;
+  padding: 4px 12px;
   cursor: pointer;
   color: white;
-  border-radius: 12px;
+  border-radius: 4px;
   div {
     font-size: 12px;
     font-weight: 400;

@@ -1,34 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable react/jsx-no-useless-fragment */
-// 我的模块-所有页面公用列表及查询
-
-/* eslint-disable camelcase */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable complexity */
 /* eslint-disable no-undefined */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable react-hooks/exhaustive-deps */
+// 我的模块-所有页面公用列表及查询
 import { useEffect, useMemo, useState } from 'react'
 import {
-  TabsItem,
-  LabNumber,
-  ShowWrap,
-  HoverWrap,
   DividerWrap,
   HasIconMenu,
+  TableActionWrap,
+  TableActionItem,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Checkbox, Menu, message, Space, Spin, Table } from 'antd'
+import { Checkbox, Menu, Space, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/TableColumns/MineOrHisTableColumn'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import TableFilter from '@/components/TableFilter'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
-import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
 import InputSearch from '@/components/InputSearch'
 import { useDispatch, useSelector } from '@store/index'
@@ -50,7 +37,6 @@ import {
 } from '@store/project'
 import { deleteDemand } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
@@ -66,9 +52,10 @@ import {
   updateFlawPriority,
   updateFlawStatus,
 } from '@/services/flaw'
-import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
-import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import TableMoreDropdown from '@/components/TableMoreDropdown'
+import { getIsPermission } from '@/tools'
+import CommonProgress from '@/components/CommonProgress'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -98,13 +85,26 @@ const SearchWrap = styled.div({
   justifyContent: 'flex-end',
 })
 
+const LabelBox = styled.div`
+  height: 32px;
+  border-radius: 4px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--neutral-white-d1);
+  font-family: SiYuanMedium;
+  background: var(--neutral-n2);
+  margin-left: 24px;
+`
+
 interface MoreWrapProps {
   record: any
-  onShowDel(record: any): void
   isAllProject?: boolean
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
+  console.log(props, 'props')
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const dispatch = useDispatch()
@@ -128,12 +128,6 @@ const MoreWrap = (props: MoreWrapProps) => {
         },
       }),
     )
-  }
-
-  // 点击删除
-  const onDeleteChange = (item: any) => {
-    setIsMoreVisible(false)
-    props.onShowDel(props.record)
   }
 
   // 点击创建子需求
@@ -169,78 +163,15 @@ const MoreWrap = (props: MoreWrapProps) => {
     )
   }
 
-  const onComputed = () => {
-    let isEdit: boolean
-    let isDelete: boolean
-    if (props?.record?.project_type === 1) {
-      isEdit = Object.values(props?.record?.project?.permissions).includes(
-        'b/story/update',
-      )
-      isDelete = Object.values(props?.record?.project?.permissions).includes(
-        'b/story/delete',
-      )
-    } else if (
-      props?.record?.project_type === 2 &&
-      props?.record?.is_bug === 1
-    ) {
-      isEdit = Object.values(props?.record?.project?.permissions).includes(
-        'b/flaw/update',
-      )
-      isDelete = Object.values(props?.record?.project?.permissions).includes(
-        'b/flaw/delete',
-      )
-    } else {
-      isEdit = Object.values(props?.record?.project?.permissions).includes(
-        'b/transaction/update',
-      )
-      isDelete = Object.values(props?.record?.project?.permissions).includes(
-        'b/transaction/delete',
-      )
-    }
-    return isEdit || isDelete
-  }
-
   return (
-    <>
-      {onComputed() && (
-        <MoreDropdown
-          isMoreVisible={isMoreVisible}
-          onChangeVisible={setIsMoreVisible}
-          menu={
-            <>
-              {props?.record?.project_type === 1 && (
-                <DemandOperationDropdownMenu
-                  onEditChange={onEditChange}
-                  onDeleteChange={onDeleteChange}
-                  onCreateChild={onCreateChild}
-                  record={props?.record}
-                  isAllProject={props.isAllProject}
-                />
-              )}
-              {props?.record?.project_type === 2 &&
-                props.record?.is_bug === 1 && (
-                  <DefectDropdownMenu
-                    onEditChange={onEditChange}
-                    onDeleteChange={onDeleteChange}
-                    record={props?.record}
-                    isAllProject={props.isAllProject}
-                  />
-                )}
-              {props?.record?.project_type === 2 &&
-                props.record?.is_bug !== 1 && (
-                  <SprintDropdownMenu
-                    onEditChange={onEditChange}
-                    onDeleteChange={onDeleteChange}
-                    onCreateChild={onCreateChild}
-                    record={props?.record}
-                    isAllProject={props.isAllProject}
-                  />
-                )}
-            </>
-          }
-        />
-      )}
-    </>
+    <TableMoreDropdown
+      isMoreVisible={isMoreVisible}
+      onChangeVisible={setIsMoreVisible}
+      isAllProject={props.isAllProject}
+      record={props?.record}
+      onEditChange={onEditChange}
+      onCreateChild={onCreateChild}
+    />
   )
 }
 
@@ -249,15 +180,12 @@ const CommonNeed = (props: any) => {
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-  const { isRefresh } = useSelector(store => store.user)
+  const { isRefresh, userInfo } = useSelector(store => store.user)
   const { isUpdateCreate } = useSelector(store => store.mine)
   const { projectInfo, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
-  const [isDelVisible, setIsDelVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)
-  const [operationItem, setOperationItem] = useState<any>({})
-  const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
@@ -442,13 +370,10 @@ const CommonNeed = (props: any) => {
 
     await currentType.url(params)
     getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
-    setIsDelVisible(false)
     init()
   }
 
   const showDel = (record: any) => {
-    setProjectId(record.project_id)
-    setOperationItem(record)
     let checked = [4, 5].includes(record.work_type)
       ? [4, 5].includes(record.work_type)
       : false
@@ -548,6 +473,23 @@ const CommonNeed = (props: any) => {
     projectType: projectInfo.projectType,
   })
 
+  // 计算进度和删除是否有权限
+  const onComputedPermission = (record: any, type: string) => {
+    const urls = ['b/story', 'b/flaw', 'b/transaction']
+    const idx =
+      record?.project_type === 2
+        ? 2
+        : record?.project_type === 1 && record?.is_bug === 1
+        ? 1
+        : 0
+    // id存在则是具体项目下
+    return props.id
+      ? getIsPermission(projectInfo?.projectPermissions, `${urls[idx]}/${type}`)
+      : !Object.values(record?.project?.permissions)?.includes(
+          `${urls[idx]}/${type}`,
+        ) || false
+  }
+
   const selectColum: any = useMemo(() => {
     const arr = allTitleList
     const newList = []
@@ -560,14 +502,57 @@ const CommonNeed = (props: any) => {
     }
     const arrList = [
       {
-        width: 40,
+        width: 180,
+        title: t('operate'),
+        fixed: 'right',
         render: (text: any, record: any) => {
+          // 是否有更新进度的权限
+          const hasUpdateProgress =
+            !onComputedPermission(record, 'update') &&
+            record?.usersInfo?.length > 0 &&
+            record?.usersInfo?.map((i: any) => i.id)?.includes(userInfo?.id)
           return (
-            <MoreWrap
-              record={record}
-              onShowDel={showDel}
-              isAllProject={!props.id}
-            />
+            <TableActionWrap>
+              <Tooltip
+                title={hasUpdateProgress ? null : t('updateProgressToast')}
+              >
+                <TableActionItem isDisable={!hasUpdateProgress}>
+                  <CommonProgress
+                    isTableOperation
+                    isTable={false}
+                    id={record.id}
+                    type={
+                      record?.project_type === 2
+                        ? 'transaction'
+                        : record?.project_type === 1 && record?.is_bug === 1
+                        ? 'flaw'
+                        : 'demand'
+                    }
+                    hasEdit={!hasUpdateProgress}
+                    project_id={record?.project_id as any}
+                    onConfirm={init}
+                  />
+                </TableActionItem>
+              </Tooltip>
+              <Tooltip
+                title={
+                  onComputedPermission(record, 'delete')
+                    ? t('deleteTableToast')
+                    : null
+                }
+              >
+                <TableActionItem
+                  isDisable={onComputedPermission(record, 'delete')}
+                  onClick={() => showDel(record)}
+                >
+                  {t('common.del')}
+                </TableActionItem>
+              </Tooltip>
+
+              <TableActionItem>
+                <MoreWrap record={record} isAllProject={!props.id} />
+              </TableActionItem>
+            </TableActionWrap>
           )
         },
       },
@@ -577,7 +562,7 @@ const CommonNeed = (props: any) => {
       const index = newList.findIndex((i: any) => i.key === 'iterate_name')
       newList.splice(index, 1)
     }
-    return [...arrList, ...newList]
+    return [...newList, ...arrList]
   }, [titleList, columns])
 
   const getSearchKey = async (key?: any, type?: number) => {
@@ -728,10 +713,9 @@ const CommonNeed = (props: any) => {
       <DeleteConfirmModal />
       <div
         style={{
-          margin: `0 24px ${isShowSearch ? 0 : 16}px 24px`,
+          margin: `20px 24px ${isShowSearch ? 0 : 16}px 24px`,
           justifyContent: 'space-between',
           display: 'flex',
-          borderBottom: '1px solid var(--neutral-n6-d1)',
         }}
       >
         <div
@@ -740,18 +724,6 @@ const CommonNeed = (props: any) => {
             alignItems: 'center',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginRight: 24,
-            }}
-          >
-            <TabsItem isActive>
-              <div>{props?.subTitle}</div>
-            </TabsItem>
-            <LabNumber isActive>{total ?? 0}</LabNumber>
-          </div>
           <InputSearch
             placeholder={t('searchForRequirementNameOrNumber')}
             onChangeSearch={onPressEnter}
@@ -759,6 +731,9 @@ const CommonNeed = (props: any) => {
             defaultValue={keyword}
             width={184}
           />
+          <LabelBox>
+            {props?.subTitle}（{total ?? 0}）
+          </LabelBox>
         </div>
 
         <SearchWrap>
@@ -783,15 +758,12 @@ const CommonNeed = (props: any) => {
             )}
 
             {props.id !== 0 && (
-              <>
-                {/* <DividerWrap type="vertical" /> */}
-                <ScreenMinHover
-                  label={t('common.search')}
-                  icon="filter"
-                  onClick={() => setIsShowSearch(!isShowSearch)}
-                  isActive={isShowSearch}
-                />
-              </>
+              <ScreenMinHover
+                label={t('common.search')}
+                icon="filter"
+                onClick={() => setIsShowSearch(!isShowSearch)}
+                isActive={isShowSearch}
+              />
             )}
 
             {(props.id !== 0 || props.type === 'abeyance') && (

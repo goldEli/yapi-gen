@@ -91,6 +91,7 @@ export const HeaderWrap = styled.div`
 export const HeaderSearch = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
   padding-bottom: 20px;
   flex-wrap: wrap;
@@ -210,8 +211,6 @@ export const DepartCheckboxAll = styled(Checkbox)`
   font-family: SiYuanMedium;
 `
 export const CheckBoxWrap = styled.div`
-  height: calc(100% - 118px);
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   padding-right: 20px;

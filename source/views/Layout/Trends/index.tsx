@@ -1,5 +1,8 @@
 import CommonButton from '@/components/CommonButton'
-import { HaveTabsContentWrap } from '@/components/StyleCommon'
+import {
+  HaveTabsContentWrap,
+  TabsBarExtraButton,
+} from '@/components/StyleCommon'
 import TabsContent from '@/components/TabsContent'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,8 +11,24 @@ import SiteSettingDrawer from './components/SiteSettingDrawer'
 import { TabTitleWrap } from '../style'
 import NotFound from '@/components/ErrorPage/404'
 
+import CommonIconFont from '@/components/CommonIconFont'
+import styled from '@emotion/styled'
+import { Space } from 'antd'
+import { useDispatch } from '@store/index'
+import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
+
+const IconWrap = styled.span`
+  /* color: var(--neutral-n2); */
+  font-size: var(--font14);
+  display: flex;
+  align-items: center;
+  .anticon {
+    margin-right: 4px;
+  }
+`
 const Trends = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const routerPath = useLocation()
   const [activeKey, setActiveKey] = useState('')

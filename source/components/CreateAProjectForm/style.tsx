@@ -2,12 +2,11 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 
 export const FormFooter = styled.div`
-  position: absolute;
-  bottom: -60px;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 16px;
-  right: 0;
+  margin-top: 24px;
 `
 
 export const Wrap = styled.div`
@@ -22,7 +21,6 @@ export const CoverAreaWrap = styled.div`
   box-sizing: content-box;
   width: 368px;
   padding-right: 24px;
-  /* border-right: 1px solid var(--neutral-n6-d2); */
 `
 
 export const CoverArea = styled.div`
@@ -56,7 +54,6 @@ export const CoverAreaImageShade = styled.div`
   width: 80px;
   height: 80px;
   background: rgba(0, 0, 0, 0.3);
-  /* background: red; */
   border-radius: 6px 6px 6px 6px;
   position: absolute;
   left: 0;

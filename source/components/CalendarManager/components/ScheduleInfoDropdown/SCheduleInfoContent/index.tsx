@@ -14,8 +14,6 @@ import {
   PersonList,
   PersonItem,
   FileList,
-  FileItem,
-  FileItemInfo,
 } from '../styles'
 const toggleDropUp = css`
   max-height: 0;

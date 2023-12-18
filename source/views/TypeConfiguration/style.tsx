@@ -77,21 +77,22 @@ export const MenuItem = styled.div<{ isActive?: boolean }>`
   height: 44px;
   display: flex;
   align-items: center;
-  padding: 0 24px;
+  padding-left: 8px;
+  border-radius: 4px;
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   cursor: pointer;
   white-space: nowrap;
   div {
-    margin-left: 12px;
+    margin-left: 8px;
   }
   svg {
     color: ${props =>
-      props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
+      props.isActive ? 'var(--selected)' : 'var(--neutral-n1-d2)'};
   }
-  background: ${props =>
-    props.isActive ? 'var(--gradient-left)' : 'transparent'};
+  background: ${props => (props.isActive ? 'var(--selected)' : 'transparent')};
   &:hover {
+    background: var(--hover-d1);
     svg {
       color: var(--primary-d2) !important;
     }
@@ -231,11 +232,12 @@ export const AffairTypeWrap = styled.div`
   margin-top: 16px;
 `
 export const AffairTypeHeader = styled.div`
+  width: 100%;
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 16px;
+  padding: 0px 24px;
   margin-bottom: 4px;
   > span {
     padding: 2px;
@@ -251,8 +253,10 @@ export const AffairTypeList = styled.div`
   cursor: pointer;
 `
 export const AffairTypeText = styled.div`
+  width: calc(100% - 20px);
   font-size: var(--font12);
   color: var(--neutral-n3);
   margin-left: 8px;
-  display: inline-block;
+  display: flex;
+  flex-wrap: nowrap;
 `

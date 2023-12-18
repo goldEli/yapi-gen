@@ -74,7 +74,7 @@ const BtnHeader = styled.div`
 const MenuItems = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  padding: '0 16px',
+  paddingRight: '8px',
   height: 'calc(100% - 28px)',
   overflow: 'scroll',
 })
@@ -90,6 +90,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     boxSizing: 'border-box',
     position: 'relative',
     margin: 0,
+    borderRadius: 4,
     '.dropdownIcon': {
       position: 'absolute',
       right: 0,
@@ -97,7 +98,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     '.name': {
       width: '100%',
       textAlign: 'left',
-      paddingLeft: '24px',
+      paddingLeft: '12px',
       fontSize: 14,
       color: 'var(--neutral-n1-d2)',
       fontWeight: 400,
@@ -111,19 +112,17 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       fontWeight: 400,
     },
     '&:hover': {
-      background:
-        'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)',
+      background: 'var(--hover-d1)',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
   },
   ({ isActive }) => ({
-    background: isActive
-      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
-      : 'transparent',
+    background: isActive ? 'var(--selected) !important' : 'transparent',
     '.name': {
       color: isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
+      fontFamily: isActive ? 'SiYuanMedium' : '',
     },
   }),
 )
@@ -148,7 +147,6 @@ const MainWrapItem = styled.div({
   borderBottom: '1px solid var(--neutral-n6-d1)',
   padding: '24px 0',
   display: 'flex',
-
   '.ant-checkbox-wrapper': {
     margin: '0 !important',
   },
@@ -515,6 +513,7 @@ const ProjectSet = () => {
                         <span
                           style={{
                             width: '168px',
+                            fontFamily: 'SiYuanMedium',
                           }}
                         >
                           {i.note}
