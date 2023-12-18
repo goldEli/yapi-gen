@@ -21,7 +21,7 @@ import { getRecentProject, getReportViewLogList } from '@/services/project'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 const GroupItems = (props: any) => {
-  const { row, onOpenExamine, onClickItem, tabActive } = props
+  const { row, onOpenExamine, onClickItem, tabActive, onCancel } = props
   const [page, setPage] = useState(1)
   // 加载更多的loading
   const [moreLoading, setMoreLoading] = useState(false)
@@ -37,7 +37,7 @@ const GroupItems = (props: any) => {
   }
   // 日报-点击跳转详情
   const onClickReport = async (item: any) => {
-    // props.onClose()
+    onCancel()
     navigate('/Report/Review/List/1')
     dispatch(
       saveViewReportDetailDrawer({
@@ -81,7 +81,7 @@ const GroupItems = (props: any) => {
   )
 }
 
-const AssignTask = () => {
+const AssignTask = (props: { onCancel(): void }) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -130,6 +130,7 @@ const AssignTask = () => {
   }
   // 点击跳转详情
   const onClickItem = async (row: any) => {
+    props.onCancel()
     // dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({
@@ -214,6 +215,7 @@ const AssignTask = () => {
                       onOpenExamine={onOpenExamine}
                       onClickItem={onClickItem}
                       tabActive={1}
+                      onCancel={props.onCancel}
                     />
                   </ItemWrap>
                 ))
