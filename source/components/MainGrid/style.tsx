@@ -3,15 +3,37 @@ import styled from '@emotion/styled'
 import { Space } from 'antd'
 
 const SpaceWrap = styled.div`
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(auto-fill, 280px); //自动填充，每个单元270
   grid-gap: 24px; //间距10
   justify-content: center;
+  border: 1px solid;
+  height: 100%; */
+  display: flex;
+  flex-wrap: wrap;
+`
+export const ScrollBox = styled.div`
+  /* border: 1px solid red; */
+  height: calc(100% - 20px);
+  overflow-y: scroll;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin: auto;
+  /* width: calc(100% - 120px); */
+  /* margin-left: 72px; */
+  .infinite-scroll-component__outerdiv {
+    width: 100%;
+  }
+  .infinite-scroll-component {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 24px;
+  }
 `
 const SpaceWrapItem = styled.div`
-  /* width: 100px; height:100px; */
-  /* background-color: skyblue; */
-  /* margin: 10px; */
+  width: calc(16% - 10px);
+  /* border: 1px solid blue; */
 `
 
 const AddProject = styled.div({

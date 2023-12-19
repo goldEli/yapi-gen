@@ -25,6 +25,7 @@ import CommonButton from '../CommonButton'
 import { Tags } from '../ProjectCard/style'
 import DragTable from '../DragTable'
 import MultipleAvatar from '../MultipleAvatar'
+import ProjectClasss from './ProjectClass'
 import CommonIconFont from '../CommonIconFont'
 
 interface Props {
@@ -200,6 +201,7 @@ const MainTable = (props: Props) => {
               display: 'flex',
               alignItems: 'center',
             }}
+            className="td"
           >
             <ImgWrap url={record.cover} />
             {record.project_type === 1 ? (
@@ -295,6 +297,27 @@ const MainTable = (props: Props) => {
         return <span>{text || '--'}</span>
       },
     },
+    // {
+    //   title: (
+    //     <NewSort
+    //       fixedKey="projectCategory"
+    //       nowKey={props.order.key}
+    //       order={props.order.value}
+    //       onUpdateOrderKey={onUpdateOrderKey}
+    //     >
+    //       项目分类
+    //     </NewSort>
+    //   ),
+    //   dataIndex: 'projectCategory',
+    //   width: 120,
+    //   render: (text: string) => {
+    //     return (
+    //       <ProjectClasss category={text} callBack={(data) => {
+    //         console.log('data', data)
+    //       }}></ProjectClasss>
+    //     )
+    //   },
+    // },
     {
       title: (
         <NewSort
@@ -373,13 +396,25 @@ const MainTable = (props: Props) => {
 
   const onTableRow = useCallback((row: any) => {
     return {
-      onClick: () => {
+      onClick: (event: any) => {
+        const { target } = event
+        const columnIndex = Array.from(target.parentNode.children).indexOf(
+          target,
+        )
+        const column = columns[columnIndex]
+        if (
+          column?.dataIndex === 'projectCategory' ||
+          target.className.includes('project_category') ||
+          target.className.includes('project_category_activity')
+        ) {
+          return
+        }
+        console.log('Clicked column:', column, target.className)
         const params = encryptPhp(
           JSON.stringify({
             id: row.id,
           }),
         )
-
         navigate(
           `${
             row.defaultHomeMenu

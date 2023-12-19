@@ -49,3 +49,12 @@ export const getWarningConfigInfo = createAsyncThunk(
     return res
   },
 )
+
+// 获取项目分类
+export const getProjectCatrgory = createAsyncThunk(
+  `${name}/getProjectCatrgory`,
+  async (params: any) => {
+    const res = await services.project.getProjectCatrgory(params)
+    return res?.data
+  },
+)

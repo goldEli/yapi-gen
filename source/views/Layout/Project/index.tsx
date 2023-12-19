@@ -19,6 +19,7 @@ import {
 } from '@/services/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ActionTabs from './components/ActionTabs'
+import { getProjectCatrgory } from '@store/project/project.thunk'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const ProjectIndex = () => {
@@ -51,7 +52,6 @@ const ProjectIndex = () => {
 
   // 获取数据
   const getList = async (params: any, notSpin?: boolean) => {
-    setIsSpinning(!notSpin)
     const paramsObj: any = {
       searchValue: params?.keyword,
       orderKey: params?.order?.key,
@@ -61,12 +61,14 @@ const ProjectIndex = () => {
     if (params?.isGrid === 1) {
       paramsObj.all = true
     } else {
+      setIsSpinning(!notSpin)
+
       paramsObj.page = params.pageObj.page
       paramsObj.pageSize = params.pageObj.size
+      const result = await getProjectList(paramsObj)
+      setDataList(result)
+      setIsSpinning(false)
     }
-    const result = await getProjectList(paramsObj)
-    setDataList(result)
-    setIsSpinning(false)
   }
 
   //   筛选条件变化后更新数据 或者是 刷新
@@ -181,7 +183,9 @@ const ProjectIndex = () => {
       getList(filterParams, false)
     }
   }, [isUpdateProject])
-
+  useEffect(() => {
+    dispatch(getProjectCatrgory({}))
+  }, [])
   const onChangeTabs = (key: number) => {
     setActiveKey(key)
   }
