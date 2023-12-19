@@ -22,9 +22,11 @@ const urls = {
   getProjectMember: '/b/project/member/getList',
   addProjectMember: '/b/project/member/save',
   updateMember: '/b/project/member/update',
+  // 获取项目分类
+  getProjectPermission: '/b/project/role',
   batchUpdateMember: '/b/project/member/update_batch',
   deleteMember: '/b/project/member/delete',
-  getProjectPermission: '/b/project/role',
+  getProjectCatrgory: '/b/project/list/category',
   addPermission: '/b/project/role',
   getPermission: '/b/project/role_get_project_permission',
   setPermission: '/b/project/role_set_project_permission',
