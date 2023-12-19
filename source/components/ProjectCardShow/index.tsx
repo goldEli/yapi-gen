@@ -21,10 +21,10 @@ type Props = {
 }
 
 const Index = (props: any) => {
+  console.log(props,'props')
   return (
     <ProjectCard>
       <Image src={props.img} />
-
       <CardRight>
         <Tooltip
           arrowPointAtCenter
