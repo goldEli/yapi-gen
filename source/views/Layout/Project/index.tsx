@@ -20,6 +20,7 @@ import {
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ActionTabs from './components/ActionTabs'
 import { getProjectCatrgory } from '@store/project/project.thunk'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const ProjectIndex = () => {
   const [t] = useTranslation()
@@ -46,7 +47,8 @@ const ProjectIndex = () => {
     order: { value: '', key: '' },
     isGrid: 0,
   })
-  const [activeKey, setActiveKey] = useState('1')
+  const [activeKey, setActiveKey] = useState(1)
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
 
   // 获取数据
   const getList = async (params: any, notSpin?: boolean) => {
@@ -184,8 +186,13 @@ const ProjectIndex = () => {
   useEffect(() => {
     dispatch(getProjectCatrgory({}))
   }, [])
-  const onChangeTabs = (key: string) => {
+  const onChangeTabs = (key: number) => {
     setActiveKey(key)
+  }
+
+  // 关注与取消关注 type：1 是关注，0是取消关注
+  const onChangeStar = (type: number, row: any) => {
+    //
   }
 
   const tabsHtml = () => {
@@ -202,6 +209,7 @@ const ProjectIndex = () => {
               <MainGrid
                 onChangeOperation={onChangeOperation}
                 onAddClick={onAddClick}
+                onChangeStar={onChangeStar}
                 hasFilter={
                   filterParams?.keyword?.length > 0 || filterParams?.status > 0
                 }
@@ -220,6 +228,7 @@ const ProjectIndex = () => {
                 projectList={dataList}
                 onChangeProjectList={onDragDataList}
                 filterParams={filterParams}
+                onChangeStar={onChangeStar}
               />
             )}
           </Spin>
@@ -254,12 +263,32 @@ const ProjectIndex = () => {
       <ActionTabs
         activeKey={activeKey}
         onChange={onChangeTabs}
+        open={open}
         items={[
-          { label: '所有项目', key: '1', children: tabsHtml() },
-          { label: '我关注的', key: '2', children: tabsHtml() },
-          { label: '游戏项目', key: '3', children: tabsHtml() },
+          { label: '所有项目', id: 1, children: tabsHtml() },
+          { label: '我关注的', id: 2, children: tabsHtml() },
+          { label: '游戏项目', id: 3, children: tabsHtml() },
+          { label: '所有项目', id: 4, children: tabsHtml() },
+          { label: '我关注的', id: 5, children: tabsHtml() },
+          { label: '游戏项目', id: 6, children: tabsHtml() },
+          { label: '所有项目', id: 7, children: tabsHtml() },
+          { label: '我关注的', id: 8, children: tabsHtml() },
+          { label: '游戏项目游戏项目游戏项目', id: 9, children: tabsHtml() },
+          { label: '所有项目', id: 10, children: tabsHtml() },
+          { label: '所有项目', id: 11, children: tabsHtml() },
+          {
+            label: '所有项目所有项目所有项目所有项目所有项目',
+            id: 12,
+            children: tabsHtml(),
+          },
+          {
+            label: '所有项目所有项目所有项目所有项目所有项目',
+            id: 13,
+            children: tabsHtml(),
+          },
         ]}
       />
+      <DeleteConfirmModal />
     </ProjectIndexWrap>
   )
 }

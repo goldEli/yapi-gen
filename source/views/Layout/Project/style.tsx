@@ -39,20 +39,15 @@ export const StatusItems = styled.div<{ isActive?: boolean }>`
   line-height: 32px;
   border-radius: 4px;
   padding: 0 8px;
-  border: ${props =>
-    props.isActive
-      ? '1px solid var(--neutral-n2)!important'
-      : '1px solid var(--neutral-n5)'};
   font-size: 14px;
   color: ${props =>
-    props.isActive ? 'var(--neutral-white-d1)!important' : 'var(--neutral-n2)'};
+    props.isActive ? 'var(--primary-d2)!important' : 'var(--neutral-n2)'};
   background: ${props =>
-    props.isActive ? 'var(--neutral-n2)!important' : 'transparent'};
+    props.isActive ? 'var(--selected)!important' : 'var(--neutral-n7)'};
   cursor: pointer;
   &:hover {
-    background-color: #ebedf0;
-    border: 1px solid #ebedf0;
-    color: var(--neutral-n1-d1);
+    background: var(--neutral-n7);
+    color: var(--primary-d2);
   }
 `
 
@@ -116,6 +111,7 @@ export const ActionTabsWrap = styled.div`
 `
 
 export const ActionTabsMenuWrap = styled.div`
+  width: 100%;
   display: flex;
   background-color: #f0f0f5;
   height: 66px;
@@ -147,6 +143,10 @@ export const TabMenuItem = styled.div<{
     color: var(--neutral-n1-d1);
     font-family: SiYuanMedium;
     font-size: 14px;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
   .number {
     color: var(--neutral-n2);
@@ -156,4 +156,86 @@ export const TabMenuItem = styled.div<{
 
 export const ActionTabsContent = styled.div`
   height: calc(100% - 118px);
+`
+
+export const MoreButton = styled.div`
+  width: 40px;
+  height: 40px;
+  &:hover {
+    background: var(--neutral-n9);
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    svg {
+      color: var(--primary-d2);
+    }
+  }
+  border-radius: 20px 20px 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 7px;
+`
+
+export const AddItemModal = styled.div`
+  width: 320px;
+  background: var(--neutral-white-d5);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  padding: 24px;
+  box-sizing: border-box;
+  .titles {
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+    font-size: 14px;
+    user-select: none;
+  }
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+`
+
+export const MoreItemModal = styled.div`
+  width: 180px;
+  background: var(--neutral-white-d6);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  padding: 4px 0px;
+  box-sizing: border-box;
+`
+
+export const MoreItemModalItem = styled.div`
+  display: flex;
+  height: 32px;
+  align-items: center;
+  width: 180px;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0px 16px;
+  color: var(--neutral-n2);
+  user-select: none;
+  .label {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  &:hover {
+    background-color: var(--hover-d3);
+    color: var(--neutral-n1-d1);
+  }
+  .operate {
+    display: none;
+  }
+
+  &:hover .operate {
+    display: inline-flex;
+    align-items: center;
+  }
+  .editBox {
+    &:hover {
+      svg {
+        color: var(--primary-d2);
+      }
+    }
+  }
 `

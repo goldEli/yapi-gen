@@ -25,6 +25,8 @@ interface Props {
   onAddClick(): void
   // 是否有筛选条件
   hasFilter?: boolean
+  // 关注与取消关注
+  onChangeStar(type: number, row: any): void
 }
 
 const MainGrid = (props: Props) => {
