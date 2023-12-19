@@ -18,6 +18,7 @@ import {
   setProjectSort,
 } from '@/services/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import ActionTabs from './components/ActionTabs'
 
 const ProjectIndex = () => {
   const [t] = useTranslation()
@@ -44,10 +45,11 @@ const ProjectIndex = () => {
     order: { value: '', key: '' },
     isGrid: 0,
   })
+  const [activeKey, setActiveKey] = useState('1')
 
   // 获取数据
   const getList = async (params: any, notSpin?: boolean) => {
-    setIsSpinning(notSpin ? false : true)
+    setIsSpinning(!notSpin)
     const paramsObj: any = {
       searchValue: params?.keyword,
       orderKey: params?.order?.key,
@@ -178,6 +180,50 @@ const ProjectIndex = () => {
     }
   }, [isUpdateProject])
 
+  const onChangeTabs = (key: string) => {
+    setActiveKey(key)
+  }
+
+  const tabsHtml = () => {
+    return (
+      <>
+        <HeaderFilter
+          filterParamsAll={filterParams}
+          statistics={dataList?.statistics}
+          onChangeParamsUpdate={onChangeParamsUpdate}
+        />
+        <ProjectWrap>
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+            {filterParams?.isGrid === 1 ? (
+              <MainGrid
+                onChangeOperation={onChangeOperation}
+                onAddClick={onAddClick}
+                hasFilter={
+                  filterParams?.keyword?.length > 0 || filterParams?.status > 0
+                }
+                projectList={dataList}
+              />
+            ) : (
+              <MainTable
+                onChangeOperation={onChangeOperation}
+                onChangePageNavigation={onChangePageNavigation}
+                onUpdateOrderKey={onUpdateOrderKey}
+                order={filterParams?.order}
+                onAddClick={onAddClick}
+                hasFilter={
+                  filterParams?.keyword?.length > 0 || filterParams?.status > 0
+                }
+                projectList={dataList}
+                onChangeProjectList={onDragDataList}
+                filterParams={filterParams}
+              />
+            )}
+          </Spin>
+        </ProjectWrap>
+      </>
+    )
+  }
+
   return (
     <ProjectIndexWrap>
       {/* 删除项目 */}
@@ -201,39 +247,15 @@ const ProjectIndex = () => {
         onChangeVisible={() => setIsStatusState(!isStatusState)}
         onConfirm={onOperationProject}
       />
-      <HeaderFilter
-        filterParamsAll={filterParams}
-        statistics={dataList?.statistics}
-        onChangeParamsUpdate={onChangeParamsUpdate}
+      <ActionTabs
+        activeKey={activeKey}
+        onChange={onChangeTabs}
+        items={[
+          { label: '所有项目', key: '1', children: tabsHtml() },
+          { label: '我关注的', key: '2', children: tabsHtml() },
+          { label: '游戏项目', key: '3', children: tabsHtml() },
+        ]}
       />
-      <ProjectWrap>
-        <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-          {filterParams?.isGrid === 1 ? (
-            <MainGrid
-              onChangeOperation={onChangeOperation}
-              onAddClick={onAddClick}
-              hasFilter={
-                filterParams?.keyword?.length > 0 || filterParams?.status > 0
-              }
-              projectList={dataList}
-            />
-          ) : (
-            <MainTable
-              onChangeOperation={onChangeOperation}
-              onChangePageNavigation={onChangePageNavigation}
-              onUpdateOrderKey={onUpdateOrderKey}
-              order={filterParams?.order}
-              onAddClick={onAddClick}
-              hasFilter={
-                filterParams?.keyword?.length > 0 || filterParams?.status > 0
-              }
-              projectList={dataList}
-              onChangeProjectList={onDragDataList}
-              filterParams={filterParams}
-            />
-          )}
-        </Spin>
-      </ProjectWrap>
     </ProjectIndexWrap>
   )
 }
