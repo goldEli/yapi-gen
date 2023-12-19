@@ -19,6 +19,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { getMsg_list } from '@/services/SiteNotifications'
 import _ from 'lodash'
 import { getProjectList } from '@/services/project'
+import classNames from 'classnames'
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
   projectList: any
@@ -121,7 +122,14 @@ const MainGrid = (props: Props) => {
             scrollableTarget="scrollableDiv"
           >
             {data?.list?.map((item: any, index: any) => (
-              <SpaceWrapItem key={item.id} onClick={() => onClickItem(item)}>
+              <SpaceWrapItem
+                key={item.id}
+                onClick={() => onClickItem(item)}
+                className={classNames({
+                  w1440: window.innerWidth <= 1440,
+                  w1920: window.innerWidth > 1440,
+                })}
+              >
                 <div className={`app-${index}`}>
                   <ProjectCard
                     onChangeOperation={props.onChangeOperation}

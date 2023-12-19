@@ -30,9 +30,13 @@ export const ScrollBox = styled.div`
   }
 `
 const SpaceWrapItem = styled.div`
-  /* width: calc(16% - 10px); */
   width: 280px;
-  /* border: 1px solid blue; */
+  &.w1440 {
+    width: 310px;
+  }
+  &.w1920 {
+    width: 280px;
+  }
 `
 
 const AddProject = styled.div({
