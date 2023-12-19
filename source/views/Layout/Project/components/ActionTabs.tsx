@@ -5,24 +5,28 @@ import {
   ActionTabsContent,
   MoreButton,
   AddItemModal,
+  MoreItemModal,
 } from '../style'
 import LabelEditor from './LabelEditor'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Form, Input, Popover, Space, Tooltip } from 'antd'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
+import EditorItemLabel from './EditorItemLabel'
 
 type ActionTabs = {
   activeKey: number
   items: Array<{ label: string; id: number; children: any }>
   onChange(key: number): void
+  open(val: any): void
 }
 
 const ActionTabs = (props: ActionTabs) => {
-  const { activeKey, items, onChange } = props
+  const { activeKey, items, onChange, open } = props
   const [showMore, setShowMore] = useState(false)
   const [showLength, setShowLength] = useState(0)
   const [addModalVisible, setAddModalVisible] = useState(false)
+  const [moreModalVisible, setMoreModalVisible] = useState(false)
   const actionRef = useRef<any>()
   const [t] = useTranslation()
   const [form] = Form.useForm()
@@ -54,6 +58,8 @@ const ActionTabs = (props: ActionTabs) => {
   const addItems = async () => {
     const value = await form.validateFields()
   }
+
+  console.log(showLength)
 
   const addContent = (
     <AddItemModal>
@@ -89,6 +95,27 @@ const ActionTabs = (props: ActionTabs) => {
     </AddItemModal>
   )
 
+  const moreContent = () => {
+    if (!showLength) {
+      return null
+    }
+    return (
+      <MoreItemModal>
+        {items?.slice?.(showLength - 1)?.map?.((l: any) => {
+          return (
+            <EditorItemLabel
+              key={l.id}
+              item={l}
+              onChange={onChange}
+              activeKey={activeKey}
+              open={open}
+            />
+          )
+        })}
+      </MoreItemModal>
+    )
+  }
+
   return (
     <ActionTabsWrap>
       <ActionTabsMenuWrap ref={actionRef}>
@@ -101,9 +128,19 @@ const ActionTabs = (props: ActionTabs) => {
           />
         ))}
         {showMore ? (
-          <MoreButton style={{ marginRight: 12 }}>
-            <CommonIconFont type="down" color="var(--neutral-n2)" size={24} />
-          </MoreButton>
+          <Popover
+            placement="bottom"
+            content={moreContent()}
+            trigger="click"
+            open={moreModalVisible}
+            onOpenChange={(val: boolean) => {
+              setMoreModalVisible(val)
+            }}
+          >
+            <MoreButton style={{ marginRight: 12 }}>
+              <CommonIconFont type="down" color="var(--neutral-n2)" size={24} />
+            </MoreButton>
+          </Popover>
         ) : null}
         {items.length < 20 ? (
           <Tooltip title="添加项目分类">

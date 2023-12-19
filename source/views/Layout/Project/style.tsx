@@ -193,3 +193,49 @@ export const AddItemModal = styled.div`
     justify-content: flex-end;
   }
 `
+
+export const MoreItemModal = styled.div`
+  width: 180px;
+  background: var(--neutral-white-d6);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  padding: 4px 0px;
+  box-sizing: border-box;
+`
+
+export const MoreItemModalItem = styled.div`
+  display: flex;
+  height: 32px;
+  align-items: center;
+  width: 180px;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0px 16px;
+  color: var(--neutral-n2);
+  user-select: none;
+  .label {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  &:hover {
+    background-color: var(--hover-d3);
+    color: var(--neutral-n1-d1);
+  }
+  .operate {
+    display: none;
+  }
+
+  &:hover .operate {
+    display: inline-flex;
+    align-items: center;
+  }
+  .editBox {
+    &:hover {
+      svg {
+        color: var(--primary-d2);
+      }
+    }
+  }
+`
