@@ -186,6 +186,11 @@ const ProjectIndex = () => {
     setActiveKey(key)
   }
 
+  // 关注与取消关注 type：1 是关注，0是取消关注
+  const onChangeStar = (type: number, row: any) => {
+    //
+  }
+
   const tabsHtml = () => {
     return (
       <>
@@ -200,6 +205,7 @@ const ProjectIndex = () => {
               <MainGrid
                 onChangeOperation={onChangeOperation}
                 onAddClick={onAddClick}
+                onChangeStar={onChangeStar}
                 hasFilter={
                   filterParams?.keyword?.length > 0 || filterParams?.status > 0
                 }
@@ -218,6 +224,7 @@ const ProjectIndex = () => {
                 projectList={dataList}
                 onChangeProjectList={onDragDataList}
                 filterParams={filterParams}
+                onChangeStar={onChangeStar}
               />
             )}
           </Spin>

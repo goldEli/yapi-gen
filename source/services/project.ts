@@ -15,6 +15,16 @@ import { store } from '@store/index'
 import { t } from 'i18next'
 import { getStaffListAll } from './staff'
 
+// 关注项目
+export const setFocusProject: any = async (params: any) => {
+  await http.post<any>('focusProject', params)
+}
+
+// 取消关注
+export const deleteFocusProject: any = async (params: any) => {
+  await http.delete<any>('focusProject', params)
+}
+
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
     search: {
@@ -65,6 +75,7 @@ export const getProjectList: any = async (params: any) => {
         projectType: i.project_type,
         defaultHomeMenu: i.default_home_menu,
         leader: i.leader,
+        list_category: i.list_category,
       })),
     }
   }
@@ -91,6 +102,7 @@ export const getProjectList: any = async (params: any) => {
       isPublic: i.is_public,
       projectType: i.project_type,
       defaultHomeMenu: i.default_home_menu,
+      list_category: i.list_category,
     })),
   }
 }
