@@ -91,7 +91,6 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       ids: ids.join(','),
       project_id: projectId,
     })
-
     labelContent(res.list)
   }
   const labelContent = (dataList: any) => {

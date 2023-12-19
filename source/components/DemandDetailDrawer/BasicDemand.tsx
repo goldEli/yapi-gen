@@ -102,6 +102,9 @@ const BasicDemand = (props: Props) => {
   }
   // 快速更新工时
   const updateWorkHours = async (item: any) => {
+    if (!workHoursValue) {
+      return
+    }
     const res = await updateTableParams({
       id: props.detail.id,
       projectId: props.detail.projectId,
@@ -111,16 +114,6 @@ const BasicDemand = (props: Props) => {
     })
     getMessage({ msg: t('successfullyModified'), type: 'success' })
     props.onUpdate?.()
-    // if (props.isInfoPage) {
-    //   dispatch(
-    //     getAffairsInfo({
-    //       projectId: props.detail.projectId,
-    //       sprintId: props.detail?.id,
-    //     }),
-    //   )
-    // } else {
-    //   props.onUpdate?.()
-    // }
   }
   const getFieldData = async () => {
     const result = await getCategoryConfigList({

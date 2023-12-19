@@ -154,10 +154,11 @@ const WorkHours: React.FC<IProps> = props => {
   }
   return (
     <WorkHoursWrap>
-      {/* <ProjectCommonOperation
+      <ProjectCommonOperation
         onInputSearch={onInputSearch}
         title={t('search_for_transaction_name_or_number')}
-      /> */}
+        showSearchInput={false}
+      />
       <Spin spinning={spinning}>
         <WorkHoursHeader
           id={paramsData.id}

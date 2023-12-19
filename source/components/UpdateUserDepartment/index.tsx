@@ -46,14 +46,16 @@ interface IProps {
   callBack(data: Model.Sprint.ProjectSettings): void
 }
 const UpdateUserDepartment = (props: IProps) => {
-  const { departmentList } = useSelector(state => state.user)
+  const { departmentList = [] } = useSelector(state => state.user)
   const [isVisible, setIsVisible] = useState(false)
 
   const onClick = (item: any) => {
     setIsVisible(false)
     props.callBack(item)
   }
-
+  if (departmentList.length === 0) {
+    return <div>{props.roleName}</div>
+  }
   return (
     <Popover
       getPopupContainer={n => n}

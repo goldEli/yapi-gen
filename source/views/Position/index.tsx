@@ -31,6 +31,8 @@ import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 import IconFont from '@/components/IconFont'
 import { getMessage } from '@/components/Message'
 import { useDeleteConfirmModal } from '@/hooks/useDeleteConfirmModal'
+import { SpinWrap } from '../Layout/style'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -63,6 +65,7 @@ const Index = () => {
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const _getList = async (page = 1, pagesize = 10) => {
     setDataSource({})
+    setIsSpinning(true)
     const params = {
       page,
       pagesize,
@@ -70,6 +73,7 @@ const Index = () => {
       keyword: keyword,
     }
     const res = await getPositionList(params)
+    setIsSpinning(false)
     setSelectedRowKeys([])
     setDataSource(res)
   }
@@ -158,18 +162,27 @@ const Index = () => {
       ),
       dataIndex: 'status',
       width: 200,
-      render: (text: any, record: any) => {
+      render: (text: any, record: any, index: number) => {
         return (
           <SwitchWrap
             checked={text === 1}
             onChange={async value => {
               console.log(value)
-              await updateUserPositionStatus({
+              const res = await updateUserPositionStatus({
                 project_id: projectId,
                 status: value ? 1 : 2,
                 id: record.id,
               })
-              _getList()
+              const { list } = dataSource
+              list[index].status = value ? 1 : 2
+              setDataSource({
+                ...dataSource,
+                list: list,
+              })
+              getMessage({ type: 'success', msg: '修改成功' })
+              console.log('-----', dataSource)
+              // debugger
+              // _getList()
             }}
           ></SwitchWrap>
         )

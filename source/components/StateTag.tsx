@@ -1,7 +1,6 @@
 import { StatusWrap } from './StyleCommon'
 import { Tooltip } from 'antd'
 const StateTag = (props: any) => {
-  console.log('-----', props)
   const { state, name, categoryName } = props
   return (
     <StatusWrap

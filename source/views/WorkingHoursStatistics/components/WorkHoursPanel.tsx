@@ -257,7 +257,7 @@ const WorkHoursPanel = (props: any, ref: any) => {
                   language={language}
                   className="custom-col"
                 >
-                  {props.status === 'member' ? (
+                  {props.status === 'member' && col.time > 0 && (
                     <Tooltip
                       open={col.id === id && item === record.date}
                       placement="bottom"
@@ -265,7 +265,9 @@ const WorkHoursPanel = (props: any, ref: any) => {
                       trigger={['click']}
                       color="#585859"
                       onOpenChange={async open => {
-                        console.log(open, props)
+                        if (col.time < 0) {
+                          return
+                        }
                         if (open) {
                           const res = await getWorkTimeInfo({
                             project_id: projectId,
@@ -316,7 +318,34 @@ const WorkHoursPanel = (props: any, ref: any) => {
                         </div>
                       </WorkHourLabel>
                     </Tooltip>
-                  ) : (
+                  )}
+                  {props.status === 'member' && col.time < 0 && (
+                    <WorkHourLabel
+                      data-type={record?.date}
+                      className={classNames({
+                        [Working]: col.time !== 1 && col.time !== -2,
+                        [Leave]: col.time === -1,
+                        [NotWorking]: col.time === -2,
+                        'custom-col': true,
+                      })}
+                      onClick={() => {
+                        const { id } = col
+                        setId(id)
+                        setRecord({ ...row, date: item })
+                      }}
+                    >
+                      <div>
+                        {col.time === -2
+                          ? '--'
+                          : col.time === -1
+                          ? t('askForLeave')
+                          : col.time === -3
+                          ? '节假日'
+                          : `${col.time / 3600}${t('workingHours')}`}
+                      </div>
+                    </WorkHourLabel>
+                  )}
+                  {props.status === 'story' && (
                     <Popover
                       title=""
                       content={Content}

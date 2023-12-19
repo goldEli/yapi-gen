@@ -140,8 +140,6 @@ const CommonTableOperation = (props: CommonOperationProps) => {
       ?.map((i: any) => i.id)
       ?.includes(userInfo?.id)
 
-  console.log(record)
-
   return (
     <TableActionWrap>
       {!isRelation && (

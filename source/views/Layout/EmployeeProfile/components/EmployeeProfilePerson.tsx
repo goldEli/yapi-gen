@@ -50,53 +50,39 @@ const CollapseHeader = (props: any) => {
   useEffect(() => {
     setNormal(props.filterParams?.iteration ?? [{ id: 0, projectId: 0 }])
   }, [props.filterParams])
-
-  // useEffect(() => {
-  //   const resultList = props.selectKeys?.filter((object: any) =>
-  //     props.item?.member_list?.some(
-  //       (otherObject: any) => otherObject.id === object,
-  //     ),
-  //   )
-  //   setIndeterminate(
-  //     resultList?.length !== props.item?.member_list?.length &&
-  //     resultList?.length !== 0,
-  //   )
-  //   console.log(111111, projectKey)
-  //   setCheckAll(resultList?.length === props.item?.member_list?.length)
-  // }, [props.userKeys])
-
   useEffect(() => {
     if (!userKeys) {
       return
     }
     if (userKeys.length === 0) {
+      setCheckAll(false)
       setProjectKey([])
       return
     }
-    const resultList = props.selectKeys?.filter((object: any) =>
+    const resultList = props.userKeys?.filter((object: any) =>
       props.item?.member_list?.some(
         (otherObject: any) => otherObject.id === object,
       ),
     )
+    setCheckAll(resultList?.length === props.item?.member_list?.length)
     setIndeterminate(
       resultList?.length !== props.item?.member_list?.length &&
         resultList?.length !== 0,
     )
-    setCheckAll(resultList?.length === props.item?.member_list?.length)
-    for (const key of userKeys) {
-      const [project_id] = key.split('_')
-      const currentProjectUserIds = item.member_list
-        ?.filter((item: any) => {
-          const { id } = item
-          const [pro_id] = id.split('_')
-          return pro_id === project_id
-        })
-        ?.map((ele: any) => {
-          const [project_id] = ele.id.split('_')
-          return parseInt(project_id, 10)
-        })
-      setProjectKey(pre => [...pre, ...new Set([...currentProjectUserIds])])
-    }
+    // for (const key of userKeys) {
+    //   const [project_id] = key.split('_')
+    //   const currentProjectUserIds = item.member_list
+    //     ?.filter((item: any) => {
+    //       const { id } = item
+    //       const [pro_id] = id.split('_')
+    //       return pro_id === project_id
+    //     })
+    //     ?.map((ele: any) => {
+    //       const [project_id] = ele.id.split('_')
+    //       return parseInt(project_id, 10)
+    //     })
+    //   setProjectKey(pre => [...pre, ...new Set([...currentProjectUserIds])])
+    // }
   }, [userKeys])
   useEffect(() => {
     if (currentClickNumber === 0) {
@@ -148,7 +134,8 @@ const CollapseHeader = (props: any) => {
             )
             props.onChangeProjectKeys(resultKeysNotCheckEd)
           }}
-          checked={projectKey?.includes(item.id)}
+          // checked={projectKey?.includes(item.id)}
+          checked={checkAll}
           indeterminate={indeterminate}
         />
         <div className="name" onClick={onClickName}>
@@ -313,11 +300,18 @@ const EmployeeProfilePerson = (props: EmployeeProfilePersonProps) => {
         }
       })
     }
+    const users = getAllUser(allMemberList)
+    const resultList = userKeys?.filter((object: any) =>
+      users.some((otherObject: any) => otherObject.id === object),
+    )
+    setCheckAll(resultList?.length === users?.length)
+    setIndeterminate(
+      resultList?.length !== users?.length && resultList?.length !== 0,
+    )
     updateFilterParams({ user_ids: params })
   }, [userKeys, checkedKeys, filterParamsOverall.tabType])
   // 点击图标展开或折叠
   const onClickIcon = (e: any) => {
-    console.log('activeKey', activeKey)
     const key = Number(e.panelKey)
     setActiveKey(
       e.isActive

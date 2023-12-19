@@ -141,6 +141,9 @@ const BasicDemand = (props: Props) => {
   }
   // 快速更新工时
   const updateWorkHours = async (item: any) => {
+    if (!workHoursValue) {
+      return
+    }
     const res = await updateAffairsTableParams({
       id: props.detail.id,
       projectId: props.detail.projectId,
