@@ -64,7 +64,7 @@ const MainGrid = (props: Props) => {
   }
   const _getMsg_list = async (isInit: boolean, page: number) => {
     const res = await getProjectList({
-      pageSize: 30,
+      pageSize: 35,
       page: page,
       status,
       searchValue: keyword,
