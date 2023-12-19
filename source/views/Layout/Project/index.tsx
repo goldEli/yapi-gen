@@ -16,6 +16,8 @@ import {
   stopProject,
   suspendProject,
   setProjectSort,
+  setFocusProject,
+  deleteFocusProject,
 } from '@/services/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ActionTabs from './components/ActionTabs'
@@ -185,8 +187,22 @@ const ProjectIndex = () => {
   }
 
   // 关注与取消关注 type：1 是关注，0是取消关注
-  const onChangeStar = (type: number, row: any) => {
-    //
+  const onChangeStar = async (type: number, row: any) => {
+    type === 1
+      ? await setFocusProject({ project_id: row?.id })
+      : await deleteFocusProject({ project_id: row?.id })
+
+    getMessage({
+      type: 'success',
+      msg: type === 1 ? t('followSuccess') : t('unsullowedSuccessfully'),
+    })
+    onChangeParamsUpdate({
+      ...filterParams,
+      pageObj: {
+        page: 1,
+        size: filterParams?.pageObj.size,
+      },
+    })
   }
 
   const tabsHtml = () => {
