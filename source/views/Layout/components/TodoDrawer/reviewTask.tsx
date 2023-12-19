@@ -67,7 +67,7 @@ const GroupItems = (props: any) => {
   )
 }
 
-const ReviewTask = () => {
+const ReviewTask = (props: { onCancel(): void }) => {
   const [isSpinning, setIsSpinning] = useState(false)
   // 审核详情打开
   const [isExamineVisible, setIsExamineVisible] = useState(false)
@@ -118,6 +118,7 @@ const ReviewTask = () => {
   }
   // 点击跳转详情
   const onClickItem = async (row: any) => {
+    props.onCancel()
     dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({

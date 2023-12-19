@@ -183,11 +183,6 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
       icon: 'question',
     },
     {
-      name: t('usageFeedback'),
-      key: 'draft',
-      icon: 'draft',
-    },
-    {
       name: t('operationShortcutKeys'),
       key: 'keyboard',
       icon: 'keyboard',

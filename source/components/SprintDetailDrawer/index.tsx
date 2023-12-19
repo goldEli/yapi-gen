@@ -700,13 +700,6 @@ const SprintDetailDrawer = () => {
               icon="close"
               text={t('closure')}
             />
-            {/* <BackIcon onClick={onCancel}>
-              <CommonIconFont
-                type="right-02"
-                size={20}
-                color="var(--neutral-n2)"
-              />
-            </BackIcon> */}
             {skeletonLoading && (
               <SkeletonStatus>
                 <Skeleton.Input active />
