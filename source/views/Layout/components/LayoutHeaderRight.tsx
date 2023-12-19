@@ -50,6 +50,7 @@ import KeyBoardDrawer from '../Trends/components/KeyBoardDrawer/KeyBoardDrawer'
 import { setLayoutSecondaryMenuRightWidth } from '@store/global'
 import TodoDrawer from './TodoDrawer'
 import RecomendDrawer from './RecomendDrawer'
+import { setIsNewMsg } from '@store/mine'
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
   const { language } = useSelector(store => store.global)
@@ -141,7 +142,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   // 为你推荐
   const [recomendDrawerOpen, setRecomendDrawerOpen] = useState(false)
   const { userInfo, isRefresh } = useSelector(store => store.user)
-  const { msgStatics } = useSelector(store => store.mine)
+  const { msgStatics, isNewMsg } = useSelector(store => store.mine)
   const { todoStatistics } = msgStatics ?? {}
   const { total } = todoStatistics ?? {}
   // 帮助中心展开
@@ -473,6 +474,7 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     if (type === 1) {
       setRecomendDrawerOpen(false)
       setTodoDrawerOpen(true)
+      dispatch(setIsNewMsg(isNewMsg + 1))
       return
     }
     setTodoDrawerOpen(false)
