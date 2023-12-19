@@ -322,6 +322,7 @@ const ProjectIndex = () => {
                 filterParams?.keyword?.length > 0 || filterParams?.status > 0
               }
               projectList={dataList}
+              filterParams={filterParams}
             />
           ) : (
             <MainTable
