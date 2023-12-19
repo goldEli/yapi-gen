@@ -41,8 +41,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
   //   状态类型列表
   const statusList = [
-    // { name: t('recentlyViewed'), key: 5, field: '' },
-    // { name: t('allProjects'), key: 0, field: 'all' },
     { name: t('progress'), key: 1, field: 'open' },
     { name: t('hasNotStarted'), key: 4, field: 'un_open' },
     { name: t('paused'), key: 3, field: 'suspend' },
@@ -79,49 +77,18 @@ const HeaderFilter = (props: HeaderFilterProps) => {
     },
   ]
 
-  const menuFormat1 = (
-    <Menu
-      items={[
-        {
-          key: 'list',
-          label: (
-            <HasIconMenu
-              onClick={() => onClickMenuFormat(0)}
-              isCheck={!filterParams?.isGrid}
-            >
-              <span className="label">{t('common.list')}</span>
-              <IconFont
-                className="checked"
-                type={filterParams?.isGrid ? '' : 'check'}
-              />
-            </HasIconMenu>
-          ),
-        },
-        {
-          key: 'thumbnail',
-          label: (
-            <HasIconMenu
-              onClick={() => onClickMenuFormat(1)}
-              isCheck={filterParams?.isGrid}
-            >
-              <span className="label">{t('common.thumbnail')}</span>
-              <IconFont
-                className="checked"
-                type={filterParams?.isGrid ? 'check' : ''}
-              />
-            </HasIconMenu>
-          ),
-        },
-      ]}
-    />
-  )
-
   //   修改参数值
   const onChangeParams = (key: string, value: any) => {
     if (key === 'keyword' && value === filterParams?.keyword) {
       return
     }
-    const resultParams: any = { ...filterParams, ...{ [key]: value } }
+    const resultParams: any = {
+      ...filterParams,
+      ...{
+        // 如果是状态，点击相同值则取消
+        [key]: key === 'status' && value === filterParams?.status ? 0 : value,
+      },
+    }
 
     setFilterParams(resultParams)
   }
@@ -140,7 +107,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
       <HeaderBottom>
         <FilterLeftWrap>
           <InputSearch
-            width={184}
+            width={192}
             bgColor="var(--neutral-white-d4)"
             length={12}
             placeholder={t('searchProjectName')}
