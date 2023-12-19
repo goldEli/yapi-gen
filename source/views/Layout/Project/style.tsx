@@ -111,6 +111,7 @@ export const ActionTabsWrap = styled.div`
 `
 
 export const ActionTabsMenuWrap = styled.div`
+  width: 100%;
   display: flex;
   background-color: #f0f0f5;
   height: 66px;
@@ -142,6 +143,10 @@ export const TabMenuItem = styled.div<{
     color: var(--neutral-n1-d1);
     font-family: SiYuanMedium;
     font-size: 14px;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
   .number {
     color: var(--neutral-n2);
@@ -151,4 +156,40 @@ export const TabMenuItem = styled.div<{
 
 export const ActionTabsContent = styled.div`
   height: calc(100% - 118px);
+`
+
+export const MoreButton = styled.div`
+  width: 40px;
+  height: 40px;
+  &:hover {
+    background: var(--neutral-n9);
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    svg {
+      color: var(--primary-d2);
+    }
+  }
+  border-radius: 20px 20px 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 7px;
+`
+
+export const AddItemModal = styled.div`
+  width: 320px;
+  background: var(--neutral-white-d5);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  padding: 24px;
+  box-sizing: border-box;
+  .titles {
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+    font-size: 14px;
+    user-select: none;
+  }
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+  }
 `
