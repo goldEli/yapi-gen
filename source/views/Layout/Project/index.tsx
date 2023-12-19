@@ -45,7 +45,7 @@ const ProjectIndex = () => {
     order: { value: '', key: '' },
     isGrid: 0,
   })
-  const [activeKey, setActiveKey] = useState('1')
+  const [activeKey, setActiveKey] = useState(1)
 
   // 获取数据
   const getList = async (params: any, notSpin?: boolean) => {
@@ -180,7 +180,7 @@ const ProjectIndex = () => {
     }
   }, [isUpdateProject])
 
-  const onChangeTabs = (key: string) => {
+  const onChangeTabs = (key: number) => {
     setActiveKey(key)
   }
 
@@ -251,9 +251,19 @@ const ProjectIndex = () => {
         activeKey={activeKey}
         onChange={onChangeTabs}
         items={[
-          { label: '所有项目', key: '1', children: tabsHtml() },
-          { label: '我关注的', key: '2', children: tabsHtml() },
-          { label: '游戏项目', key: '3', children: tabsHtml() },
+          { label: '所有项目', id: 1, children: tabsHtml() },
+          { label: '我关注的', id: 2, children: tabsHtml() },
+          { label: '游戏项目', id: 3, children: tabsHtml() },
+          { label: '所有项目', id: 4, children: tabsHtml() },
+          { label: '我关注的', id: 5, children: tabsHtml() },
+          { label: '游戏项目', id: 6, children: tabsHtml() },
+          { label: '所有项目', id: 7, children: tabsHtml() },
+          { label: '我关注的', id: 8, children: tabsHtml() },
+          { label: '游戏项目游戏项目游戏项目', id: 9, children: tabsHtml() },
+          { label: '所有项目', id: 10, children: tabsHtml() },
+          { label: '所有项目', id: 11, children: tabsHtml() },
+          { label: '所有项目', id: 12, children: tabsHtml() },
+          { label: '所有项目', id: 13, children: tabsHtml() },
         ]}
       />
     </ProjectIndexWrap>
