@@ -526,7 +526,7 @@ const Operation = (props: Props, ref: any) => {
                 }}
               >
                 {i.name}
-                {i.type ? props?.statistics?.[i.type] : null}
+                {i.type ? `（${props?.statistics?.[i.type]}）` : null}
               </StatusItems>
             ))}
           </StatusGroup>
