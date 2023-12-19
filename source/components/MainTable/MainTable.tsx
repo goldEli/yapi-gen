@@ -158,13 +158,20 @@ const MainTable = (props: Props) => {
       render: (text: any, record: any) => {
         return (
           <Tooltip
-            title={record?.list_category === -1 ? '取消关注' : '关注项目'}
+            title={
+              record?.list_category === -1
+                ? t('cancelFollow')
+                : t('followProjects')
+            }
           >
             {/* 没有关注过的 */}
             {record?.list_category !== -1 && (
               <div
                 className="hasStart"
-                onClick={() => props?.onChangeStar(1, record)}
+                onClick={e => {
+                  e.stopPropagation()
+                  props?.onChangeStar(1, record)
+                }}
               >
                 <CommonIconFont size={20} type="star-adipf4l8" />
               </div>
@@ -172,7 +179,10 @@ const MainTable = (props: Props) => {
             {record?.list_category === -1 && (
               <div
                 className="stared"
-                onClick={() => props?.onChangeStar(0, record)}
+                onClick={e => {
+                  e.stopPropagation()
+                  props?.onChangeStar(0, record)
+                }}
               >
                 <CommonIconFont size={20} type="star" />
               </div>
@@ -255,6 +265,23 @@ const MainTable = (props: Props) => {
           onUpdateOrderKey={onUpdateOrderKey}
         >
           {t('numberOfMembers')}
+        </NewSort>
+      ),
+      dataIndex: 'member_count',
+      width: 110,
+      render: (text: string, record: any) => {
+        return <span>{text}</span>
+      },
+    },
+    {
+      title: (
+        <NewSort
+          fixedKey="member_count"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('numberOfTasks')}
         </NewSort>
       ),
       dataIndex: 'member_count',
@@ -432,7 +459,7 @@ const MainTable = (props: Props) => {
         (props.projectList?.list?.length > 0 ? (
           <DataWrap
             srcollState={false}
-            height="calc(100% - 56px)"
+            height="calc(100% - 28px)"
             ref={dataWrapRef}
           >
             <DragTable

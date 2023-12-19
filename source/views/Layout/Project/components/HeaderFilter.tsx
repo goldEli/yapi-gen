@@ -1,9 +1,11 @@
 /* eslint-disable react/no-unknown-property */
 import CommonButton from '@/components/CommonButton'
 import {
+  FilterLeftWrap,
   HeaderBottom,
   HeaderFilterWrap,
   HeaderTop,
+  RightCreateWrap,
   StatusGroup,
   StatusItems,
 } from '../style'
@@ -134,7 +136,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
     <HeaderFilterWrap>
       <HeaderTop>
         <InputSearch
-          width={184}
+          width={192}
           bgColor="var(--neutral-white-d4)"
           length={12}
           placeholder={t('searchProjectName')}
@@ -150,26 +152,33 @@ const HeaderFilter = (props: HeaderFilterProps) => {
           </CommonButton>
         )}
       </HeaderTop>
+
       <HeaderBottom>
-        <StatusGroup>
-          {statusList?.map((i: any) => (
-            <StatusItems
-              key={i.key}
-              isActive={i.key === filterParams.status}
-              onClick={() => onChangeParams('status', i.key)}
-            >
-              {i.name}
-              {props?.statistics?.[i.field]
-                ? `（${props?.statistics?.[i.field]}）`
-                : ''}
-            </StatusItems>
-          ))}
-        </StatusGroup>
-        <SwitchMode
-          menuList={menuFormat}
-          isActiveId={filterParams?.isGrid}
-          onClickMenuFormat={onClickMenuFormat}
-        />
+        <FilterLeftWrap>
+          <HeaderTop>
+            <StatusGroup>
+              {statusList?.map((i: any) => (
+                <StatusItems
+                  key={i.key}
+                  isActive={i.key === filterParams.status}
+                  onClick={() => onChangeParams('status', i.key)}
+                >
+                  {i.name}
+                  {props?.statistics?.[i.field]
+                    ? `（${props?.statistics?.[i.field]}）`
+                    : ''}
+                </StatusItems>
+              ))}
+            </StatusGroup>
+          </HeaderTop>
+        </FilterLeftWrap>
+        <RightCreateWrap>
+          <SwitchMode
+            menuList={menuFormat}
+            isActiveId={filterParams?.isGrid}
+            onClickMenuFormat={onClickMenuFormat}
+          />
+        </RightCreateWrap>
       </HeaderBottom>
     </HeaderFilterWrap>
   )

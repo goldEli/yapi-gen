@@ -19,7 +19,7 @@ export const ProjectWrap = styled.div`
 
 // 头部搜索样式
 export const HeaderFilterWrap = styled.div`
-  padding: 20px 0;
+  padding: 20px 0 0;
   display: flex;
   flex-direction: column;
 `

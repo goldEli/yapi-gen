@@ -27,6 +27,7 @@ interface Props {
   hasFilter?: boolean
   // 关注与取消关注
   onChangeStar(type: number, row: any): void
+  filterParams?: any
 }
 
 const MainGrid = (props: Props) => {
@@ -35,6 +36,8 @@ const MainGrid = (props: Props) => {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
   const [data, setData] = useState<any>()
+  const [status, setStatus] = useState('')
+  const [keyword, setKeyword] = useState('')
   const { userInfo } = useSelector(store => store.user)
   const isPermission = getIsPermission(
     userInfo?.company_permissions,
@@ -62,6 +65,8 @@ const MainGrid = (props: Props) => {
     const res = await getProjectList({
       pageSize: 30,
       page: page,
+      status,
+      searchValue: keyword,
     })
 
     if (isInit) {
@@ -95,8 +100,15 @@ const MainGrid = (props: Props) => {
     _getMsg_list(false, pages)
   }
   useEffect(() => {
+    console.log('props.filterParams', props.filterParams)
+    setStatus(props.filterParams?.status)
+    setKeyword(props.filterParams?.keyword)
+    setData(null)
+    setPage(1)
+  }, [props.filterParams?.status, props.filterParams?.keyword])
+  useEffect(() => {
     _getMsg_list(true, 1)
-  }, [])
+  }, [status, keyword])
   return (
     <DataWrap>
       {data?.list?.length > 0 ? (

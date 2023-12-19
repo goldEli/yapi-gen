@@ -20,19 +20,18 @@ export const ScrollBox = styled.div`
   gap: 24px;
   flex-wrap: wrap;
   margin: auto;
-  /* width: calc(100% - 120px); */
-  /* margin-left: 72px; */
   .infinite-scroll-component__outerdiv {
     width: 100%;
   }
   .infinite-scroll-component {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px 24px;
+    gap: 24px 16px;
   }
 `
 const SpaceWrapItem = styled.div`
-  width: calc(16% - 10px);
+  /* width: calc(16% - 10px); */
+  width: 280px;
   /* border: 1px solid blue; */
 `
 
@@ -67,7 +66,7 @@ const AddProject = styled.div({
 
 const DataWrap = styled.div({
   paddingTop: '16px',
-  height: 'calc(100vh - 180px)',
+  height: 'calc(100vh - 170px)',
   overflowY: 'scroll',
   margin: 'auto',
 })
