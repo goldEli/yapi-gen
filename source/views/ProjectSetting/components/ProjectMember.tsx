@@ -466,6 +466,7 @@ const ProjectMember = () => {
       dataIndex: 'departmentName',
       width: 200,
       render: (text: string, record: any, index: number) => {
+        return <span>{text}</span>
         return (
           <UpdateUserDepartment
             roleName={text}
@@ -490,6 +491,7 @@ const ProjectMember = () => {
       dataIndex: 'positionName',
       width: 180,
       render: (text: string, record: any) => {
+        return <span>{text}</span>
         return (
           <UpdateUserPosition
             roleName={text}
@@ -993,7 +995,7 @@ const ProjectMember = () => {
               icon="sync"
               onClick={refresh}
             />
-            <Popover
+            {/* <Popover
               content={content}
               placement="bottom"
               onOpenChange={open => {
@@ -1009,7 +1011,7 @@ const ProjectMember = () => {
                   更多操作
                 </CommonButton>
               </div>
-            </Popover>
+            </Popover> */}
             {!hasAdd && (
               <CommonButton
                 type="primary"
