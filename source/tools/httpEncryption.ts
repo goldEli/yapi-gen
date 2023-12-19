@@ -12,6 +12,7 @@ import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
 import { decrypt, encrypt } from './crypto'
+import { decryptPhp, encryptPhp } from './cryptoPhp'
 
 const { userAgent } = window.navigator
 const getSystem = () => {
@@ -92,7 +93,7 @@ client.config({
             '[object FormData]'
           ) {
             if (JSON.stringify(options.search) !== '{}') {
-              options.search = { p: JSON.stringify(options.search) }
+              options.search = { p: encryptPhp(JSON.stringify(options.search)) }
             } else if (
               options.payload !== 'null' &&
               options.payload !== null &&
@@ -101,7 +102,7 @@ client.config({
               options.payload !== '{}'
             ) {
               options.payload = JSON.stringify({
-                p: options.payload as string,
+                p: encryptPhp(options.payload as string),
               })
             }
           }
@@ -124,7 +125,9 @@ client.config({
         if (options.responseType === 'blob') {
           return response
         }
-        return JSON.parse((response as { body: string }).body).p
+        return JSON.parse(
+          decryptPhp(JSON.parse((response as { body: string }).body).p),
+        )
       }
       return options.responseType === 'blob'
         ? response
