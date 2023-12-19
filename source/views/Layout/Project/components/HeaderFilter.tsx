@@ -10,6 +10,7 @@ import {
   ResetWrap,
   DividerWrap,
   FilterRightWrap,
+  RightCreateWrap,
 } from '../style'
 import { useState, useLayoutEffect, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -40,8 +41,8 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
   //   状态类型列表
   const statusList = [
-    { name: t('recentlyViewed'), key: 5, field: '' },
-    { name: t('allProjects'), key: 0, field: 'all' },
+    // { name: t('recentlyViewed'), key: 5, field: '' },
+    // { name: t('allProjects'), key: 0, field: 'all' },
     { name: t('progress'), key: 1, field: 'open' },
     { name: t('hasNotStarted'), key: 4, field: 'un_open' },
     { name: t('paused'), key: 3, field: 'suspend' },
@@ -136,29 +137,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
   return (
     <HeaderFilterWrap>
-      <HeaderTop>
-        <StatusGroup>
-          {statusList?.map((i: any) => (
-            <StatusItems
-              key={i.key}
-              isActive={i.key === filterParams.status}
-              onClick={() => onChangeParams('status', i.key)}
-            >
-              {i.name}
-              {props?.statistics?.[i.field]
-                ? `（${props?.statistics?.[i.field]}）`
-                : ''}
-            </StatusItems>
-          ))}
-        </StatusGroup>
-        {(
-          userInfo.company_permissions?.map((i: any) => i.identity) || []
-        ).includes('b/project/save') && (
-          <CommonButton type="primary" icon="plus" onClick={onCreateProject}>
-            {t('createProject')}
-          </CommonButton>
-        )}
-      </HeaderTop>
       <HeaderBottom>
         <FilterLeftWrap>
           <InputSearch
@@ -170,12 +148,42 @@ const HeaderFilter = (props: HeaderFilterProps) => {
             leftIcon
             defaultValue={filterParams.keyword}
           />
+          <HeaderTop>
+            <StatusGroup>
+              {statusList?.map((i: any) => (
+                <StatusItems
+                  key={i.key}
+                  isActive={i.key === filterParams.status}
+                  onClick={() => onChangeParams('status', i.key)}
+                >
+                  {i.name}
+                  {props?.statistics?.[i.field]
+                    ? `（${props?.statistics?.[i.field]}）`
+                    : ''}
+                </StatusItems>
+              ))}
+            </StatusGroup>
+          </HeaderTop>
         </FilterLeftWrap>
-        <SwitchMode
-          menuList={menuFormat}
-          isActiveId={filterParams?.isGrid}
-          onClickMenuFormat={onClickMenuFormat}
-        />
+        <RightCreateWrap>
+          <SwitchMode
+            menuList={menuFormat}
+            isActiveId={filterParams?.isGrid}
+            onClickMenuFormat={onClickMenuFormat}
+          />
+          {(
+            userInfo.company_permissions?.map((i: any) => i.identity) || []
+          ).includes('b/project/save') && (
+            <CommonButton
+              style={{ marginLeft: 16 }}
+              type="primary"
+              icon="plus"
+              onClick={onCreateProject}
+            >
+              {t('createProject')}
+            </CommonButton>
+          )}
+        </RightCreateWrap>
       </HeaderBottom>
     </HeaderFilterWrap>
   )
