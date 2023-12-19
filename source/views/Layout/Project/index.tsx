@@ -256,7 +256,7 @@ const ProjectIndex = () => {
         onChangeVisible={() => setIsStatusState(!isStatusState)}
         onConfirm={onOperationProject}
       />
-      <ActionTabs
+      {/* <ActionTabs
         activeKey={activeKey}
         onChange={onChangeTabs}
         open={open}
@@ -283,8 +283,44 @@ const ProjectIndex = () => {
             children: tabsHtml(),
           },
         ]}
+      /> */}
+      {/* <DeleteConfirmModal /> */}
+
+      <HeaderFilter
+        filterParamsAll={filterParams}
+        statistics={dataList?.statistics}
+        onChangeParamsUpdate={onChangeParamsUpdate}
       />
-      <DeleteConfirmModal />
+      <ProjectWrap>
+        <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+          {filterParams?.isGrid === 1 ? (
+            <MainGrid
+              onChangeOperation={onChangeOperation}
+              onAddClick={onAddClick}
+              onChangeStar={onChangeStar}
+              hasFilter={
+                filterParams?.keyword?.length > 0 || filterParams?.status > 0
+              }
+              projectList={dataList}
+            />
+          ) : (
+            <MainTable
+              onChangeOperation={onChangeOperation}
+              onChangePageNavigation={onChangePageNavigation}
+              onUpdateOrderKey={onUpdateOrderKey}
+              order={filterParams?.order}
+              onAddClick={onAddClick}
+              hasFilter={
+                filterParams?.keyword?.length > 0 || filterParams?.status > 0
+              }
+              projectList={dataList}
+              onChangeProjectList={onDragDataList}
+              filterParams={filterParams}
+              onChangeStar={onChangeStar}
+            />
+          )}
+        </Spin>
+      </ProjectWrap>
     </ProjectIndexWrap>
   )
 }

@@ -9,7 +9,8 @@ export const ProjectIndexWrap = styled.div`
 `
 
 export const ProjectWrap = styled.div`
-  height: 100%;
+  /* height: 100%; */
+  height: calc(100% - 124px);
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
@@ -18,6 +19,7 @@ export const ProjectWrap = styled.div`
 
 // 头部搜索样式
 export const HeaderFilterWrap = styled.div`
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
 `
