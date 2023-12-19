@@ -25,6 +25,7 @@ import CommonButton from '../CommonButton'
 import { Tags } from '../ProjectCard/style'
 import DragTable from '../DragTable'
 import MultipleAvatar from '../MultipleAvatar'
+import CommonIconFont from '../CommonIconFont'
 
 interface Props {
   onChangeOperation(type: string, item: any, e?: any): void
@@ -37,6 +38,8 @@ interface Props {
   hasFilter?: boolean
   onChangeProjectList(value: any, idx?: number): void
   filterParams?: any
+  // 关注与取消关注
+  onChangeStar(type: number, row: any): void
 }
 
 const StatusWrap = styled.div({
@@ -84,10 +87,31 @@ const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
       border-bottom: 1px solid transparent;
       max-width: 386px;
     }
+    .stared {
+      width: max-content;
+      svg {
+        color: var(--function-warning);
+      }
+    }
+    .hasStart {
+      visibility: hidden;
+      width: max-content;
+      svg {
+        color: var(--neutral-n3);
+      }
+      &:hover {
+        svg {
+          color: var(--function-warning) !important;
+        }
+      }
+    }
     &:hover {
       .controlMaxWidth {
         border-bottom: 1px solid var(--primary-d1);
         color: var(--primary-d1);
+      }
+      .hasStart {
+        visibility: visible;
       }
     }
   }
@@ -126,7 +150,36 @@ const MainTable = (props: Props) => {
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation({ page, size })
   }
+
   let columns: any = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <Tooltip
+            title={record?.list_category === -1 ? '取消关注' : '关注项目'}
+          >
+            {/* 没有关注过的 */}
+            {record?.list_category !== -1 && (
+              <div
+                className="hasStart"
+                onClick={() => props?.onChangeStar(1, record)}
+              >
+                <CommonIconFont size={20} type="star-adipf4l8" />
+              </div>
+            )}
+            {record?.list_category === -1 && (
+              <div
+                className="stared"
+                onClick={() => props?.onChangeStar(0, record)}
+              >
+                <CommonIconFont size={20} type="star" />
+              </div>
+            )}
+          </Tooltip>
+        )
+      },
+    },
     {
       dataIndex: 'name',
       title: (

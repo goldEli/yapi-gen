@@ -306,7 +306,7 @@ const ProjectInfo = () => {
         onConfirm={onDeleteConfirm}
         title={t('deleteItem')}
         width={528}
-        hasIcon={false}
+        hasIcon
         okText={t('delete')}
         isRed
       >

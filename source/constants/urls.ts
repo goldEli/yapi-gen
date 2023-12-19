@@ -8,6 +8,7 @@ const urls = {
   getRolePermission: '/b/company/role_get_permission',
   setRolePermission: '/b/company/role_set_permission',
   addRole: '/b/company/role',
+  focusProject: '/b/project/focus',
   setProjectSort: '/b/project/sort',
   getProjectList: '/b/project/getlist',
   getTagList: '/b/project/getTags',
