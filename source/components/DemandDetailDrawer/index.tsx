@@ -229,18 +229,15 @@ const DemandDetailDrawer = () => {
     }
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
-
-    if (info.comment_total) {
-      // 获取评论列表
-      dispatch(
-        getDemandCommentList({
-          projectId: paramsProjectId,
-          demandId: info.id,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
-    }
+    // 获取评论列表
+    dispatch(
+      getDemandCommentList({
+        projectId: paramsProjectId,
+        demandId: info.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // 关闭弹窗

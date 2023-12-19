@@ -86,7 +86,7 @@ const GroupItems = (props: any) => {
   )
 }
 
-const AssignTask = () => {
+const AssignTask = (props: { onCancel(): void }) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -135,6 +135,7 @@ const AssignTask = () => {
   }
   // 点击跳转详情
   const onClickItem = async (row: any) => {
+    props.onCancel()
     dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({

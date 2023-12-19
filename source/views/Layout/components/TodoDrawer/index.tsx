@@ -34,8 +34,8 @@ const TodoDrawer = (props: any) => {
   ]
   const content: any = {
     1: <MineNotice></MineNotice>,
-    2: <AssignTask></AssignTask>,
-    3: <ReviewTask></ReviewTask>,
+    2: <AssignTask onCancel={onCancel}></AssignTask>,
+    3: <ReviewTask onCancel={onCancel}></ReviewTask>,
   }
   const { msgStatics } = useSelector(store => store.mine)
   const { todoStatistics } = msgStatics ?? {}
@@ -45,6 +45,7 @@ const TodoDrawer = (props: any) => {
   const footer = (
     <DrawerFooter
       onClick={() => {
+        onCancel()
         if (active === 2) {
           navigate('Mine/Carbon')
         }

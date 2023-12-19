@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Divider, Space } from 'antd'
+import { Divider } from 'antd'
 
 // 主体布局样式
 export const ProjectIndexWrap = styled.div`
@@ -9,7 +9,7 @@ export const ProjectIndexWrap = styled.div`
 `
 
 export const ProjectWrap = styled.div`
-  height: calc(100% - 124px);
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
@@ -18,7 +18,6 @@ export const ProjectWrap = styled.div`
 
 // 头部搜索样式
 export const HeaderFilterWrap = styled.div`
-  padding: 20px 0;
   display: flex;
   flex-direction: column;
 `
@@ -105,3 +104,56 @@ export const Content = styled.div<{ isGrid: boolean }>(
     padding: isGrid ? '0px 24px 24px 16px' : '16px 16px 0 16px',
   }),
 )
+
+export const RightCreateWrap = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+export const ActionTabsWrap = styled.div`
+  padding-top: 16px;
+  height: 100%;
+`
+
+export const ActionTabsMenuWrap = styled.div`
+  display: flex;
+  background-color: #f0f0f5;
+  height: 66px;
+  border-radius: 6px 6px 6px 6px;
+  align-items: flex-end;
+  padding: 0px 16px;
+  box-sizing: border-box;
+`
+
+export const TabMenuItem = styled.div<{
+  isActive?: boolean
+}>`
+  height: 54px;
+  margin-right: 12px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  background: ${props =>
+    props?.isActive ? 'var(--neutral-white-d2)' : 'var(--neutral-n6-d1)'};
+  padding: 0px 12px;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 0px 0px;
+  border-top: 2px solid;
+  max-width: 172px;
+  min-width: 80px;
+  .label {
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+    font-size: 14px;
+  }
+  .number {
+    color: var(--neutral-n2);
+    font-size: 12px;
+  }
+`
+
+export const ActionTabsContent = styled.div`
+  height: calc(100% - 118px);
+`

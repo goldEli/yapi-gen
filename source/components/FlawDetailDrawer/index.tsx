@@ -170,18 +170,15 @@ const FlawDetailDrawer = () => {
     }
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
-
-    if (info.comment_total) {
-      // 获取评论列表
-      dispatch(
-        getFlawCommentList({
-          projectId: paramsProjectId,
-          id: info.id,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
-    }
+    // 获取评论列表
+    dispatch(
+      getFlawCommentList({
+        projectId: paramsProjectId,
+        id: info.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
   }
 
   // 跳转详情页面
