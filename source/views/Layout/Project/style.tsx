@@ -39,20 +39,15 @@ export const StatusItems = styled.div<{ isActive?: boolean }>`
   line-height: 32px;
   border-radius: 4px;
   padding: 0 8px;
-  border: ${props =>
-    props.isActive
-      ? '1px solid var(--neutral-n2)!important'
-      : '1px solid var(--neutral-n5)'};
   font-size: 14px;
   color: ${props =>
-    props.isActive ? 'var(--neutral-white-d1)!important' : 'var(--neutral-n2)'};
+    props.isActive ? 'var(--primary-d2)!important' : 'var(--neutral-n2)'};
   background: ${props =>
-    props.isActive ? 'var(--neutral-n2)!important' : 'transparent'};
+    props.isActive ? 'var(--selected)!important' : 'var(--neutral-n7)'};
   cursor: pointer;
   &:hover {
-    background-color: #ebedf0;
-    border: 1px solid #ebedf0;
-    color: var(--neutral-n1-d1);
+    background: var(--neutral-n7);
+    color: var(--primary-d2);
   }
 `
 

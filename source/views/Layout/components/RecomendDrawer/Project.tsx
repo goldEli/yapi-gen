@@ -23,7 +23,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import moment from 'moment'
 import { getRecentProject } from '@/services/project'
 const GroupItems = (props: any) => {
-  const { row, onOpenExamine, onClickItem, tabActive } = props
+  const { row, onOpenExamine, onClickItem, tabActiv, onCancel } = props
   const [page, setPage] = useState(1)
   // 加载更多的loading
   const [moreLoading, setMoreLoading] = useState(false)
@@ -38,6 +38,7 @@ const GroupItems = (props: any) => {
   }
   // 项目-点击跳转详情
   const onClickProject = async (row: any) => {
+    onCancel()
     const params = encryptPhp(
       JSON.stringify({
         id: row?.actionable.id,
@@ -94,7 +95,7 @@ const GroupItems = (props: any) => {
   )
 }
 
-const AssignTask = () => {
+const AssignTask = (props: { onCancel(): void }) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -143,6 +144,7 @@ const AssignTask = () => {
   }
   // 点击跳转详情
   const onClickItem = async (row: any) => {
+    props.onCancel()
     // dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({
@@ -227,6 +229,7 @@ const AssignTask = () => {
                       onOpenExamine={onOpenExamine}
                       onClickItem={onClickItem}
                       tabActive={1}
+                      onCancel={props.onCancel}
                     />
                   </ItemWrap>
                 ))
