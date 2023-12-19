@@ -21,6 +21,8 @@ import {
 } from '@/services/project'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ActionTabs from './components/ActionTabs'
+import { getProjectCatrgory } from '@store/project/project.thunk'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const ProjectIndex = () => {
   const [t] = useTranslation()
@@ -48,10 +50,10 @@ const ProjectIndex = () => {
     isGrid: 0,
   })
   const [activeKey, setActiveKey] = useState(1)
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
 
   // 获取数据
   const getList = async (params: any, notSpin?: boolean) => {
-    setIsSpinning(!notSpin)
     const paramsObj: any = {
       searchValue: params?.keyword,
       orderKey: params?.order?.key,
@@ -61,12 +63,14 @@ const ProjectIndex = () => {
     if (params?.isGrid === 1) {
       paramsObj.all = true
     } else {
+      setIsSpinning(!notSpin)
+
       paramsObj.page = params.pageObj.page
       paramsObj.pageSize = params.pageObj.size
+      const result = await getProjectList(paramsObj)
+      setDataList(result)
+      setIsSpinning(false)
     }
-    const result = await getProjectList(paramsObj)
-    setDataList(result)
-    setIsSpinning(false)
   }
 
   //   筛选条件变化后更新数据 或者是 刷新
@@ -181,7 +185,9 @@ const ProjectIndex = () => {
       getList(filterParams, false)
     }
   }, [isUpdateProject])
-
+  useEffect(() => {
+    dispatch(getProjectCatrgory({}))
+  }, [])
   const onChangeTabs = (key: number) => {
     setActiveKey(key)
   }
@@ -270,9 +276,10 @@ const ProjectIndex = () => {
         onChangeVisible={() => setIsStatusState(!isStatusState)}
         onConfirm={onOperationProject}
       />
-      <ActionTabs
+      {/* <ActionTabs
         activeKey={activeKey}
         onChange={onChangeTabs}
+        open={open}
         items={[
           { label: '所有项目', id: 1, children: tabsHtml() },
           { label: '我关注的', id: 2, children: tabsHtml() },
@@ -285,10 +292,55 @@ const ProjectIndex = () => {
           { label: '游戏项目游戏项目游戏项目', id: 9, children: tabsHtml() },
           { label: '所有项目', id: 10, children: tabsHtml() },
           { label: '所有项目', id: 11, children: tabsHtml() },
-          { label: '所有项目', id: 12, children: tabsHtml() },
-          { label: '所有项目', id: 13, children: tabsHtml() },
+          {
+            label: '所有项目所有项目所有项目所有项目所有项目',
+            id: 12,
+            children: tabsHtml(),
+          },
+          {
+            label: '所有项目所有项目所有项目所有项目所有项目',
+            id: 13,
+            children: tabsHtml(),
+          },
         ]}
+      /> */}
+      {/* <DeleteConfirmModal /> */}
+
+      <HeaderFilter
+        filterParamsAll={filterParams}
+        statistics={dataList?.statistics}
+        onChangeParamsUpdate={onChangeParamsUpdate}
       />
+      <ProjectWrap>
+        <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+          {filterParams?.isGrid === 1 ? (
+            <MainGrid
+              onChangeOperation={onChangeOperation}
+              onAddClick={onAddClick}
+              onChangeStar={onChangeStar}
+              hasFilter={
+                filterParams?.keyword?.length > 0 || filterParams?.status > 0
+              }
+              projectList={dataList}
+            />
+          ) : (
+            <MainTable
+              onChangeOperation={onChangeOperation}
+              onChangePageNavigation={onChangePageNavigation}
+              onUpdateOrderKey={onUpdateOrderKey}
+              order={filterParams?.order}
+              onAddClick={onAddClick}
+              hasFilter={
+                filterParams?.keyword?.length > 0 || filterParams?.status > 0
+              }
+              projectList={dataList}
+              onChangeProjectList={onDragDataList}
+              filterParams={filterParams}
+              onChangeStar={onChangeStar}
+            />
+          )}
+        </Spin>
+      </ProjectWrap>
     </ProjectIndexWrap>
   )
 }

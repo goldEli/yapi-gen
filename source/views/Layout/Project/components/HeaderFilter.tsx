@@ -1,16 +1,13 @@
 /* eslint-disable react/no-unknown-property */
 import CommonButton from '@/components/CommonButton'
 import {
+  FilterLeftWrap,
   HeaderBottom,
   HeaderFilterWrap,
   HeaderTop,
+  RightCreateWrap,
   StatusGroup,
   StatusItems,
-  FilterLeftWrap,
-  ResetWrap,
-  DividerWrap,
-  FilterRightWrap,
-  RightCreateWrap,
 } from '../style'
 import { useState, useLayoutEffect, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -79,18 +76,49 @@ const HeaderFilter = (props: HeaderFilterProps) => {
     },
   ]
 
+  const menuFormat1 = (
+    <Menu
+      items={[
+        {
+          key: 'list',
+          label: (
+            <HasIconMenu
+              onClick={() => onClickMenuFormat(0)}
+              isCheck={!filterParams?.isGrid}
+            >
+              <span className="label">{t('common.list')}</span>
+              <IconFont
+                className="checked"
+                type={filterParams?.isGrid ? '' : 'check'}
+              />
+            </HasIconMenu>
+          ),
+        },
+        {
+          key: 'thumbnail',
+          label: (
+            <HasIconMenu
+              onClick={() => onClickMenuFormat(1)}
+              isCheck={filterParams?.isGrid}
+            >
+              <span className="label">{t('common.thumbnail')}</span>
+              <IconFont
+                className="checked"
+                type={filterParams?.isGrid ? 'check' : ''}
+              />
+            </HasIconMenu>
+          ),
+        },
+      ]}
+    />
+  )
+
   //   修改参数值
   const onChangeParams = (key: string, value: any) => {
     if (key === 'keyword' && value === filterParams?.keyword) {
       return
     }
-    const resultParams: any = {
-      ...filterParams,
-      ...{
-        // 如果是状态，点击相同值则取消
-        [key]: key === 'status' && value === filterParams?.status ? 0 : value,
-      },
-    }
+    const resultParams: any = { ...filterParams, ...{ [key]: value } }
 
     setFilterParams(resultParams)
   }

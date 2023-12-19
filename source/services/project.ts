@@ -1125,3 +1125,9 @@ export const getRecentStory = async (params: any) => {
   const res = await http.get<any>('getRecentStory', params)
   return res
 }
+
+// 获取项目的分类
+export const getProjectCatrgory = async (params: any) => {
+  const res = await http.get<any>('getProjectCatrgory', params)
+  return res
+}
