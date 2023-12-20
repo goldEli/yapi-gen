@@ -233,7 +233,8 @@ const SetShowField = (props: Props) => {
       ),
     },
     {
-      key: '4',
+      // key: '4',
+      key: 'viewManage',
       label: <div>视图管理</div>,
       children: [
         {
@@ -311,6 +312,10 @@ const SetShowField = (props: Props) => {
 
   if (props.isGrid === 1) {
     menuItems = menuItems.filter((i: any) => i.key !== '0')
+  }
+  if (!moreOperaeMaps.get(location.pathname)) {
+    const keys = ['import', 'export', 'refresh', 'viewManage']
+    menuItems = menuItems.filter((i: any) => !keys.includes(i.key))
   }
   const onClick = (e: any) => {
     setActive(e.key)

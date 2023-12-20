@@ -118,7 +118,7 @@ const OperationGroup = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      {(location.pathname.includes('Demand') ||
+      {/* {(location.pathname.includes('Demand') ||
         location.pathname.includes('Affair') ||
         location.pathname.includes('Defect')) && (
         <div style={{ visibility: 'hidden' }}>
@@ -132,7 +132,7 @@ const OperationGroup = (props: Props) => {
           />
           <DividerWrap type="vertical" />
         </div>
-      )}
+      )} */}
 
       {/* {!props.notGrid && (
         <>

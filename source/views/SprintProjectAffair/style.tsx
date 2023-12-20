@@ -27,12 +27,17 @@ export const ContentRight = styled.div`
 
 export const OperationWrap = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  height: 32px;
+  /* height: 32px; */
   margin-bottom: 20px;
   background: var(--neutral-white-d6);
   margin: 20px 0;
+  > div:nth-child(1) {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+  }
 `
 
 export const ContentMain = styled.div`
