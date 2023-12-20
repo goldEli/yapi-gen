@@ -61,7 +61,7 @@ const ProjectType = (props: {
                 style={{
                   width: '100%',
                 }}
-                src={isRefresh === 'zh' ? i.img : i.en_img}
+                src={i.img}
                 alt=""
               />
               <Footer>
