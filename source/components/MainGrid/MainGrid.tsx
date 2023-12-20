@@ -19,6 +19,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { getMsg_list } from '@/services/SiteNotifications'
 import _ from 'lodash'
 import { getProjectList } from '@/services/project'
+import classNames from 'classnames'
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
   projectList: any
@@ -27,6 +28,7 @@ interface Props {
   hasFilter?: boolean
   // 关注与取消关注
   onChangeStar(type: number, row: any): void
+  filterParams?: any
 }
 
 const MainGrid = (props: Props) => {
@@ -35,6 +37,8 @@ const MainGrid = (props: Props) => {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
   const [data, setData] = useState<any>()
+  const [status, setStatus] = useState('')
+  const [keyword, setKeyword] = useState('')
   const { userInfo } = useSelector(store => store.user)
   const isPermission = getIsPermission(
     userInfo?.company_permissions,
@@ -60,8 +64,10 @@ const MainGrid = (props: Props) => {
   }
   const _getMsg_list = async (isInit: boolean, page: number) => {
     const res = await getProjectList({
-      pageSize: 30,
+      pageSize: 35,
       page: page,
+      status,
+      searchValue: keyword,
     })
 
     if (isInit) {
@@ -95,8 +101,15 @@ const MainGrid = (props: Props) => {
     _getMsg_list(false, pages)
   }
   useEffect(() => {
+    console.log('props.filterParams', props.filterParams)
+    setStatus(props.filterParams?.status)
+    setKeyword(props.filterParams?.keyword)
+    setData(null)
+    setPage(1)
+  }, [props.filterParams?.status, props.filterParams?.keyword])
+  useEffect(() => {
     _getMsg_list(true, 1)
-  }, [])
+  }, [status, keyword])
   return (
     <DataWrap>
       {data?.list?.length > 0 ? (
@@ -109,7 +122,14 @@ const MainGrid = (props: Props) => {
             scrollableTarget="scrollableDiv"
           >
             {data?.list?.map((item: any, index: any) => (
-              <SpaceWrapItem key={item.id} onClick={() => onClickItem(item)}>
+              <SpaceWrapItem
+                key={item.id}
+                onClick={() => onClickItem(item)}
+                className={classNames({
+                  w1440: window.innerWidth <= 1440,
+                  w1920: window.innerWidth > 1440,
+                })}
+              >
                 <div className={`app-${index}`}>
                   <ProjectCard
                     onChangeOperation={props.onChangeOperation}

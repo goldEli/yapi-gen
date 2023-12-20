@@ -20,20 +20,23 @@ export const ScrollBox = styled.div`
   gap: 24px;
   flex-wrap: wrap;
   margin: auto;
-  /* width: calc(100% - 120px); */
-  /* margin-left: 72px; */
   .infinite-scroll-component__outerdiv {
     width: 100%;
   }
   .infinite-scroll-component {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px 24px;
+    gap: 24px 16px;
   }
 `
 const SpaceWrapItem = styled.div`
-  width: calc(16% - 10px);
-  /* border: 1px solid blue; */
+  width: 280px;
+  &.w1440 {
+    width: 310px;
+  }
+  &.w1920 {
+    width: 280px;
+  }
 `
 
 const AddProject = styled.div({
