@@ -2710,5 +2710,7 @@
   "importRequirements": "导入需求",
   "exportRequirements": "导出需求",
   "importTransactions": "导入事务",
-  "exportTransactions": "导出事务"
+  "exportTransactions": "导出事务",
+  "importDefects": "导入缺陷",
+  "exportDefects": "导出缺陷"
 }

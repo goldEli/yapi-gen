@@ -631,6 +631,14 @@ const Operation = (props: Props, ref: any) => {
           settingState={props.settingState}
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
           notGrid
+          // 导入事件
+          onImportChange={() => {
+            onImportClick()
+          }}
+          // 导出事件
+          onExportChange={() => {
+            onExportClick()
+          }}
         />
       </OperationWrap>
 

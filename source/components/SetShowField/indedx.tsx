@@ -81,6 +81,26 @@ const SetShowField = (props: Props) => {
     }
     console.log('filterByViewList', data)
   }
+  const moreOperaeMaps = new Map([
+    [
+      '/ProjectDetail/Affair',
+      {
+        importText: t('importTransactions'),
+        exportText: t('exportTransactions'),
+      },
+    ],
+    [
+      '/ProjectDetail/Demand',
+      {
+        importText: t('importRequirements'),
+        exportText: t('exportRequirements'),
+      },
+    ],
+    [
+      '/ProjectDetail/Defect',
+      { importText: t('importDefects'), exportText: t('exportDefects') },
+    ],
+  ])
   let menuItems = [
     {
       key: 'refresh',
@@ -90,9 +110,7 @@ const SetShowField = (props: Props) => {
       key: 'import',
       label: (
         <div onClick={props.onImportChange}>
-          {location.pathname.includes('/ProjectDetail/Affair')
-            ? t('importTransactions')
-            : t('importRequirements')}
+          {moreOperaeMaps.get(location.pathname)?.importText}
         </div>
       ),
     },
@@ -100,9 +118,7 @@ const SetShowField = (props: Props) => {
       key: 'export',
       label: (
         <div onClick={props.onExportChange}>
-          {location.pathname.includes('/ProjectDetail/Affair')
-            ? t('exportTransactions')
-            : t('exportRequirements')}
+          {moreOperaeMaps.get(location.pathname)?.exportText}
         </div>
       ),
     },

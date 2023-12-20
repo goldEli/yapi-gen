@@ -460,7 +460,7 @@ const Index = (props: any) => {
             title={t('searchForDefectNameOrNumber')}
             showSearchInput={false}
           >
-            {hasExport && hasImport ? null : (
+            {/* {hasExport && hasImport ? null : (
               <Popover
                 content={moreOperation}
                 placement="bottom"
@@ -477,7 +477,7 @@ const Index = (props: any) => {
                   />
                 </MoreWrap>
               </Popover>
-            )}
+            )} */}
             {getIsPermission(
               projectInfo?.projectPermissions,
               'b/flaw/save',

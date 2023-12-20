@@ -2710,5 +2710,7 @@
   "importRequirements": "Import Requirements",
   "exportRequirements": "Export Requirements",
   "importTransactions": "Import transactions",
-  "exportTransactions": "Export transactions"
+  "exportTransactions": "Export transactions",
+  "importDefects": "Import defects",
+  "exportDefects": "Export defects"
 }
