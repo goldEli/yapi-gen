@@ -1,8 +1,6 @@
 import styled from '@emotion/styled'
 import { Checkbox, Progress, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
-import { useDispatch, useSelector } from '@store/index'
-import { setCheckList } from '@store/sprint'
 import { useTranslation } from 'react-i18next'
 
 const Item = styled.div`
@@ -67,9 +65,15 @@ const NoSprintButton = styled.div<{ isActive: boolean }>`
   }
 `
 const TabItem = (props: any) => {
-  const { data, activeKey, checkNoCreateLongStory } = props
-  const { checkList } = useSelector(state => state.sprint)
-  const dispatch = useDispatch()
+  const {
+    data,
+    activeKey,
+    checkNoCreateLongStory,
+    setCheckList,
+    checkList,
+    searchRef,
+    callback,
+  } = props
   const [t] = useTranslation()
   return (
     <div>
@@ -79,7 +83,9 @@ const TabItem = (props: any) => {
           onClick={() => {
             const temp = [...checkList]
             temp[idx] = !temp[idx]
-            dispatch(setCheckList(temp))
+            setCheckList(temp)
+            searchRef.current.checkList = temp
+            callback?.()
           }}
         >
           <div className="title">
@@ -94,7 +100,6 @@ const TabItem = (props: any) => {
           <div className="progress">
             <div className="iconBox">
               <Tooltip title={t('numberOfTransactions')}>
-                {' '}
                 <IconFont
                   type="recover"
                   style={{

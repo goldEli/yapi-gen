@@ -123,7 +123,7 @@ const ContentWrap = styled.div`
   }
 `
 
-const Circulation = () => {
+const Circulation = (props: { onUpdateCount(num: number): void }) => {
   const [t] = useTranslation()
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
@@ -140,26 +140,20 @@ const Circulation = () => {
   const getLogs = async (state: boolean) => {
     if (state) {
       setIsSpin(true)
-      const result = await getAffairsStatusLog({
-        projectId: id ?? projectInfo.id,
-        sprintId: affairsInfo.id || 0,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
+    }
+    const result = await getAffairsStatusLog({
+      projectId: id ?? projectInfo.id,
+      sprintId: affairsInfo.id || 0,
+      all: true,
+    })
+    setStatusLogs({
+      list: result,
+    })
+    if (state) {
       dispatch(setIsRefresh(false))
       setIsSpin(false)
-    } else {
-      const result = await getAffairsStatusLog({
-        projectId: id ?? projectInfo.id,
-        sprintId: affairsInfo.id || 0,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
     }
+    props?.onUpdateCount(result?.length)
     dispatch(setIsUpdateChangeLog(false))
   }
 

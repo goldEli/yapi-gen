@@ -21,14 +21,14 @@ const ProjectType = (props: {
     {
       type: 2,
       img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/sprint/sprint_guide.png',
-      title: '冲刺项目',
-      msg: '适用于复杂程度高、要求新颖的紧急项目',
+      title: t('sprint_project'),
+      msg: t('Msg1'),
     },
     {
       img: 'https://mj-system-1308485183.cos.accelerate.myqcloud.com/public/iteration/iterat_guide.png',
       type: 1,
-      title: '迭代项目',
-      msg: '适用于稳定的低风险、需求明确不参与过程的项目',
+      title: t('iteration_project'),
+      msg: t('Msg2'),
     },
   ]
   const onChange = (index: number) => {
@@ -61,7 +61,7 @@ const ProjectType = (props: {
                 style={{
                   width: '100%',
                 }}
-                src={isRefresh === 'zh' ? i.img : i.en_img}
+                src={i.img}
                 alt=""
               />
               <Footer>
@@ -73,7 +73,7 @@ const ProjectType = (props: {
         </div>
         <FooterBtn>
           <CommonButton onClick={props.onCancel} type="primary">
-            取消
+            {t('cancel')}
           </CommonButton>
         </FooterBtn>
       </ProjectWrap>

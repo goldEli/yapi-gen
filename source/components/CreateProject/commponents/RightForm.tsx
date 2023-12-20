@@ -178,7 +178,7 @@ const RightForm = (props: {
                 <IconFont
                   style={{
                     position: 'absolute',
-                    left: '36px',
+                    left: localStorage.language === 'zh' ? '43px' : '72px',
                     top: '4px',
                     color: 'var(--neutral-n3)',
                   }}
@@ -249,6 +249,7 @@ const RightForm = (props: {
           name="info"
         >
           <Input.TextArea
+            style={{ marginBottom: 16 }}
             placeholder={t('please_enter_project_description')}
             autoSize={{ minRows: 3, maxRows: 5 }}
           />
@@ -256,15 +257,15 @@ const RightForm = (props: {
       </FormWrap>
       <FooterBtn style={{ gap: '16px' }}>
         <CommonButton type="light" onClick={props.onCancel}>
-          取消
+          {t('cancel')}
         </CommonButton>
         {!props.isEditId && (
           <CommonButton type="secondary" onClick={props.onBack}>
-            上一步
+            {t('formWork.t9')}
           </CommonButton>
         )}
         <CommonButton type="primary" onClick={onCreateProject}>
-          {props.isEditId ? '编辑' : '创建'}
+          {props.isEditId ? t('common.edit') : t('newlyAdd.create')}
         </CommonButton>
       </FooterBtn>
     </div>

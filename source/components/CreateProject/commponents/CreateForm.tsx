@@ -1,7 +1,7 @@
 import LeftIcon from './LeftIcon'
 import RightForm from './RightForm'
 import { useEffect, useState } from 'react'
-import { CreateFormWrap, MainWrap ,HeaderWrap,IconFontWrap} from './style'
+import { CreateFormWrap, MainWrap, HeaderWrap, IconFontWrap } from './style'
 import { useDispatch, useSelector } from '@store/index'
 import { getAffiliationUser, getProjectInfoOnly } from '@/services/project'
 import moment from 'moment'
@@ -9,10 +9,9 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import { getProjectInfoStore } from '@store/project/project.thunk'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
-import { Console } from 'console'
 
 const CreateForm = (props: {
-  title:string
+  title: string
   onBack(): void
   onCancel(): void
   projectType: number
@@ -120,7 +119,8 @@ const CreateForm = (props: {
     const values = {
       name: '',
       prefix: '',
-      leader_id: '',
+      // eslint-disable-next-line no-undefined
+      leader_id: undefined,
       expected_start_at: '',
       expected_end_at: '',
       info: '',
@@ -159,10 +159,10 @@ const CreateForm = (props: {
         />
       </MainWrap>
       <DeleteConfirm
-        hasIcon
-        okText="是"
-        cancelText="否"
-        text="该页面有编辑内容取消后不能保存，是否取消？"
+        hasIcon={false}
+        okText={t('newlyAdd.yes')}
+        cancelText={t('newlyAdd.no')}
+        text={t('cancelText')}
         title={t('sprintProject.confirmCancel')}
         isVisible={isVisible}
         onCancel={() => {
@@ -182,11 +182,11 @@ const CreateForm = (props: {
         }}
       />
       <DeleteConfirm
-        hasIcon
-        okText="确认"
-        cancelText="取消"
-        text={isEditId ? '确认编辑该项目' : '确认新建该项目'}
-        title={isEditId ? '确认编辑' : '确认新建'}
+        hasIcon={false}
+        okText={t('qr')}
+        cancelText={t('cancel')}
+        text={isEditId ? t('qrE') : t('qrA')}
+        title={isEditId ? t('qrEt') : t('qrAt')}
         isVisible={isCVisible}
         onCancel={() => {
           setIsCVisible(false)

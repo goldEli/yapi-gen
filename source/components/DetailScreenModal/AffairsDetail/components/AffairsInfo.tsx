@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector } from '@store/index'
 import { createRef, useEffect, useImperativeHandle, useState } from 'react'
-import { DetailInfoWrap, InfoWrap, TabsWrap1, Label } from '../style'
+import { DetailInfoWrap, InfoWrap, TabsWrap1, Label, TabsCount } from '../style'
 import { useTranslation } from 'react-i18next'
 import { getIdsForAt, getParamsData, removeNull } from '@/tools'
 import {
@@ -44,6 +44,7 @@ const AffairsInfo = (props: Props) => {
   const { projectInfoValues, projectInfo } = useSelector(store => store.project)
   const [tabActive, setTabActive] = useState('sprint-info')
   const [filter, setFilter] = useState(false)
+  const [transferRecordsCount, setTransferRecordsCount] = useState(0)
 
   const items: any = [
     {
@@ -73,22 +74,27 @@ const AffairsInfo = (props: Props) => {
     {
       key: 'changeRecord',
       label: (
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <span>{t('changeRecord')}</span>
-          {affairsInfo.changeCount}
+          <TabsCount>{affairsInfo.changeCount}</TabsCount>
         </div>
       ),
     },
     {
       key: 'transferRecords',
-      label: t('transferRecords'),
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('transferRecords')}</span>
+          <TabsCount>{transferRecordsCount}</TabsCount>
+        </div>
+      ),
     },
     {
       key: 'sprint-activity',
       label: (
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <span>{t('comment1')}</span>
-          {affairsCommentList?.list.length || 0}
+          <TabsCount>{affairsCommentList?.list.length || 0}</TabsCount>
         </div>
       ),
     },
@@ -307,7 +313,7 @@ const AffairsInfo = (props: Props) => {
             <Label id="transferRecords" className="info_item_tab">
               {t('transferRecords')}
             </Label>
-            <Circulation />
+            <Circulation onUpdateCount={setTransferRecordsCount} />
           </div>
           <div
             style={{
