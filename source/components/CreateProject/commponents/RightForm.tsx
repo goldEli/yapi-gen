@@ -7,9 +7,9 @@ import { DatePicker, Form, Input, Select, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FooterBtn, FormWrap } from './style'
-import { makePy } from '@/components/CreateAProjectForm/tool'
 import moment from 'moment'
 import { getMessage } from '@/components/Message'
+import { makePy } from './tool'
 
 const RightForm = (props: {
   isEditId: any
@@ -178,7 +178,7 @@ const RightForm = (props: {
                 <IconFont
                   style={{
                     position: 'absolute',
-                    left: localStorage.language === 'zh' ? '43px' :'72px',
+                    left: localStorage.language === 'zh' ? '43px' : '72px',
                     top: '4px',
                     color: 'var(--neutral-n3)',
                   }}
