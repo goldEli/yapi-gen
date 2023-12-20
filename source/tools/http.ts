@@ -92,7 +92,11 @@ client.config({
             '[object FormData]'
           ) {
             if (JSON.stringify(options.search) !== '{}') {
-              options.search = { p: JSON.stringify(options.search) }
+              // 加解密格式不一样
+              options.search =
+                import.meta.env.MODE === 'development'
+                  ? { p: JSON.stringify(options.search) }
+                  : JSON.parse(JSON.stringify(options.search))
             } else if (
               options.payload !== 'null' &&
               options.payload !== null &&
@@ -124,7 +128,10 @@ client.config({
         if (options.responseType === 'blob') {
           return response
         }
-        return JSON.parse((response as { body: string }).body).p
+        // 加解密格式不一样
+        return import.meta.env.MODE === 'development'
+          ? JSON.parse((response as { body: string }).body).p
+          : JSON.parse((response as { body: string }).body)
       }
       return options.responseType === 'blob'
         ? response
