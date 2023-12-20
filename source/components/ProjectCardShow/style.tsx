@@ -22,15 +22,28 @@ export const CardRightFirst = styled.div`
   font-weight: 400;
   color: var(--neutral-n1-d1);
   line-height: 22px;
+  .boxType {
+    display: inline-block;
+    line-height: 16px;
+    text-align: center;
+    // width: 32px;
+    padding: 0 4px;
+    height: 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--neutral-white-d1);
+    margin-right: 8px;
+  }
 `
 
 export const CardRightSecond = styled.div`
-  height: 20px;
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   color: var(--neutral-n3);
   line-height: 20px;
+  margin-top: 3px;
+  margin-bottom: 8px;
 `
 
 export const TransformWrap = styled.div`

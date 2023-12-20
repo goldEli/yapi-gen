@@ -122,11 +122,8 @@ const ContentWrap = styled.div`
     flex-wrap: wrap;
   }
 `
-interface Props {
-  activeKey: string
-}
 
-const Circulation = (props: Props) => {
+const Circulation = (props: { onUpdateCount(num: number): void }) => {
   const [t] = useTranslation()
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
@@ -143,34 +140,28 @@ const Circulation = (props: Props) => {
   const getLogs = async (state: boolean) => {
     if (state) {
       setIsSpin(true)
-      const result = await getAffairsStatusLog({
-        projectId: id ?? projectInfo.id,
-        sprintId: affairsInfo.id || 0,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
+    }
+    const result = await getAffairsStatusLog({
+      projectId: id ?? projectInfo.id,
+      sprintId: affairsInfo.id || 0,
+      all: true,
+    })
+    setStatusLogs({
+      list: result,
+    })
+    if (state) {
       dispatch(setIsRefresh(false))
       setIsSpin(false)
-    } else {
-      const result = await getAffairsStatusLog({
-        projectId: id ?? projectInfo.id,
-        sprintId: affairsInfo.id || 0,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
     }
+    props?.onUpdateCount(result?.length)
     dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {
-    if (props.activeKey === '3') {
+    if (affairsInfo?.id) {
       getLogs(true)
     }
-  }, [props.activeKey])
+  }, [affairsInfo])
 
   useEffect(() => {
     if (isRefresh) {

@@ -2,6 +2,18 @@ import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Progress, Space, Tabs } from 'antd'
 
+export const TabsCount = styled.div`
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  background: var(--function-tag5);
+  color: var(--primary-d1);
+  border-radius: 10px;
+  margin-left: 4px;
+`
+
 export const Wrap = styled.div`
   height: 100%;
   /* overflow: hidden; */
@@ -212,10 +224,9 @@ export const InfoWrap = styled.div<{ height: any }>`
   }
 `
 
-export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
+export const DetailInfoWrap = styled.div`
   width: 100%;
-  height: ${props =>
-    props.isScroll ? 'calc(100% - 120px)' : 'calc(100% - 130px)'};
+  height: calc(100% - 130px);
   overflow: auto;
   .review {
     position: absolute;

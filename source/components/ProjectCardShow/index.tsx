@@ -3,7 +3,6 @@
 
 import { Progress, Tooltip } from 'antd'
 import { t } from 'i18next'
-import IconFont from '../IconFont'
 import {
   ProjectCard,
   Image,
@@ -13,37 +12,48 @@ import {
   CardRightFirst,
   CardRightSecond,
 } from './style'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
-  type: string
-  num: string
-  text: string
+  img: string
+  names: string
+  user: string
+  projectType: number
 }
 
-const Index = (props: any) => {
+const Index = (props: Props) => {
+  const [t] = useTranslation()
   return (
     <ProjectCard>
       <Image src={props.img} />
-
       <CardRight>
         <Tooltip
           arrowPointAtCenter
           autoAdjustOverflow={false}
           placement="top"
-          title={null ?? (t('project_name_xxx') as string)}
+          title={props.names ? props.names : (t('project_name_xxx') as string)}
         >
           <CardRightFirst>
-            {null ?? (t('project_name_xxx') as string)}
+            <span
+              className="boxType"
+              style={{
+                background:
+                  props.projectType === 1
+                    ? 'linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%)'
+                    : 'linear-gradient(225deg, #FFA29C 0%, #F6856C 100%)',
+              }}
+            >
+              {props.projectType === 1 ? t('iteration') : t('sprint2')}
+            </span>
+            <span>
+              {props.names ? props.names : (t('project_name_xxx') as string)}
+            </span>
           </CardRightFirst>
         </Tooltip>
 
         <CardRightSecond>
           {t('functionary') as string}
-          {null ?? 'XXX'}
-        </CardRightSecond>
-        <CardRightSecond>
-          {t('serial_number') as string}
-          {null ?? 'XXXXX'}
+          {props.user ? props.user : 'XXX'}
         </CardRightSecond>
         <TransformWrap>
           <ProgressWrap>

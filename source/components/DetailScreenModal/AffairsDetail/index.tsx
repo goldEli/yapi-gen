@@ -45,8 +45,6 @@ import {
 import { getWorkflowList } from '@/services/project'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import LongStroyBread from '@/components/LongStroyBread'
-import CommonButton from '@/components/CommonButton'
-import CommonIconFont from '@/components/CommonIconFont'
 import { copyLink, getIsPermission } from '@/tools'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
