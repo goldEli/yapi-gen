@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { Tooltip } from 'antd'
 import IconFont from '../IconFont'
-import { useImageViewerStore } from '.'
+import { useImageViewerStore } from './useImageViewerStore'
 
 interface ToolBarProps {}
 

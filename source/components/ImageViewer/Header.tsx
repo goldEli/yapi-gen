@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '../IconFont'
-import { useImageViewerStore } from '.'
 import { Tooltip } from 'antd'
+import { useImageViewerStore } from './useImageViewerStore'
+import { getImageInfo } from './utils'
 
 interface HeaderProps {}
 
@@ -64,7 +65,46 @@ const IconBox = styled.div`
 `
 
 const Header: React.FC<HeaderProps> = props => {
-  const { setOpen } = useImageViewerStore()
+  const { setOpen, params } = useImageViewerStore()
+  const [imageInfo, setImageInfo] = useState<{
+    w: number
+    h: number
+    size: number
+  } | null>(null)
+  const fileName = useMemo(() => {
+    if (!params?.name) return '--'
+    const arr = params?.name.split('.')
+    const fileType = arr.pop()
+    let name = arr.join('.')
+    if (name.length > 24) {
+      name = name.slice(0, 24) + '...'
+    }
+    return `${name}.${fileType}`
+  }, [params?.name])
+
+  useEffect(() => {
+    if (params?.url) {
+      getImageInfo(params?.url).then(res => {
+        setImageInfo({
+          w: res.width,
+          h: res.height,
+          size: res.size,
+        })
+      })
+      return
+    }
+    setImageInfo(null)
+  }, [params?.url])
+
+  const size = useMemo(() => {
+    if (!imageInfo?.w || !imageInfo?.h) return ''
+    return `${imageInfo?.w}*${imageInfo?.h}`
+  }, [imageInfo])
+
+  const mSize = useMemo(() => {
+    if (!imageInfo?.size) return ''
+    return `${imageInfo?.size}M`
+  }, [imageInfo])
   return (
     <HeaderBox
       onClick={e => {
@@ -72,8 +112,10 @@ const Header: React.FC<HeaderProps> = props => {
       }}
     >
       <Left>
-        <Title>{'这是图片文件这是最长名称XXXXXXXXXXXXX....jpg'}</Title>
-        <Des>{'3600*1232 28M'}</Des>
+        <Title>{fileName}</Title>
+        <Des>
+          {size} {mSize}
+        </Des>
       </Left>
       <Right>
         <Tooltip title="退出预览">
