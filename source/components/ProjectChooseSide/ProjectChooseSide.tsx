@@ -45,6 +45,7 @@ const ProjectChooseSide = (props: any) => {
           height: 'calc( 100% - 100px)',
         }}
       >
+        9999999999999999
         <div>
           <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
             <CommonIconFont

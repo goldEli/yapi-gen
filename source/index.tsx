@@ -21,6 +21,7 @@ export const Loading = styled.div`
 `
 
 import '@/locals'
+import ImageViewer from './components/ImageViewer'
 
 log.init({ isDEV: import.meta.env.DEV })
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ErrorBoundary>
       <Provider store={store}>
         <WaterMarkContent>
+          <ImageViewer />
           <Routes />
         </WaterMarkContent>
       </Provider>

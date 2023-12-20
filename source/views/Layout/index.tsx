@@ -44,6 +44,8 @@ import ReportAssistantModal from './Report/Review/components/ReportAssistantModa
 import ProjectSystemReport from './Report/Review/components/ProjectSystemReport'
 import { getNotReadMsgStatics } from '@/services/mine'
 import { setMsgStatics } from '@store/mine'
+import Create from './Mine/Create'
+import CreateProject from '@/components/CreateProject'
 const LayoutIndex = () => {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -207,7 +209,9 @@ const LayoutIndex = () => {
           visible={reportAssistantModalObj.visible}
           type={reportAssistantModalObj.type}
         />
-        <CreateAProjectForm />
+        {/* <CreateAProjectForm /> */}
+        {/* 创建项目重构 */}
+        <CreateProject/>
         <CreateIteration />
         <DemandDetailDrawer />
         {viewReportModal.type === 1 ? <ReportDetailDrawer /> : null}
