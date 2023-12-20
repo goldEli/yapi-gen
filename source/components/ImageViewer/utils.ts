@@ -59,14 +59,4 @@ export function downloadImage(
     document.body.removeChild(tag)
   }
   xhr.send()
-  //   const link = document.createElement('a')
-  //   link.href = url
-  //   link.download = fileName
-
-  //   // 将元素添加到文档中，模拟点击
-  //   document.body.appendChild(link)
-  //   link.click()
-
-  //   // 从文档中移除元素
-  //   document.body.removeChild(link)
 }

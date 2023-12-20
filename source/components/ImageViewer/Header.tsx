@@ -5,6 +5,7 @@ import { Tooltip } from 'antd'
 import { useImageViewerStore } from './useImageViewerStore'
 import { getImageInfo } from './utils'
 import { closeImageViewer } from '.'
+import { useTranslation } from 'react-i18next'
 
 interface HeaderProps {}
 
@@ -72,16 +73,7 @@ const Header: React.FC<HeaderProps> = props => {
     h: number
     size: number
   } | null>(null)
-  const fileName = useMemo(() => {
-    if (!params?.name) return '--'
-    const arr = params?.name.split('.')
-    const fileType = arr.pop()
-    let name = arr.join('.')
-    if (name.length > 24) {
-      name = name.slice(0, 24) + '...'
-    }
-    return `${name}.${fileType}`
-  }, [params?.name])
+  const [t] = useTranslation()
 
   useEffect(() => {
     if (params?.url) {
@@ -97,6 +89,17 @@ const Header: React.FC<HeaderProps> = props => {
     setImageInfo(null)
   }, [params?.url])
 
+  const fileName = useMemo(() => {
+    if (!params?.name) return '--'
+    const arr = params?.name.split('.')
+    const fileType = arr.pop()
+    let name = arr.join('.')
+    if (name.length > 24) {
+      name = name.slice(0, 24) + '...'
+    }
+    return `${name}.${fileType}`
+  }, [params?.name])
+
   const size = useMemo(() => {
     if (!imageInfo?.w || !imageInfo?.h) return ''
     return `${imageInfo?.w}*${imageInfo?.h}`
@@ -106,6 +109,7 @@ const Header: React.FC<HeaderProps> = props => {
     if (!imageInfo?.size) return ''
     return `${imageInfo?.size}M`
   }, [imageInfo])
+
   return (
     <HeaderBox
       onClick={e => {
@@ -119,7 +123,7 @@ const Header: React.FC<HeaderProps> = props => {
         </Des>
       </Left>
       <Right>
-        <Tooltip title="退出预览">
+        <Tooltip title={t('exitPreview')}>
           <IconBox
             onClick={e => {
               e.stopPropagation()

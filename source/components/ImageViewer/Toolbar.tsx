@@ -4,6 +4,7 @@ import { Tooltip } from 'antd'
 import IconFont from '../IconFont'
 import { useImageViewerStore } from './useImageViewerStore'
 import { downloadImage } from './utils'
+import { useTranslation } from 'react-i18next'
 
 interface ToolBarProps {}
 
@@ -58,6 +59,7 @@ const Split = styled.div`
 
 const ToolBar: React.FC<ToolBarProps> = props => {
   const { zoomIn, zoomOut, scale, onRotate, params } = useImageViewerStore()
+  const [t] = useTranslation()
   return (
     <ToolBarBox
       onClick={e => {
@@ -90,7 +92,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         <Icon type="rotate2" />
       </IconBox>
       <Split />
-      <Tooltip title="下载图片">
+      <Tooltip title={t('downloadImages')}>
         <IconBox
           onClick={e => {
             e.stopPropagation()
