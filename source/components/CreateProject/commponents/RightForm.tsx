@@ -257,15 +257,15 @@ const RightForm = (props: {
       </FormWrap>
       <FooterBtn style={{ gap: '16px' }}>
         <CommonButton type="light" onClick={props.onCancel}>
-          取消
+          {t('cancel')}
         </CommonButton>
         {!props.isEditId && (
           <CommonButton type="secondary" onClick={props.onBack}>
-            上一步
+            {t('formWork.t9')}
           </CommonButton>
         )}
         <CommonButton type="primary" onClick={onCreateProject}>
-          {props.isEditId ? '编辑' : '创建'}
+          {props.isEditId ? t('common.edit') : t('newlyAdd.create')}
         </CommonButton>
       </FooterBtn>
     </div>
