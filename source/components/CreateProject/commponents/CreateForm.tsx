@@ -120,7 +120,8 @@ const CreateForm = (props: {
     const values = {
       name: '',
       prefix: '',
-      leader_id: '',
+      // eslint-disable-next-line no-undefined
+      leader_id: undefined,
       expected_start_at: '',
       expected_end_at: '',
       info: '',
