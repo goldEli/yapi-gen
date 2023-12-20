@@ -1,4 +1,3 @@
-import CreateAProjectForm from '@/components/CreateAProjectForm'
 import CreateIteration from '@/components/CreateIteration'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import GlobalStyle from '@/components/GlobalStyle'
@@ -209,9 +208,8 @@ const LayoutIndex = () => {
           visible={reportAssistantModalObj.visible}
           type={reportAssistantModalObj.type}
         />
-        {/* <CreateAProjectForm /> */}
         {/* 创建项目重构 */}
-        <CreateProject/>
+        <CreateProject />
         <CreateIteration />
         <DemandDetailDrawer />
         {viewReportModal.type === 1 ? <ReportDetailDrawer /> : null}

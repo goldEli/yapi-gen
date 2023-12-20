@@ -7,9 +7,9 @@ import { DatePicker, Form, Input, Select, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FooterBtn, FormWrap } from './style'
-import { makePy } from '@/components/CreateAProjectForm/tool'
 import moment from 'moment'
 import { getMessage } from '@/components/Message'
+import { makePy } from './tool'
 
 const RightForm = (props: {
   isEditId: any
@@ -264,7 +264,7 @@ const RightForm = (props: {
           </CommonButton>
         )}
         <CommonButton type="primary" onClick={onCreateProject}>
-          {props.isEditId ? '编辑':'创建'}
+          {props.isEditId ? '编辑' : '创建'}
         </CommonButton>
       </FooterBtn>
     </div>
