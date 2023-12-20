@@ -2,6 +2,8 @@ import React from 'react'
 import styled from '@emotion/styled'
 import IconFont from '../IconFont'
 import { useImageViewerStore } from '.'
+import { Tooltip } from 'antd'
+import { Icon, IconBox } from './styled'
 
 interface HeaderProps {}
 
@@ -37,25 +39,6 @@ const Right = styled.div`
   display: flex;
   align-items: center;
 `
-const Icon = styled(IconFont)`
-  font-size: 28px;
-  color: #ffffff;
-`
-const Close = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 6px 6px 6px 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    background: rgba(255, 255, 255, 0.16);
-  }
-  &:active {
-    background: rgba(255, 255, 255, 0.36);
-  }
-`
 
 const Header: React.FC<HeaderProps> = props => {
   const { setOpen } = useImageViewerStore()
@@ -66,9 +49,11 @@ const Header: React.FC<HeaderProps> = props => {
         <Des>{'3600*1232 28M'}</Des>
       </Left>
       <Right>
-        <Close onClick={() => setOpen(false)}>
-          <Icon type="close" />
-        </Close>
+        <Tooltip title="退出预览">
+          <IconBox onClick={() => setOpen(false)}>
+            <Icon type="close" />
+          </IconBox>
+        </Tooltip>
       </Right>
     </HeaderBox>
   )

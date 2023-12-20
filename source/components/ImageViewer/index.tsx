@@ -4,6 +4,8 @@ import Modal from './Modal'
 import { EventBusSingle } from '../CalendarManager/eventBusSingle'
 import Header from './Header'
 import { create } from 'zustand'
+import Image from './Image'
+import ToolBar from './Toolbar'
 
 interface ImageViewerProps {}
 
@@ -13,7 +15,7 @@ export const useImageViewerStore = create<{
   open: boolean
   setOpen(open: boolean): void
 }>(set => ({
-  open: true,
+  open: false,
   setOpen: open => {
     set({ open })
   },
@@ -37,6 +39,8 @@ const ImageViewer: React.FC<ImageViewerProps> = props => {
   return (
     <Modal isOpen={open} onClose={closeModal}>
       <Header />
+      <Image />
+      <ToolBar />
     </Modal>
   )
 }
