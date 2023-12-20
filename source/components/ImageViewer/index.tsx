@@ -34,6 +34,11 @@ const ImageViewer: React.FC<ImageViewerProps> = props => {
       openModal()
     })
   }, [])
+  useEffect(() => {
+    EventBusSingle.getInstance().register(`close-${key}`, () => {
+      closeModal()
+    })
+  }, [])
   return (
     <Modal isOpen={open} onClose={closeModal}>
       <Header />
@@ -47,4 +52,7 @@ export default ImageViewer
 
 export const openImageViewer = (p: Params) => {
   EventBusSingle.getInstance().dispatch(`open-${key}`, p)
+}
+export const closeImageViewer = () => {
+  EventBusSingle.getInstance().dispatch(`close-${key}`)
 }

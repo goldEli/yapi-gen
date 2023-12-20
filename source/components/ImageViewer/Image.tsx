@@ -10,17 +10,15 @@ interface ImageProps {}
 const ImageBox = styled.div``
 const Img = styled.img`
   transform-origin: center center;
-  /* transition: 0.2s; */
-  &:hover {
-    cursor: zoom-out;
-  }
 `
 
 const Image: React.FC<ImageProps> = props => {
-  const { scale, rotate, params } = useImageViewerStore()
+  const { scale, rotate, params, isDrag } = useImageViewerStore()
   const style: CSSProperties = {
     transform: `scale(${scale}) rotate(${rotate}deg)`,
+    cursor: isDrag ? 'move' : 'zoom-out',
   }
+  console.log(isDrag)
   return (
     <ImageBox
       onClick={e => {

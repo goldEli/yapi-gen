@@ -4,6 +4,7 @@ import IconFont from '../IconFont'
 import { Tooltip } from 'antd'
 import { useImageViewerStore } from './useImageViewerStore'
 import { getImageInfo } from './utils'
+import { closeImageViewer } from '.'
 
 interface HeaderProps {}
 
@@ -65,7 +66,7 @@ const IconBox = styled.div`
 `
 
 const Header: React.FC<HeaderProps> = props => {
-  const { setOpen, params } = useImageViewerStore()
+  const { params } = useImageViewerStore()
   const [imageInfo, setImageInfo] = useState<{
     w: number
     h: number
@@ -122,7 +123,7 @@ const Header: React.FC<HeaderProps> = props => {
           <IconBox
             onClick={e => {
               e.stopPropagation()
-              setOpen(false)
+              closeImageViewer()
             }}
           >
             <Icon type="close" />

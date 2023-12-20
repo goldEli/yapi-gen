@@ -22,7 +22,6 @@ import DropDownMenu from '@/components/DropDownMenu'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { useDispatch, useSelector } from '@store/index'
 import SwitchMode from '@/components/SwitchMode'
-import { openImageViewer } from '@/components/ImageViewer'
 
 interface HeaderFilterProps {
   filterParamsAll: any
@@ -136,16 +135,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
   return (
     <HeaderFilterWrap>
       <HeaderTop>
-        <button
-          onClick={e => {
-            openImageViewer({
-              url: 'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1535814602086334466/1685932792250114048/2023-08-23/6106f0dd-5a9f-4830-b90c-320bec49f210.png',
-              // name: '这是图片文件这是最长名称XXXXXXXXXXXXX123123.png',
-            })
-          }}
-        >
-          click
-        </button>
         <InputSearch
           width={192}
           bgColor="var(--neutral-white-d4)"

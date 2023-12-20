@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactNode, useRef } from 'react'
 import { useImageViewerStore } from './useImageViewerStore'
+import { closeImageViewer } from '.'
 
 interface DragProps {
   children: ReactNode
@@ -7,9 +8,13 @@ interface DragProps {
 
 const Drag: React.FC<DragProps> = ({ children }) => {
   const domRef = useRef<HTMLDivElement>(null)
-  const { open } = useImageViewerStore()
+  const { open, isDrag, setIsDrag, scale } = useImageViewerStore()
 
   const handleMouseDown = (event: React.MouseEvent) => {
+    if (!isDrag) {
+      closeImageViewer()
+      return
+    }
     // firstMove = true
     // event.preventDefault()
     // setIsDragging(true)
@@ -23,7 +28,6 @@ const Drag: React.FC<DragProps> = ({ children }) => {
     //   drag.setCapture()
     // }
     document.onmousemove = function (e: MouseEvent) {
-      console.log('move')
       e.preventDefault()
       let moveX = e.clientX - x
       let moveY = e.clientY - y
@@ -47,12 +51,8 @@ const Drag: React.FC<DragProps> = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    const drag = domRef?.current
-    if (!open || !drag) {
-      return
-    }
-
+  const getSize = () => {
+    const drag = domRef?.current as HTMLDivElement
     const rect = drag.getBoundingClientRect()
     const width = rect.width
     const height = rect.height
@@ -64,10 +64,43 @@ const Drag: React.FC<DragProps> = ({ children }) => {
       window.innerHeight ||
       document.documentElement.clientHeight ||
       document.body.clientHeight
+    return {
+      width,
+      height,
+      bWidth,
+      bHeight,
+    }
+  }
+
+  useEffect(() => {
+    const drag = domRef?.current
+    if (!open || !drag) {
+      return
+    }
+
+    const { bWidth, bHeight, width, height } = getSize()
     // const
     drag.style.left = `${bWidth / 2 - width / 2}px`
     drag.style.top = `${bHeight / 2 - height / 2}px`
   }, [open])
+
+  useEffect(() => {
+    const drag = domRef?.current
+    if (!open || !drag) {
+      return
+    }
+
+    const { bWidth, bHeight, width, height } = getSize()
+    if (width * scale > bWidth * 0.8) {
+      setIsDrag(true)
+      return
+    }
+    if (height * scale > bHeight * 0.8) {
+      setIsDrag(true)
+      return
+    }
+    setIsDrag(false)
+  }, [open, scale])
 
   return (
     <div

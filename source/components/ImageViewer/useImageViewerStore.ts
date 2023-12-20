@@ -14,6 +14,8 @@ export const useImageViewerStore = create<{
   scale: number
   rotate: number
   params?: Params
+  isDrag?: boolean
+  setIsDrag(isDrag: boolean): void
   setParams(params: Params): void
   setOpen(open: boolean): void
   setRotate(rotate: number): void
@@ -25,6 +27,10 @@ export const useImageViewerStore = create<{
   open: false,
   scale: 1,
   rotate: 0,
+  drag: false,
+  setIsDrag(isDrag) {
+    set({ isDrag })
+  },
   setParams(params) {
     set({ params })
   },
