@@ -26,7 +26,8 @@ export const CardRightFirst = styled.div`
     display: inline-block;
     line-height:16px;
     text-align: center;
-    width: 32px;
+    // width: 32px;
+    padding:0 4px;
     height: 16px;
     border-radius: 4px;
     font-size: 12px;

@@ -507,12 +507,12 @@ const CreateAProjectForm = () => {
                     marginTop: '16px',
                   }}
                 >
-                  <ProjectCardShow
+                  {/* <ProjectCardShow
                     names={names}
                     prefix={pey}
                     user={user}
                     img={activeCover}
-                  />
+                  /> */}
                 </div>
               </CoverAreaWrap>
               <Wrap>

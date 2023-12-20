@@ -3,7 +3,6 @@
 
 import { Progress, Tooltip } from 'antd'
 import { t } from 'i18next'
-import IconFont from '../IconFont'
 import {
   ProjectCard,
   Image,
@@ -13,6 +12,7 @@ import {
   CardRightFirst,
   CardRightSecond,
 } from './style'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   img: string
@@ -22,6 +22,7 @@ type Props = {
 }
 
 const Index = (props: Props) => {
+  const [t] = useTranslation()
   return (
     <ProjectCard>
       <Image src={props.img} />
@@ -33,7 +34,7 @@ const Index = (props: Props) => {
           title={props.names ? props.names : (t('project_name_xxx') as string)}
         >
           <CardRightFirst>
-            <span className="boxType" style={{background:props.projectType ===1 ? 'linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%)' :'linear-gradient(225deg, #FFA29C 0%, #F6856C 100%)'}}>{props.projectType ===1 ? '迭代' : '冲刺'}</span>
+            <span className="boxType" style={{background:props.projectType ===1 ? 'linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%)' :'linear-gradient(225deg, #FFA29C 0%, #F6856C 100%)'}}>{props.projectType ===1 ? t('iteration') : t('sprint2')}</span>
             <span>
               {props.names ? props.names : (t('project_name_xxx') as string)}
             </span>
