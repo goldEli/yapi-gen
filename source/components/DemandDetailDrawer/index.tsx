@@ -991,7 +991,7 @@ const DemandDetailDrawer = () => {
               </div>
               <span>
                 {t('updated')}
-                {detailTimeFormat(drawerInfo.update_at as string)}
+                {detailTimeFormat(drawerInfo.updated_at as string)}
               </span>
             </div>
             <ConfigWrap onClick={onToConfig}>

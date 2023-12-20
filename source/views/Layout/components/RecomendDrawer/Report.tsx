@@ -38,6 +38,7 @@ const GroupItems = (props: any) => {
   // 日报-点击跳转详情
   const onClickReport = async (item: any) => {
     onCancel()
+    // props.onClose()
     navigate('/Report/Review/List/1')
     dispatch(
       saveViewReportDetailDrawer({
