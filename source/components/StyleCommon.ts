@@ -244,6 +244,7 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    cursor: 'pointer',
     '.icon': {
       marginRight: 12,
       fontSize: 16,

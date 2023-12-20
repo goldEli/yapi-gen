@@ -517,7 +517,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
             title={t('search_for_transaction_name_or_number')}
             showSearchInput={false}
           >
-            {hasExport && hasImport ? null : (
+            {/* {hasExport && hasImport ? null : (
               <Popover
                 content={moreOperation}
                 placement="bottom"
@@ -534,7 +534,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
                   />
                 </MoreWrap>
               </Popover>
-            )}
+            )} */}
             {getIsPermission(
               projectInfo?.projectPermissions,
               'b/transaction/save',

@@ -66,6 +66,9 @@ const LabelComponent = (props: any) => {
 const DateInput = (props: any) => {
   const { onChange: set, type } = props
   const change = async (key: any, dates: any) => {
+    if (!dates) {
+      return
+    }
     const params = {
       project_id: props.record?.project_id,
       story_id: props.record?.id,

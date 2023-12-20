@@ -2705,5 +2705,10 @@
   "editingPermissionIsRequiredToOperate": "需要编辑权限才能操作",
   "needToHaveRemovalPermissionToOperate": "需要有移除权限才能操作",
   "stateDefinition": "状态定义",
-  "circulationConfiguration": "流转配置"
+  "circulationConfiguration": "流转配置",
+  "refresh": "刷新",
+  "importRequirements": "导入需求",
+  "exportRequirements": "导出需求",
+  "importTransactions": "导入事务",
+  "exportTransactions": "导出事务"
 }

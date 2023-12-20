@@ -567,6 +567,14 @@ const Operation = (props: Props, ref: any) => {
           filterState={filterState}
           settingState={props.settingState}
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+          // 导入事件
+          onImportChange={() => {
+            onImportClick()
+          }}
+          // 导出事件
+          onExportChange={() => {
+            onExportClick()
+          }}
         />
       </OperationWrap>
 

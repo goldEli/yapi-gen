@@ -43,6 +43,9 @@ interface Props {
   onChangeFieldVisible(): void
   isGrid?: 1 | 2
   onChangeView?(type?: number): void
+  onImportChange?(): void
+  onExportChange?(): void
+  onRefresh?(): void
 }
 
 const SetShowField = (props: Props) => {
@@ -79,6 +82,30 @@ const SetShowField = (props: Props) => {
     console.log('filterByViewList', data)
   }
   let menuItems = [
+    {
+      key: 'refresh',
+      label: <div onClick={props.onRefresh}>{t('refresh')}</div>,
+    },
+    {
+      key: 'import',
+      label: (
+        <div onClick={props.onImportChange}>
+          {location.pathname.includes('/ProjectDetail/Affair')
+            ? t('importTransactions')
+            : t('importRequirements')}
+        </div>
+      ),
+    },
+    {
+      key: 'export',
+      label: (
+        <div onClick={props.onExportChange}>
+          {location.pathname.includes('/ProjectDetail/Affair')
+            ? t('exportTransactions')
+            : t('exportRequirements')}
+        </div>
+      ),
+    },
     {
       key: '0',
       label: (

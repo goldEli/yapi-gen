@@ -520,7 +520,7 @@ const DemandIndex = () => {
             onInputSearch={onInputSearch}
             showSearchInput={false}
           >
-            {hasExport && hasImport ? null : (
+            {/* {hasExport && hasImport ? null : (
               <Popover
                 content={moreOperation}
                 placement="bottom"
@@ -537,7 +537,7 @@ const DemandIndex = () => {
                   />
                 </MoreWrap>
               </Popover>
-            )}
+            )} */}
             {getIsPermission(
               projectInfo?.projectPermissions,
               'b/story/save',

@@ -2705,5 +2705,10 @@
   "editingPermissionIsRequiredToOperate": "Editing permission is required to operate",
   "needToHaveRemovalPermissionToOperate": "Need to have removal permission to operate",
   "stateDefinition": "State definition",
-  "circulationConfiguration": "Circulation configuration"
+  "circulationConfiguration": "Circulation configuration",
+  "refresh": "Refresh",
+  "importRequirements": "Import Requirements",
+  "exportRequirements": "Export Requirements",
+  "importTransactions": "Import transactions",
+  "exportTransactions": "Export transactions"
 }

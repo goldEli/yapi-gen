@@ -28,6 +28,8 @@ interface Props {
   // 是否有切换模式
   notGrid?: boolean
   onChangeView?(): void
+  onExportChange?(): void
+  onImportChange?(): void
 }
 
 const SpaceWrap = styled(Space)({
@@ -132,7 +134,7 @@ const OperationGroup = (props: Props) => {
         </div>
       )}
 
-      {!props.notGrid && (
+      {/* {!props.notGrid && (
         <>
           <DropDownMenu
             isVisible={isVisible}
@@ -149,8 +151,41 @@ const OperationGroup = (props: Props) => {
           </DropDownMenu>
           <DividerWrap type="vertical" />
         </>
-      )}
-
+      )} */}
+      {/* 修改头部样式 */}
+      <HasIconMenu onClick={() => onClickMenu(0)}>
+        <div className="left">
+          <IconFont className="icon" type="unorderedlist" />
+          <span
+            style={{
+              color: 'var(--neutral-n2)',
+            }}
+            className="label"
+          >
+            {t('common.list')}
+          </span>
+        </div>
+      </HasIconMenu>
+      <DividerWrap type="vertical" />
+      <HasIconMenu onClick={() => onClickMenu(2)}>
+        <div className="left">
+          <IconFont className="icon" type="tree-list" />
+          <span
+            style={{
+              color: 'var(--neutral-n2)',
+            }}
+            className="label"
+          >
+            {t('version2.tree')}
+          </span>
+        </div>
+      </HasIconMenu>
+      <DividerWrap type="vertical" />
+      {/* <HasIconMenu>
+        <div className="label">
+          {t('version2.tree')}
+        </div>
+      </HasIconMenu> */}
       {!hasFilter && (
         <ScreenMinHover
           label={t('common.search')}
@@ -162,13 +197,13 @@ const OperationGroup = (props: Props) => {
 
       <DividerWrap type="vertical" />
 
-      <ScreenMinHover
+      {/* <ScreenMinHover
         label={t('common.refresh')}
         icon="sync"
         onClick={props.onRefresh}
       />
 
-      <DividerWrap type="vertical" />
+      <DividerWrap type="vertical" /> */}
 
       <DropDownMenu
         menu={
@@ -183,6 +218,12 @@ const OperationGroup = (props: Props) => {
               ViewPortRef.current?.onChangeView()
             }}
             isGrid={props.isGrid}
+            // 导入事件
+            onImportChange={props.onImportChange}
+            // 导出事件
+            onExportChange={props.onExportChange}
+            // 刷新事件
+            onRefresh={props.onRefresh}
           />
         }
         icon="settings"
@@ -190,7 +231,7 @@ const OperationGroup = (props: Props) => {
         onChangeVisible={setIsVisibleFields}
         isActive={props.settingState}
       >
-        <div>{t('common.tableFieldSet')}</div>
+        <div>{t('more')}</div>
       </DropDownMenu>
     </SpaceWrap>
   )
