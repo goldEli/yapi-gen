@@ -1,6 +1,24 @@
 import styled from '@emotion/styled'
 import { Dropdown, Space } from 'antd'
 
+export const CommonItemBox = styled.div`
+  background-color: white;
+  padding: 16px 24px;
+  margin-top: 12px;
+`
+
+export const TabsCount = styled.div`
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  background: var(--function-tag5);
+  color: var(--primary-d1);
+  border-radius: 10px;
+  margin-left: 4px;
+`
+
 export const TargetWrap = styled.div`
   flex-wrap: wrap;
   margin-top: 16px;
