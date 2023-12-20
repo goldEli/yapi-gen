@@ -18,7 +18,7 @@ export const useImageViewerStore = create<{
   zoomIn(): void
   zoomOut(): void
 }>(set => ({
-  open: false,
+  open: true,
   scale: 1,
   setOpen: open => {
     set({ open })

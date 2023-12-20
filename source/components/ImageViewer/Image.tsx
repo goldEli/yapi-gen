@@ -5,17 +5,18 @@ import { useImageViewerStore } from '.'
 interface ImageProps {}
 
 const ImageBox = styled.div`
-  width: 80%;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 66px;
+  align-items: center;
 `
 const Img = styled.img`
-  transform-origin: center top;
+  transform-origin: center center;
+  transition: 0.2s;
   &:hover {
-    cursor: pointer;
+    cursor: zoom-out;
   }
 `
 
@@ -23,7 +24,6 @@ const Image: React.FC<ImageProps> = props => {
   const { scale } = useImageViewerStore()
   const style: CSSProperties = {
     transform: `scale(${scale})`,
-    cursor: scale === 3 ? 'zoom-out' : 'zoom-in',
   }
   return (
     <ImageBox>
