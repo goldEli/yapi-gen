@@ -92,7 +92,6 @@ const RightForm = (props: {
       })
       return
     }
-
     const formObj = {
       ...formData,
       expected_start_at: formData?.expected_start_at
