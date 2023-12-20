@@ -4,10 +4,12 @@ import CreateForm from './commponents/CreateForm'
 import { useDispatch, useSelector } from '@store/index'
 import { ModalWrap } from './commponents/style'
 import { changeCreateVisible, editProject } from '@store/create-propject'
+import { useTranslation } from 'react-i18next'
 
 const CreateProject = () => {
   const { createVisible, isEditId } = useSelector(state => state.createProject)
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [state, setState] = useState(2)
   // 项目类型 选择冲刺2 迭代1
@@ -40,7 +42,7 @@ const CreateProject = () => {
     >
       {state === 1 ? (
         <ProjectType
-          title={isEditId ? '编辑项目' : '创建项目'}
+          title={isEditId ? t('edit_item') : t('common.createProject')}
           projectType={projectType}
           onChange={val => {
             setState(2)
@@ -50,7 +52,7 @@ const CreateProject = () => {
         />
       ) : (
         <CreateForm
-          title={isEditId ? '编辑项目' : '创建项目'}
+          title={isEditId ? t('edit_item') : t('common.createProject')}
           projectType={projectType}
           onCancel={onClose}
           onBack={() => {
