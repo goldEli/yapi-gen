@@ -1,10 +1,27 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Form, Modal } from 'antd'
+import IconFont from '@/components/IconFont'
 
 export const ModalWrap = styled(Modal)`
   .ant-modal-body: {
     padding: 0;
+  }
+  .ant-modal-close {
+    display: none;
+  }
+`
+export const HeaderWrap = styled.div`
+  width: 100%;
+  height: 56px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .title{
+    font-weight: 500;
+    font-size: 16px;
+    font-family: SiYuanMedium;
   }
 `
 export const Title = styled.div`
@@ -25,15 +42,15 @@ export const Wrap = styled.div<{ type: number; hover: number }>`
   border-radius: 12px;
   border: 1px solid
     ${props =>
-      props.type === 1 && props.hover === 1
+      props.type === 2 && props.hover === 2
         ? '#FA9746'
-        : props.type === 2 && props.hover === 2
+        : props.type === 1 && props.hover === 1
         ? '#6688FF'
         : '#ecedef'};
   position: relative;
   transition: all 0.5s;
   :hover {
-    border: 1px solid ${props => (props.hover === 1 ? '#FA9746' : '#6688FF')};
+    border: 1px solid ${props => (props.hover === 2 ? '#FA9746' : '#6688FF')};
     transform: translateY(-10px);
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
     cursor: pointer;
@@ -66,6 +83,20 @@ export const FooterBtn = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
+`
+export const IconFontWrap = styled(IconFont)`
+  color: var(--neutral-n1-d1);
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  :hover {
+    background: #f3f3f5;
+    cursor: pointer;
+  }
 `
 
 export const OpacityDiv = styled.div`
@@ -111,7 +142,6 @@ export const CoverAreaImageShade = styled.div`
   width: 80px;
   height: 80px;
   background: rgba(0, 0, 0, 0.3);
-  /* background: red; */
   border-radius: 6px 6px 6px 6px;
   position: absolute;
   left: 0;
@@ -193,8 +223,7 @@ export const CoverAreaAdd = styled.div`
 export const UploadFileIconWrap = styled.div`
   padding: 0 24px;
 `
-export const CreateFormWrap = styled.div`
-`
+export const CreateFormWrap = styled.div``
 export const MainWrap = styled.div`
   display: flex;
 `

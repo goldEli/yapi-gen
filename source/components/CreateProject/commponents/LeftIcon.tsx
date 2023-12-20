@@ -19,6 +19,9 @@ import { Upload } from 'antd'
 import ProjectCardShow from '@/components/ProjectCardShow'
 const UploadFileIcon = (props: {
   icon: string
+  newFormValues: any
+  selectLeaders: any
+  projectType: number
   onChangeIcon(val: string): void
 }) => {
   const [myCover, setMyCover] = useState<string>('')
@@ -110,9 +113,13 @@ const UploadFileIcon = (props: {
         >
           {/* 左侧底部的卡片展示 */}
           <ProjectCardShow
-            //   names={activeCover}
-            // prefix={pey}
-            // user={user}
+            projectType={props.projectType}
+            names={props.newFormValues?.name}
+            user={
+              props.selectLeaders.find(
+                (i: any) => i.id === props.newFormValues.leader_id,
+              )?.name
+            }
             img={activeCover}
           />
         </div>

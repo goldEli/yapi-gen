@@ -41,7 +41,7 @@ const RightForm = (props: {
   }
 
   const transformStr = (str: string) => {
-    // eslint-disable-next-line prefer-regex-literals
+    // eslint-disable-next-line prefer-regex-literals, require-unicode-regexp
     const judgeFn = new RegExp(/\s+/g)
     const newStr = []
     if (judgeFn.test(str)) {
@@ -56,7 +56,6 @@ const RightForm = (props: {
 
   const onChange = (e: any) => {
     const textStr = e.target.value.trim()
-    console.log(textStr, '999')
     if (lock) {
       form.setFieldsValue({
         prefix:
@@ -103,12 +102,29 @@ const RightForm = (props: {
         ? moment(formData?.expected_end_at).format('YYYY-MM-DD')
         : '',
     }
-    console.log(formObj, '00')
     props.onCreate(formObj)
   }
-  //表单实时更新的字段
+
+  // 表单实时更新的字段
   const onValuesChange = async (e: any, val: any) => {
-    await props.onUpdateValues(val)
+    const nameVal = val.name.trim()
+    if (nameVal) {
+      // 编号的字段会比名称慢一步
+      val.prefix =
+        transformStr(nameVal).length > 10
+          ? transformStr(nameVal).slice(0, 10)
+          : transformStr(nameVal)
+    }
+    const formObj = {
+      ...val,
+      expected_start_at: val?.expected_start_at
+        ? moment(val?.expected_start_at).format('YYYY-MM-DD')
+        : '',
+      expected_end_at: val?.expected_end_at
+        ? moment(val?.expected_end_at).format('YYYY-MM-DD')
+        : '',
+    }
+    await props.onUpdateValues(formObj)
   }
   return (
     <div>
@@ -248,7 +264,7 @@ const RightForm = (props: {
           </CommonButton>
         )}
         <CommonButton type="primary" onClick={onCreateProject}>
-          创建
+          {props.isEditId ? '编辑':'创建'}
         </CommonButton>
       </FooterBtn>
     </div>

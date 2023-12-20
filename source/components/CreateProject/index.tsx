@@ -6,10 +6,9 @@ import { ModalWrap } from './commponents/style'
 import { changeCreateVisible, editProject } from '@store/create-propject'
 
 const CreateProject = () => {
-  const { createVisible } = useSelector(state => state.createProject)
+  const { createVisible, isEditId } = useSelector(state => state.createProject)
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  // model_type 1软件开发 2游戏
   const [state, setState] = useState(2)
   // 项目类型 选择冲刺2 迭代1
   const [projectType, setProjectType] = useState(0)
@@ -18,12 +17,20 @@ const CreateProject = () => {
 
   useEffect(() => {
     if (createVisible) {
+      setProjectType(0)
       setIsModalOpen(true)
+    } else {
+      setIsModalOpen(false)
     }
-  }, [createVisible])
+    isEditId ? setState(2) : setState(1)
+  }, [createVisible, isEditId])
+  // 关闭大弹窗
+  const onClose = () => {
+    dispatch(changeCreateVisible(false))
+    dispatch(editProject({ visible: false, id: '' }))
+  }
   return (
     <ModalWrap
-      title="创建项目"
       width={832}
       bodyStyle={{ padding: '0' }}
       open={isModalOpen}
@@ -33,18 +40,23 @@ const CreateProject = () => {
     >
       {state === 1 ? (
         <ProjectType
+          title={isEditId ? '编辑项目' : '创建项目'}
           projectType={projectType}
           onChange={val => {
             setState(2)
             setProjectType(val)
           }}
-          onCancel={() => {
-            dispatch(changeCreateVisible(false))
-            dispatch(editProject({ visible: false, id: '' }))
-          }}
+          onCancel={onClose}
         />
       ) : (
-        <CreateForm onBack={() => setState(1)} />
+        <CreateForm
+          title={isEditId ? '编辑项目' : '创建项目'}
+          projectType={projectType}
+          onCancel={onClose}
+          onBack={() => {
+            setState(1)
+          }}
+        />
       )}
     </ModalWrap>
   )
