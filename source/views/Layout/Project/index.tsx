@@ -208,6 +208,7 @@ const ProjectIndex = () => {
         page: 1,
         size: filterParams?.pageObj.size,
       },
+      timeStamp: new Date().valueOf(),
     })
   }
 
