@@ -87,7 +87,6 @@ const CreateSprintModal = (props: sprintProps) => {
     const [projectInfoData] = await Promise.all([
       getProjectInfoValues({ projectId }),
     ])
-
     dispatch(setProjectInfoValues(projectInfoData))
   }
 
