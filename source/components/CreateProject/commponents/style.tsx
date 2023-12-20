@@ -4,6 +4,9 @@ import { Form, Modal } from 'antd'
 import IconFont from '@/components/IconFont'
 
 export const ModalWrap = styled(Modal)`
+  height: calc(80px + 56px + 548px + 44px);
+  overflow: hidden;
+  border-radius:0 0 6px 6px;
   .ant-modal-body: {
     padding: 0;
   }
@@ -18,7 +21,7 @@ export const HeaderWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .title{
+  .title {
     font-weight: 500;
     font-size: 16px;
     font-family: SiYuanMedium;
@@ -31,10 +34,17 @@ export const Title = styled.div`
   line-height: 28px;
   font-family: SiYuanMedium;
   margin-bottom: 24px;
-  margin-top: 104px;
+  margin-top: 148px;
   padding: 0 72px;
 `
-export const ProjectWrap = styled.div``
+export const ProjectWrap = styled.div`
+  height:calc(100vh - 110px);
+`
+export const MainProjectType=styled.div`
+   height:calc(100% - 56px);
+  // overflow-x: hidden;
+  overflow:auto;
+`
 export const Wrap = styled.div<{ type: number; hover: number }>`
   width: 320px;
   height: 262px;
@@ -204,7 +214,6 @@ export const CoverAreaAdd = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 6px 6px 6px 6px;
-  /* background: var(--neutral-n6-d2); */
   opacity: 1;
   border: 1px solid var(--neutral-n6-d2);
   display: flex;
@@ -223,9 +232,14 @@ export const CoverAreaAdd = styled.div`
 export const UploadFileIconWrap = styled.div`
   padding: 0 24px;
 `
-export const CreateFormWrap = styled.div``
+export const CreateFormWrap = styled.div`
+  height: calc(100vh - 110px);
+`
 export const MainWrap = styled.div`
   display: flex;
+  height: calc(100% - 56px - 10px);
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 export const FormWrap = styled(Form)`
   width: 416px;
