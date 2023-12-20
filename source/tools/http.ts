@@ -104,13 +104,12 @@ client.config({
               options.payload !== undefined &&
               options.payload !== '{}'
             ) {
-              // 加解密格式不一样
               options.payload =
                 import.meta.env.MODE === 'development'
                   ? JSON.stringify({
                       p: options.payload as string,
                     })
-                  : JSON.stringify(options.payload)
+                  : options.payload
             }
           }
         }
