@@ -21,9 +21,9 @@ const Img = styled.img`
 `
 
 const Image: React.FC<ImageProps> = props => {
-  const { scale } = useImageViewerStore()
+  const { scale, rotate } = useImageViewerStore()
   const style: CSSProperties = {
-    transform: `scale(${scale})`,
+    transform: `scale(${scale}) rotate(${rotate}deg)`,
   }
   return (
     <ImageBox>

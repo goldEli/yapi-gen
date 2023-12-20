@@ -14,12 +14,28 @@ const key = 'image-viewer' + Math.random()
 export const useImageViewerStore = create<{
   open: boolean
   scale: number
+  rotate: number
   setOpen(open: boolean): void
+  setRotate(rotate: number): void
+  setScale(scale: number): void
   zoomIn(): void
   zoomOut(): void
+  onRotate(): void
 }>(set => ({
   open: true,
   scale: 1,
+  rotate: 0,
+  onRotate: () => {
+    set(state => {
+      return { rotate: state.rotate + 90 }
+    })
+  },
+  setRotate: rotate => {
+    set({ rotate })
+  },
+  setScale: scale => {
+    set({ scale })
+  },
   setOpen: open => {
     set({ open })
   },
@@ -46,7 +62,7 @@ function fixNum(num: number) {
 }
 
 const ImageViewer: React.FC<ImageViewerProps> = props => {
-  const { open, setOpen } = useImageViewerStore()
+  const { open, setOpen, setRotate, setScale } = useImageViewerStore()
 
   const openModal = () => {
     setOpen(true)
@@ -54,6 +70,8 @@ const ImageViewer: React.FC<ImageViewerProps> = props => {
 
   const closeModal = () => {
     setOpen(false)
+    setRotate(0)
+    setScale(1)
   }
   useEffect(() => {
     EventBusSingle.getInstance().register(`open-${key}`, () => {

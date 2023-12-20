@@ -56,7 +56,7 @@ const Split = styled.div`
 `
 
 const ToolBar: React.FC<ToolBarProps> = props => {
-  const { zoomIn, zoomOut, scale } = useImageViewerStore()
+  const { zoomIn, zoomOut, scale, onRotate } = useImageViewerStore()
   return (
     <ToolBarBox
       onClick={e => {
@@ -83,6 +83,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
       <IconBox
         onClick={e => {
           e.stopPropagation()
+          onRotate()
         }}
       >
         <Icon type="rotate2" />
