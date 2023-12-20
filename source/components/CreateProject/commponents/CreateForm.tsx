@@ -89,7 +89,8 @@ const CreateForm = (props: {
       setIsVisible(true)
     }
   }
-  const onCreate = () => {
+  const onCreate = (val:any) => {
+    setNewFormValues(val)
     setIsCVisible(true)
   }
   // 创建或编辑的api

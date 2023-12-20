@@ -104,9 +104,12 @@ client.config({
               options.payload !== undefined &&
               options.payload !== '{}'
             ) {
-              options.payload = JSON.stringify({
-                p: options.payload as string,
-              })
+              options.payload =
+                import.meta.env.MODE === 'development'
+                  ? JSON.stringify({
+                      p: options.payload as string,
+                    })
+                  : options.payload
             }
           }
         }

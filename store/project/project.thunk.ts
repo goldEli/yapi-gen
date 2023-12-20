@@ -19,7 +19,7 @@ export const getParentList = createAsyncThunk(
 export const getProjectInfoValuesStore = createAsyncThunk(
   `${name}/getProjectInfoValuesStore`,
   async (params: any) => {
-    const res = await services.project.getProjectInfoValues(params)
+    const res = await services.project.getProjectInfoValues(params, params?.all)
     return res
   },
 )
