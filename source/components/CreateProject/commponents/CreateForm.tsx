@@ -1,7 +1,7 @@
 import LeftIcon from './LeftIcon'
 import RightForm from './RightForm'
 import { useEffect, useState } from 'react'
-import { CreateFormWrap, MainWrap ,HeaderWrap,IconFontWrap} from './style'
+import { CreateFormWrap, MainWrap, HeaderWrap, IconFontWrap } from './style'
 import { useDispatch, useSelector } from '@store/index'
 import { getAffiliationUser, getProjectInfoOnly } from '@/services/project'
 import moment from 'moment'
@@ -12,7 +12,7 @@ import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { Console } from 'console'
 
 const CreateForm = (props: {
-  title:string
+  title: string
   onBack(): void
   onCancel(): void
   projectType: number
@@ -120,7 +120,8 @@ const CreateForm = (props: {
     const values = {
       name: '',
       prefix: '',
-      leader_id: '',
+      // eslint-disable-next-line no-undefined
+      leader_id: undefined,
       expected_start_at: '',
       expected_end_at: '',
       info: '',
@@ -159,7 +160,7 @@ const CreateForm = (props: {
         />
       </MainWrap>
       <DeleteConfirm
-        hasIcon
+        hasIcon={false}
         okText="是"
         cancelText="否"
         text="该页面有编辑内容取消后不能保存，是否取消？"
@@ -182,7 +183,7 @@ const CreateForm = (props: {
         }}
       />
       <DeleteConfirm
-        hasIcon
+        hasIcon={false}
         okText="确认"
         cancelText="取消"
         text={isEditId ? '确认编辑该项目' : '确认新建该项目'}

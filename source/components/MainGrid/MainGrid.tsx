@@ -39,6 +39,7 @@ const MainGrid = (props: Props) => {
   const [data, setData] = useState<any>()
   const [status, setStatus] = useState('')
   const [keyword, setKeyword] = useState('')
+  const [timeStamp, setTimeStamp] = useState(0)
   const { userInfo } = useSelector(store => store.user)
   const isPermission = getIsPermission(
     userInfo?.company_permissions,
@@ -101,15 +102,19 @@ const MainGrid = (props: Props) => {
     _getMsg_list(false, pages)
   }
   useEffect(() => {
-    console.log('props.filterParams', props.filterParams)
     setStatus(props.filterParams?.status)
     setKeyword(props.filterParams?.keyword)
     setData(null)
     setPage(1)
-  }, [props.filterParams?.status, props.filterParams?.keyword])
+    setTimeStamp(props?.filterParams?.timeStamp)
+  }, [
+    props.filterParams?.status,
+    props.filterParams?.keyword,
+    props?.filterParams?.timeStamp,
+  ])
   useEffect(() => {
     _getMsg_list(true, 1)
-  }, [status, keyword])
+  }, [status, keyword, timeStamp])
   return (
     <DataWrap>
       {data?.list?.length > 0 ? (
@@ -135,6 +140,13 @@ const MainGrid = (props: Props) => {
                     onChangeOperation={props.onChangeOperation}
                     item={item}
                     key={item.id}
+                    onFocus={(e: any) => {
+                      e.stopPropagation()
+                      props.onChangeStar(
+                        item.list_category === -1 ? 0 : 1,
+                        item,
+                      )
+                    }}
                   ></ProjectCard>
                 </div>
               </SpaceWrapItem>

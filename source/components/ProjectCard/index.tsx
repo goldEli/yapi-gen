@@ -18,10 +18,12 @@ import {
   EndTag,
   HoverDiv,
   Tags,
+  StarWrap,
 } from './style'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
-
+import CommonIconFont from '../CommonIconFont'
+import classNames from 'classnames'
 type Props = {
   type: string
   num: string
@@ -59,6 +61,7 @@ const Index = (props: any) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { onFocus } = props
   const { userInfo } = useSelector(store => store.user)
   const isDel2 = (
     userInfo.company_permissions?.map((i: any) => i.identity) || []
@@ -254,8 +257,19 @@ const Index = (props: any) => {
             ))}
           </ShowWrap>
         </TransformWrap>
+        {/* 取消与关注 */}
+        <StarWrap
+          className={classNames('StarBox', {
+            focuxStart: props.item.list_category === -1,
+          })}
+          onClick={props.onFocus}
+        >
+          <CommonIconFont
+            type={props.item.list_category === -1 ? 'star' : 'star-adipf4l8'}
+            color={props.item.list_category === -1 ? '#FA9746' : ''}
+          ></CommonIconFont>
+        </StarWrap>
       </CardRight>
-
       {props.item.status === 2 && <EndTag>End</EndTag>}
     </ProjectCard>
   )

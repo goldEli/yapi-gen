@@ -178,7 +178,7 @@ const RightForm = (props: {
                 <IconFont
                   style={{
                     position: 'absolute',
-                    left: '36px',
+                    left: localStorage.language === 'zh' ? '43px' : '72px',
                     top: '4px',
                     color: 'var(--neutral-n3)',
                   }}
@@ -249,6 +249,7 @@ const RightForm = (props: {
           name="info"
         >
           <Input.TextArea
+            style={{ marginBottom: 16 }}
             placeholder={t('please_enter_project_description')}
             autoSize={{ minRows: 3, maxRows: 5 }}
           />
