@@ -276,7 +276,7 @@ const MainTable = (props: Props) => {
     {
       title: (
         <NewSort
-          fixedKey="member_count"
+          fixedKey="story_count"
           nowKey={props.order.key}
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
@@ -284,7 +284,7 @@ const MainTable = (props: Props) => {
           {t('numberOfTasks')}
         </NewSort>
       ),
-      dataIndex: 'member_count',
+      dataIndex: 'story_count',
       width: 110,
       render: (text: string, record: any) => {
         return <span>{text}</span>

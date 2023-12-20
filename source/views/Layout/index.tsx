@@ -1,4 +1,3 @@
-import CreateAProjectForm from '@/components/CreateAProjectForm'
 import CreateIteration from '@/components/CreateIteration'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import GlobalStyle from '@/components/GlobalStyle'
@@ -210,7 +209,6 @@ const LayoutIndex = () => {
         />
         {/* 重构的创建项目 */}
         <CreateProject />
-        {/* <CreateAProjectForm /> */}
         <CreateIteration />
         <DemandDetailDrawer />
         {viewReportModal.type === 1 ? <ReportDetailDrawer /> : null}
