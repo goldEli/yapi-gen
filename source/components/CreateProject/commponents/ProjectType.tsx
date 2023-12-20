@@ -1,6 +1,7 @@
 import CommonButton from '@/components/CommonButton'
 import {
   ProjectWrap,
+  MainProjectType,
   HeaderWrap,
   Wrap,
   Title,
@@ -35,12 +36,12 @@ const ProjectType = (props: {
     props.onChange(index)
   }
   return (
-    <div>
+    <ProjectWrap>
       <HeaderWrap>
         <span className="title">{props.title}</span>
         <IconFontWrap onClick={props.onCancel} type="close" />
       </HeaderWrap>
-      <ProjectWrap>
+      <MainProjectType>
         <Title>{t('select_project_type')}</Title>
         <div
           style={{
@@ -76,8 +77,8 @@ const ProjectType = (props: {
             {t('cancel')}
           </CommonButton>
         </FooterBtn>
-      </ProjectWrap>
-    </div>
+      </MainProjectType>
+    </ProjectWrap>
   )
 }
 

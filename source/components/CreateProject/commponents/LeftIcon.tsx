@@ -45,8 +45,10 @@ const UploadFileIcon = (props: {
   useEffect(() => {
     if (props.icon) {
       setActiveCover(props.icon)
+      props.onChangeIcon(props.icon)
       return
     }
+    props.onChangeIcon(covers[0]?.path)
     setActiveCover(covers[0]?.path)
   }, [props.icon])
   return (
