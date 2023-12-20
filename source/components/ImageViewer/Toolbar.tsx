@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { Tooltip } from 'antd'
 import IconFont from '../IconFont'
 import { useImageViewerStore } from './useImageViewerStore'
+import { downloadImage } from './utils'
 
 interface ToolBarProps {}
 
@@ -56,7 +57,7 @@ const Split = styled.div`
 `
 
 const ToolBar: React.FC<ToolBarProps> = props => {
-  const { zoomIn, zoomOut, scale, onRotate } = useImageViewerStore()
+  const { zoomIn, zoomOut, scale, onRotate, params } = useImageViewerStore()
   return (
     <ToolBarBox
       onClick={e => {
@@ -93,6 +94,8 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         <IconBox
           onClick={e => {
             e.stopPropagation()
+            if (!params) return
+            downloadImage(params?.url ?? '', params?.name)
           }}
         >
           <Icon type="download" />

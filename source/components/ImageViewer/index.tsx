@@ -27,8 +27,10 @@ const ImageViewer: React.FC<ImageViewerProps> = props => {
   }
   useEffect(() => {
     EventBusSingle.getInstance().register(`open-${key}`, (p: Params) => {
-      console.log(p)
-      setParams(p)
+      setParams({
+        url: p.url,
+        name: p.name ? p.name : p.url?.split('/').pop(),
+      })
       openModal()
     })
   }, [])

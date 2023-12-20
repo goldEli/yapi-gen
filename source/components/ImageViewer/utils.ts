@@ -40,3 +40,33 @@ export async function getImageInfo(url: string): Promise<ImageInfo> {
     img.src = url
   })
 }
+
+export function downloadImage(
+  url: string,
+  fileName = 'downloaded-image',
+): void {
+  const xhr = new XMLHttpRequest()
+  xhr.open('GET', url, true)
+  xhr.responseType = 'blob'
+  xhr.onload = function () {
+    let urlCreator = window.URL || window.webkitURL
+    let imageUrl = urlCreator.createObjectURL(this.response)
+    let tag = document.createElement('a')
+    tag.href = imageUrl
+    tag.download = fileName
+    document.body.appendChild(tag)
+    tag.click()
+    document.body.removeChild(tag)
+  }
+  xhr.send()
+  //   const link = document.createElement('a')
+  //   link.href = url
+  //   link.download = fileName
+
+  //   // 将元素添加到文档中，模拟点击
+  //   document.body.appendChild(link)
+  //   link.click()
+
+  //   // 从文档中移除元素
+  //   document.body.removeChild(link)
+}
