@@ -104,7 +104,6 @@ const CreateAProjectForm = () => {
   const [myCover, setMyCover] = useState<string>('')
   const [leaderId, setLeaderId] = useState<any>(0)
   const [lock, setLock] = useState(true)
-  const [canChooseLeader, setCanChooseLeader] = useState(true)
   const { createVisible, isEditId } = useSelector(state => state.createProject)
   const [selectLeaders, setSelectLeaders] = useState<any>([])
   const [names, setNames] = useState<any>()
@@ -126,6 +125,7 @@ const CreateAProjectForm = () => {
 
   const confirm = async () => {
     const formData = await form.validateFields()
+    console.log(formData,'formData')
     if (
       formData?.expected_start_at &&
       formData?.expected_end_at &&
@@ -152,6 +152,7 @@ const CreateAProjectForm = () => {
         ? moment(formData?.expected_end_at).format('YYYY-MM-DD')
         : '',
     }
+    console.log(obj,'999')
     if (isEditId) {
       await dispatch(postEditCreate({ ...projectInfo, ...obj, id: isEditId }))
       setProjectInfo({ ...projectInfo, ...obj, id: isEditId })
@@ -159,7 +160,6 @@ const CreateAProjectForm = () => {
       setLeaderId(0)
       return
     }
-
     dispatch(postCreate(obj))
     setLeaderId(0)
   }
@@ -197,9 +197,9 @@ const CreateAProjectForm = () => {
 
   const onChange = (e: any) => {
     const textStr = e.target.value.trim()
+    console.log(textStr,'999')
     // eslint-disable-next-line no-undefined
     setNames(textStr === '' ? undefined : textStr)
-
     if (lock) {
       form.setFieldsValue({
         prefix:
@@ -221,10 +221,12 @@ const CreateAProjectForm = () => {
 
   //编辑项目逻辑
   const getProjectInfo = async () => {
+    debugger
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
     setProjectInfo(res)
+    console.log(res,'res')
     const res2 = await getAffiliationUser(res.team_id)
-
+    console.log(res2,'res2')
     setSelectLeaders(
       res2.map((i: any) => ({
         name: i.name,
@@ -247,10 +249,12 @@ const CreateAProjectForm = () => {
       expected_end_at: res.expected_end_at ? moment(res.expected_end_at) : '',
     })
     setLeaderId(res.team_id)
-    setCanChooseLeader(false)
-  }
+    console.log('info',res.team_id)
 
+  }
+// 編輯需要的不要工作流的
   const getProjectInfo2 = async () => {
+    debugger
     const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
     const res2 = await getAffiliationUser(res.team_id)
     setSelectLeaders(
@@ -262,12 +266,11 @@ const CreateAProjectForm = () => {
     )
     setActiveCover(res.cover)
     setLeaderId(res.team_id)
-    setCanChooseLeader(false)
   }
-
+// 初始化獲取
   const getLeader = async () => {
     const res = await getAffiliationUser(leaderId)
-
+    console.log(res,'res---id')
     setSelectLeaders(
       res.map((i: any) => ({
         name: i.name,
@@ -276,6 +279,7 @@ const CreateAProjectForm = () => {
       })),
     )
   }
+  // 初始化就要调用
   useEffect(() => {
     if (leaderId || leaderId === 0) {
       getLeader()
@@ -291,6 +295,7 @@ const CreateAProjectForm = () => {
   useEffect(() => {
     if (createVisible) {
       setActiveCover(covers[0]?.path)
+      console.log(isEditId,'isEditId')
       if (isEditId) {
         setStep(3)
         setType(0)
@@ -309,6 +314,7 @@ const CreateAProjectForm = () => {
     setTimeout(() => {
       inputRefDom.current?.focus()
     }, 100)
+    console.log(888888)
   }, [createVisible])
   const onChangeStep = (val: number) => {
     if (step === val) {
@@ -334,7 +340,6 @@ const CreateAProjectForm = () => {
     if (model !== 3) {
       setMultipleSelectionItems([])
     }
-
     form.resetFields()
   }, [model])
 
@@ -344,7 +349,8 @@ const CreateAProjectForm = () => {
       setModel(0)
     }
   }
-
+  // project_type: 选择冲刺2 迭代1
+  // model_type 1软件开发 2游戏
   return (
     <CommonModal2
       noFooter
@@ -391,6 +397,7 @@ const CreateAProjectForm = () => {
               marginBottom: '48px',
             }}
           >
+            {/* 顶部选折 */}
             <RowStyle>
               <Col
                 tap={!isEditId}
@@ -404,15 +411,16 @@ const CreateAProjectForm = () => {
                 <Text bgc={step >= 1}>{types[type]}</Text>
                 <StyleRight bgc={step >= 1} />
               </Col>
-              <Col
+              {/* <Col
                 tap={!!type}
                 style={{ transform: 'translate(-20px, 0px)' }}
                 onClick={onTapModel}
               >
+                999999999999999999999999999
                 <StyleLeft bgc={step >= 2} />
                 <Text bgc={step >= 2}>{models[model]}</Text>
                 <StyleRight bgc={step >= 2} />
-              </Col>
+              </Col> */}
               <Col
                 tap={!!model}
                 style={{ transform: 'translate(-40px, 0px)' }}
@@ -429,11 +437,15 @@ const CreateAProjectForm = () => {
               position: 'relative',
             }}
           >
+            {/* 第一步 */}
             <OpacityDiv op={step === 1}>
               <div>
                 <ProjectType type={type} choose={choose} />
               </div>
             </OpacityDiv>
+            {/*  */}
+            {/* 第二步 */}
+            {/* type 传过去是调用getList */}
             <OpacityDiv op={step === 2}>
               <ProjectTemplate
                 searchId={type}
@@ -441,6 +453,7 @@ const CreateAProjectForm = () => {
                 choose={chooseModel}
               />
             </OpacityDiv>
+            {/* 第三步 */}
             <OpacityDiv
               op={step === 3}
               style={{
@@ -463,7 +476,6 @@ const CreateAProjectForm = () => {
                       )}
                     </CoverAreaImageWrap>
                   ))}
-
                   {myCover ? (
                     <CoverAreaImageWrap>
                       <CoverAreaImage src={myCover} />
@@ -541,7 +553,7 @@ const CreateAProjectForm = () => {
                     <Input
                       ref={inputRefDom as any}
                       maxLength={30}
-                      placeholder={t('please_enter_a_project_name')}
+                      placeholder={t('please_enter_a_project_name')+'888'}
                       onChange={onChange}
                       allowClear
                       autoFocus
@@ -598,7 +610,7 @@ const CreateAProjectForm = () => {
                       optionFilterProp="label"
                       onChange={(e: any) => {
                         const obj = selectLeaders.find((i: any) => i.id === e)
-
+                        console.log(obj,'obj')
                         setUser(obj.name)
                       }}
                       showSearch

@@ -119,6 +119,7 @@ const ProjectTemplate = (props: any) => {
     }
 
     const result = await getProjectList(params)
+    console.log(result,'result')
     setProjectList(result)
     setIsSpinning(false)
   }
@@ -160,8 +161,10 @@ const ProjectTemplate = (props: any) => {
   useEffect(() => {
     getList(activeType, false, isHidden, searchVal, order, pageObj)
   }, [pageObj, order, props.searchId, activeTab])
+  console.log(props,'xuanz')
   return (
     <div style={{ width: '1000px' }}>
+      我是测试
       <Title
         style={{
           fontFamily: 'SiYuanMedium',

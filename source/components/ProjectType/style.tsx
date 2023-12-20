@@ -1,5 +1,12 @@
 import styled from '@emotion/styled'
 
+
+export const Title = styled.div`
+  height: 28px;
+  font-size: 20px;
+  color: var(--neutral-n1-d1);
+  line-height: 28px;
+`
 export const Wrap = styled.div<{ bb: boolean; type: boolean }>`
   width: ${props => (props.bb ? '476px' : '460px')};
   height: ${props => (props.bb ? '542px' : '500px')};
