@@ -198,7 +198,9 @@ const ReviewTask = (props: { onCancel(): void }) => {
           isEdit
           onUpdate={() => {
             onGetMineNoFinishList(true, 1)
-            dispatch(setIsNewMsg(isNewMsg + 1))
+            setTimeout(() => {
+              dispatch(setIsNewMsg(isNewMsg + 1))
+            }, 300)
           }}
         />
       ) : null}

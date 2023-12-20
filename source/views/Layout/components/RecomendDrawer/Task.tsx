@@ -38,6 +38,7 @@ const GroupItems = (props: any) => {
   // 任务-点击跳转详情
   const onClickTask = async (row: any) => {
     onCancel()
+    // props.onClose()
     // dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({

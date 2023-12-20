@@ -45,6 +45,7 @@ const TodoDrawer = (props: any) => {
   const footer = (
     <DrawerFooter
       onClick={() => {
+        onCancel()
         if (active === 2) {
           onCancel()
           navigate('Mine/Carbon')
