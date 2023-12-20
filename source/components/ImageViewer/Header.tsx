@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import IconFont from '../IconFont'
 import { useImageViewerStore } from '.'
 import { Tooltip } from 'antd'
-import { Icon, IconBox } from './styled'
 
 interface HeaderProps {}
 
@@ -40,17 +39,46 @@ const Right = styled.div`
   align-items: center;
 `
 
+const Icon = styled(IconFont)`
+  font-size: 28px;
+  color: #ffffff;
+`
+const IconBox = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 6px 6px 6px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+  &:active {
+    background: rgba(255, 255, 255, 0.36);
+  }
+`
+
 const Header: React.FC<HeaderProps> = props => {
   const { setOpen } = useImageViewerStore()
   return (
-    <HeaderBox>
+    <HeaderBox
+      onClick={e => {
+        e.stopPropagation()
+      }}
+    >
       <Left>
         <Title>{'这是图片文件这是最长名称XXXXXXXXXXXXX....jpg'}</Title>
         <Des>{'3600*1232 28M'}</Des>
       </Left>
       <Right>
         <Tooltip title="退出预览">
-          <IconBox onClick={() => setOpen(false)}>
+          <IconBox
+            onClick={e => {
+              e.stopPropagation()
+              setOpen(false)
+            }}
+          >
             <Icon type="close" />
           </IconBox>
         </Tooltip>

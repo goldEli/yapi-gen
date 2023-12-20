@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { IconBox } from './styled'
 import { Tooltip } from 'antd'
 import IconFont from '../IconFont'
+import { useImageViewerStore } from '.'
 
 interface ToolBarProps {}
 
@@ -26,6 +26,22 @@ const Icon = styled(IconFont)`
   color: #ffffff;
 `
 
+const IconBox = styled.div`
+  width: 44px;
+  height: 44px;
+  border-radius: 12px 12px 12px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+  &:active {
+    background: rgba(255, 255, 255, 0.36);
+  }
+`
+
 const Text = styled.div`
   height: 22px;
   font-size: 14px;
@@ -40,19 +56,26 @@ const Split = styled.div`
 `
 
 const ToolBar: React.FC<ToolBarProps> = props => {
+  const { zoomIn, zoomOut, scale } = useImageViewerStore()
   return (
-    <ToolBarBox>
+    <ToolBarBox
+      onClick={e => {
+        e.stopPropagation()
+      }}
+    >
       <IconBox
         onClick={e => {
           e.stopPropagation()
+          zoomIn()
         }}
       >
         <Icon type="zoomin" />
       </IconBox>
-      <Text>100%</Text>
+      <Text>{(scale * 100).toFixed(0)}%</Text>
       <IconBox
         onClick={e => {
           e.stopPropagation()
+          zoomOut()
         }}
       >
         <Icon type="reduce" />
