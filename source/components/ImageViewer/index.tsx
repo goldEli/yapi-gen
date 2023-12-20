@@ -6,47 +6,15 @@ import Header from './Header'
 import { create } from 'zustand'
 import Image from './Image'
 import ToolBar from './Toolbar'
+import { Params, useImageViewerStore } from './useImageViewerStore'
 
 interface ImageViewerProps {}
 
 const key = 'image-viewer' + Math.random()
 
-export const useImageViewerStore = create<{
-  open: boolean
-  scale: number
-  setOpen(open: boolean): void
-  zoomIn(): void
-  zoomOut(): void
-}>(set => ({
-  open: true,
-  scale: 1,
-  setOpen: open => {
-    set({ open })
-  },
-  zoomIn: () => {
-    set(state => {
-      if (state.scale >= 3) {
-        return { scale: state.scale }
-      }
-      return { scale: fixNum(state.scale + 0.1) }
-    })
-  },
-  zoomOut: () => {
-    set(state => {
-      if (state.scale <= 0.1) {
-        return { scale: state.scale }
-      }
-      return { scale: fixNum(state.scale - 0.1) }
-    })
-  },
-}))
-function fixNum(num: number) {
-  const ret = parseFloat(num.toFixed(1))
-  return ret
-}
-
 const ImageViewer: React.FC<ImageViewerProps> = props => {
-  const { open, setOpen } = useImageViewerStore()
+  const { open, setOpen, setRotate, setScale, setParams } =
+    useImageViewerStore()
 
   const openModal = () => {
     setOpen(true)
@@ -54,10 +22,21 @@ const ImageViewer: React.FC<ImageViewerProps> = props => {
 
   const closeModal = () => {
     setOpen(false)
+    setRotate(0)
+    setScale(1)
   }
   useEffect(() => {
-    EventBusSingle.getInstance().register(`open-${key}`, () => {
+    EventBusSingle.getInstance().register(`open-${key}`, (p: Params) => {
+      setParams({
+        url: p.url,
+        name: p.name ? p.name : p.url?.split('/').pop(),
+      })
       openModal()
+    })
+  }, [])
+  useEffect(() => {
+    EventBusSingle.getInstance().register(`close-${key}`, () => {
+      closeModal()
     })
   }, [])
   return (
@@ -71,6 +50,9 @@ const ImageViewer: React.FC<ImageViewerProps> = props => {
 
 export default ImageViewer
 
-export const openImageViewer = () => {
-  EventBusSingle.getInstance().dispatch(`open-${key}`)
+export const openImageViewer = (p: Params) => {
+  EventBusSingle.getInstance().dispatch(`open-${key}`, p)
+}
+export const closeImageViewer = () => {
+  EventBusSingle.getInstance().dispatch(`close-${key}`)
 }

@@ -1,36 +1,33 @@
 import React, { CSSProperties } from 'react'
 import styled from '@emotion/styled'
-import { useImageViewerStore } from '.'
+import { useImageViewerStore } from './useImageViewerStore'
+import Draggable from './Drag'
+// import Draggable from 'react-draggable'
+// import Drag from './Drag'
 
 interface ImageProps {}
 
-const ImageBox = styled.div`
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
+const ImageBox = styled.div``
 const Img = styled.img`
   transform-origin: center center;
-  transition: 0.2s;
-  &:hover {
-    cursor: zoom-out;
-  }
 `
 
 const Image: React.FC<ImageProps> = props => {
-  const { scale } = useImageViewerStore()
+  const { scale, rotate, params, isDrag } = useImageViewerStore()
   const style: CSSProperties = {
-    transform: `scale(${scale})`,
+    transform: `scale(${scale}) rotate(${rotate}deg)`,
+    cursor: isDrag ? 'move' : 'zoom-out',
   }
+  console.log(isDrag)
   return (
-    <ImageBox>
-      <Img
-        style={style}
-        src="https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1535814602086334466/1685932792250114048/2023-08-23/6106f0dd-5a9f-4830-b90c-320bec49f210.png"
-      />
+    <ImageBox
+      onClick={e => {
+        e.stopPropagation()
+      }}
+    >
+      <Draggable>
+        <Img style={style} src={params?.url} />
+      </Draggable>
     </ImageBox>
   )
 }

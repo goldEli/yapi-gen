@@ -8,17 +8,12 @@ import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import { ClickWrap } from '@/components/StyleCommon'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useSelector, useDispatch } from '@store/index'
-import {
-  setRightSprintList,
-  setSprintRefresh,
-  setSprintRightListRefresh,
-} from '@store/sprint'
+import { setSprintRefresh, setSprintRightListRefresh } from '@store/sprint'
 import { useTranslation } from 'react-i18next'
 import StateTag from '@/components/StateTag'
 import { getIsPermission, getParamsData, copyLink } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import MultipleAvatar from '@/components/MultipleAvatar'
-import { setAffairsDetailDrawer } from '@store/affairs'
 import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 import {
   deleteAffairs,
@@ -144,7 +139,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 
 const DndKitTable = (props: any) => {
   const [t] = useTranslation()
-  const { rightSprintList } = useSelector(state => state.sprint)
+  const { rightSprintList, setRightSprintList } = props
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -239,7 +234,7 @@ const DndKitTable = (props: any) => {
     const group_id = Number(item.id?.split('_')[0]) || 0
     const id = Number(item.id?.split('_')[1]) || 0
     const demandIds: any[] = rightSprintList
-      .find(k => k.id === group_id)
+      .find((k: any) => k.id === group_id)
       ?.stories?.map((k: any) => k.id)
     sessionStorage.setItem('noRefresh', 'true')
     dispatch(
@@ -333,7 +328,7 @@ const DndKitTable = (props: any) => {
     let sprintObj = sprint
     const groupId = item.iterate_id
     if (!sprintObj) {
-      sprintObj = rightSprintList.find(k => k.id === groupId)
+      sprintObj = rightSprintList.find((k: any) => k.id === groupId)
     }
     if (
       ((moment(item.expected_start_at).isSame(sprintObj?.start_at) ||
@@ -802,7 +797,7 @@ const DndKitTable = (props: any) => {
         destList?.id,
         source?.map((k: any) => k.id),
       )
-      dispatch(setRightSprintList(res))
+      setRightSprintList(res)
     } else {
       // 不同表格拖动
       const data = [...rightSprintList]
@@ -858,7 +853,7 @@ const DndKitTable = (props: any) => {
                   destList?.id,
                   dest?.map((k: any) => k.id),
                 )
-                dispatch(setRightSprintList(res))
+                setRightSprintList(res)
               }
             })
           },
@@ -871,7 +866,7 @@ const DndKitTable = (props: any) => {
                 destList?.id,
                 dest?.map((k: any) => k.id),
               )
-              dispatch(setRightSprintList(res))
+              setRightSprintList(res)
             }
           },
         )

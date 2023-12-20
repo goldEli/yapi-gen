@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+/* eslint-disable require-atomic-updates */
+/* eslint-disable no-undefined */
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import GuideModal from '@/components/GuideModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
-import styled from '@emotion/styled'
 import InputSearch from '@/components/InputSearch'
-import { CloseWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import TabItem from './components/TabItem'
 import IconFont from '@/components/IconFont'
 import { Popover, Spin, Tooltip, Select } from 'antd'
@@ -12,10 +12,6 @@ import CustomSelect from '@/components/MoreSelect'
 import DndKitTable from './components/DndKitTable'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import CreateSprintModal from './components/CreateSprintModal'
-import {
-  getRightSprintList,
-  getLeftSprintList,
-} from '@store/sprint/sprint.thunk'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData, removeNull } from '@/tools'
@@ -24,228 +20,27 @@ import useKeyPress from '@/hooks/useKeyPress'
 import { updateCompanyUserPreferenceConfig } from '@/services/user'
 import { getLoginDetail } from '@store/user/user.thunk'
 import { setAddWorkItemModal } from '@store/project'
-import { setCheckList, setRightSprintList } from '@store/sprint'
 import PermissionWrap from '@/components/PermissionWrap'
 import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
 } from '@/components/DetailScreenModal/DemandDetail/style'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
-
-const SearchBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 72px;
-  padding: 20px 24px 20px 24px;
-`
-const ContentWrap = styled.div`
-  display: flex;
-  height: calc(100vh - 135px);
-  position: relative;
-`
-
-const Left = styled.div<{ active: boolean }>`
-  position: relative;
-  width: 316px;
-  box-sizing: border-box;
-  height: 100%;
-  border-right: ${props =>
-    props.active ? '1px solid transparent' : '1px solid var(--neutral-n6-d1)'};
-  .header {
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 24px;
-  }
-  padding-bottom: 52px;
-`
-const TabsWrap = styled.div`
-  width: 128px;
-  height: 32px;
-  box-sizing: border-box;
-  padding-left: 2px;
-  margin-bottom: 16px;
-  border-radius: 4px 4px 4px 4px;
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: var(--neutral-n2);
-  cursor: pointer;
-  position: relative;
-  background: var(--hover-d2);
-  .tab1 {
-    width: 60px;
-    height: 28px;
-    line-height: 28px;
-    text-align: center;
-    z-index: 2;
-  }
-  .tab2 {
-    line-height: 28px;
-    text-align: center;
-    width: 68px;
-    height: 28px;
-    z-index: 2;
-  }
-  .active {
-    color: var(--primary-d2);
-    font-family: SiYuanMedium;
-  }
-  .move {
-    background: #ffffff;
-    position: absolute;
-    width: 56px;
-    height: 28px;
-    transition: all 0.4s;
-    border-radius: 4px;
-  }
-
-  .left {
-    transform: translateX(56px);
-    width: 68px;
-  }
-`
-
-const RightIcon = styled.div`
-  width: 90px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  .line {
-    width: 1px;
-    height: 16px;
-    opacity: 1;
-    background-color: var(--neutral-n6-d1);
-    margin: 0px 10px;
-  }
-  .filter {
-    width: 120px;
-    padding: 4px 0px;
-    background: #ffffff;
-    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-    border-radius: 6px 6px 6px 6px;
-    cursor: pointer;
-    .item {
-      height: 32px;
-      padding: 0px 16px;
-      font-size: 14px;
-      font-family: SiYuanRegular;
-      font-weight: 400;
-      color: var(--neutral-n2);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      white-space: nowrap;
-      &:hover {
-        background: var(--hover-d3);
-      }
-    }
-    .active {
-      color: var(--primary-d2);
-      svg {
-        color: var(--primary-d2);
-      }
-    }
-  }
-`
-
-const IconBox = styled(CloseWrap)<{ isActive?: boolean }>`
-  font-size: 20px;
-  cursor: pointer;
-  padding: 6px;
-  svg {
-    color: ${props =>
-      props.isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
-  }
-  background: ${props => (props.isActive ? 'var(--hover-d1)' : 'white')};
-  &:hover {
-    background: var(--hover-d1);
-    svg {
-      color: var(--neutral-n1-d1);
-    }
-  }
-  &:active {
-    background: var(--neutral-n6-d1);
-    svg {
-      color: var(--neutral-n1-d1);
-    }
-  }
-`
-
-const TabItemWrap = styled.div`
-  height: 100%;
-  padding: 0px 24px;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  .ant-spin-nested-loading img {
-    margin-top: 200px;
-  }
-`
-
-const Right = styled.div`
-  overflow-x: scroll;
-  overflow-y: hidden;
-  height: 100%;
-  flex: 1;
-  .header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 24px;
-    padding-left: 24px;
-  }
-  .ant-spin-nested-loading img.spinImg {
-    margin-top: 120px;
-  }
-`
-const SelectWrapForList = styled(SelectWrapBedeck)`
-  margin-left: 16px;
-  .ant-select-focused:not(.ant-select-disabled).ant-select:not(
-      .ant-select-customize-input
-    )
-    .ant-select-selector {
-    box-shadow: 0 0 0 0px;
-  }
-  .ant-select-selection-placeholder {
-    color: var(--neutral-n4);
-  }
-`
-const CategorySelectWrap = styled.div`
-  min-width: 296px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--active);
-  border-radius: 6px;
-  margin-left: 16px;
-  padding-left: 12px;
-  box-sizing: border-box;
-  .title {
-    font-size: 14;
-    white-space: nowrap;
-    margin-right: 16px;
-  }
-`
-const ClearButton = styled.div`
-  width: 56px;
-  height: 22px;
-  font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: var(--primary-d2);
-  line-height: 22px;
-  margin-left: 24px;
-  white-space: nowrap;
-  cursor: pointer;
-`
-const DragContent = styled.div`
-  height: 100%;
-  overflow-y: scroll;
-  padding-bottom: 50px;
-  background: var(--neutral-n8);
-`
+import {
+  SearchBox,
+  ContentWrap,
+  Left,
+  TabsWrap,
+  RightIcon,
+  IconBox,
+  TabItemWrap,
+  Right,
+  SelectWrapForList,
+  CategorySelectWrap,
+  ClearButton,
+  DragContent,
+} from './styles'
+import { getSprintGroupList, getLeftSprintList } from '@/services/sprint'
 
 const SprintProjectSprint: React.FC = () => {
   const [t] = useTranslation()
@@ -282,27 +77,14 @@ const SprintProjectSprint: React.FC = () => {
   const { useKeys } = useKeyPress()
   useKeys('3', '/Report/Performance')
   useKeys('2', '/ProjectDetail/KanBan')
-  const {
-    leftSprintList,
-    checkList,
-    rightLoading,
-    leftLoading,
-    sprintRefresh,
-    sprintRightListRefresh,
-  } = useSelector(store => store.sprint)
-
+  const { sprintRefresh, sprintRightListRefresh } = useSelector(
+    store => store.sprint,
+  )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const [searchObject, setSearchObject] = useState<any>({
-    order: 'desc',
-    orderkey: 'id',
-    search: {
-      all: 1,
-      project_id: projectId,
-    },
-    is_long_story: 0,
-  })
+  const [userIds, setUserIds] = useState<number[]>([])
+  const [categoryIds, setCategoryIds] = useState<number[]>([])
   const info = useGetloginInfo()
   const [focus, setFocus] = useState(false)
   const [endWidth, setEndWidth] = useState<any>()
@@ -318,21 +100,34 @@ const SprintProjectSprint: React.FC = () => {
     visible: false,
     type: 'create',
   })
-  const [leftSearchObject, setLeftSearchObject] = useState<any>({
-    order: 'desc',
-    orderkey: 'id',
-    search: {
-      all: 1,
-      sprint_status: 1,
-      project_id: projectId,
-    },
-    is_long_story: 0,
-  })
   const [checkCommission, setCheckCommission] = useState([false, false])
+  const [leftLoading, setLeftLoading] = useState(false)
+  const [rightLoading, setRightLoading] = useState(false)
+  const [checkList, setCheckList] = useState<boolean[]>([])
+  const [searchKey, setSearchKey] = useState('')
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem } = useSelector(
     store => store.project,
   )
+  const searchRef = useRef<any>({
+    orderkey: 'id',
+    activeKey: 0,
+    all: 1,
+    order: 'desc',
+    sprint_status: 1,
+    is_long_story: 0,
+    story_name: '',
+    user_ids: [],
+    category_id: [],
+    left: [],
+  })
+
+  const [leftSprintList, setLeftSprintList] = useState<any>({
+    list: [],
+    unassigned_count: 0,
+  })
+  const [rightSprintList, setRightSprintList] = useState<any[]>([])
+
   const isCanEditSprint = !getIsPermission(
     projectInfo?.projectPermissions,
     'b/sprint',
@@ -379,133 +174,150 @@ const SprintProjectSprint: React.FC = () => {
       setFocus(false)
     }
   }
+
+  const getRightDataList = async () => {
+    const {
+      orderkey,
+      activeKey,
+      all,
+      order,
+      is_long_story,
+      is_no_creation_long_story,
+      story_name,
+      user_ids,
+      category_id,
+      list,
+      checkList,
+    } = searchRef.current
+    const search = {
+      orderkey,
+      order,
+      is_long_story,
+      search: {
+        all,
+        project_id: projectId,
+        story_name: story_name ? story_name : undefined,
+        user_ids,
+        category_id,
+        resource_ids:
+          activeKey === 1 && is_no_creation_long_story === 1
+            ? []
+            : list
+                .filter((_: any, idx: any) => checkList[idx])
+                .map((k: any) => k.id),
+      },
+    }
+    setRightLoading(true)
+    const result = await getSprintGroupList(search).finally(() => {
+      setRightLoading(false)
+    })
+    if (result) {
+      setRightSprintList(result)
+    }
+  }
+
+  const getLeftDataList = async () => {
+    const { orderkey, all, order, is_long_story, sprint_status } =
+      searchRef.current
+    const search = {
+      order,
+      orderkey,
+      is_long_story,
+      search: {
+        all,
+        sprint_status,
+        project_id: projectId,
+      },
+    }
+    setLeftLoading(true)
+    const result = await getLeftSprintList(search).finally(() => {
+      setLeftLoading(false)
+    })
+    if (result) {
+      setLeftSprintList(result)
+      searchRef.current.list = result.list ?? []
+      const noRefresh = sessionStorage.getItem('noRefresh')
+      if (!noRefresh) {
+        const ck = new Array(result?.list?.length).fill(true)
+        searchRef.current.checkList = ck
+        setCheckList(ck)
+      }
+    }
+  }
+
+  const getAllData = async () => {
+    await getLeftDataList()
+    await getRightDataList()
+  }
+
   const changeSprintTab = () => {
     setIsExpand(true)
+    if (activeKey === 0) {
+      return
+    }
     sessionStorage.removeItem('noRefresh')
     setActiveKey(0)
-    setSearchObject({
-      ...searchObject,
-      is_long_story: 0,
-    })
-    setLeftSearchObject({
-      ...leftSearchObject,
-      search: {
-        ...leftSearchObject.search,
-        sprint_status: filterList[0]?.id,
-      },
-      is_long_story: 0,
-    })
+    searchRef.current.activeKey = 0
+    searchRef.current.sprint_status = filterList[0]?.id
+    searchRef.current.is_long_story = 0
     setCurrentFilter(filterList[0])
+    getAllData()
   }
 
   const changeStoryTab = () => {
     setIsExpand(true)
+    if (activeKey === 1) {
+      return
+    }
     sessionStorage.removeItem('noRefresh')
     setActiveKey(1)
-    setSearchObject({
-      search: { ...searchObject.search, resource_ids: [] },
-      is_long_story: 1,
-    })
-    setLeftSearchObject({
-      ...leftSearchObject,
-      search: {
-        ...leftSearchObject.search,
-        sprint_status: filterList1[0]?.id,
-      },
-      is_long_story: 1,
-    })
+    searchRef.current.activeKey = 1
+    searchRef.current.sprint_status = filterList1[0]?.id
+    searchRef.current.is_long_story = 1
     setCurrentFilter(filterList1[0])
+    getAllData()
   }
 
   const onChangeFilter = (item: any) => {
     sessionStorage.removeItem('noRefresh')
     setCurrentFilter(item)
     setIsFilter(false)
-    setLeftSearchObject({
-      ...leftSearchObject,
-      search: {
-        ...searchObject.search,
-        // eslint-disable-next-line no-undefined
-        sprint_status: item.id,
-      },
-    })
+    searchRef.current.sprint_status = item.id
+    getAllData()
   }
 
   useEffect(() => {
     sessionStorage.removeItem('noRefresh')
+    getAllData()
     return () => {
-      dispatch(setRightSprintList([]))
+      setRightSprintList([])
     }
   }, [])
 
-  const searchRight = useMemo(() => {
-    if (leftSprintList.list.length === 0 && activeKey === 0) {
-      return false
-    }
-    const search = {
-      ...searchObject,
-      search: {
-        ...searchObject.search,
-        resource_ids:
-          activeKey === 1 && searchObject.is_no_creation_long_story === 1
-            ? []
-            : leftSprintList.list
-                .filter((_, idx) => checkList[idx])
-                .map(k => k.id),
-      },
-    }
-    return search
-  }, [JSON.stringify(searchObject), JSON.stringify(checkList)])
-
-  useEffect(() => {
-    if (searchRight) {
-      dispatch(getRightSprintList(searchRight))
-    }
-  }, [JSON.stringify(searchRight)])
-
-  useEffect(() => {
-    dispatch(getLeftSprintList(leftSearchObject))
-  }, [leftSearchObject])
-
   useEffect(() => {
     if (sprintRefresh > 0) {
-      dispatch(getLeftSprintList(leftSearchObject))
+      getAllData()
     }
   }, [sprintRefresh])
 
   useEffect(() => {
     if (sprintRightListRefresh > 0) {
-      dispatch(
-        getRightSprintList({
-          ...searchObject,
-          search: {
-            ...searchObject.search,
-            resource_ids: leftSprintList.list
-              .filter((_, idx) => checkList[idx])
-              .map(k => k.id),
-          },
-        }),
-      )
+      getRightDataList()
     }
   }, [sprintRightListRefresh])
 
   useEffect(() => {
     // 监听创建事务，刷新页面
     if (isUpdateAddWorkItem > 0) {
-      // dispatch(getLeftSprintList(leftSearchObject))
-      dispatch(getRightSprintList(searchRight))
+      getRightDataList()
     }
   }, [isUpdateAddWorkItem])
 
-  const checkNoCreateLongStory = useCallback(
-    (val: boolean) => {
-      setSearchObject({
-        ...searchObject,
-        is_no_creation_long_story: val ? 1 : 0,
-      })
-    },
-    [searchObject],
-  )
+  const checkNoCreateLongStory = useCallback((val: boolean) => {
+    searchRef.current.is_no_creation_long_story = val ? 1 : 0
+    getRightDataList()
+  }, [])
+
   const format = (arr: any) => {
     if (arr) {
       const newA = arr?.filter((j: any) => {
@@ -721,6 +533,12 @@ const SprintProjectSprint: React.FC = () => {
                     activeKey={activeKey}
                     currentFilter={currentFilter}
                     checkNoCreateLongStory={checkNoCreateLongStory}
+                    setCheckList={setCheckList}
+                    checkList={checkList}
+                    searchRef={searchRef}
+                    callback={() => {
+                      getRightDataList()
+                    }}
                   />
                 </Spin>
               </TabItemWrap>
@@ -752,16 +570,13 @@ const SprintProjectSprint: React.FC = () => {
               <div>
                 <InputSearch
                   onChangeSearch={(val: any) => {
-                    setSearchObject({
-                      ...searchObject,
-                      search: {
-                        ...searchObject.search,
-                        story_name: val,
-                      },
-                    })
+                    setSearchKey(val)
+                    searchRef.current.story_name = val
+                    getRightDataList()
                   }}
                   placeholder={t('sprint.searchTips')}
                   leftIcon
+                  defaultValue={searchKey}
                 />
               </div>
               <SelectWrapForList>
@@ -777,7 +592,7 @@ const SprintProjectSprint: React.FC = () => {
                   showArrow
                   popupClassName="aa"
                   showSearch
-                  value={searchObject.search?.user_ids}
+                  value={userIds}
                   renderChildren
                   options={format(
                     removeNull(projectInfoValues, 'user_name')?.map(
@@ -789,13 +604,9 @@ const SprintProjectSprint: React.FC = () => {
                     ),
                   )}
                   onChange={(users: any) => {
-                    setSearchObject({
-                      ...searchObject,
-                      search: {
-                        ...searchObject.search,
-                        user_ids: users,
-                      },
-                    })
+                    searchRef.current.user_ids = users
+                    setUserIds(users)
+                    getRightDataList()
                   }}
                   onConfirm={() => null}
                 >
@@ -833,24 +644,16 @@ const SprintProjectSprint: React.FC = () => {
                   w={296}
                   type
                   projectId={projectId}
-                  value={searchObject.search?.category_id}
+                  value={categoryIds}
                   onChangeCallBack={(val: number[]) => {
-                    setSearchObject({
-                      ...searchObject,
-                      search: {
-                        ...searchObject.search,
-                        category_id: val,
-                      },
-                    })
+                    searchRef.current.category_id = val
+                    setCategoryIds(val)
+                    getRightDataList()
                   }}
                   onClearCallback={() => {
-                    setSearchObject({
-                      ...searchObject,
-                      search: {
-                        ...searchObject.search,
-                        category_id: [],
-                      },
-                    })
+                    searchRef.current.category_id = []
+                    setCategoryIds([])
+                    getRightDataList()
                   }}
                   mode="multiple"
                 />
@@ -858,16 +661,16 @@ const SprintProjectSprint: React.FC = () => {
               <ClearButton
                 onClick={() => {
                   sessionStorage.removeItem('noRefresh')
-                  setSearchObject({
-                    ...searchObject,
-                    search: {
-                      ...searchObject.search,
-                      user_ids: [],
-                      category_id: [],
-                    },
-                  })
-                  dispatch(setCheckList(checkList.map(() => true)))
+                  searchRef.current.user_ids = []
+                  setUserIds([])
+                  searchRef.current.category_id = []
+                  setCategoryIds([])
+                  setCheckList(checkList.map(() => true))
+                  searchRef.current.checkList = checkList.map(() => true)
+                  setSearchKey('')
+                  searchRef.current.story_name = ''
                   setCheckCommission([false, false])
+                  getAllData()
                 }}
               >
                 {t('common.clearForm')}
@@ -878,8 +681,10 @@ const SprintProjectSprint: React.FC = () => {
                 <DndKitTable
                   activeKey={activeKey}
                   checkCommission={checkCommission}
+                  rightSprintList={rightSprintList}
+                  setRightSprintList={setRightSprintList}
                   callback={() => {
-                    dispatch(getRightSprintList(searchRight))
+                    getRightDataList()
                   }}
                 />
               </DragContent>

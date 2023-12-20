@@ -2702,5 +2702,7 @@
   "qrAt": "Confirm New",
   "qrEt": "Confirm Editing",
   "Msg1": "Suitable for urgent projects with high complexity and novel requirements",
-  "Msg2": "Applicable to stable low-risk with clear requirements and no involvement process"
+  "Msg2": "Applicable to stable low-risk with clear requirements and no involvement process",
+  "downloadImages": "Download images",
+  "exitPreview": "Exit Preview"
 }
