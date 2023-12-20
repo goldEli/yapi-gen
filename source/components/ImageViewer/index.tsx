@@ -13,13 +13,37 @@ const key = 'image-viewer' + Math.random()
 
 export const useImageViewerStore = create<{
   open: boolean
+  scale: number
   setOpen(open: boolean): void
+  zoomIn(): void
+  zoomOut(): void
 }>(set => ({
   open: false,
+  scale: 1,
   setOpen: open => {
     set({ open })
   },
+  zoomIn: () => {
+    set(state => {
+      if (state.scale >= 3) {
+        return { scale: state.scale }
+      }
+      return { scale: fixNum(state.scale + 0.1) }
+    })
+  },
+  zoomOut: () => {
+    set(state => {
+      if (state.scale <= 0.1) {
+        return { scale: state.scale }
+      }
+      return { scale: fixNum(state.scale - 0.1) }
+    })
+  },
 }))
+function fixNum(num: number) {
+  const ret = parseFloat(num.toFixed(1))
+  return ret
+}
 
 const ImageViewer: React.FC<ImageViewerProps> = props => {
   const { open, setOpen } = useImageViewerStore()

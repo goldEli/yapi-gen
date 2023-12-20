@@ -33,6 +33,7 @@ const Modal = (props: Props) => {
         style={modalStyle}
         onClick={e => {
           e.stopPropagation()
+          props.onClose()
         }}
       >
         {children}
