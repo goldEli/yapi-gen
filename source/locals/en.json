@@ -2692,5 +2692,7 @@
   "unsullowedSuccessfully": "Unsullowed successfully",
   "cancelFollow": "Cancel Follow",
   "followProjects": "Follow projects",
-  "numberOfTasks": "Number of tasks"
+  "numberOfTasks": "Number of tasks",
+  "changeRecord": "Change Record",
+  "transferRecords": "Transfer records"
 }

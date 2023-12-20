@@ -122,11 +122,8 @@ const ContentWrap = styled.div`
     flex-wrap: wrap;
   }
 `
-interface Props {
-  activeKey: string
-}
 
-const Circulation = (props: Props) => {
+const Circulation = () => {
   const [t] = useTranslation()
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
@@ -167,10 +164,10 @@ const Circulation = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.activeKey === '3') {
+    if (affairsInfo?.id) {
       getLogs(true)
     }
-  }, [props.activeKey])
+  }, [affairsInfo])
 
   useEffect(() => {
     if (isRefresh) {

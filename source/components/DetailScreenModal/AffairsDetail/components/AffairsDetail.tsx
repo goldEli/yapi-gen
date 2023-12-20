@@ -216,8 +216,6 @@ const AffairsDetail = (props: AffairsDetailProps) => {
               <span>--</span>
             </TextWrapEdit>
           )}
-          {/* </>
-          )} */}
         </InfoItem>
         <InfoItem
           style={{

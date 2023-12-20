@@ -567,12 +567,14 @@ const SprintDetailDrawer = () => {
 
   // 监听tab切换滚动
   const onChangeTabs = (value: string) => {
-    setTabActive(value)
-    const dom = document.getElementById(value)
-    document.getElementById('contentDom')?.scrollTo({
-      top: (dom?.offsetTop ?? 0) - 86,
-      behavior: 'smooth',
-    })
+    setTimeout(() => {
+      setTabActive(value)
+      const dom = document.getElementById(value)
+      document.getElementById('contentDom')?.scrollTo({
+        top: (dom?.offsetTop ?? 0) - 86,
+        behavior: 'smooth',
+      })
+    }, 10)
   }
 
   // 计算滚动选中tab

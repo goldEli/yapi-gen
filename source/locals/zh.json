@@ -2692,5 +2692,7 @@
   "unsullowedSuccessfully": "取消关注成功",
   "cancelFollow": "取消关注",
   "followProjects": "关注项目",
-  "numberOfTasks": "任务数"
+  "numberOfTasks": "任务数",
+  "changeRecord": "变更记录",
+  "transferRecords": "流转记录"
 }
