@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Divider, Space } from 'antd'
+import { Divider } from 'antd'
 
 // 主体布局样式
 export const ProjectIndexWrap = styled.div`
@@ -9,6 +9,7 @@ export const ProjectIndexWrap = styled.div`
 `
 
 export const ProjectWrap = styled.div`
+  /* height: 100%; */
   height: calc(100% - 124px);
   display: flex;
   flex-wrap: wrap;
@@ -18,7 +19,7 @@ export const ProjectWrap = styled.div`
 
 // 头部搜索样式
 export const HeaderFilterWrap = styled.div`
-  padding: 20px 0;
+  padding: 20px 0 0;
   display: flex;
   flex-direction: column;
 `
@@ -40,20 +41,15 @@ export const StatusItems = styled.div<{ isActive?: boolean }>`
   line-height: 32px;
   border-radius: 4px;
   padding: 0 8px;
-  border: ${props =>
-    props.isActive
-      ? '1px solid var(--neutral-n2)!important'
-      : '1px solid var(--neutral-n5)'};
   font-size: 14px;
   color: ${props =>
-    props.isActive ? 'var(--neutral-white-d1)!important' : 'var(--neutral-n2)'};
+    props.isActive ? 'var(--primary-d2)!important' : 'var(--neutral-n2)'};
   background: ${props =>
-    props.isActive ? 'var(--neutral-n2)!important' : 'transparent'};
+    props.isActive ? 'var(--selected)!important' : 'var(--neutral-n7)'};
   cursor: pointer;
   &:hover {
-    background-color: #ebedf0;
-    border: 1px solid #ebedf0;
-    color: var(--neutral-n1-d1);
+    background: var(--neutral-n7);
+    color: var(--primary-d2);
   }
 `
 
@@ -105,3 +101,143 @@ export const Content = styled.div<{ isGrid: boolean }>(
     padding: isGrid ? '0px 24px 24px 16px' : '16px 16px 0 16px',
   }),
 )
+
+export const RightCreateWrap = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+export const ActionTabsWrap = styled.div`
+  padding-top: 16px;
+  height: 100%;
+`
+
+export const ActionTabsMenuWrap = styled.div`
+  width: 100%;
+  display: flex;
+  background-color: #f0f0f5;
+  height: 66px;
+  border-radius: 6px 6px 6px 6px;
+  align-items: flex-end;
+  padding: 0px 16px;
+  box-sizing: border-box;
+`
+
+export const TabMenuItem = styled.div<{
+  isActive?: boolean
+}>`
+  height: 54px;
+  margin-right: 12px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  background: ${props =>
+    props?.isActive ? 'var(--neutral-white-d2)' : 'var(--neutral-n6-d1)'};
+  padding: 0px 12px;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 0px 0px;
+  border-top: 2px solid;
+  max-width: 172px;
+  min-width: 80px;
+  .label {
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+    font-size: 14px;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .number {
+    color: var(--neutral-n2);
+    font-size: 12px;
+  }
+`
+
+export const ActionTabsContent = styled.div`
+  height: calc(100% - 118px);
+`
+
+export const MoreButton = styled.div`
+  width: 40px;
+  height: 40px;
+  &:hover {
+    background: var(--neutral-n9);
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    svg {
+      color: var(--primary-d2);
+    }
+  }
+  border-radius: 20px 20px 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 7px;
+`
+
+export const AddItemModal = styled.div`
+  width: 320px;
+  background: var(--neutral-white-d5);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  padding: 24px;
+  box-sizing: border-box;
+  .titles {
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
+    font-size: 14px;
+    user-select: none;
+  }
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+`
+
+export const MoreItemModal = styled.div`
+  width: 180px;
+  background: var(--neutral-white-d6);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  padding: 4px 0px;
+  box-sizing: border-box;
+`
+
+export const MoreItemModalItem = styled.div`
+  display: flex;
+  height: 32px;
+  align-items: center;
+  width: 180px;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0px 16px;
+  color: var(--neutral-n2);
+  user-select: none;
+  .label {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  &:hover {
+    background-color: var(--hover-d3);
+    color: var(--neutral-n1-d1);
+  }
+  .operate {
+    display: none;
+  }
+
+  &:hover .operate {
+    display: inline-flex;
+    align-items: center;
+  }
+  .editBox {
+    &:hover {
+      svg {
+        color: var(--primary-d2);
+      }
+    }
+  }
+`

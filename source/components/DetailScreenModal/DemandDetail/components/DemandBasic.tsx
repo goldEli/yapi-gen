@@ -99,7 +99,7 @@ const DemandBasic = (props: Props) => {
           </div>
           <span>
             {t('updated')}
-            {detailTimeFormat(demandInfo.update_at)}
+            {detailTimeFormat(demandInfo.updated_at)}
           </span>
         </div>
         {!params?.employeeCurrentId && (

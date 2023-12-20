@@ -84,10 +84,12 @@ export const EndTag = styled.div`
 
 export const ProjectCard = styled.div`
   position: relative;
-  width: 280px;
+  /* width: 280px; */
   box-sizing: border-box;
-  padding: 22px 16px;
-  height: 124px;
+  padding: 16px 16px;
+  /* height: 124px; */
+  /* border: 1px solid; */
+  padding-bottom: 10px;
   background: var(--neutral-n10);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;

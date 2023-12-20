@@ -2687,5 +2687,10 @@
   "reviewMessagesFromTasksWillBeCollectedInTheTaskPendingMyReviewSection": "Review messages from tasks will be collected in the \"Task Pending My Review\" section",
   "messagesRelatedToProjectTasksWillBeCollectedInProjectManagement": "Messages related to project tasks will be collected in Project Management",
   "messagesRelatedToSystemOperationsWillBeCollectedInTheSystemNotificationSection": "Messages related to system operations will be collected in the \"System Notification\" section",
-  "newsRelatedToDailyNewspapersWillBeCollectedInTheWorkReport": "News related to daily newspapers will be collected in the \"work report\""
+  "newsRelatedToDailyNewspapersWillBeCollectedInTheWorkReport": "News related to daily newspapers will be collected in the \"work report\"",
+  "followSuccess": "Follow Success",
+  "unsullowedSuccessfully": "Unsullowed successfully",
+  "cancelFollow": "Cancel Follow",
+  "followProjects": "Follow projects",
+  "numberOfTasks": "Number of tasks"
 }
