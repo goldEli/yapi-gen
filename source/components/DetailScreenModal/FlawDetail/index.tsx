@@ -404,73 +404,73 @@ const FlawDetail = () => {
     getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
   }
 
-  const tabItems: TabsProps['items'] = [
-    {
-      key: '1',
-      label: (
-        <ActivityTabItem>
-          <span>{t('details')}</span>
-        </ActivityTabItem>
-      ),
-      children: <FlawInfo />,
-    },
-    {
-      key: '2',
-      label: (
-        <ActivityTabItem>
-          <span>{t('linkWorkItems')}</span>
-        </ActivityTabItem>
-      ),
-      children: (
-        <RelationStories
-          activeKey={tabActive}
-          detail={flawInfo as Model.Flaw.FlawInfo}
-          onUpdate={onUpdate}
-          isPreview={(params?.employeeCurrentId || 0) > 0}
-        />
-      ),
-    },
-    {
-      key: '3',
-      label: (
-        <ActivityTabItem>
-          <span>{t('changeLog')}</span>
-          <ItemNumber isActive={tabActive === '3'}>
-            {flawInfo.changeCount}
-          </ItemNumber>
-        </ActivityTabItem>
-      ),
-      children: (
-        <ChangeRecord
-          activeKey={tabActive}
-          filter={filter}
-          isPreview={(params?.employeeCurrentId || 0) > 0}
-        />
-      ),
-    },
-    {
-      key: '4',
-      label: (
-        <ActivityTabItem>
-          <span>{t('circulationRecords')}</span>
-        </ActivityTabItem>
-      ),
-      children: (
-        <Circulation
-          activeKey={tabActive}
-          isPreview={(params?.employeeCurrentId || 0) > 0}
-        />
-      ),
-    },
-  ]
+  // const tabItems: TabsProps['items'] = [
+  //   {
+  //     key: '1',
+  //     label: (
+  //       <ActivityTabItem>
+  //         <span>{t('details')}</span>
+  //       </ActivityTabItem>
+  //     ),
+  //     children: <FlawInfo />,
+  //   },
+  //   {
+  //     key: '2',
+  //     label: (
+  //       <ActivityTabItem>
+  //         <span>{t('linkWorkItems')}</span>
+  //       </ActivityTabItem>
+  //     ),
+  //     children: (
+  //       <RelationStories
+  //         activeKey={tabActive}
+  //         detail={flawInfo as Model.Flaw.FlawInfo}
+  //         onUpdate={onUpdate}
+  //         isPreview={(params?.employeeCurrentId || 0) > 0}
+  //       />
+  //     ),
+  //   },
+  //   {
+  //     key: '3',
+  //     label: (
+  //       <ActivityTabItem>
+  //         <span>{t('changeLog')}</span>
+  //         <ItemNumber isActive={tabActive === '3'}>
+  //           {flawInfo.changeCount}
+  //         </ItemNumber>
+  //       </ActivityTabItem>
+  //     ),
+  //     children: (
+  //       <ChangeRecord
+  //         activeKey={tabActive}
+  //         filter={filter}
+  //         isPreview={(params?.employeeCurrentId || 0) > 0}
+  //       />
+  //     ),
+  //   },
+  //   {
+  //     key: '4',
+  //     label: (
+  //       <ActivityTabItem>
+  //         <span>{t('circulationRecords')}</span>
+  //       </ActivityTabItem>
+  //     ),
+  //     children: (
+  //       <Circulation
+  //         activeKey={tabActive}
+  //         isPreview={(params?.employeeCurrentId || 0) > 0}
+  //       />
+  //     ),
+  //   },
+  // ]
 
-  // 监听左侧信息滚动
-  const onChangeTabs = (value: string) => {
-    setTabActive(value)
-    if (value === '1') {
-      dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
-    }
-  }
+  // // 监听左侧信息滚动
+  // const onChangeTabs = (value: string) => {
+  //   setTabActive(value)
+  //   if (value === '1') {
+  //     dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
+  //   }
+  // }
 
   useEffect(() => {
     if (userPreferenceConfig.previewModel === 2) {
@@ -790,7 +790,8 @@ const FlawDetail = () => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
-      <Tabs
+      <FlawInfo />
+      {/* <Tabs
         className="tabs"
         activeKey={tabActive}
         items={tabItems}
@@ -806,7 +807,7 @@ const FlawDetail = () => {
             />
           ) : null
         }
-      />
+      /> */}
     </Wrap>
   )
 }

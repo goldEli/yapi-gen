@@ -302,7 +302,7 @@ const AffairsInfo = (props: Props) => {
                 onClick={() => setFilter(!filter)}
               />
             </div>
-            <ChangeRecord filter={filter} />
+            <ChangeRecord filter={filter} detail={affairsInfo} />
           </div>
           <div
             style={{
@@ -313,7 +313,10 @@ const AffairsInfo = (props: Props) => {
             <Label id="transferRecords" className="info_item_tab">
               {t('transferRecords')}
             </Label>
-            <Circulation onUpdateCount={setTransferRecordsCount} />
+            <Circulation
+              onUpdateCount={setTransferRecordsCount}
+              detail={affairsInfo}
+            />
           </div>
           <div
             style={{

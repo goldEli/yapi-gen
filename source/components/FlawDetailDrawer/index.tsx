@@ -9,6 +9,7 @@ import {
   BtnWrap,
   ChangeIconGroup,
   CommentTitle,
+  CommonItemBox,
   Content,
   DemandName,
   DetailFooter,
@@ -18,6 +19,7 @@ import {
   LayerBox,
   ParentBox,
   SkeletonStatus,
+  TabsCount,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover'
@@ -73,6 +75,8 @@ import { toggleStar } from '@/services/employeeProfile'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
 import LeftIcontButton from '../LeftIcontButton'
 import { Label } from '../DetailScreenModal/FlawDetail/style'
+import ChangeRecord from '../DetailScreenModal/FlawDetail/components/ChangeRecord'
+import Circulation from '../DetailScreenModal/FlawDetail/components/Circulation'
 
 const FlawDetailDrawer = () => {
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem, drawerInfo } =
@@ -97,6 +101,8 @@ const FlawDetailDrawer = () => {
   const relationStoriesRef = useRef<any>()
   const [openDemandDetail] = useOpenDemandDetail()
   const projectRef = useRef('')
+  const [filter, setFilter] = useState(false)
+  const [transferRecordsCount, setTransferRecordsCount] = useState(0)
 
   const tabItems: any = [
     {
@@ -124,10 +130,32 @@ const FlawDetailDrawer = () => {
       key: 'tab_info',
       label: t('newlyAdd.basicInfo'),
     },
-
+    {
+      key: 'changeRecord',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('changeRecord')}</span>
+          <TabsCount>{drawerInfo.changeCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
+      key: 'transferRecords',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('transferRecords')}</span>
+          <TabsCount>{transferRecordsCount}</TabsCount>
+        </div>
+      ),
+    },
     {
       key: 'tab_defectComment',
-      label: t('defectComment'),
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('comment1')}</span>
+          <TabsCount>{flawCommentList?.list.length || 0}</TabsCount>
+        </div>
+      ),
     },
   ]
   const isCanEdit =
@@ -538,7 +566,7 @@ const FlawDetailDrawer = () => {
   const onChangeTabs = (value: string) => {
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({
-      top: (dom?.offsetTop ?? 0) - 86,
+      top: (dom?.offsetTop ?? 0) - 76,
       behavior: 'smooth',
     })
     setTabActive(value)
@@ -641,13 +669,6 @@ const FlawDetailDrawer = () => {
               icon="close"
               text={t('closure')}
             />
-            {/* <BackIcon onClick={onCancel}>
-              <CommonIconFont
-                type="right-02"
-                size={20}
-                color="var(--neutral-n2)"
-              />
-            </BackIcon> */}
             {skeletonLoading && (
               <SkeletonStatus>
                 <Skeleton.Input active />
@@ -896,49 +917,6 @@ const FlawDetailDrawer = () => {
                   onConfirm={onOperationUpdate}
                 />
               </div>
-              {!isPreview && (
-                <BtnWrap
-                  style={{
-                    backgroundColor: 'white',
-                    margin: 0,
-                    padding: '16px 24px 0px 16px',
-                  }}
-                >
-                  <CommonButton
-                    type="secondary"
-                    onClick={() => {
-                      flawDetailRef?.current?.handleUpload()
-                    }}
-                  >
-                    {t('appendix')}
-                  </CommonButton>
-
-                  <FlawTag
-                    defaultList={drawerInfo?.tag?.map((i: any) => ({
-                      id: i.id,
-                      color: i.tag?.color,
-                      name: i.tag?.content,
-                    }))}
-                    canAdd
-                    onUpdate={onOperationUpdate}
-                    detail={drawerInfo}
-                    isDetailQuick
-                    addWrap={
-                      <CommonButton type="secondary">
-                        {t('addTag')}
-                      </CommonButton>
-                    }
-                  />
-                  <CommonButton
-                    type="secondary"
-                    onClick={() => {
-                      relationStoriesRef?.current?.onClickOpen()
-                    }}
-                  >
-                    {t('linkWorkItem')}
-                  </CommonButton>
-                </BtnWrap>
-              )}
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={() => {
@@ -951,7 +929,6 @@ const FlawDetailDrawer = () => {
                   paddingLeft: '24px',
                   paddingTop: '15px',
                   backgroundColor: 'white',
-                  // marginBottom: '12px',
                 }}
                 className="tabs"
                 activeKey={tabActive}
@@ -965,35 +942,47 @@ const FlawDetailDrawer = () => {
                   ref={flawDetailRef}
                   isPreview={isPreview}
                 />
-                <RelationStories
-                  detail={drawerInfo}
-                  onUpdate={onOperationUpdate}
-                  isDrawer
-                  ref={relationStoriesRef}
-                  isPreview={isPreview}
-                />
-                <FlawBasic
-                  detail={drawerInfo}
-                  onUpdate={onOperationUpdate}
-                  isPreview={isPreview}
-                  hasPadding
-                />
-                <div
-                  id="tab_defectComment"
-                  style={{
-                    backgroundColor: 'white',
-                    padding: '16px 24px',
-                    marginTop: '12px',
-                  }}
-                  className="info_item_tab"
-                >
-                  <Label>{t('defectComment')}</Label>
+                <CommonItemBox>
+                  <RelationStories
+                    detail={drawerInfo}
+                    onUpdate={onOperationUpdate}
+                    isDrawer
+                    ref={relationStoriesRef}
+                    isPreview={isPreview}
+                  />
+                </CommonItemBox>
+                <CommonItemBox>
+                  <FlawBasic
+                    detail={drawerInfo}
+                    onUpdate={onOperationUpdate}
+                    isPreview={isPreview}
+                    hasPadding
+                  />
+                </CommonItemBox>
+                <CommonItemBox>
+                  <Label id="changeRecord" className="info_item_tab">
+                    {t('changeRecord')}
+                  </Label>
+                  <ChangeRecord filter={filter} detail={drawerInfo} />
+                </CommonItemBox>
+                <CommonItemBox>
+                  <Label id="transferRecords" className="info_item_tab">
+                    {t('transferRecords')}
+                  </Label>
+                  <Circulation
+                    onUpdateCount={setTransferRecordsCount}
+                    detail={drawerInfo}
+                  />
+                </CommonItemBox>
+
+                <CommonItemBox id="tab_defectComment" className="info_item_tab">
+                  <Label>{t('comment1')}</Label>
                   <CommonComment
                     data={flawCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}
                     onEditComment={onEditComment}
                   />
-                </div>
+                </CommonItemBox>
               </LayerBox>
             </>
           )}

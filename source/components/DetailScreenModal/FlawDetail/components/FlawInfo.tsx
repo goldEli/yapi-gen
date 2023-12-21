@@ -10,6 +10,7 @@ import {
   SprintDetailDragLine,
   SprintDetailMouseDom,
   WrapRight,
+  TabsCount,
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { ConfigWrap } from '@/components/StyleCommon'
@@ -32,6 +33,7 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { getMessage } from '@/components/Message'
 import { addFlawComment } from '@/services/flaw'
+import { Tabs } from 'antd'
 
 const FlawInfo = () => {
   const commentDom: any = createRef()
@@ -41,14 +43,72 @@ const FlawInfo = () => {
   const navigate = useNavigate()
   const basicInfoDom = useRef<HTMLDivElement>(null)
   const [searchParams] = useSearchParams()
-  const { flawInfo } = useSelector(store => store.flaw)
+  const { flawInfo, flawCommentList } = useSelector(store => store.flaw)
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
+  const [tabActive, setTabActive] = useState('tab_desc')
+  const [filter, setFilter] = useState(false)
+  const [transferRecordsCount, setTransferRecordsCount] = useState(0)
   const { projectInfo, isDetailScreenModal, projectInfoValues } = useSelector(
     store => store.project,
   )
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { params, visible } = isDetailScreenModal
+
+  const tabItems: any = [
+    {
+      key: 'tab_desc',
+      label: t('describe'),
+    },
+    {
+      key: 'tab_log',
+      label: t('scheduleRecord'),
+    },
+    {
+      key: 'tab_attachment',
+      label: t('attachment'),
+    },
+    {
+      key: 'tab_tag',
+      label: t('tag'),
+    },
+
+    {
+      key: 'tab_associatedWorkItems',
+      label: t('associatedWorkItems'),
+    },
+    {
+      key: 'tab_info',
+      label: t('newlyAdd.basicInfo'),
+    },
+    {
+      key: 'changeRecord',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('changeRecord')}</span>
+          <TabsCount>{flawInfo.changeCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
+      key: 'transferRecords',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('transferRecords')}</span>
+          <TabsCount>{transferRecordsCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
+      key: 'sprint-activity',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('comment1')}</span>
+          <TabsCount>{flawCommentList?.list.length || 0}</TabsCount>
+        </div>
+      ),
+    },
+  ]
 
   //   刷新缺陷详情
   const onUpdate = () => {
@@ -92,6 +152,36 @@ const FlawInfo = () => {
     commentDom.current.cancel()
   }
 
+  // 监听左侧信息滚动
+  const onChangeTabs = (value: string) => {
+    const dom = document.getElementById(value)
+    document.getElementById('contentDom')?.scrollTo({
+      top: (dom?.offsetTop ?? 0) - 76,
+      behavior: 'smooth',
+    })
+    setTabActive(value)
+  }
+
+  // 计算滚动选中tab
+  const handleScroll = (e: any) => {
+    if (!document.querySelector('#contentDom')) {
+      return
+    }
+    const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
+    // 所有标题节点
+    const titleItems = document.querySelectorAll('.info_item_tab')
+
+    let arr: any = []
+    titleItems.forEach(element => {
+      const { offsetTop, id } = element as HTMLElement
+      if (offsetTop - 140 <= scrollTop) {
+        const keys = [...arr, ...[id]]
+        arr = [...new Set(keys)]
+      }
+    })
+    setTabActive(arr[arr.length - 1])
+  }
+
   // 拖动线条
   const onDragLine = () => {
     document.onmousemove = e => {
@@ -121,6 +211,13 @@ const FlawInfo = () => {
     }
   }, [routerPath, flawInfo])
 
+  useEffect(() => {
+    window?.addEventListener('scroll', handleScroll, true)
+    return () => {
+      window.removeEventListener('scroll', handleScroll, false)
+    }
+  }, [document.getElementById('contentDom')])
+
   // 计算高度
   const a1 = flawInfo?.isExamine ? 91 : 130
   const a2 = flawInfo?.isExamine ? 164 : 186
@@ -143,7 +240,19 @@ const FlawInfo = () => {
       <div
         style={{ width: `calc(100% - ${leftWidth}px)`, position: 'relative' }}
       >
-        <FlawInfoLeft style={{ width: '100%' }}>
+        <Tabs
+          style={{
+            paddingLeft: '24px',
+            paddingTop: '15px',
+            backgroundColor: 'white',
+            // marginBottom: '12px',
+          }}
+          className="tabs"
+          activeKey={tabActive}
+          items={tabItems}
+          onChange={onChangeTabs}
+        />
+        <FlawInfoLeft style={{ width: '100%' }} id="contentDom">
           <FlawDetail
             flawInfo={flawInfo as Model.Flaw.FlawInfo}
             isInfoPage

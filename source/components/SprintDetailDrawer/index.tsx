@@ -967,13 +967,16 @@ const SprintDetailDrawer = () => {
                     onClick={() => setFilter(!filter)}
                   />
                 </div>
-                <ChangeRecord filter={filter} />
+                <ChangeRecord filter={filter} detail={drawerInfo} />
               </CommonItemBox>
               <CommonItemBox>
                 <Label id="transferRecords" className="info_item_tab">
                   {t('transferRecords')}
                 </Label>
-                <Circulation onUpdateCount={setTransferRecordsCount} />
+                <Circulation
+                  onUpdateCount={setTransferRecordsCount}
+                  detail={drawerInfo}
+                />
               </CommonItemBox>
               <CommonItemBox>
                 <Label id="sprint-activity" className="info_item_tab">

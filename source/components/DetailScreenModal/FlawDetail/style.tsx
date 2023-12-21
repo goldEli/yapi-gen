@@ -3,6 +3,18 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Space } from 'antd'
 
+export const TabsCount = styled.div`
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  background: var(--function-tag5);
+  color: var(--primary-d1);
+  border-radius: 10px;
+  margin-left: 4px;
+`
+
 export const Wrap = styled.div<{ all?: boolean; employeeCurrentId?: number }>`
   height: 100%;
   display: flex;
@@ -50,10 +62,7 @@ export const FormWrap = styled(Form)({
   },
 })
 
-export const RelationWrap = styled.div`
-  /* height: 100%; */
-  padding-left: 24px;
-`
+export const RelationWrap = styled.div``
 
 export const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -240,7 +249,7 @@ export const FlawInfoInfoItem = styled.div<{ activeState?: any }>({
   flexDirection: 'column',
   background: 'white',
   borderRadius: '6px',
-  padding: '12px',
+  padding: '12px 24px',
 })
 
 export const FlawInfoLabel = styled.div`

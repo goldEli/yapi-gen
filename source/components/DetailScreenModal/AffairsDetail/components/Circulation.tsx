@@ -123,7 +123,10 @@ const ContentWrap = styled.div`
   }
 `
 
-const Circulation = (props: { onUpdateCount(num: number): void }) => {
+const Circulation = (props: {
+  onUpdateCount(num: number): void
+  detail?: any
+}) => {
   const [t] = useTranslation()
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
@@ -135,7 +138,6 @@ const Circulation = (props: { onUpdateCount(num: number): void }) => {
   })
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { affairsInfo } = useSelector(store => store.affairs)
 
   const getLogs = async (state: boolean) => {
     if (state) {
@@ -143,7 +145,7 @@ const Circulation = (props: { onUpdateCount(num: number): void }) => {
     }
     const result = await getAffairsStatusLog({
       projectId: id ?? projectInfo.id,
-      sprintId: affairsInfo.id || 0,
+      sprintId: props?.detail?.id || 0,
       all: true,
     })
     setStatusLogs({
@@ -158,10 +160,10 @@ const Circulation = (props: { onUpdateCount(num: number): void }) => {
   }
 
   useEffect(() => {
-    if (affairsInfo?.id) {
+    if (props?.detail?.id) {
       getLogs(true)
     }
-  }, [affairsInfo])
+  }, [props?.detail])
 
   useEffect(() => {
     if (isRefresh) {

@@ -708,7 +708,7 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
-        padding: props.isDrawer ? '16px 24px' : '16px 24px',
+        // padding: props.isDrawer ? '16px 24px' : '16px 24px',
         backgroundColor: 'white',
         height: `calc(100% - ${
           props?.isPreview

@@ -152,7 +152,7 @@ const DemandDetailDrawer = () => {
     },
     {
       key: 'tab_comment',
-      label: t('demandComment'),
+      label: t('comment1'),
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
@@ -547,7 +547,7 @@ const DemandDetailDrawer = () => {
     setTabActive(value)
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({
-      top: (dom?.offsetTop ?? 0) - 86,
+      top: (dom?.offsetTop ?? 0) - 76,
       behavior: 'smooth',
     })
   }
@@ -868,56 +868,6 @@ const DemandDetailDrawer = () => {
                   onConfirm={onOperationUpdate}
                 />
               </ProgressBox>
-              {!demandDetailDrawerProps?.isPreview && (
-                <BtnWrap
-                  style={{
-                    backgroundColor: 'white',
-                    margin: 0,
-                    padding: '12px 24px',
-                  }}
-                >
-                  <CommonButton
-                    type="secondary"
-                    onClick={() => {
-                      detailDemandRef?.current.handleUpload()
-                    }}
-                  >
-                    {t('appendix')}
-                  </CommonButton>
-                  <DemandTag
-                    defaultList={drawerInfo?.tag?.map((i: any) => ({
-                      id: i.id,
-                      color: i.tag?.color,
-                      name: i.tag?.content,
-                    }))}
-                    canAdd
-                    onUpdate={onOperationUpdate}
-                    detail={drawerInfo}
-                    isDetailQuick
-                    addWrap={
-                      <CommonButton type="secondary">
-                        {t('addTag')}
-                      </CommonButton>
-                    }
-                  />
-                  <CommonButton
-                    type="secondary"
-                    onClick={() => {
-                      childrenDemandRef?.current?.onCreateChild()
-                    }}
-                  >
-                    {t('addChildRequirement')}
-                  </CommonButton>
-                  <CommonButton
-                    type="secondary"
-                    onClick={() => {
-                      storyRelationRef?.current.onClickOpen()
-                    }}
-                  >
-                    {t('linkWorkItem')}
-                  </CommonButton>
-                </BtnWrap>
-              )}
               <DrawerTopInfo
                 details={drawerInfo}
                 onUpdate={onOperationUpdate}
@@ -938,12 +888,14 @@ const DemandDetailDrawer = () => {
               ></Tabs>
 
               <LayerBox>
-                <DetailDemand
-                  detail={drawerInfo}
-                  onUpdate={onOperationUpdate}
-                  ref={detailDemandRef}
-                  isPreview={demandDetailDrawerProps?.isPreview}
-                />
+                <div style={{ marginTop: 12 }}>
+                  <DetailDemand
+                    detail={drawerInfo}
+                    onUpdate={onOperationUpdate}
+                    ref={detailDemandRef}
+                    isPreview={demandDetailDrawerProps?.isPreview}
+                  />
+                </div>
                 <ChildrenDemand
                   onUpdate={onOperationUpdate}
                   detail={drawerInfo}
@@ -973,7 +925,7 @@ const DemandDetailDrawer = () => {
                   }}
                   className="info_item_tab"
                 >
-                  <Label> {t('requirements_review')}</Label>
+                  <Label>{t('comment1')}</Label>
                   <CommonComment
                     data={demandCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}
