@@ -197,11 +197,9 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
     // 如果是动态则默认跳转全部
     if (item.url === '/Trends') {
       setMsgVisible(true)
-
       dispatch(changeVisible(false))
       dispatch(changeVisibleFilter(false))
       return
-      navigateUrl = `${item.url}/AllNote/1`
     }
 
     // 如果是统计则默认跳转
@@ -222,10 +220,29 @@ const LayoutSideIndex = (props: LayoutSideIndexProps) => {
       payload: resultMenu,
     })
     dispatch(setProjectInfo({}))
-
-    setTimeout(() => {
-      navigate(navigateUrl)
-    }, 10)
+    const cache_project_url = sessionStorage.getItem('cache_project_url')
+    if (
+      item.url === '/Project' &&
+      cache_project_url &&
+      !location.href.includes('/ProjectDetail') &&
+      !location.href.includes('/Project')
+    ) {
+      setTimeout(() => {
+        navigate(cache_project_url)
+      }, 10)
+    } else {
+      if (
+        item.url === '/Project' &&
+        cache_project_url &&
+        (location.href.includes('/ProjectDetail') ||
+          location.href.includes('/Project'))
+      ) {
+        sessionStorage.removeItem('cache_project_url')
+      }
+      setTimeout(() => {
+        navigate(navigateUrl)
+      }, 10)
+    }
   }
 
   // 新开页面打开外链
