@@ -484,7 +484,7 @@
     "endTimeComputedStartTime": "Expected end time cannot be less than expected start time!",
     "changeProjectSuccess": "Project switching succeeded!",
     "haveNoSuccessAttach": "There are also attachments that have not been uploaded successfully!",
-    "reviewModeChangeSuccess": "Browse mode switch succeeded!",
+    "reviewModeChangeSuccess": "Browse mode switch succeeded",
     "permissionNull": "Permission group cannot be empty!",
     "finishIteration": "Complete iteration"
   },
@@ -2693,12 +2693,12 @@
   "cancelFollow": "Cancel Follow",
   "followProjects": "Follow projects",
   "numberOfTasks": "Number of tasks",
-  "cancelText":"This page has edited content that cannot be saved after cancellation. Do you want to cancel?",
-  "qr":"Confirm",
-  "qrE":"Confirm editing of this project",
-  "qrA":"Confirm creating the new project",
-  "qrAt":"Confirm New",
-  "qrEt":"Confirm Editing",
-  "Msg1":"Suitable for urgent projects with high complexity and novel requirements",
-  "Msg2":"Applicable to stable low-risk with clear requirements and no involvement process"
+  "cancelText": "This page has edited content that cannot be saved after cancellation. Do you want to cancel?",
+  "qr": "Confirm",
+  "qrE": "Confirm editing of this project",
+  "qrA": "Confirm creating the new project",
+  "qrAt": "Confirm New",
+  "qrEt": "Confirm Editing",
+  "Msg1": "Suitable for urgent projects with high complexity and novel requirements",
+  "Msg2": "Applicable to stable low-risk with clear requirements and no involvement process"
 }
