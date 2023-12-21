@@ -248,13 +248,12 @@ const RightForm = (props: {
           name="info"
         >
           <Input.TextArea
-            style={{ marginBottom: 16 }}
             placeholder={t('please_enter_project_description')}
             autoSize={{ minRows: 3, maxRows: 5 }}
           />
         </Form.Item>
       </FormWrap>
-      <FooterBtn style={{ gap: '16px' }}>
+      <FooterBtn style={{ gap: '16px' , height:window.innerWidth <= 1440 ? '80px':'80px'}}>
         <CommonButton type="light" onClick={props.onCancel}>
         {t('cancel')}
         </CommonButton>

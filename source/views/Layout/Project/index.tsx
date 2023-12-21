@@ -45,7 +45,7 @@ const ProjectIndex = () => {
     status: 0,
     // 搜索值
     keyword: '',
-    pageObj: { page: 1, size: 30 },
+    pageObj: { page: 1, size: 100 },
     order: { value: '', key: '' },
     isGrid: 0,
   })

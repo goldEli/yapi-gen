@@ -65,7 +65,7 @@ const MainGrid = (props: Props) => {
   }
   const _getMsg_list = async (isInit: boolean, page: number) => {
     const res = await getProjectList({
-      pageSize: 35,
+      pageSize: 100,
       page: page,
       status,
       searchValue: keyword,
@@ -96,11 +96,13 @@ const MainGrid = (props: Props) => {
     }
     return false
   }, [data])
+
   const fetchMoreData = () => {
     const pages = page + 1
     setPage(pages)
     _getMsg_list(false, pages)
   }
+
   useEffect(() => {
     setStatus(props.filterParams?.status)
     setKeyword(props.filterParams?.keyword)
