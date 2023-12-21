@@ -7,7 +7,7 @@ export const ModalWrap = styled(Modal)`
   .ant-modal {
     top: 0 !important;
   }
-  height: ${window.innerWidth <= 1440 ? '670px' : '705px'};
+  height: ${window.innerWidth <= 1440 ? '663px' : '705px'};
   overflow: hidden;
   border-radius: 0 0 6px 6px;
   .ant-modal-body: {
@@ -235,7 +235,7 @@ export const UploadFileIconWrap = styled.div`
   padding: 0 24px;
 `
 export const CreateFormWrap = styled.div`
-  height: ${window.innerWidth <= 1440 ? '670px' : '740px'};
+  height: ${window.innerWidth <= 1440 ? '663px' : '740px'};
 `
 export const MainWrap = styled.div`
   display: flex;
