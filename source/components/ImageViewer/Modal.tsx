@@ -11,7 +11,7 @@ const Modal = (props: Props) => {
   const overlayStyle: React.CSSProperties = {
     display: isOpen ? 'block' : 'none',
     position: 'fixed',
-    zIndex: 1000,
+    zIndex: 9999999999,
     top: 0,
     left: 0,
     width: '100%',
@@ -25,6 +25,9 @@ const Modal = (props: Props) => {
     position: 'relative',
     width: '100%',
     height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 
   return (
