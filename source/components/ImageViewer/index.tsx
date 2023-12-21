@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
 import Modal from './Modal'
 import { EventBusSingle } from '../CalendarManager/eventBusSingle'
 import Header from './Header'
-import { create } from 'zustand'
 import Image from './Image'
 import ToolBar from './Toolbar'
 import { Params, useImageViewerStore } from './useImageViewerStore'
@@ -13,7 +11,7 @@ interface ImageViewerProps {}
 const key = 'image-viewer' + Math.random()
 
 const ImageViewer: React.FC<ImageViewerProps> = props => {
-  const { open, setOpen, setRotate, setScale, setParams } =
+  const { open, setOpen, setRotate, setScale, setParams, setImageSize } =
     useImageViewerStore()
 
   const openModal = () => {
@@ -24,6 +22,8 @@ const ImageViewer: React.FC<ImageViewerProps> = props => {
     setOpen(false)
     setRotate(0)
     setScale(1)
+    setImageSize(null)
+    setParams(null)
   }
   useEffect(() => {
     EventBusSingle.getInstance().register(`open-${key}`, (p: Params) => {
