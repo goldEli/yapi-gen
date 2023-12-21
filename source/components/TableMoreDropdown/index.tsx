@@ -42,6 +42,8 @@ interface Props {
   ): void
   // 冲刺的其他菜单
   rightSprintList?: any
+  // 删除事件
+  onDeleteChange?(row: any): void
 }
 
 const TableMoreDropdown = (props: Props) => {
@@ -301,7 +303,16 @@ const TableMoreDropdown = (props: Props) => {
 
     return menuItems
   }
-
+  const CommonItems = [
+    {
+      key: 'del_key',
+      label: (
+        <div onClick={() => props.onDeleteChange?.(props.record)}>
+          {t('delete')}
+        </div>
+      ),
+    },
+  ]
   if (selectedRowKeys?.map((i: any) => i.id).includes(props.record.id)) {
     resultMenu = batchItems
   } else if (props.isRelation) {
@@ -311,7 +322,7 @@ const TableMoreDropdown = (props: Props) => {
   } else {
     resultMenu = onComputedItems()
   }
-
+  resultMenu = [...CommonItems, ...resultMenu]
   return (
     <DropdownWrap
       destroyPopupOnHide

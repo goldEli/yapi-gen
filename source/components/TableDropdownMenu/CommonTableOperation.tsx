@@ -26,6 +26,8 @@ interface MoreWrapProps {
   ): void
   // 冲刺的其他菜单
   rightSprintList?: any
+  // 删除
+  onDeleteChange?(row: any): void
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -59,7 +61,10 @@ const MoreWrap = (props: MoreWrapProps) => {
     setIsMoreVisible(false)
     props.onRemoveSprintItem?.(iterate_id, story_id, to_iterate_id, needFresh)
   }
-
+  // 删除事件
+  const onDeleteChange = (record: any) => {
+    props.onDeleteChange?.(record)
+  }
   return (
     <TableMoreDropdown
       isMoreVisible={isMoreVisible}
@@ -71,6 +76,7 @@ const MoreWrap = (props: MoreWrapProps) => {
       onCreateChild={onCreateChild}
       onClickBatch={onClickBatch}
       onRemoveSprintItem={onRemoveSprintItem}
+      onDeleteChange={onDeleteChange}
       rightSprintList={props?.rightSprintList}
     />
   )
@@ -189,6 +195,7 @@ const CommonTableOperation = (props: CommonOperationProps) => {
           onCreateChild={onCreateChild}
           onClickBatch={onClickBatch}
           onRemoveSprintItem={onRemoveSprintItem}
+          onDeleteChange={onDeleteChange}
           rightSprintList={rightSprintList}
         />
       </TableActionItem>
