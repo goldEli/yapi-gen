@@ -168,7 +168,7 @@ const LayoutIndex = () => {
     timer.current = setInterval(() => {
       _getNotReadMsgStatics()
       // dispatch(setIsNewMsg(isNewMsg + 1))
-    }, 3000)
+    }, 5000)
   }, [])
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
