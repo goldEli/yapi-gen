@@ -266,7 +266,7 @@ const SprintTable = (props: Props) => {
       {
         title: t('operate'),
         dataIndex: 'action',
-        width: 180,
+        width: 140,
         fixed: 'right',
         render: (text: any, record: any) => {
           return (
