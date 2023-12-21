@@ -76,6 +76,7 @@ import { Label } from '../DetailScreenModal/FlawDetail/style'
 import ChangeRecord from '../DetailScreenModal/FlawDetail/components/ChangeRecord'
 import Circulation from '../DetailScreenModal/FlawDetail/components/Circulation'
 import ScreenMinHover from '../ScreenMinHover'
+import BasicDemand from './component/BasicDemand'
 
 const FlawDetailDrawer = () => {
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem, drawerInfo } =
@@ -951,11 +952,13 @@ const FlawDetailDrawer = () => {
                   />
                 </CommonItemBox>
                 <CommonItemBox>
-                  <FlawBasic
-                    detail={drawerInfo}
+                  <BasicDemand
                     onUpdate={onOperationUpdate}
-                    isPreview={isPreview}
-                    hasPadding
+                    detail={drawerInfo}
+                    isInfoPage
+                    isPreview={
+                      (flawDetailDrawer.params.employeeCurrentId || 0) > 0
+                    }
                   />
                 </CommonItemBox>
                 <CommonItemBox>

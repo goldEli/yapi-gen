@@ -1,58 +1,65 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector } from '@store/index'
-import { createRef, useEffect, useRef, useState } from 'react'
 import {
-  BasicFooter,
-  FlawInfoInfoItem,
-  FlawInfoLabel,
-  FlawInfoLeft,
-  FlawInfoWrap,
-  SprintDetailDragLine,
-  SprintDetailMouseDom,
-  WrapRight,
-  TabsCount,
-} from '../style'
-import CommonIconFont from '@/components/CommonIconFont'
-import { ConfigWrap } from '@/components/StyleCommon'
-import {
-  detailTimeFormat,
-  getIdsForAt,
-  getParamsData,
-  removeNull,
-} from '@/tools'
+  createRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
-import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import { setActiveCategory } from '@store/category'
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
-import FlawComment from './FlawComment'
-import FlawStatus from './FlawStatus'
-import FlawBasic from './FlawBasic'
-import FlawDetail from './FlawDetail'
-import { saveScreenDetailModal } from '@store/project/project.thunk'
-import CommentFooter from '@/components/CommonComment/CommentFooter'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { TabsCount } from '../style'
+import { getFlawCommentList } from '@store/flaw/flaw.thunk'
 import { getMessage } from '@/components/Message'
-import { addFlawComment } from '@/services/flaw'
+import {
+  addFlawComment,
+  deleteFlawComment,
+  updateFlawComment,
+} from '@/services/flaw'
+import { getIdsForAt, getParamsData, removeNull } from '@/tools'
+import {
+  DetailInfoWrap,
+  InfoWrap,
+  Label,
+  TabsWrap1,
+} from '../../AffairsDetail/style'
 import { Tabs } from 'antd'
+import FlawDetail from './FlawDetail'
+import FlawStatus from './FlawStatus'
+import CommentFooter from '@/components/CommonComment/CommentFooter'
+import CommonIconFont from '@/components/CommonIconFont'
+import { CommonItemBox } from '@/components/FlawDetailDrawer/style'
+import FlawComment from './FlawComment'
+import ChangeRecord from './ChangeRecord'
+import Circulation from './Circulation'
+import ScreenMinHover from '@/components/ScreenMinHover'
+import RelationStories from './RelationStories'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
-const FlawInfo = () => {
-  const commentDom: any = createRef()
+interface Props {
+  onRef: any
+  employeeCurrentId?: number
+}
+
+const FlawInfo = (props: Props) => {
   const [t] = useTranslation()
-  const routerPath = useLocation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const basicInfoDom = useRef<HTMLDivElement>(null)
+  const routerPath = useLocation()
   const [searchParams] = useSearchParams()
+  const commentDom: any = createRef()
+  const relationStoriesRef = useRef<any>()
+  const { userPreferenceConfig } = useSelector(store => store.user)
   const { flawInfo, flawCommentList } = useSelector(store => store.flaw)
-  const [focus, setFocus] = useState(false)
-  const [leftWidth, setLeftWidth] = useState(400)
+  const {
+    projectInfoValues,
+    projectInfo,
+    isDetailScreenModal,
+    isUpdateAddWorkItem,
+  } = useSelector(store => store.project)
   const [tabActive, setTabActive] = useState('tab_desc')
   const [filter, setFilter] = useState(false)
   const [transferRecordsCount, setTransferRecordsCount] = useState(0)
-  const { projectInfo, isDetailScreenModal, projectInfoValues } = useSelector(
-    store => store.project,
-  )
-  const { userPreferenceConfig } = useSelector(store => store.user)
   const { params, visible } = isDetailScreenModal
 
   const tabItems: any = [
@@ -72,14 +79,17 @@ const FlawInfo = () => {
       key: 'tab_tag',
       label: t('tag'),
     },
-
     {
-      key: 'tab_associatedWorkItems',
-      label: t('associatedWorkItems'),
+      key: 'tab_wander',
+      label: t('new_p1.a3'),
     },
     {
-      key: 'tab_info',
-      label: t('newlyAdd.basicInfo'),
+      key: 'tab_associatedWorkItems',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('associatedWorkItems')}</span>
+        </div>
+      ),
     },
     {
       key: 'changeRecord',
@@ -110,71 +120,53 @@ const FlawInfo = () => {
     },
   ]
 
-  //   刷新缺陷详情
-  const onUpdate = () => {
-    dispatch(getFlawInfo({ projectId: projectInfo?.id, id: flawInfo.id }))
-  }
-
-  // 跳转配置
-  const onToConfig = () => {
-    dispatch(setActiveCategory({}))
-    dispatch(saveScreenDetailModal({ visible: false, params: {} }))
-    const params = encryptPhp(
-      JSON.stringify({
-        id: projectInfo?.id,
-        categoryItem: {
-          id: flawInfo.category,
-          status: flawInfo.category_status,
-        },
-      }),
-    )
-    navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${params}`)
-  }
-
-  // 提交评论
-  const onConfirmComment = async (value: any) => {
-    await addFlawComment({
-      projectId: projectInfo.id,
-      id: flawInfo.id || 0,
-      content: value.info,
-      attachment: value.attachment,
-      a_user_ids: getIdsForAt(value.info),
-    })
-    getMessage({ type: 'success', msg: t('p2.conSuccess') })
+  // 获取评论列表
+  const getList = () => {
     dispatch(
       getFlawCommentList({
         projectId: projectInfo.id,
-        id: flawInfo.id || 0,
+        id: flawInfo.id ?? 0,
         page: 1,
         pageSize: 999,
       }),
     )
+  }
+
+  // 提交评论
+  const onConfirmComment = async (value: { info: string }) => {
+    await addFlawComment({
+      projectId: projectInfo.id,
+      id: flawInfo.id || 0,
+      content: value.info,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: t('p2.conSuccess') })
+    getList()
     commentDom.current.cancel()
   }
 
-  // 监听左侧信息滚动
-  const onChangeTabs = (value: string) => {
-    const dom = document.getElementById(value)
-    document.getElementById('contentDom')?.scrollTo({
-      top: (dom?.offsetTop ?? 0) - 76,
-      behavior: 'smooth',
-    })
-    setTabActive(value)
+  // 操作后更新列表
+  const onOperationUpdate = (value?: boolean) => {
+    if (!value) {
+      dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+    }
   }
 
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
+    const parentElement: any = document.querySelector('#contentDom')
+    const infoItemTabs = parentElement?.querySelectorAll('.info_item_tab')
+    // 滚动容器
     if (!document.querySelector('#contentDom')) {
       return
     }
-    const { scrollTop } = document.querySelector('#contentDom') as HTMLElement
+    const { scrollTop } = parentElement as HTMLElement
     // 所有标题节点
-    const titleItems = document.querySelectorAll('.info_item_tab')
-
+    const titleItems: any = infoItemTabs
     let arr: any = []
-    titleItems.forEach(element => {
+    titleItems.forEach((element: any) => {
       const { offsetTop, id } = element as HTMLElement
-      if (offsetTop - 140 <= scrollTop) {
+      if (offsetTop - 110 <= scrollTop) {
         const keys = [...arr, ...[id]]
         arr = [...new Set(keys)]
       }
@@ -182,19 +174,29 @@ const FlawInfo = () => {
     setTabActive(arr[arr.length - 1])
   }
 
-  // 拖动线条
-  const onDragLine = () => {
-    document.onmousemove = e => {
-      setFocus(true)
-
-      setLeftWidth(window.innerWidth - e.clientX)
-    }
-    document.onmouseup = () => {
-      document.onmousemove = null
-      document.onmouseup = null
-      setFocus(false)
-    }
+  // 监听左侧信息滚动
+  const onChangeTabs = (value: string) => {
+    setTimeout(() => {
+      setTabActive(value)
+      const dom = document.getElementById(value)
+      dom?.scrollIntoView({
+        behavior: 'smooth',
+      })
+    }, 10)
   }
+
+  useImperativeHandle(props?.onRef, () => {
+    return {
+      changeTabs: onChangeTabs,
+    }
+  })
+
+  useEffect(() => {
+    window?.addEventListener('scroll', handleScroll, true)
+    return () => {
+      window?.removeEventListener('scroll', handleScroll, false)
+    }
+  }, [flawInfo])
 
   useEffect(() => {
     // 判断从消息跳转到详情定位评论  只有全屏及弹窗会触发
@@ -211,131 +213,134 @@ const FlawInfo = () => {
     }
   }, [routerPath, flawInfo])
 
-  useEffect(() => {
-    window?.addEventListener('scroll', handleScroll, true)
-    return () => {
-      window.removeEventListener('scroll', handleScroll, false)
-    }
-  }, [document.getElementById('contentDom')])
-
-  // 计算高度
-  const a1 = flawInfo?.isExamine ? 91 : 130
-  const a2 = flawInfo?.isExamine ? 164 : 186
-  const a3 = 239
+  const aa =
+    userPreferenceConfig.previewModel === 3 ||
+    (props?.employeeCurrentId || 0) > 0
+  // 可视高度
+  const startHeight = aa ? 80 : 100
+  const a2 = flawInfo?.isExamine ? 176 : 124
+  const a3 = flawInfo?.isExamine ? 236 : 176
+  // 少了64事务出不来评论
+  const a1 = aa ? a2 : a3
+  const a6 = aa ? a2 - 76 : a3 - 76
 
   return (
-    <FlawInfoWrap
-      all={
-        userPreferenceConfig.previewModel === 3 ||
-        (params?.employeeCurrentId || 0) > 0
-      }
-      height={
-        (params?.employeeCurrentId || 0) > 0
-          ? a1
-          : userPreferenceConfig.previewModel === 3
-          ? a2
-          : a3
-      }
+    <InfoWrap
+      height={`calc(${startHeight}vh - ${
+        ((props?.employeeCurrentId || 0) > 0 ? a6 : a1) +
+        (document.getElementById('DetailText')?.clientHeight || 25)
+      }px)`}
     >
-      <div
-        style={{ width: `calc(100% - ${leftWidth}px)`, position: 'relative' }}
-      >
+      <TabsWrap1 style={{ paddingBottom: '0px' }}>
         <Tabs
-          style={{
-            paddingLeft: '24px',
-            paddingTop: '15px',
-            backgroundColor: 'white',
-            // marginBottom: '12px',
-          }}
           className="tabs"
           activeKey={tabActive}
           items={tabItems}
           onChange={onChangeTabs}
         />
-        <FlawInfoLeft style={{ width: '100%' }} id="contentDom">
-          <FlawDetail
-            flawInfo={flawInfo as Model.Flaw.FlawInfo}
-            isInfoPage
-            isPreview={(params?.employeeCurrentId || 0) > 0}
-            userId={params?.employeeCurrentId}
-          />
-          {flawInfo.id && !params?.employeeCurrentId && (
-            <div style={{ margin: '16px', background: '#f5f5f7' }}>
-              <FlawInfoInfoItem>
-                <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-                <FlawStatus
-                  pid={projectInfo.id}
-                  sid={flawInfo.id}
-                  visible={visible}
-                />
-              </FlawInfoInfoItem>
-            </div>
-          )}
-          {flawInfo?.isExamine && (
-            <div className="review">
-              <CommonIconFont type="review" size={64} />
-            </div>
-          )}
-          <div style={{ margin: '16px', background: '#f5f5f7' }}>
-            <FlawInfoInfoItem id="sprint-activity">
-              <FlawComment detail={flawInfo} isOpenInfo />
-            </FlawInfoInfoItem>
-          </div>
-        </FlawInfoLeft>
-        <CommentFooter
-          onRef={commentDom}
-          placeholder={t('postComment')}
-          personList={removeNull(projectInfoValues, 'user_name')?.map(
-            (k: any) => ({
-              label: k.content,
-              id: k.id,
-            }),
-          )}
-          padding="no"
-          onConfirm={onConfirmComment}
-          style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
-          maxHeight="60vh"
-          hasAvatar
-          isEmployee={location.pathname?.includes('/EmployeeProfile')}
-        />
-      </div>
-
-      <WrapRight
-        ref={basicInfoDom}
-        style={{ position: 'relative', width: leftWidth }}
-      >
-        <SprintDetailMouseDom
-          active={focus}
-          onMouseDown={onDragLine}
-          style={{ left: 0 }}
-        >
-          <SprintDetailDragLine active={focus} className="line" />
-        </SprintDetailMouseDom>
-        <FlawBasic
-          detail={flawInfo}
-          onUpdate={onUpdate}
+      </TabsWrap1>
+      <DetailInfoWrap id="contentDom">
+        <FlawDetail
+          flawInfo={flawInfo as Model.Flaw.FlawInfo}
           isInfoPage
-          isPreview={(params?.employeeCurrentId || 0) > 0}
+          isPreview={(props?.employeeCurrentId || 0) > 0}
+          userId={props?.employeeCurrentId}
         />
-        <BasicFooter style={{ width: '94%' }}>
-          <div className="textBox">
-            <div>
-              {t('created')}
-              {detailTimeFormat(flawInfo.createdTime as string)}
-            </div>
-            <span>
-              {t('updated')} {detailTimeFormat(flawInfo.update_at as string)}
-            </span>
-          </div>
-          {!params?.employeeCurrentId && (
-            <ConfigWrap onClick={onToConfig}>
-              <CommonIconFont type="settings" />
-              <div>{t('configurationFields')}</div>
-            </ConfigWrap>
+        <div
+          style={{
+            backgroundColor: '#f5f5f7',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '0 16px 16px 16px',
+          }}
+        >
+          {flawInfo.id && !props?.employeeCurrentId && (
+            <CommonItemBox>
+              <Label id="tab_wander" className="info_item_tab">
+                {t('new_p1.a3')}
+              </Label>
+              <FlawStatus
+                pid={projectInfo.id}
+                sid={flawInfo.id}
+                visible={visible}
+              />
+            </CommonItemBox>
           )}
-        </BasicFooter>
-      </WrapRight>
-    </FlawInfoWrap>
+
+          <CommonItemBox>
+            <RelationStories
+              detail={flawInfo as any}
+              onUpdate={onOperationUpdate}
+              isDrawer
+              ref={relationStoriesRef}
+              isPreview={(props?.employeeCurrentId || 0) > 0}
+            />
+          </CommonItemBox>
+
+          <CommonItemBox>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Label id="changeRecord" className="info_item_tab">
+                {t('changeRecord')}
+              </Label>
+              <ScreenMinHover
+                label={t('common.search')}
+                icon="filter"
+                isActive={filter}
+                onClick={() => setFilter(!filter)}
+              />
+            </div>
+            <ChangeRecord
+              filter={filter}
+              isPreview={(props?.employeeCurrentId || 0) > 0}
+              detail={flawInfo}
+            />
+          </CommonItemBox>
+
+          <CommonItemBox>
+            <Label id="transferRecords" className="info_item_tab">
+              {t('transferRecords')}
+            </Label>
+            <Circulation
+              onUpdateCount={setTransferRecordsCount}
+              isPreview={(params?.employeeCurrentId || 0) > 0}
+              detail={flawInfo}
+            />
+          </CommonItemBox>
+
+          <CommonItemBox>
+            <FlawComment detail={flawInfo} isOpenInfo />
+          </CommonItemBox>
+        </div>
+
+        {flawInfo?.isExamine && (
+          <div className="review">
+            <CommonIconFont type="review" size={64} />
+          </div>
+        )}
+      </DetailInfoWrap>
+      <CommentFooter
+        onRef={commentDom}
+        placeholder={t('postComment')}
+        personList={removeNull(projectInfoValues, 'user_name')?.map(
+          (k: any) => ({
+            label: k.content,
+            id: k.id,
+          }),
+        )}
+        padding="no"
+        onConfirm={onConfirmComment}
+        style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
+        maxHeight="60vh"
+        hasAvatar
+        isEmployee={location.pathname?.includes('/EmployeeProfile')}
+      />
+    </InfoWrap>
   )
 }
 

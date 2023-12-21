@@ -1,8 +1,28 @@
-/* eslint-disable no-constant-binary-expression */
 /* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable no-undefined */
+import { getMessage } from '@/components/Message'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import useShareModal from '@/hooks/useShareModal'
+import {
+  deleteFlaw,
+  updateFlawCategory,
+  updateFlawStatus,
+  updateFlawTableParams,
+} from '@/services/flaw'
+import { getWorkflowList } from '@/services/project'
+import { copyLink, getIsPermission } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { setActiveCategory } from '@store/category'
+import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import { useDispatch, useSelector } from '@store/index'
-import { Form, MenuProps, Popover, Tabs, TabsProps, Tooltip } from 'antd'
+import {
+  setAddWorkItemModal,
+  setIsUpdateAddWorkItem,
+  setIsUpdateStatus,
+} from '@store/project'
+import { saveScreenDetailModal } from '@store/project/project.thunk'
+import { Form, Popover, Tooltip } from 'antd'
+import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -20,57 +40,39 @@ import {
   LiWrap,
   UpWrap,
   Wrap,
+  DetailMain,
+  SprintDetailMouseDom,
+  SprintDetailDragLine,
 } from './style'
-import useShareModal from '@/hooks/useShareModal'
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import CustomSelect from '@/components/CustomSelect'
-import CommonModal from '@/components/CommonModal'
-import { useEffect, useRef, useState } from 'react'
-import { copyLink, getIsPermission } from '@/tools'
-import {
-  deleteFlaw,
-  updateFlawCategory,
-  updateFlawStatus,
-  updateFlawTableParams,
-} from '@/services/flaw'
-import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
-import {
-  setAddWorkItemModal,
-  setIsUpdateAddWorkItem,
-  setIsUpdateStatus,
-} from '@store/project'
-import { getMessage } from '@/components/Message'
-import { getWorkflowList } from '@/services/project'
-import { setActiveCategory } from '@store/category'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import { setFlawInfo } from '@store/flaw'
+import CommonModal from '@/components/CommonModal'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
-import CommonIconFont from '@/components/CommonIconFont'
-import CopyIcon from '@/components/CopyIcon'
-import ChangeStatusPopover from '@/components/ChangeStatusPopover'
-import StateTag from '@/components/StateTag'
-import RelationStories from './components/RelationStories'
-import ChangeRecord from './components/ChangeRecord'
-import Circulation from './components/Circulation'
-import FlawInfo from './components/FlawInfo'
-import ScreenMinHover from '@/components/ScreenMinHover'
-import { saveScreenDetailModal } from '@store/project/project.thunk'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { DrawerHeader } from '@/components/DemandDetailDrawer/style'
+import CustomSelect from '@/components/CustomSelect'
+import CommonIconFont from '@/components/CommonIconFont'
 import { myTreeCss } from '../DemandDetail'
 import LeftIcontButton from '@/components/LeftIcontButton'
+import CopyIcon from '@/components/CopyIcon'
+import StateTag from '@/components/StateTag'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover'
+import FlawInfo from './components/FlawInfo'
+import CommonProgress from '@/components/CommonProgress'
+import FlawBasic from './components/FlawBasic'
 
+/* eslint-disable no-undefined */
 const FlawDetail = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const spanDom = useRef<HTMLSpanElement>(null)
-  const { open, ShareModal } = useShareModal()
-  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
+  const basicInfoDom = useRef<HTMLDivElement>(null)
+  const flawDetailInfoDom: any = createRef()
   // 不能删除open方法
   const [openDemandDetail, closeScreenModal] = useOpenDemandDetail()
-  const { userInfo } = useSelector(store => store.user)
+  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
+  const { open, ShareModal } = useShareModal()
   const { flawInfo } = useSelector(store => store.flaw)
+  const { userInfo } = useSelector(store => store.user)
   const {
     isDetailScreenModal,
     projectInfo,
@@ -78,12 +80,14 @@ const FlawDetail = () => {
     isUpdateAddWorkItem,
   } = useSelector(store => store.project)
   const { visible, params } = isDetailScreenModal
-  const [form] = Form.useForm()
   const { userPreferenceConfig } = useSelector(store => store.user)
-  const [tabActive, setTabActive] = useState('1')
-  const [filter, setFilter] = useState(false)
+  const [form] = Form.useForm()
+  // 拖拽聚焦
+  const [focus, setFocus] = useState(false)
   // 是否可改变类别弹窗
   const [isShowChange, setIsShowChange] = useState(false)
+  // 左侧宽度
+  const [leftWidth, setLeftWidth] = useState(400)
   // 当前需求的下标
   const [currentIndex, setCurrentIndex] = useState(0)
   // 是否展示切换类别的弹窗
@@ -100,10 +104,10 @@ const FlawDetail = () => {
     'b/flaw/update',
   )
 
-  //   刷新缺陷详情
-  const onUpdate = () => {
-    dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
-  }
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/flaw/delete',
+  )
 
   // 关闭弹窗
   const onClose = () => {
@@ -155,7 +159,6 @@ const FlawDetail = () => {
     if (!currentIndex) return
     const resultParams = { ...params, ...{ flawId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
-    setTabActive('1')
   }
 
   // 向下查找需求
@@ -164,7 +167,6 @@ const FlawDetail = () => {
     if (currentIndex === (params?.changeIds?.length || 0) - 1) return
     const resultParams = { ...params, ...{ flawId: newIndex } }
     dispatch(saveScreenDetailModal({ visible, params: resultParams }))
-    setTabActive('1')
   }
 
   const getKeyDown = (e: any) => {
@@ -281,7 +283,7 @@ const FlawDetail = () => {
   }
 
   // 更多下拉
-  const items: MenuProps['items'] = [
+  const items: any = [
     {
       label: <div onClick={onEdit}>{t('common.edit')}</div>,
       key: '0',
@@ -399,78 +401,25 @@ const FlawDetail = () => {
     )
   }
 
-  // 是否审核
-  const onExamine = () => {
-    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
+  // 拖动线条
+  const onDragLine = () => {
+    document.onmousemove = e => {
+      setFocus(true)
+
+      setLeftWidth(window.innerWidth - e.clientX)
+    }
+    document.onmouseup = () => {
+      document.onmousemove = null
+      document.onmouseup = null
+      setFocus(false)
+    }
   }
 
-  // const tabItems: TabsProps['items'] = [
-  //   {
-  //     key: '1',
-  //     label: (
-  //       <ActivityTabItem>
-  //         <span>{t('details')}</span>
-  //       </ActivityTabItem>
-  //     ),
-  //     children: <FlawInfo />,
-  //   },
-  //   {
-  //     key: '2',
-  //     label: (
-  //       <ActivityTabItem>
-  //         <span>{t('linkWorkItems')}</span>
-  //       </ActivityTabItem>
-  //     ),
-  //     children: (
-  //       <RelationStories
-  //         activeKey={tabActive}
-  //         detail={flawInfo as Model.Flaw.FlawInfo}
-  //         onUpdate={onUpdate}
-  //         isPreview={(params?.employeeCurrentId || 0) > 0}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     key: '3',
-  //     label: (
-  //       <ActivityTabItem>
-  //         <span>{t('changeLog')}</span>
-  //         <ItemNumber isActive={tabActive === '3'}>
-  //           {flawInfo.changeCount}
-  //         </ItemNumber>
-  //       </ActivityTabItem>
-  //     ),
-  //     children: (
-  //       <ChangeRecord
-  //         activeKey={tabActive}
-  //         filter={filter}
-  //         isPreview={(params?.employeeCurrentId || 0) > 0}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     key: '4',
-  //     label: (
-  //       <ActivityTabItem>
-  //         <span>{t('circulationRecords')}</span>
-  //       </ActivityTabItem>
-  //     ),
-  //     children: (
-  //       <Circulation
-  //         activeKey={tabActive}
-  //         isPreview={(params?.employeeCurrentId || 0) > 0}
-  //       />
-  //     ),
-  //   },
-  // ]
-
-  // // 监听左侧信息滚动
-  // const onChangeTabs = (value: string) => {
-  //   setTabActive(value)
-  //   if (value === '1') {
-  //     dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
-  //   }
-  // }
+  //   刷新缺陷详情
+  const onUpdate = () => {
+    dispatch(getFlawInfo({ projectId: params.id, id: flawInfo.id }))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
+  }
 
   useEffect(() => {
     if (userPreferenceConfig.previewModel === 2) {
@@ -480,7 +429,7 @@ const FlawDetail = () => {
         `${location.pathname}?data=${value}`,
       )
     }
-    if (visible && params.flawId) {
+    if (visible && params?.flawId) {
       dispatch(setFlawInfo({}))
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
       dispatch(
@@ -497,7 +446,7 @@ const FlawDetail = () => {
     return () => {
       localStorage.removeItem('projectRouteDetail')
     }
-  }, [visible, params, userPreferenceConfig.previewModel])
+  }, [visible, params])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -517,6 +466,14 @@ const FlawDetail = () => {
   useEffect(() => {
     if (isUpdateAddWorkItem && visible) {
       dispatch(getFlawInfo({ projectId: params.id, id: params.flawId }))
+      dispatch(
+        getFlawCommentList({
+          projectId: params.id,
+          id: params.flawId ?? 0,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
     }
   }, [isUpdateAddWorkItem])
 
@@ -527,12 +484,17 @@ const FlawDetail = () => {
     }
   }, [])
 
+  const aa =
+    userPreferenceConfig.previewModel === 3 ||
+    (params?.employeeCurrentId || 0) > 0
+
+  const a1 = flawInfo?.isExamine ? 91 : 40
+  const a2 = flawInfo?.isExamine ? 164 : 97
+  const a3 = 249
+
   return (
-    <Wrap
-      all={userPreferenceConfig.previewModel === 3}
-      employeeCurrentId={params?.employeeCurrentId}
-      style={{ paddingTop: (params?.employeeCurrentId || 0) > 0 ? 0 : 20 }}
-    >
+    <Wrap>
+      {/* 不是员工概况打开就有头部操作 */}
       {!params?.employeeCurrentId && (
         <>
           <DeleteConfirmModal />
@@ -614,7 +576,10 @@ const FlawDetail = () => {
             </FormWrap>
           </CommonModal>
           <DetailTop
-            style={{ borderBottom: '1px solid #EBECED', paddingBottom: '16px' }}
+            style={{
+              borderBottom: '1px solid #EBECED',
+              padding: '20px 20px 40px 20px',
+            }}
           >
             <div style={{ display: 'inline-flex', alignItems: 'center' }}>
               <MyBreadcrumb />
@@ -727,87 +692,127 @@ const FlawDetail = () => {
           </DetailTop>
         </>
       )}
-
-      <DetailTitle>
-        <Tooltip title={flawInfo?.categoryName}>
-          {!params?.employeeCurrentId && (
-            <Popover
-              trigger={['hover']}
-              visible={isShowChange}
-              placement="bottomLeft"
-              content={changeStatus}
-              getPopupContainer={node => node}
-              onVisibleChange={visible => setIsShowChange(visible)}
-            >
-              <div>
-                <Img src={flawInfo.category_attachment} alt="" />
-              </div>
-            </Popover>
-          )}
-          {params?.employeeCurrentId && (
-            <div>
-              <Img src={flawInfo.category_attachment} alt="" />
-            </div>
-          )}
-        </Tooltip>
-        <DetailText>
-          {!hasEdit && !params?.employeeCurrentId && (
-            <span
-              className="name"
-              ref={spanDom}
-              contentEditable
-              onBlur={onNameConfirm}
-            >
-              {flawInfo.name}
-            </span>
-          )}
-          {(hasEdit || params?.employeeCurrentId) && (
-            <span className="name">{flawInfo.name}</span>
-          )}
-          <CopyIcon onCopy={onCopy} />
-          <ChangeStatusPopover
-            projectId={flawInfo.projectId}
-            isCanOperation={!hasEdit && !params?.employeeCurrentId}
-            record={flawInfo}
-            onChangeStatus={onChangeStatus}
-            type={3}
-          >
-            <StateTag
-              isShow
-              name={flawInfo.status?.status.content}
-              state={
-                flawInfo.status?.is_start === 1 && flawInfo.status?.is_end === 2
-                  ? 1
-                  : flawInfo.status?.is_end === 1 &&
-                    flawInfo.status?.is_start === 2
-                  ? 2
-                  : flawInfo.status?.is_start === 2 &&
-                    flawInfo.status?.is_end === 2
-                  ? 3
-                  : 0
-              }
-            />
-          </ChangeStatusPopover>
-        </DetailText>
-      </DetailTitle>
-      <FlawInfo />
-      {/* <Tabs
-        className="tabs"
-        activeKey={tabActive}
-        items={tabItems}
-        onChange={onChangeTabs}
-        tabBarExtraContent={
-          tabActive === '3' && !params?.employeeCurrentId ? (
-            <ScreenMinHover
-              style={{ marginRight: '24px' }}
-              label={t('common.search')}
-              icon="filter"
-              isActive={filter}
-              onClick={() => setFilter(!filter)}
-            />
-          ) : null
+      <DetailMain
+        all={aa}
+        height={
+          (params?.employeeCurrentId || 0) > 0
+            ? a1
+            : userPreferenceConfig.previewModel === 3
+            ? a2
+            : a3
         }
-      /> */}
+        style={{ marginTop: (params?.employeeCurrentId || 0) > 0 ? 0 : 16 }}
+      >
+        <div
+          style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
+        >
+          <DetailTitle>
+            <Tooltip title={flawInfo?.categoryName}>
+              {params?.employeeCurrentId && (
+                <div>
+                  <Img src={flawInfo.category_attachment} alt="" />
+                </div>
+              )}
+              {!params?.employeeCurrentId && (
+                <Popover
+                  trigger={['hover']}
+                  visible={isShowChange}
+                  placement="bottomLeft"
+                  content={changeStatus}
+                  getPopupContainer={node => node}
+                  onVisibleChange={visible => setIsShowChange(visible)}
+                >
+                  <div>
+                    <Img src={flawInfo.category_attachment} alt="" />
+                  </div>
+                </Popover>
+              )}
+            </Tooltip>
+            <DetailText>
+              {!hasEdit && !params?.employeeCurrentId && (
+                <span
+                  className="name"
+                  ref={spanDom}
+                  contentEditable
+                  onBlur={onNameConfirm}
+                >
+                  {flawInfo.name}
+                </span>
+              )}
+              {(hasEdit || params?.employeeCurrentId) && (
+                <span className="name">{flawInfo.name}</span>
+              )}
+              <CopyIcon onCopy={onCopy} />
+            </DetailText>
+          </DetailTitle>
+          <FlawInfo
+            onRef={flawDetailInfoDom}
+            employeeCurrentId={params?.employeeCurrentId}
+          />
+        </div>
+        <div
+          ref={basicInfoDom}
+          style={{ position: 'relative', width: leftWidth }}
+        >
+          <div style={{ margin: '0 0 16px 24px' }}>
+            <ChangeStatusPopover
+              projectId={flawInfo.projectId}
+              isCanOperation={!hasEdit && !params?.employeeCurrentId}
+              record={flawInfo}
+              onChangeStatus={onChangeStatus}
+              type={3}
+            >
+              <StateTag
+                isShow
+                name={flawInfo.status?.status.content}
+                state={
+                  flawInfo.status?.is_start === 1 &&
+                  flawInfo.status?.is_end === 2
+                    ? 1
+                    : flawInfo.status?.is_end === 1 &&
+                      flawInfo.status?.is_start === 2
+                    ? 2
+                    : flawInfo.status?.is_start === 2 &&
+                      flawInfo.status?.is_end === 2
+                    ? 3
+                    : 0
+                }
+              />
+            </ChangeStatusPopover>
+          </div>
+          <SprintDetailMouseDom
+            active={focus}
+            onMouseDown={onDragLine}
+            style={{ left: 0, height: flawInfo.isExamine ? '92%' : '96%' }}
+          >
+            <SprintDetailDragLine active={focus} className="line" />
+          </SprintDetailMouseDom>
+          <div style={{ marginLeft: 24, marginBottom: 24 }}>
+            <CommonProgress
+              update={flawInfo}
+              isTable={false}
+              percent={flawInfo?.schedule}
+              type="flaw"
+              hasEdit={
+                !hasEdit &&
+                Array.isArray(flawInfo?.user) &&
+                flawInfo?.user
+                  ?.map((i: any) => i?.user?.id)
+                  ?.includes(userInfo?.id) &&
+                !params?.employeeCurrentId
+              }
+              id={flawInfo?.id}
+              project_id={flawInfo?.projectId as any}
+              onConfirm={onUpdate}
+            />
+          </div>
+          <FlawBasic
+            detail={flawInfo}
+            onRef={basicInfoDom}
+            employeeCurrentId={params?.employeeCurrentId}
+          />
+        </div>
+      </DetailMain>
     </Wrap>
   )
 }

@@ -3,6 +3,20 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Space } from 'antd'
 
+export const DetailMain = styled.div<{
+  all?: boolean
+  height?: number
+}>`
+  display: flex;
+  padding-right: 24px;
+  position: relative;
+  height: calc(
+    ${props => (props.all ? '80vh' : '100vh')} - ${props => props.height + 'px'}
+  );
+  width: 100%;
+  margin-top: 16px;
+`
+
 export const TabsCount = styled.div`
   height: 20px;
   display: flex;
@@ -15,45 +29,12 @@ export const TabsCount = styled.div`
   margin-left: 4px;
 `
 
-export const Wrap = styled.div<{ all?: boolean; employeeCurrentId?: number }>`
+export const Wrap = styled.div`
   height: 100%;
+  /* overflow: hidden; */
   display: flex;
   padding-top: 20px;
   flex-direction: column;
-  .tabs {
-    padding: 0 0px 0 0;
-  }
-  .ant-tabs-nav {
-    padding-left: 24px;
-    margin-bottom: 0px;
-  }
-  .ant-tabs-tab {
-    padding: 16px 0;
-  }
-  .ant-tabs-tab-btn {
-    font-size: 14px;
-    color: var(--neutral-n2);
-  }
-  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    color: var(--primary-d1);
-  }
-  .ant-tabs-content {
-    height: calc(
-      ${props =>
-        (props.all && props?.employeeCurrentId) || 0 > 0
-          ? '80vh - 142px'
-          : props?.all
-          ? '80vh - 227px'
-          : '100vh - 227px'}
-    );
-    .ant-tabs-tabpane {
-      height: 100%;
-    }
-  }
-  .ant-tabs-top > .ant-tabs-nav::before,
-  .ant-tabs-top > div > .ant-tabs-nav::before {
-    left: 24px;
-  }
 `
 
 export const FormWrap = styled(Form)({
@@ -211,7 +192,7 @@ export const DropdownMenu = styled(Dropdown)`
 export const DetailTitle = styled.div`
   display: flex;
   /* border-bottom: 1px solid var(--neutral-n6-d1); */
-  padding: 20px 0px 6px;
+  padding: 0px 0px 12px 0;
   width: calc(100% - 48px);
   margin-left: 24px;
 `

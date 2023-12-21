@@ -24,3 +24,16 @@ export const ModalWrap = styled(Modal)<{
     padding: 0px;
   }
 `
+
+export const LiWrap = styled.div({
+  cursor: 'pointer',
+  padding: '0 16px',
+  width: '100%',
+  height: 32,
+  display: 'flex',
+  alignItems: 'center',
+  background: 'var(--neutral-white-d3)',
+  '&: hover': {
+    background: 'var(--hover-d3)',
+  },
+})
