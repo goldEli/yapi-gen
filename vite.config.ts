@@ -4,12 +4,19 @@ import { defineConfig, loadEnv, type Plugin } from 'vite'
 import injectPrefetch from 'vite-plugin-prefetch-inject'
 import react from '@vitejs/plugin-react'
 import profile from './package.json'
+import consoleHelper from 'vite-plugin-console-helper'
 
 export default defineConfig(config => {
   const env = loadEnv(config.mode, './environments/', '__')
 
   return {
     plugins: [
+      consoleHelper({
+        splitBy: '\n',
+        preTip: ' 👉',
+        // or enableFileName: { enableDir: false}
+        enableFileName: false,
+      }),
       react({
         babel: {
           plugins: ['@emotion/babel-plugin'],
