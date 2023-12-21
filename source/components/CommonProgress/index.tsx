@@ -141,7 +141,7 @@ const CommonProgress = (props: ProgressProps) => {
         {/* 列表上的操作进度 */}
         {props.isTableOperation ? (
           <span onClick={() => setVisible(true)}>
-            {t('situation.progress')}
+            {t('progressAndWorkingHours')}
           </span>
         ) : (
           <>

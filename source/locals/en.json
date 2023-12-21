@@ -2712,5 +2712,6 @@
   "importTransactions": "Import transactions",
   "exportTransactions": "Export transactions",
   "importDefects": "Import defects",
-  "exportDefects": "Export defects"
+  "exportDefects": "Export defects",
+  "progressAndWorkingHours": "Progress and working hours"
 }

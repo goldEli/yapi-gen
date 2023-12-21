@@ -2712,5 +2712,6 @@
   "importTransactions": "导入事务",
   "exportTransactions": "导出事务",
   "importDefects": "导入缺陷",
-  "exportDefects": "导出缺陷"
+  "exportDefects": "导出缺陷",
+  "progressAndWorkingHours": "进度及工时"
 }

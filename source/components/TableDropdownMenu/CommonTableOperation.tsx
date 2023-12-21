@@ -173,7 +173,7 @@ const CommonTableOperation = (props: CommonOperationProps) => {
           </TableActionItem>
         </Tooltip>
       )}
-      <Tooltip
+      {/* <Tooltip
         title={
           onComputedPermission(record, 'delete') ? t('deleteTableToast') : null
         }
@@ -184,7 +184,7 @@ const CommonTableOperation = (props: CommonOperationProps) => {
         >
           {t('common.del')}
         </TableActionItem>
-      </Tooltip>
+      </Tooltip> */}
 
       <TableActionItem>
         <MoreWrap
