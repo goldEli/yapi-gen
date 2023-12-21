@@ -484,11 +484,15 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     setRecomendDrawerOpen(true)
   }
   useEffect(() => {
-    window.addEventListener('click', (e: any) => {})
-    return () => {
-      window.removeEventListener('click', () => {})
+    // window.addEventListener('click', (e: any) => { })
+    // return () => {
+    //   window.removeEventListener('click', () => { })
+    // }
+    if (!todoDrawerOpen && !recomendDrawerOpen) {
+      console.log(11111)
+      setTabActive('')
     }
-  }, [])
+  }, [todoDrawerOpen, recomendDrawerOpen])
   return (
     <LayoutHeaderRightWrap id="LayoutHeaderRightWrap">
       <KeyBoardDrawer />
