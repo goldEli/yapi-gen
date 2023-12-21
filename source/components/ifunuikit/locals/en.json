@@ -1,0 +1,63 @@
+{
+  "i_want_to": "text ",
+
+  "title": "Title ",
+
+  "heading_1": "Level 1 header ",
+
+  "heading_2": "secondary heading ",
+
+  "heading_3": "Level 3 heading ",
+
+  "heading_4": "Level 4 heading ",
+
+  "heading_5": "Level 5 heading ",
+
+  "heading_6": "Level 6 title ",
+
+  "font": "font",
+
+  "bold": "bold",
+
+  "underline": "underline",
+
+  "strikethrough": "Delete line ",
+
+  "italic": "italic",
+
+  "text_color": "Text color",
+
+  "background_color": "background color",
+
+  "clear": "clear",
+
+  "unordered_list": "unordered list",
+
+  "ordered_list": "ordered list",
+
+  "align": "align",
+
+  "indent_right": "Indent right",
+
+  "indent_left": "Indent left",
+
+  "line_height": "line height",
+
+  "upload_image": "Upload image",
+
+  "upload_video": "Upload video",
+
+  "table": "table",
+
+  "icon": "Icon ",
+
+  "link": "link",
+
+  "insert_link": "Insert link",
+
+  "quote": "Quote ",
+
+  "exit_full_screen": "Cancel full screen",
+
+  "enter_full_screen": "Full screen"
+}

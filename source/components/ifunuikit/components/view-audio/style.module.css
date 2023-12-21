@@ -1,0 +1,33 @@
+.view_audio {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.audio_box {
+  width: 1032px;
+  height: 640px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F5F6FA;
+  margin-top: 66px;
+  position: relative;
+}
+
+.player_icon{
+  font-size: 94px;
+}
+
+.actions {
+  position: absolute;
+  bottom: 78px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+}

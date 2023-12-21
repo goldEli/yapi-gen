@@ -1,0 +1,21 @@
+.view_document {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.document_box {
+  /* width: 1032px;
+  min-height: 640px; */
+  /* margin: auto; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f6fa;
+  /* margin-top: 66px; */
+  position: relative;
+}

@@ -36,7 +36,6 @@ const ProjectDetail = () => {
     projectInfo?.project_warring_info?.warring_list_nums &&
     !routerPath?.pathname.includes('/ProjectDetail/Setting') &&
     !routerPath?.pathname.includes('/ProjectDetail/Member')
-
   // 获取项目详情
   const getInfo = async () => {
     const result = await getProjectInfo({ projectId: paramsData?.id })
@@ -68,6 +67,13 @@ const ProjectDetail = () => {
       dispatch(saveInputKey(''))
     }
   }, [paramsData?.id])
+
+  useEffect(() => {
+    sessionStorage.setItem(
+      'cache_project_url',
+      location.href.replace(location.origin, ''),
+    )
+  }, [location.href])
 
   return (
     <ProjectWrap>
