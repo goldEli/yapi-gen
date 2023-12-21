@@ -5,7 +5,7 @@ export interface Params {
   /**
    * 28M
    */
-
+  size?: number
   name?: string
 }
 
@@ -13,10 +13,12 @@ export const useImageViewerStore = create<{
   open: boolean
   scale: number
   rotate: number
-  params?: Params
+  params?: Params | null
   isDrag?: boolean
+  imageSize?: { w: number; h: number } | null
+  setImageSize(d: { w: number; h: number } | null): void
   setIsDrag(isDrag: boolean): void
-  setParams(params: Params): void
+  setParams(params: Params | null): void
   setOpen(open: boolean): void
   setRotate(rotate: number): void
   setScale(scale: number): void
@@ -28,6 +30,9 @@ export const useImageViewerStore = create<{
   scale: 1,
   rotate: 0,
   drag: false,
+  setImageSize(imageSize) {
+    set({ imageSize })
+  },
   setIsDrag(isDrag) {
     set({ isDrag })
   },

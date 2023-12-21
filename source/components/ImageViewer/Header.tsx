@@ -67,27 +67,9 @@ const IconBox = styled.div`
 `
 
 const Header: React.FC<HeaderProps> = props => {
-  const { params } = useImageViewerStore()
-  const [imageInfo, setImageInfo] = useState<{
-    w: number
-    h: number
-    size: number
-  } | null>(null)
-  const [t] = useTranslation()
+  const { params, imageSize } = useImageViewerStore()
 
-  useEffect(() => {
-    if (params?.url) {
-      getImageInfo(params?.url).then(res => {
-        setImageInfo({
-          w: res.width,
-          h: res.height,
-          size: res.size,
-        })
-      })
-      return
-    }
-    setImageInfo(null)
-  }, [params?.url])
+  const [t] = useTranslation()
 
   const fileName = useMemo(() => {
     if (!params?.name) return '--'
@@ -101,14 +83,14 @@ const Header: React.FC<HeaderProps> = props => {
   }, [params?.name])
 
   const size = useMemo(() => {
-    if (!imageInfo?.w || !imageInfo?.h) return ''
-    return `${imageInfo?.w}*${imageInfo?.h}`
-  }, [imageInfo])
+    if (!imageSize?.w || !imageSize?.h) return ''
+    return `${imageSize?.w}*${imageSize?.h}`
+  }, [imageSize])
 
   const mSize = useMemo(() => {
-    if (!imageInfo?.size) return ''
-    return `${imageInfo?.size}M`
-  }, [imageInfo])
+    if (!params?.size) return ''
+    return `${params?.size}M`
+  }, [params?.size])
 
   return (
     <HeaderBox
