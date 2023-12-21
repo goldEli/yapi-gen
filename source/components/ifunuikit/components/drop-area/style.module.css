@@ -1,0 +1,13 @@
+.drop_area {
+  position: relative;
+}
+.drop_area_hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 20;
+  background: #ffffffb3;
+  backdrop-filter: blur(2px);
+}
