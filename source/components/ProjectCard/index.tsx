@@ -230,7 +230,7 @@ const Index = (props: any) => {
 
         <CardRightSecond>
           {t('functionary')}
-          {props.item?.leaderName}
+          {props.item?.leader_name ?? props.item?.leader.name}
         </CardRightSecond>
         <CardRightSecond>
           {t('serial_number')}：{props.item.prefix}

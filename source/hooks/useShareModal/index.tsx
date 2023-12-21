@@ -189,6 +189,7 @@ const useShareModal = () => {
     }
 
     const onsubmit = () => {
+      notFirst.current = true
       form.submit()
     }
     const setIsNeedSave = async () => {

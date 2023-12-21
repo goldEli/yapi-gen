@@ -30,6 +30,7 @@ import { getMessage } from './Message'
 import { relative } from 'path'
 import TruncateTextWithEllipsis from './TruncateTextWithEllipsis'
 import PreviewIframe from './PreviewIframe'
+import { openImageViewer } from './ImageViewer'
 
 const Warp = styled(Upload)<{ show?: any }>`
   display: ${props => (props.show ? 'block' : 'none')};
@@ -217,11 +218,11 @@ const UploadAttach = (props: any, ref: any) => {
   const uploadRef = useRef<any>(null)
   const scopeRef = useRef(String(Math.random()))
   const { userInfo } = useSelector(store => store.user)
-  const [previewOpen, setPreviewOpen] = useState<boolean>(false)
-  const [pictureList, setPictureList] = useState({
-    imageArray: [],
-    index: 0,
-  })
+  // const [previewOpen, setPreviewOpen] = useState<boolean>(false)
+  // const [pictureList, setPictureList] = useState({
+  //   imageArray: [],
+  //   index: 0,
+  // })
   const [t] = useTranslation()
   const [fileList, setFileList] = useState<any>([])
   const { projectInfo } = useSelector(store => store.project)
@@ -346,16 +347,20 @@ const UploadAttach = (props: any, ref: any) => {
 
   const onPreview = (file: any) => {
     if (imgs.includes(file.suffix)) {
-      const arrList = fileList?.filter((i: any) => imgs.includes(i.file.suffix))
+      // const arrList = fileList?.filter((i: any) => imgs.includes(i.file.suffix))
 
-      setPictureList({
-        imageArray: arrList?.map((k: any, index: any) => ({
-          src: k.file.url,
-          index,
-        })),
-        index: arrList?.findIndex((i: any) => i.file.url === file.url),
+      // setPictureList({
+      //   imageArray: arrList?.map((k: any, index: any) => ({
+      //     src: k.file.url,
+      //     index,
+      //   })),
+      //   index: arrList?.findIndex((i: any) => i.file.url === file.url),
+      // })
+      // setPreviewOpen(true)
+      openImageViewer({
+        url: file.url,
+        name: file.name,
       })
-      setPreviewOpen(true)
     } else {
       setFlag(true)
       setPreviewUrl(file.url)
@@ -543,7 +548,7 @@ const UploadAttach = (props: any, ref: any) => {
             }}
           />
         ) : null}
-        {previewOpen ? (
+        {/* {previewOpen ? (
           <Viewer
             zIndex={99999}
             visible={previewOpen}
@@ -554,7 +559,7 @@ const UploadAttach = (props: any, ref: any) => {
               setPreviewOpen(false)
             }}
           />
-        ) : null}
+        ) : null} */}
         <div
           style={{
             display: 'flex',
@@ -631,7 +636,7 @@ const UploadAttach = (props: any, ref: any) => {
         />
       ) : null}
 
-      {previewOpen ? (
+      {/* {previewOpen ? (
         <Viewer
           zIndex={99999}
           visible={previewOpen}
@@ -642,7 +647,7 @@ const UploadAttach = (props: any, ref: any) => {
             setPreviewOpen(false)
           }}
         />
-      ) : null}
+      ) : null} */}
 
       <Warp
         multiple={!props.multiple}

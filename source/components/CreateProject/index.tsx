@@ -34,6 +34,7 @@ const CreateProject = () => {
   return (
     <ModalWrap
       width={832}
+      wrapClassName="vertical-center-modal"
       bodyStyle={{ padding: '0' }}
       open={isModalOpen}
       footer={null}
