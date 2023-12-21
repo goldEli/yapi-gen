@@ -85,6 +85,9 @@ export const PopOverBox = styled.div`
   &:hover {
     background: rgba(102, 136, 255, 0.2);
   }
+  &.todoActive {
+    background: rgba(102, 136, 255, 0.2);
+  }
   border-radius: 20px;
   padding: 0px 12px;
 `

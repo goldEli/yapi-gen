@@ -350,7 +350,7 @@ const AffairsInfo = (props: Props) => {
         )}
         padding="no"
         onConfirm={onConfirmComment}
-        style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
+        style={{ padding: '0 16px', width: '100%' }}
         maxHeight="60vh"
         hasAvatar
         isEmployee={(props?.employeeCurrentId || 0) > 0}

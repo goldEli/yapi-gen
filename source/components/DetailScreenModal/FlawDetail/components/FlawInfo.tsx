@@ -10,13 +10,8 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { TabsCount } from '../style'
-import { getFlawCommentList } from '@store/flaw/flaw.thunk'
+import { getFlawCommentList, getFlawInfo } from '@store/flaw/flaw.thunk'
 import { getMessage } from '@/components/Message'
-import {
-  addFlawComment,
-  deleteFlawComment,
-  updateFlawComment,
-} from '@/services/flaw'
 import { getIdsForAt, getParamsData, removeNull } from '@/tools'
 import {
   DetailInfoWrap,
@@ -35,6 +30,7 @@ import ChangeRecord from './ChangeRecord'
 import Circulation from './Circulation'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import RelationStories from './RelationStories'
+import { addFlawComment } from '@/services/flaw'
 import { setIsUpdateAddWorkItem } from '@store/project'
 
 interface Props {
