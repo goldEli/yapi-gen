@@ -1,4 +1,3 @@
-import CreateAProjectForm from '@/components/CreateAProjectForm'
 import CreateIteration from '@/components/CreateIteration'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import GlobalStyle from '@/components/GlobalStyle'
@@ -43,7 +42,8 @@ import { setProjectWarningModal } from '@store/project'
 import ReportAssistantModal from './Report/Review/components/ReportAssistantModal'
 import ProjectSystemReport from './Report/Review/components/ProjectSystemReport'
 import { getNotReadMsgStatics } from '@/services/mine'
-import { setMsgStatics } from '@store/mine'
+import { setIsNewMsg, setMsgStatics } from '@store/mine'
+import CreateProject from '@/components/CreateProject'
 const LayoutIndex = () => {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -60,6 +60,7 @@ const LayoutIndex = () => {
   const { projectInfo } = useSelector(store => store.project)
   const [isNextVisible, setIsNextVisible] = useState(false)
   const { isNewMsg, msgStatics } = useSelector(store => store.mine)
+  const timer = useRef<any>()
   const [reportAssistantModalObj, setReportAssistantModalObj] = useState<{
     visible: boolean
     type: 'user' | 'project'
@@ -163,7 +164,12 @@ const LayoutIndex = () => {
       _getNotReadMsgStatics()
     }, 900)
   }, [isNewMsg])
-
+  useEffect(() => {
+    timer.current = setInterval(() => {
+      _getNotReadMsgStatics()
+      // dispatch(setIsNewMsg(isNewMsg + 1))
+    }, 3000)
+  }, [])
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
@@ -207,7 +213,8 @@ const LayoutIndex = () => {
           visible={reportAssistantModalObj.visible}
           type={reportAssistantModalObj.type}
         />
-        <CreateAProjectForm />
+        {/* 重构的创建项目 */}
+        <CreateProject />
         <CreateIteration />
         <DemandDetailDrawer />
         {viewReportModal.type === 1 ? <ReportDetailDrawer /> : null}

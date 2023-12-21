@@ -103,10 +103,9 @@ const DragTable = (props: DragTableProps) => {
     render: () => <DragHandle />,
   }
 
-  const resColumns =
-    hasHandle || props.hasHandle
-      ? [...(props.hasOperation || []), ...[dragHandle], ...props.columns]
-      : [...(props.hasOperation || []), ...props.columns]
+  const resColumns = props.hasHandle
+    ? [...(props.hasOperation || []), ...[dragHandle], ...props.columns]
+    : [...(props.hasOperation || []), ...props.columns]
 
   return (
     <TableWrap

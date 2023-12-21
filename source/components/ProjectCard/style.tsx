@@ -9,6 +9,7 @@ export const Image = styled.img`
 
 export const CardRight = styled.div`
   width: 152px;
+  position: relative;
 `
 
 export const CardRightFirst = styled.div`
@@ -84,11 +85,13 @@ export const EndTag = styled.div`
 
 export const ProjectCard = styled.div`
   position: relative;
-  width: 280px;
+  /* width: 280px; */
   box-sizing: border-box;
-  padding: 22px 16px;
-  height: 124px;
-  background: var(--neutral-n10);
+  padding: 16px 16px;
+  /* height: 124px; */
+  /* border: 1px solid; */
+  padding-bottom: 10px;
+  background: var(--neutral-n8);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
   display: flex;
@@ -112,6 +115,11 @@ export const ProjectCard = styled.div`
   &:hover ${HoverIcon} {
     visibility: visible;
   }
+  &:hover {
+    .StarBox {
+      visibility: visible;
+    }
+  }
 `
 
 export const HoverDiv = styled.div`
@@ -131,4 +139,25 @@ export const Tags = styled.span<{ type: number }>`
   padding: 0px 4px;
   margin-right: 8px;
   color: var(--neutral-white-d1);
+`
+
+export const StarWrap = styled.div`
+  /* border: 1px solid; */
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 12px;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  &.focuxStart {
+    visibility: visible;
+  }
+  &:hover {
+    span svg {
+      color: #fa9746;
+    }
+  }
 `

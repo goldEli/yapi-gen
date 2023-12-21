@@ -18,10 +18,12 @@ import {
   EndTag,
   HoverDiv,
   Tags,
+  StarWrap,
 } from './style'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
-
+import CommonIconFont from '../CommonIconFont'
+import classNames from 'classnames'
 type Props = {
   type: string
   num: string
@@ -49,7 +51,7 @@ const TextOfIcon = (props: any) => (
             color: 'inherit',
           }}
         >
-          {props.num}
+          {props.num ?? 0}
         </span>
       </HoverDiv>
     </Tooltip>
@@ -59,6 +61,7 @@ const Index = (props: any) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { onFocus } = props
   const { userInfo } = useSelector(store => store.user)
   const isDel2 = (
     userInfo.company_permissions?.map((i: any) => i.identity) || []
@@ -227,7 +230,9 @@ const Index = (props: any) => {
 
         <CardRightSecond>
           {t('functionary')}
-          {props.item?.leaderName}
+          {props.item?.leader_name ??
+            props.item?.leader?.name ??
+            props.item?.leaderName}
         </CardRightSecond>
         <CardRightSecond>
           {t('serial_number')}：{props.item.prefix}
@@ -249,13 +254,26 @@ const Index = (props: any) => {
                 key={i.type}
                 type={i.type}
                 text={i.text}
-                num={i.num}
+                num={i.num ?? 0}
               />
             ))}
           </ShowWrap>
         </TransformWrap>
       </CardRight>
-
+      {/* 取消与关注 */}
+      <StarWrap
+        className={classNames('StarBox', {
+          focuxStart: props.item.list_category === -1,
+        })}
+        onClick={props.onFocus}
+      >
+        <CommonIconFont
+          type={props.item.list_category === -1 ? 'star' : 'star-adipf4l8'}
+          color={
+            props.item.list_category === -1 ? '#FA9746' : 'var(--neutral-n3)'
+          }
+        ></CommonIconFont>
+      </StarWrap>
       {props.item.status === 2 && <EndTag>End</EndTag>}
     </ProjectCard>
   )

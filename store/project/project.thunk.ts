@@ -19,7 +19,7 @@ export const getParentList = createAsyncThunk(
 export const getProjectInfoValuesStore = createAsyncThunk(
   `${name}/getProjectInfoValuesStore`,
   async (params: any) => {
-    const res = await services.project.getProjectInfoValues(params)
+    const res = await services.project.getProjectInfoValues(params, params?.all)
     return res
   },
 )
@@ -47,5 +47,14 @@ export const getWarningConfigInfo = createAsyncThunk(
     const res = await services.project.getWarningConfigInfo(params)
 
     return res
+  },
+)
+
+// 获取项目分类
+export const getProjectCatrgory = createAsyncThunk(
+  `${name}/getProjectCatrgory`,
+  async (params: any) => {
+    const res = await services.project.getProjectCatrgory(params)
+    return res?.data
   },
 )

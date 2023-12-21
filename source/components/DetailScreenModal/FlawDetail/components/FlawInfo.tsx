@@ -32,6 +32,7 @@ import { saveScreenDetailModal } from '@store/project/project.thunk'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { getMessage } from '@/components/Message'
 import { addFlawComment } from '@/services/flaw'
+import { setIsUpdateAddWorkItem } from '@store/project'
 
 const FlawInfo = () => {
   const commentDom: any = createRef()
@@ -44,15 +45,19 @@ const FlawInfo = () => {
   const { flawInfo } = useSelector(store => store.flaw)
   const [focus, setFocus] = useState(false)
   const [leftWidth, setLeftWidth] = useState(400)
-  const { projectInfo, isDetailScreenModal, projectInfoValues } = useSelector(
-    store => store.project,
-  )
+  const {
+    projectInfo,
+    isDetailScreenModal,
+    projectInfoValues,
+    isUpdateAddWorkItem,
+  } = useSelector(store => store.project)
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { params, visible } = isDetailScreenModal
 
   //   刷新缺陷详情
   const onUpdate = () => {
     dispatch(getFlawInfo({ projectId: projectInfo?.id, id: flawInfo.id }))
+    dispatch(setIsUpdateAddWorkItem(isUpdateAddWorkItem + 1))
   }
 
   // 跳转配置
@@ -184,7 +189,7 @@ const FlawInfo = () => {
           )}
           padding="no"
           onConfirm={onConfirmComment}
-          style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
+          style={{ padding: '0 16px', width: '100%' }}
           maxHeight="60vh"
           hasAvatar
           isEmployee={location.pathname?.includes('/EmployeeProfile')}

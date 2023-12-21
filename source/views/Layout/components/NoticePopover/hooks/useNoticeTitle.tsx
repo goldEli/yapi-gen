@@ -16,13 +16,7 @@ const useNoticePopoverTitle = (setMsgVisible: any, popoverRef: any) => {
   }
   const TitleBox = (
     <NoticeTitleWrap>
-      {allnews ? (
-        <div>
-          {t('dynamic')}（{allnews}）
-        </div>
-      ) : (
-        <div>{t('dynamic')}</div>
-      )}
+      {allnews ? <div>{t('dynamic')}</div> : <div>{t('dynamic')}</div>}
       <CloseWrap
         color="var(--neutral-n2)"
         onClick={close}

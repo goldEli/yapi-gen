@@ -32,7 +32,6 @@ export const TabsWrap = styled.div`
     align-items: center;
     &:hover {
       color: var(--primary-d2);
-      font-family: SiYuanMedium;
     }
   }
   .activity {

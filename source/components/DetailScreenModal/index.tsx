@@ -42,11 +42,12 @@ const DetailScreenModal = () => {
     // 如果地址栏上带有isOpenScreenDetail此参数，并且传入id与项目id一致，并且个人偏好数据有的情况下
     if (
       paramsData?.isOpenScreenDetail &&
-      (projectInfo?.id || paramsData?.id) &&
-      userPreferenceConfig?.previewModel
+      paramsData?.id &&
+      userPreferenceConfig?.previewModel &&
+      paramsData?.detailId
     ) {
       const resultParams: any = {
-        id: projectInfo?.id || paramsData?.id,
+        id: paramsData?.id,
         specialType: paramsData?.specialType,
         type: paramsData?.specialType,
       }
@@ -68,7 +69,11 @@ const DetailScreenModal = () => {
         }),
       )
     }
-  }, [paramsData?.isOpenScreenDetail, projectInfo, userPreferenceConfig])
+  }, [
+    paramsData?.isOpenScreenDetail,
+    paramsData?.detailId,
+    userPreferenceConfig,
+  ])
 
   return (
     <ModalWrap

@@ -1,15 +1,13 @@
 /* eslint-disable react/no-unknown-property */
 import CommonButton from '@/components/CommonButton'
 import {
+  FilterLeftWrap,
   HeaderBottom,
   HeaderFilterWrap,
   HeaderTop,
+  RightCreateWrap,
   StatusGroup,
   StatusItems,
-  FilterLeftWrap,
-  ResetWrap,
-  DividerWrap,
-  FilterRightWrap,
 } from '../style'
 import { useState, useLayoutEffect, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -137,20 +135,15 @@ const HeaderFilter = (props: HeaderFilterProps) => {
   return (
     <HeaderFilterWrap>
       <HeaderTop>
-        <StatusGroup>
-          {statusList?.map((i: any) => (
-            <StatusItems
-              key={i.key}
-              isActive={i.key === filterParams.status}
-              onClick={() => onChangeParams('status', i.key)}
-            >
-              {i.name}
-              {props?.statistics?.[i.field]
-                ? `（${props?.statistics?.[i.field]}）`
-                : ''}
-            </StatusItems>
-          ))}
-        </StatusGroup>
+        <InputSearch
+          width={192}
+          bgColor="var(--neutral-white-d4)"
+          length={12}
+          placeholder={t('searchProjectName')}
+          onChangeSearch={(value: string) => onChangeParams('keyword', value)}
+          leftIcon
+          defaultValue={filterParams.keyword}
+        />
         {(
           userInfo.company_permissions?.map((i: any) => i.identity) || []
         ).includes('b/project/save') && (
@@ -159,23 +152,33 @@ const HeaderFilter = (props: HeaderFilterProps) => {
           </CommonButton>
         )}
       </HeaderTop>
+
       <HeaderBottom>
         <FilterLeftWrap>
-          <InputSearch
-            width={184}
-            bgColor="var(--neutral-white-d4)"
-            length={12}
-            placeholder={t('searchProjectName')}
-            onChangeSearch={(value: string) => onChangeParams('keyword', value)}
-            leftIcon
-            defaultValue={filterParams.keyword}
-          />
+          <HeaderTop>
+            <StatusGroup>
+              {statusList?.map((i: any) => (
+                <StatusItems
+                  key={i.key}
+                  isActive={i.key === filterParams.status}
+                  onClick={() => onChangeParams('status', i.key)}
+                >
+                  {i.name}
+                  {props?.statistics?.[i.field]
+                    ? ` (${props?.statistics?.[i.field]})`
+                    : ''}
+                </StatusItems>
+              ))}
+            </StatusGroup>
+          </HeaderTop>
         </FilterLeftWrap>
-        <SwitchMode
-          menuList={menuFormat}
-          isActiveId={filterParams?.isGrid}
-          onClickMenuFormat={onClickMenuFormat}
-        />
+        <RightCreateWrap>
+          <SwitchMode
+            menuList={menuFormat}
+            isActiveId={filterParams?.isGrid}
+            onClickMenuFormat={onClickMenuFormat}
+          />
+        </RightCreateWrap>
       </HeaderBottom>
     </HeaderFilterWrap>
   )

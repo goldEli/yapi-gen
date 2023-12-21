@@ -185,6 +185,7 @@ export const PreviewImageModalWrap = styled.div`
   .imgBox {
     display: flex;
     cursor: pointer;
+    align-items: flex-start;
   }
 `
 export const BlueText = styled.span`
