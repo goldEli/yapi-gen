@@ -26,7 +26,7 @@ export const ScrollBox = styled.div`
   .infinite-scroll-component {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px 16px;
+    gap: 20px 16px;
   }
 `
 const SpaceWrapItem = styled.div`

@@ -4,9 +4,12 @@ import { Form, Modal } from 'antd'
 import IconFont from '@/components/IconFont'
 
 export const ModalWrap = styled(Modal)`
-  height: calc(80px + 56px + 548px + 44px);
+  .ant-modal {
+    top: 0 !important;
+  }
+  height: ${window.innerWidth <= 1440 ? '663px' : '705px'};
   overflow: hidden;
-  border-radius:0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
   .ant-modal-body: {
     padding: 0;
   }
@@ -34,16 +37,15 @@ export const Title = styled.div`
   line-height: 28px;
   font-family: SiYuanMedium;
   margin-bottom: 24px;
-  margin-top: 148px;
+  margin-top: ${window.innerWidth <= 1440 ? '34px' : '104px'};
   padding: 0 72px;
 `
 export const ProjectWrap = styled.div`
-  height:calc(100vh - 110px);
+  height: 100%;
 `
-export const MainProjectType=styled.div`
-   height:calc(100% - 56px);
-  // overflow-x: hidden;
-  overflow:auto;
+export const MainProjectType = styled.div`
+  height: calc(100% - 56px);
+  overflow: auto;
 `
 export const Wrap = styled.div<{ type: number; hover: number }>`
   width: 320px;
@@ -233,11 +235,11 @@ export const UploadFileIconWrap = styled.div`
   padding: 0 24px;
 `
 export const CreateFormWrap = styled.div`
-  height: calc(100vh - 110px);
+  height: ${window.innerWidth <= 1440 ? '663px' : '740px'};
 `
 export const MainWrap = styled.div`
   display: flex;
-  height: calc(100% - 56px - 10px);
+  height: calc(100% - 56px);
   overflow-x: hidden;
   overflow-y: auto;
 `
@@ -245,5 +247,9 @@ export const FormWrap = styled(Form)`
   width: 416px;
   padding: 0 24px;
   border-left: 1px solid var(--neutral-n6-d2);
+  .ant-form-item{
+    margin-bottom:${window.innerWidth <= 1440 ? '16px' : '24px'};
+  }
+  
 `
 export const RightWrap = styled.div``
