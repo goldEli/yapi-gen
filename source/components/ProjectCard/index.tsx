@@ -254,7 +254,7 @@ const Index = (props: any) => {
                 key={i.type}
                 type={i.type}
                 text={i.text}
-                num={i.num}
+                num={i.num ?? 0}
               />
             ))}
           </ShowWrap>
