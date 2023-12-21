@@ -27,6 +27,8 @@ export const ScrollBox = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 20px 16px;
+    padding-top: 12px;
+    padding-left: 4px;
   }
 `
 const SpaceWrapItem = styled.div`

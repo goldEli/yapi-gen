@@ -51,7 +51,7 @@ const TextOfIcon = (props: any) => (
             color: 'inherit',
           }}
         >
-          {props.num}
+          {props.num ?? 0}
         </span>
       </HoverDiv>
     </Tooltip>
