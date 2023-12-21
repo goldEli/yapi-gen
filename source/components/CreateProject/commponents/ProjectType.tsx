@@ -47,7 +47,7 @@ const ProjectType = (props: {
           style={{
             display: 'flex',
             gap: '48px',
-            marginBottom: '134px',
+            marginBottom: window.innerWidth <= 1440 ? '128px':'154px',
             padding: '0 72px',
           }}
         >

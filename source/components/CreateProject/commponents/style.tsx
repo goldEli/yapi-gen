@@ -7,7 +7,7 @@ export const ModalWrap = styled(Modal)`
   .ant-modal {
     top: 0 !important;
   }
-  height: ${window.innerWidth <= 1440 ? '663px' : '705px'};
+  height: ${window.innerWidth <= 1440 ? '663px' : '708px'};
   overflow: hidden;
   border-radius: 0 0 6px 6px;
   .ant-modal-body: {
@@ -36,15 +36,15 @@ export const Title = styled.div`
   color: var(--neutral-n1-d1);
   line-height: 28px;
   font-family: SiYuanMedium;
-  margin-bottom: 24px;
-  margin-top: ${window.innerWidth <= 1440 ? '34px' : '104px'};
+  margin-bottom: ${window.innerWidth <= 1440 ? '40px' : '24px'};
+  margin-top: ${window.innerWidth <= 1440 ? '66px' : '104px'};
   padding: 0 72px;
 `
 export const ProjectWrap = styled.div`
   height: 100%;
 `
 export const MainProjectType = styled.div`
-  height: calc(100% - 56px);
+  height: calc(708px - 56px);
   overflow: auto;
 `
 export const Wrap = styled.div<{ type: number; hover: number }>`
@@ -235,11 +235,11 @@ export const UploadFileIconWrap = styled.div`
   padding: 0 24px;
 `
 export const CreateFormWrap = styled.div`
-  height: ${window.innerWidth <= 1440 ? '663px' : '740px'};
+  height: ${window.innerWidth <= 1440 ? '663px' : '708px'};
 `
 export const MainWrap = styled.div`
   display: flex;
-  height: calc(100% - 56px);
+  height: calc(708px - 56px);
   overflow-x: hidden;
   overflow-y: auto;
 `
