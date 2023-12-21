@@ -144,26 +144,20 @@ const Circulation = (props: Props) => {
   const getLogs = async (state: boolean) => {
     if (state) {
       setIsSpin(true)
-      const result = await getFlawStatusLog({
-        projectId: id ?? projectInfo.id,
-        id: props?.detail?.id || 0,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
+    }
+    const result = await getFlawStatusLog({
+      projectId: id ?? projectInfo.id,
+      id: props?.detail?.id || 0,
+      all: true,
+    })
+    setStatusLogs({
+      list: result,
+    })
+    if (state) {
       dispatch(setIsRefresh(false))
       setIsSpin(false)
-    } else {
-      const result = await getFlawStatusLog({
-        projectId: id,
-        id: props?.detail?.id || 0,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
     }
+    props?.onUpdateCount(result?.length)
     dispatch(setIsUpdateChangeLog(false))
   }
 

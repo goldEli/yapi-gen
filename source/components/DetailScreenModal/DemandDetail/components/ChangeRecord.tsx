@@ -61,7 +61,7 @@ const NewSort = (sortProps: any) => {
 }
 
 interface Props {
-  activeKey: string
+  detail: any
   filter?: boolean
   employeeCurrentId?: boolean
 }
@@ -83,12 +83,11 @@ const ChangeRecord = (props: Props) => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateChangeLog } = useSelector(store => store.project)
-  const { demandInfo } = useSelector(store => store.demand)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
     const result = await getDemandChangeLog({
-      demandId: demandInfo.id,
+      demandId: props?.detail?.id,
       projectId: id ?? projectInfo.id,
       page: item ? item.page ?? 1 : 1,
       pageSize: item ? item.size ?? 10 : 10,
@@ -106,10 +105,10 @@ const ChangeRecord = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.activeKey === '4') {
+    if (props?.detail?.id) {
       getList(pageObj, order)
     }
-  }, [props.activeKey])
+  }, [props?.detail])
 
   useEffect(() => {
     if (isRefresh) {
@@ -403,7 +402,7 @@ const ChangeRecord = (props: Props) => {
     : 210
 
   return (
-    <ComputedWrap style={{ height: `calc(${aa} - ${a1}px)` }}>
+    <ComputedWrap>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}
@@ -463,7 +462,7 @@ const ChangeRecord = (props: Props) => {
       ) : null}
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight={`calc(100% - ${props.filter ? 118 : 52}px)`}
+        dataWrapNormalHeight="100%"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}

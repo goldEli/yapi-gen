@@ -1,9 +1,3 @@
-/* eslint-disable max-lines */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable react/no-danger */
 // 需求详情弹窗预览模式
 
 import {
@@ -46,8 +40,9 @@ import {
   SkeletonStatus,
   DetailFooter,
   LayerBox,
-  BtnWrap,
+  CommonItemBox,
   ProgressBox,
+  TabsCount,
 } from './style'
 import CommonButton from '../CommonButton'
 import {
@@ -75,13 +70,15 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import StoryRelation from '../DetailScreenModal/DemandDetail/components/StoryRelation'
 import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
-import DemandTag from '../TagComponent/DemandTag'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { myTreeCss } from '../DetailScreenModal/DemandDetail'
 import { toggleStar } from '@/services/employeeProfile'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
 import LeftIcontButton from '../LeftIcontButton'
 import { Label } from '../DetailScreenModal/FlawDetail/style'
+import ScreenMinHover from '../ScreenMinHover'
+import Circulation from '../DetailScreenModal/DemandDetail/components/Circulation'
+import ChangeRecord from '../DetailScreenModal/DemandDetail/components/ChangeRecord'
 interface ItemIprops {
   label: string
   key: string
@@ -106,6 +103,8 @@ const DemandDetailDrawer = () => {
   const [focus, setFocus] = useState(false)
   const [deleteId, setDeleteId] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [filter, setFilter] = useState(false)
+  const [transferRecordsCount, setTransferRecordsCount] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const commentDom: any = createRef()
   const spanDom = useRef<HTMLSpanElement>(null)
@@ -120,7 +119,7 @@ const DemandDetailDrawer = () => {
       (i: any) => i.identity === 'b/story/update',
     )?.length > 0
 
-  const items: ItemIprops[] = [
+  const items: any[] = [
     {
       key: 'tab_desc',
       label: t('describe'),
@@ -151,8 +150,31 @@ const DemandDetailDrawer = () => {
       label: t('basicInformation'),
     },
     {
+      key: 'changeRecord',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('changeRecord')}</span>
+          <TabsCount>{drawerInfo.changeCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
+      key: 'transferRecords',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('transferRecords')}</span>
+          <TabsCount>{transferRecordsCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
       key: 'tab_comment',
-      label: t('comment1'),
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('comment1')}</span>
+          <TabsCount>{demandCommentList?.list.length || 0}</TabsCount>
+        </div>
+      ),
     },
   ]
   const [tabActive, setTabActive] = useState('tab_desc')
@@ -915,23 +937,44 @@ const DemandDetailDrawer = () => {
                   isPreview={demandDetailDrawerProps?.isPreview}
                 />
 
-                <div
-                  id="tab_comment"
-                  style={{
-                    backgroundColor: 'white',
-                    margin: 0,
-                    marginBottom: 12,
-                    padding: '12px 24px',
-                  }}
-                  className="info_item_tab"
-                >
+                <CommonItemBox>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Label id="changeRecord" className="info_item_tab">
+                      {t('changeRecord')}
+                    </Label>
+                    <ScreenMinHover
+                      label={t('common.search')}
+                      icon="filter"
+                      isActive={filter}
+                      onClick={() => setFilter(!filter)}
+                    />
+                  </div>
+                  <ChangeRecord filter={filter} detail={drawerInfo} />
+                </CommonItemBox>
+                <CommonItemBox>
+                  <Label id="transferRecords" className="info_item_tab">
+                    {t('transferRecords')}
+                  </Label>
+                  <Circulation
+                    onUpdateCount={setTransferRecordsCount}
+                    detail={drawerInfo}
+                  />
+                </CommonItemBox>
+
+                <CommonItemBox id="tab_comment" className="info_item_tab">
                   <Label>{t('comment1')}</Label>
                   <CommonComment
                     data={demandCommentList}
                     onDeleteConfirm={onDeleteCommentConfirm}
                     onEditComment={onEditComment}
                   />
-                </div>
+                </CommonItemBox>
               </LayerBox>
             </div>
           )}

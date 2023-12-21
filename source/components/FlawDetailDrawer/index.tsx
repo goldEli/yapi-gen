@@ -6,9 +6,7 @@ import { ConfigWrap, DragLine, MouseDom } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { createRef, useEffect, useRef, useState } from 'react'
 import {
-  BtnWrap,
   ChangeIconGroup,
-  CommentTitle,
   CommonItemBox,
   Content,
   DemandName,
@@ -77,6 +75,7 @@ import LeftIcontButton from '../LeftIcontButton'
 import { Label } from '../DetailScreenModal/FlawDetail/style'
 import ChangeRecord from '../DetailScreenModal/FlawDetail/components/ChangeRecord'
 import Circulation from '../DetailScreenModal/FlawDetail/components/Circulation'
+import ScreenMinHover from '../ScreenMinHover'
 
 const FlawDetailDrawer = () => {
   const { projectInfo, projectInfoValues, isUpdateAddWorkItem, drawerInfo } =
@@ -960,9 +959,23 @@ const FlawDetailDrawer = () => {
                   />
                 </CommonItemBox>
                 <CommonItemBox>
-                  <Label id="changeRecord" className="info_item_tab">
-                    {t('changeRecord')}
-                  </Label>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Label id="changeRecord" className="info_item_tab">
+                      {t('changeRecord')}
+                    </Label>
+                    <ScreenMinHover
+                      label={t('common.search')}
+                      icon="filter"
+                      isActive={filter}
+                      onClick={() => setFilter(!filter)}
+                    />
+                  </div>
                   <ChangeRecord filter={filter} detail={drawerInfo} />
                 </CommonItemBox>
                 <CommonItemBox>
