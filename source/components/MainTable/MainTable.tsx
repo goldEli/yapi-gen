@@ -90,20 +90,19 @@ const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
       max-width: 386px;
     }
     .stared {
-      width: max-content;
       svg {
         color: var(--function-warning);
       }
     }
 
     td.ant-table-cell:first-child {
-      padding-left: 32px !important;
+      padding-left: 0px !important;
       padding-right: 0px !important;
+      text-align: center;
     }
 
     .hasStart {
       visibility: hidden;
-      width: max-content;
       svg {
         color: var(--neutral-n3);
       }

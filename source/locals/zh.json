@@ -2688,7 +2688,7 @@
   "messagesRelatedToProjectTasksWillBeCollectedInProjectManagement": "来自项目任务相关的消息都会收集在「项目管理」里面",
   "messagesRelatedToSystemOperationsWillBeCollectedInTheSystemNotificationSection": "来自系统操作相关的消息都会收集在「系统通知」里面",
   "newsRelatedToDailyNewspapersWillBeCollectedInTheWorkReport": "来自日报相关的消息都会收集在「工作汇报」里面",
-  "followSuccess": "星标成功",
+  "followSuccess": "添加星标成功",
   "unsullowedSuccessfully": "取消星标成功",
   "cancelFollow": "取消星标",
   "followProjects": "星标",

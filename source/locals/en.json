@@ -2688,7 +2688,7 @@
   "messagesRelatedToProjectTasksWillBeCollectedInProjectManagement": "Messages related to project tasks will be collected in Project Management",
   "messagesRelatedToSystemOperationsWillBeCollectedInTheSystemNotificationSection": "Messages related to system operations will be collected in the \"System Notification\" section",
   "newsRelatedToDailyNewspapersWillBeCollectedInTheWorkReport": "News related to daily newspapers will be collected in the \"work report\"",
-  "followSuccess": "Star Success",
+  "followSuccess": "Adding stars succeeded",
   "unsullowedSuccessfully": "Successfully cancelling the star",
   "cancelFollow": "Unstar",
   "followProjects": "Star",
