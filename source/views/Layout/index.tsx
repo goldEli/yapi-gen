@@ -167,7 +167,8 @@ const LayoutIndex = () => {
   useEffect(() => {
     timer.current = setInterval(() => {
       console.log('useEffect', isNewMsg)
-      dispatch(setIsNewMsg(isNewMsg + 1))
+      _getNotReadMsgStatics()
+      // dispatch(setIsNewMsg(isNewMsg + 1))
     }, 3000)
   }, [])
   return (
