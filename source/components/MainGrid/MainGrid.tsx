@@ -114,7 +114,7 @@ const MainGrid = (props: Props) => {
   ])
   useEffect(() => {
     _getMsg_list(true, 1)
-  }, [status, keyword, timeStamp])
+  }, [status, keyword])
   return (
     <DataWrap>
       {data?.list?.length > 0 ? (

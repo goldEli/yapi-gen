@@ -257,19 +257,21 @@ const Index = (props: any) => {
             ))}
           </ShowWrap>
         </TransformWrap>
-        {/* 取消与关注 */}
-        <StarWrap
-          className={classNames('StarBox', {
-            focuxStart: props.item.list_category === -1,
-          })}
-          onClick={props.onFocus}
-        >
-          <CommonIconFont
-            type={props.item.list_category === -1 ? 'star' : 'star-adipf4l8'}
-            color={props.item.list_category === -1 ? '#FA9746' : ''}
-          ></CommonIconFont>
-        </StarWrap>
       </CardRight>
+      {/* 取消与关注 */}
+      <StarWrap
+        className={classNames('StarBox', {
+          focuxStart: props.item.list_category === -1,
+        })}
+        onClick={props.onFocus}
+      >
+        <CommonIconFont
+          type={props.item.list_category === -1 ? 'star' : 'star-adipf4l8'}
+          color={
+            props.item.list_category === -1 ? '#FA9746' : 'var(--neutral-n3)'
+          }
+        ></CommonIconFont>
+      </StarWrap>
       {props.item.status === 2 && <EndTag>End</EndTag>}
     </ProjectCard>
   )

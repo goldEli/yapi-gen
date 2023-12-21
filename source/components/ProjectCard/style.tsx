@@ -91,7 +91,7 @@ export const ProjectCard = styled.div`
   /* height: 124px; */
   /* border: 1px solid; */
   padding-bottom: 10px;
-  background: var(--neutral-n10);
+  background: var(--neutral-n8);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
   display: flex;
@@ -146,13 +146,18 @@ export const StarWrap = styled.div`
   width: 20px;
   height: 20px;
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 12px;
+  top: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   visibility: hidden;
   &.focuxStart {
     visibility: visible;
+  }
+  &:hover {
+    span svg {
+      color: #fa9746;
+    }
   }
 `
