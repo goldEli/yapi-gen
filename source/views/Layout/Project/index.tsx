@@ -188,9 +188,6 @@ const ProjectIndex = () => {
   useEffect(() => {
     dispatch(getProjectCatrgory({}))
   }, [])
-  const onChangeTabs = (key: number) => {
-    setActiveKey(key)
-  }
 
   // 关注与取消关注 type：1 是关注，0是取消关注
   const onChangeStar = async (type: number, row: any) => {

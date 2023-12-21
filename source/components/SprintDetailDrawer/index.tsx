@@ -574,14 +574,12 @@ const SprintDetailDrawer = () => {
 
   // 监听tab切换滚动
   const onChangeTabs = (value: string) => {
-    setTimeout(() => {
-      setTabActive(value)
-      const dom = document.getElementById(value)
-      document.getElementById('contentDom')?.scrollTo({
-        top: (dom?.offsetTop ?? 0) - 46,
-        behavior: 'smooth',
-      })
-    }, 10)
+    setTabActive(value)
+    const dom = document.getElementById(value)
+    document.getElementById('contentDom')?.scrollTo({
+      top: (dom?.offsetTop ?? 0) - 46,
+      behavior: 'smooth',
+    })
   }
 
   // 计算滚动选中tab
@@ -606,6 +604,7 @@ const SprintDetailDrawer = () => {
 
   useEffect(() => {
     if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
+      setTabActive('sprint-info')
       if (affairsDetailDrawer?.isPreview) {
         dispatch(setProjectInfo({}))
       }

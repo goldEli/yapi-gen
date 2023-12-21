@@ -388,8 +388,6 @@ const ChangeRecord = (props: Props) => {
     getList({ page, size }, order)
   }
 
-  console.log(dataList, '=dataList')
-
   return (
     <div style={{ height: '100%', padding: '0 24px' }}>
       <CommonModal

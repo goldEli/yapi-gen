@@ -179,13 +179,11 @@ const AffairsInfo = (props: Props) => {
 
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
-    setTimeout(() => {
-      setTabActive(value)
-      const dom = document.getElementById(value)
-      dom?.scrollIntoView({
-        behavior: 'smooth',
-      })
-    }, 10)
+    setTabActive(value)
+    const dom = document.getElementById(value)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
   }
 
   useImperativeHandle(props.onRef, () => {

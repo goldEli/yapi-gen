@@ -564,12 +564,12 @@ const FlawDetailDrawer = () => {
 
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
+    setTabActive(value)
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({
       top: (dom?.offsetTop ?? 0) - 76,
       behavior: 'smooth',
     })
-    setTabActive(value)
   }
 
   // 计算滚动选中tab
@@ -594,6 +594,7 @@ const FlawDetailDrawer = () => {
 
   useEffect(() => {
     if (visible || params?.id) {
+      setTabActive('tab_desc')
       if (isPreview) {
         dispatch(setProjectInfo({}))
       }
