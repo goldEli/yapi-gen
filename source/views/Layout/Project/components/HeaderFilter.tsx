@@ -165,7 +165,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
                 >
                   {i.name}
                   {props?.statistics?.[i.field]
-                    ? `（${props?.statistics?.[i.field]}）`
+                    ? ` (${props?.statistics?.[i.field]})`
                     : ''}
                 </StatusItems>
               ))}
