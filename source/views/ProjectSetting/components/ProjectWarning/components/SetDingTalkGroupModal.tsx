@@ -42,15 +42,26 @@ const SetDingTalkGroupModal = (props: SetDingTalkGroupModalProps) => {
 
   useEffect(() => {
     if (isVisible) {
-      form.setFieldsValue(
-        projectWarning?.push_channel?.find?.((k: any) => k.type === 'ding')
-          ?.other_config,
-      )
+      const temp = projectWarning?.push_channel?.find?.(
+        (k: any) => k.type === 'ding',
+      )?.other_config
+      if (temp && !Array.isArray(temp)) {
+        form.setFieldsValue({
+          group_name: temp.group_name,
+          web_hook: temp.web_hook,
+        })
+      }
       setTimeout(() => {
         inputRef?.current?.focus?.()
       }, 200)
     }
+    return () => {
+      if (!isVisible) {
+        form.resetFields()
+      }
+    }
   }, [isVisible])
+
   return (
     <CommonModal
       width={528}
