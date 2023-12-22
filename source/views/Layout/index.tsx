@@ -164,12 +164,13 @@ const LayoutIndex = () => {
       _getNotReadMsgStatics()
     }, 900)
   }, [isNewMsg])
-  useEffect(() => {
-    timer.current = setInterval(() => {
-      console.log('useEffect', isNewMsg)
-      dispatch(setIsNewMsg(isNewMsg + 1))
-    }, 3000)
-  }, [])
+
+  // useEffect(() => {
+  //   timer.current = setInterval(() => {
+  //     _getNotReadMsgStatics()
+  //     // dispatch(setIsNewMsg(isNewMsg + 1))
+  //   }, 5000)
+  // }, [])
   return (
     <KitConfigProvider language={language1 === 'en'} local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>

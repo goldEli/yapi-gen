@@ -45,6 +45,8 @@ const FlawInfo = (props: Props) => {
   const [searchParams] = useSearchParams()
   const commentDom: any = createRef()
   const relationStoriesRef = useRef<any>()
+  const [focus, setFocus] = useState(false)
+  const [leftWidth, setLeftWidth] = useState(400)
   const { userPreferenceConfig } = useSelector(store => store.user)
   const { flawInfo, flawCommentList } = useSelector(store => store.flaw)
   const {
