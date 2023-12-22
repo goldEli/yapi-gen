@@ -108,9 +108,7 @@ const Image: React.FC<ImageProps> = props => {
   return (
     <ImageBox
       onClick={e => {
-        if (!isDrag) {
-          closeImageViewer()
-        }
+        closeImageViewer()
       }}
       onMouseDown={e => {
         e.stopPropagation()
@@ -118,7 +116,7 @@ const Image: React.FC<ImageProps> = props => {
       style={imageBoxStyle}
     >
       <Rnd
-        style={{ flexShrink: 0 }}
+        style={{ flexShrink: 0, cursor: 'default' }}
         key={params?.url}
         disableDragging={!isDrag}
       >

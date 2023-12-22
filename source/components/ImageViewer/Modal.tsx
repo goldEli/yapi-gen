@@ -6,6 +6,7 @@ interface Props {
   children: React.ReactNode
 }
 
+let canClose = false
 const Modal = (props: Props) => {
   const { isOpen, onClose, children } = props
   const overlayStyle: React.CSSProperties = {
@@ -29,14 +30,22 @@ const Modal = (props: Props) => {
     alignItems: 'center',
     justifyContent: 'center',
   }
-
   return (
     <div className="viewer-modal" style={overlayStyle} onClick={onClose}>
       <div
+        className="image-viewer-modal-content"
         style={modalStyle}
-        onClick={e => {
+        onMouseDown={(e: any) => {
           e.stopPropagation()
-          props.onClose()
+          console.log(e.target.className)
+          canClose = e.target?.className === 'image-viewer-modal-content'
+        }}
+        onClick={e => {
+          // console.log(e.target.className)
+          e.stopPropagation()
+          if (canClose) {
+            props.onClose()
+          }
         }}
       >
         {children}

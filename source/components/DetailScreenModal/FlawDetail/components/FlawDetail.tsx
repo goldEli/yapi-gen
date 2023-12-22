@@ -1,5 +1,5 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { Editor, EditorRef } from 'ifunuikit'
+import Editor, { EditorRef } from '@/components/ifunuikit/components/editor'
 import {
   useEffect,
   useRef,

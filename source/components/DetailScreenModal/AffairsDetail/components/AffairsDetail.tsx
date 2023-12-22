@@ -1,5 +1,5 @@
 import { InfoItem, Label, TargetWrap } from '../style'
-import { Editor, EditorRef } from 'ifunuikit'
+import Editor, { EditorRef } from '@/components/ifunuikit/components/editor'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import CommonButton from '@/components/CommonButton'
 import {

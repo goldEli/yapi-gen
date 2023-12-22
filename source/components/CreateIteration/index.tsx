@@ -12,7 +12,7 @@ import {
   setIsCreateIterationVisible,
   setIsUpdateList,
 } from '@store/iterate'
-import { Editor, EditorRef } from 'ifunuikit'
+import Editor, { EditorRef } from '@/components/ifunuikit/components/editor'
 import { Form, Input, message, Select, Space } from 'antd'
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'

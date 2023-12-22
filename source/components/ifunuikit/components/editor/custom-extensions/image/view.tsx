@@ -1,12 +1,20 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-undefined */
 /* eslint-disable react/boolean-prop-naming */
-import type { NodeViewRendererProps } from '@tiptap/react'
+import { NodeViewWrapper, type NodeViewRendererProps } from '@tiptap/react'
 import { useEffect } from 'react'
 import generateTransparentSVG from '../../../../utils/generate-transparent-svg'
 import ImageResizer from '../../components/image-resizer'
-import { Wrap, Image, Progress } from './style'
-
+import {  Image, Progress } from './style'
+import { openImageViewer } from '@/components/ImageViewer'
+import styled from '@emotion/styled'
+const Wrap = styled(NodeViewWrapper)`
+  position: relative;
+  display: inline-block;
+  font-size: 0;
+  vertical-align: bottom;
+  cursor: zoom-in;
+`
 type ViewProps = NodeViewRendererProps & {
   selected: boolean
   updateAttributes(options: any): void
@@ -55,8 +63,9 @@ const View = (props: ViewProps) => {
   const { height } = props.node.attrs
 
   const onDoubleClick = (event: any) => {
-    const editorCopy: any = props.editor
-    editorCopy?.emit('double_click_image', event.target)
+    // const editorCopy: any = props.editor
+    // editorCopy?.emit('double_click_image', event.target)
+    openImageViewer({ url: props.node.attrs.src })
   }
 
   return (
