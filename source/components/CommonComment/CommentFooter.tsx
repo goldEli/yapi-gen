@@ -3,14 +3,13 @@ import { CommentFooterWrap } from './style'
 import { useTranslation } from 'react-i18next'
 import { Form, Input, Space } from 'antd'
 import CommonButton from '../CommonButton'
-// import { Editor, EditorRef } from 'ifunuikit'
 import { uploadFileToKey } from '@/services/cos'
 import { useSelector } from '@store/index'
 import CommonUserAvatar from '../CommonUserAvatar'
 import useMkeyDown from '@/hooks/useMkeyDown'
 import useShortcutCtrlEnter from '@/hooks/useShortcutCtrlEnter/useShortcutCtrlEnter'
 import { useHotkeys } from 'react-hotkeys-hook'
-import Editor, { EditorRef } from '../ifunuikit/components/editor'
+import Editor, { EditorRef } from '@/components/ifunuikit/components/editor'
 interface CommentFooterProps {
   placeholder: string
   onConfirm(value: any): void
