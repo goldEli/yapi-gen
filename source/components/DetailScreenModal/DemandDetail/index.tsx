@@ -465,22 +465,8 @@ const DemandDetail = () => {
       ),
       children: (
         <ChangeRecord
-          activeKey={tabActive}
+          detail={demandInfo}
           filter={filter}
-          employeeCurrentId={(params?.employeeCurrentId || 0) > 0}
-        />
-      ),
-    },
-    {
-      key: '5',
-      label: (
-        <DetailTabItem>
-          <span>{t('circulationRecords')}</span>
-        </DetailTabItem>
-      ),
-      children: (
-        <Circulation
-          activeKey={tabActive}
           employeeCurrentId={(params?.employeeCurrentId || 0) > 0}
         />
       ),
@@ -514,7 +500,7 @@ const DemandDetail = () => {
           pageSize: 999,
         }),
       )
-    }else{
+    } else {
       localStorage.removeItem('projectRouteDetail')
     }
     return () => {

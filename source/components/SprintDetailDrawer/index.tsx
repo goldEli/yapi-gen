@@ -24,9 +24,10 @@ import {
   SkeletonStatus,
   DropdownMenu,
   DetailFooter,
-  TargetWrap,
+  TabsCount,
   StatusAndLongWrap,
   Label,
+  CommonItemBox,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
@@ -81,9 +82,11 @@ import ChildSprint from '../DetailScreenModal/AffairsDetail/components/ChildSpri
 import LinkSprint from '../DetailScreenModal/AffairsDetail/components/LinkSprint'
 import DrawerTopInfo from '../DrawerTopInfo'
 import CommonProgress from '../CommonProgress'
-import SprintTag from '../TagComponent/SprintTag'
 import { setTaskDrawerUpdate } from '@store/employeeProfile'
 import LeftIcontButton from '../LeftIcontButton'
+import ScreenMinHover from '../ScreenMinHover'
+import ChangeRecord from '../DetailScreenModal/AffairsDetail/components/ChangeRecord'
+import Circulation from '../DetailScreenModal/AffairsDetail/components/Circulation'
 
 const SprintDetailDrawer = () => {
   const navigate = useNavigate()
@@ -102,6 +105,8 @@ const SprintDetailDrawer = () => {
   const [demandIds, setDemandIds] = useState([])
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteCheck, setIsDeleteCheck] = useState(false)
+  const [filter, setFilter] = useState(false)
+  const [transferRecordsCount, setTransferRecordsCount] = useState(0)
   // 锚点初始化选中
   const [tabActive, setTabActive] = useState('sprint-info')
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
@@ -115,15 +120,6 @@ const SprintDetailDrawer = () => {
 
   // 快捷按钮列表
   const projectIdRef = useRef('')
-  const anchorList = [
-    { name: t('attachment'), key: 'sprint-attachment' },
-    { name: t('addTag'), key: 'sprint-tag' },
-    {
-      name: t('addChildAffairs'),
-      key: 'sprint-childSprint',
-    },
-    { name: t('linkAffairs'), key: 'sprint-linkSprint' },
-  ]
 
   // tab标签栏
   const items: any = [
@@ -157,8 +153,31 @@ const SprintDetailDrawer = () => {
       label: t('newlyAdd.basicInfo'),
     },
     {
-      key: 'sprint-comment',
-      label: t('businessReview'),
+      key: 'changeRecord',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('changeRecord')}</span>
+          <TabsCount>{drawerInfo.changeCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
+      key: 'transferRecords',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('transferRecords')}</span>
+          <TabsCount>{transferRecordsCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
+      key: 'sprint-activity',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('comment1')}</span>
+          <TabsCount>{affairsCommentList?.list.length || 0}</TabsCount>
+        </div>
+      ),
     },
   ]
 
@@ -403,19 +422,6 @@ const SprintDetailDrawer = () => {
     copyLink(drawerInfo.name, t('copysuccess'), t('copyfailed'))
   }
 
-  // 点击进行快捷操作
-  const onClickAnchorList = (item: { key: string; name?: string }) => {
-    if (item.key === 'sprint-attachment') {
-      uploadFile.current.handleUpload()
-    } else if (item.key === 'sprint-childSprint') {
-      childRef.current.onCreateChild()
-    } else if (item.key === 'sprint-linkSprint') {
-      linkSprint.current.onClickOpen()
-    } else {
-      //
-    }
-  }
-
   // 确认删除
   const onDeleteConfirm = async () => {
     await deleteAffairs({
@@ -517,6 +523,7 @@ const SprintDetailDrawer = () => {
       }),
     )
   }
+
   // 操作后更新列表
   const onOperationUpdate = async (value?: boolean) => {
     if (!value) {
@@ -570,7 +577,7 @@ const SprintDetailDrawer = () => {
     setTabActive(value)
     const dom = document.getElementById(value)
     document.getElementById('contentDom')?.scrollTo({
-      top: (dom?.offsetTop ?? 0) - 86,
+      top: (dom?.offsetTop ?? 0) - 46,
       behavior: 'smooth',
     })
   }
@@ -587,7 +594,7 @@ const SprintDetailDrawer = () => {
     let arr: any = []
     titleItems.forEach(element => {
       const { offsetTop, id } = element as HTMLElement
-      if (offsetTop - 140 <= scrollTop) {
+      if (offsetTop - 110 <= scrollTop) {
         const keys = [...arr, ...[id]]
         arr = [...new Set(keys)]
       }
@@ -597,6 +604,7 @@ const SprintDetailDrawer = () => {
 
   useEffect(() => {
     if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
+      setTabActive('sprint-info')
       if (affairsDetailDrawer?.isPreview) {
         dispatch(setProjectInfo({}))
       }
@@ -888,53 +896,6 @@ const SprintDetailDrawer = () => {
                 />
               </div>
 
-              {!affairsDetailDrawer.isPreview && (
-                <div
-                  style={{
-                    backgroundColor: 'white',
-                    display: 'flex',
-                    gap: 12,
-                    padding: '12px 24px',
-                  }}
-                >
-                  {(drawerInfo.work_type === 6
-                    ? anchorList.filter((i: any) => i.domKey !== 'childSprint')
-                    : anchorList
-                  ).map((i: { key: string; name: string }) => (
-                    <>
-                      {i.key === 'sprint-tag' && (
-                        <SprintTag
-                          defaultList={drawerInfo?.tag?.map((i: any) => ({
-                            id: i.id,
-                            color: i.tag?.color,
-                            name: i.tag?.content,
-                          }))}
-                          canAdd
-                          onUpdate={onOperationUpdate}
-                          detail={drawerInfo}
-                          isDetailQuick
-                          addWrap={
-                            <CommonButton key={i.key} type="secondary">
-                              {i.name}
-                            </CommonButton>
-                          }
-                        />
-                      )}
-
-                      {i.key !== 'sprint-tag' && (
-                        <CommonButton
-                          key={i.key}
-                          type="secondary"
-                          onClick={() => onClickAnchorList(i)}
-                        >
-                          {i.name}
-                        </CommonButton>
-                      )}
-                    </>
-                  ))}
-                </div>
-              )}
-
               {/* 周期、处理人 */}
               <DrawerTopInfo
                 details={drawerInfo}
@@ -987,26 +948,45 @@ const SprintDetailDrawer = () => {
                   isPreview={affairsDetailDrawer.isPreview}
                 />
               </div>
-              <div
-                style={{
-                  backgroundColor: 'white',
-                  padding: '16px 24px',
-                  marginTop: '12px',
-                }}
-              >
-                <Label
-                  id="sprint-comment"
-                  className="info_item_tab"
-                  style={{ marginTop: 16 }}
+              <CommonItemBox>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
                 >
-                  {t('businessReview')}
+                  <Label id="changeRecord" className="info_item_tab">
+                    {t('changeRecord')}
+                  </Label>
+                  <ScreenMinHover
+                    label={t('common.search')}
+                    icon="filter"
+                    isActive={filter}
+                    onClick={() => setFilter(!filter)}
+                  />
+                </div>
+                <ChangeRecord filter={filter} detail={drawerInfo} />
+              </CommonItemBox>
+              <CommonItemBox>
+                <Label id="transferRecords" className="info_item_tab">
+                  {t('transferRecords')}
+                </Label>
+                <Circulation
+                  onUpdateCount={setTransferRecordsCount}
+                  detail={drawerInfo}
+                />
+              </CommonItemBox>
+              <CommonItemBox>
+                <Label id="sprint-activity" className="info_item_tab">
+                  {t('comment1')}
                 </Label>
                 <CommonComment
                   data={affairsCommentList}
                   onDeleteConfirm={onDeleteCommentConfirm}
                   onEditComment={onEditComment}
                 />
-              </div>
+              </CommonItemBox>
             </>
           )}
           <DetailFooter style={{ padding: '0px 24px', marginTop: '12px' }}>

@@ -2719,6 +2719,8 @@
   "cancelFollow": "Unstar",
   "followProjects": "Star",
   "numberOfTasks": "Number of tasks",
+  "changeRecord": "Change Record",
+  "transferRecords": "Transfer records",
   "cancelText": "This page has edited content that cannot be saved after cancellation. Do you want to cancel?",
   "qr": "Confirm",
   "qrE": "Confirm editing of this project",
@@ -2726,5 +2728,7 @@
   "qrAt": "Confirm New",
   "qrEt": "Confirm Editing",
   "Msg1": "Suitable for urgent projects with high complexity and novel requirements",
-  "Msg2": "Applicable to stable low-risk with clear requirements and no involvement process"
+  "Msg2": "Applicable to stable low-risk with clear requirements and no involvement process",
+  "downloadImages": "Download images",
+  "exitPreview": "Exit Preview"
 }

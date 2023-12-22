@@ -10,7 +10,6 @@ import {
 type SliceState = {
   guideVisible: Model.Sprint.Visible
   projectRoleList?: Model.Sprint.ProjectSettings[]
-
   rightSprintList: any[]
   rightLoading: boolean
   leftSprintList: {

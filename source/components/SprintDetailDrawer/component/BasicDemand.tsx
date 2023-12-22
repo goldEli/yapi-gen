@@ -40,7 +40,6 @@ import { setDrawerCanOperation } from '@store/project'
 
 interface Props {
   detail?: any
-  isOpen?: boolean
   onUpdate(): void
   hasPadding?: boolean
   // 是否是详情页面

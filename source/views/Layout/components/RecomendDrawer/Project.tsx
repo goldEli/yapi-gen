@@ -23,7 +23,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import moment from 'moment'
 import { getRecentProject } from '@/services/project'
 const GroupItems = (props: any) => {
-  const { row, onOpenExamine, onClickItem, tabActiv, onCancel } = props
+  const { row, onOpenExamine, onClickItem, tabActive, onCancel } = props
   const [page, setPage] = useState(1)
   // 加载更多的loading
   const [moreLoading, setMoreLoading] = useState(false)

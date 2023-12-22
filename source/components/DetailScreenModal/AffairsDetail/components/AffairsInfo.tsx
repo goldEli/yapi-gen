@@ -1,131 +1,51 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
 import { useDispatch, useSelector } from '@store/index'
-import {
-  createRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react'
-import { DetailInfoWrap, InfoWrap, ButtonGroupWrap, TabsWrap1 } from '../style'
+import { createRef, useEffect, useImperativeHandle, useState } from 'react'
+import { DetailInfoWrap, InfoWrap, TabsWrap1, Label, TabsCount } from '../style'
 import { useTranslation } from 'react-i18next'
 import { getIdsForAt, getParamsData, removeNull } from '@/tools'
-import { addAffairsComment } from '@/services/affairs'
 import {
-  getAffairsCommentList,
-  getAffairsInfo,
-} from '@store/affairs/affairs.thunk'
+  addAffairsComment,
+  deleteAffairsComment,
+  updateAffairsComment,
+} from '@/services/affairs'
+import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
 import { getMessage } from '@/components/Message'
 import LinkSprint from './LinkSprint'
-import ActivitySprint from './ActivitySprint'
 import AffairsDetail from './AffairsDetail'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
 import CommonIconFont from '@/components/CommonIconFont'
 import ChildSprint from './ChildSprint'
-import CommonButton from '@/components/CommonButton'
-import SprintTag from '@/components/TagComponent/SprintTag'
 import { Tabs } from 'antd'
 import { useLocation, useSearchParams } from 'react-router-dom'
+import CommonComment from '@/components/CommonComment'
+import ChangeRecord from './ChangeRecord'
+import Circulation from './Circulation'
+import ScreenMinHover from '@/components/ScreenMinHover'
 interface Props {
   onRef: any
   employeeCurrentId?: number
 }
 
-const ButtonGroup = (props: {
-  state: boolean
-  onClickItem: (el: any) => void
-  affairsInfo: any
-  isInfoPage: any
-}) => {
-  const dispatch = useDispatch()
-  const [t] = useTranslation()
-  const { projectInfo } = useSelector(store => store.project)
-  const [items, setItems] = useState<Array<{ label: string; key: string }>>([])
-  const location = useLocation()
-  const data = [
-    { key: 'sprint-attachment', label: t('attachment') },
-    { key: 'sprint-tag', label: t('addTag') },
-    { key: 'sprint-childSprint', label: t('sprint.sub') },
-    { key: 'sprint-linkSprint', label: t('linkAffairs') },
-  ]
-
-  // 更新详情
-  const onOperationUpdate = () => {
-    dispatch(
-      getAffairsInfo({
-        projectId: projectInfo.id,
-        sprintId: props.affairsInfo.id || 0,
-      }),
-    )
-  }
-
-  useEffect(() => {
-    if (props.state) {
-      setItems(data.filter(el => el.key !== 'sprint-childSprint'))
-    } else {
-      setItems(data)
-    }
-  }, [props.state])
-  return (
-    <ButtonGroupWrap style={{ paddingBottom: '16px' }}>
-      {items.map((el: { label: string; key: string }) => (
-        <div key={el.key}>
-          <>
-            {el.key === 'sprint-tag' && (
-              <SprintTag
-                defaultList={props.affairsInfo?.tag?.map((i: any) => ({
-                  id: i.id,
-                  color: i.tag?.color,
-                  name: i.tag?.content,
-                }))}
-                canAdd
-                onUpdate={onOperationUpdate}
-                detail={props.affairsInfo}
-                isDetailQuick
-                addWrap={
-                  <CommonButton
-                    style={{ marginRight: '12px' }}
-                    key={el.key}
-                    type="secondary"
-                  >
-                    {el.label}
-                  </CommonButton>
-                }
-              />
-            )}
-
-            {el.key !== 'sprint-tag' && (
-              <CommonButton
-                type="secondary"
-                style={{ marginRight: '12px' }}
-                onClick={() => props.onClickItem(el)}
-              >
-                {el.label}
-              </CommonButton>
-            )}
-          </>
-        </div>
-      ))}
-    </ButtonGroupWrap>
-  )
-}
 const AffairsInfo = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const routerPath = useLocation()
   const [searchParams] = useSearchParams()
   const { userPreferenceConfig } = useSelector(store => store.user)
-  const LeftDomDetailInfo = useRef<HTMLDivElement>(null)
   const commentDom: any = createRef()
   const childRef: any = createRef()
   const linkSprint: any = createRef()
   const uploadFile: any = createRef()
-  const LeftDomC = LeftDomDetailInfo.current
-  const { affairsInfo } = useSelector(store => store.affairs)
+  const { affairsInfo, affairsCommentList } = useSelector(
+    store => store.affairs,
+  )
   const { projectInfoValues, projectInfo } = useSelector(store => store.project)
   const [tabActive, setTabActive] = useState('sprint-info')
-  const [isScroll, setIsScroll] = useState(false)
+  const [filter, setFilter] = useState(false)
+  const [transferRecordsCount, setTransferRecordsCount] = useState(0)
+
   const items: any = [
     {
       key: 'sprint-info',
@@ -152,10 +72,69 @@ const AffairsInfo = (props: Props) => {
       label: t('linkAffairs'),
     },
     {
+      key: 'changeRecord',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('changeRecord')}</span>
+          <TabsCount>{affairsInfo.changeCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
+      key: 'transferRecords',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('transferRecords')}</span>
+          <TabsCount>{transferRecordsCount}</TabsCount>
+        </div>
+      ),
+    },
+    {
       key: 'sprint-activity',
-      label: t('activity'),
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span>{t('comment1')}</span>
+          <TabsCount>{affairsCommentList?.list.length || 0}</TabsCount>
+        </div>
+      ),
     },
   ]
+
+  // 获取评论列表
+  const getList = () => {
+    dispatch(
+      getAffairsCommentList({
+        projectId: projectInfo.id,
+        sprintId: affairsInfo.id || 0,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }
+
+  // 删除评论
+  const onDeleteCommentConfirm = async (commentId: number) => {
+    await deleteAffairsComment({ projectId: projectInfo.id, id: commentId })
+    getMessage({ type: 'success', msg: t('successfullyDeleted') })
+    getList()
+  }
+
+  // 编辑评论
+  const onEditComment = async (value: string, commentId: number) => {
+    if (affairsInfo?.info === value || !value) {
+      return
+    }
+    await updateAffairsComment({
+      projectId: projectInfo.id,
+      id: commentId,
+      storyId: affairsInfo.id || 0,
+      content: value,
+      ids: getIdsForAt(value),
+    })
+    getMessage({ type: 'success', msg: t('successfullyModified') })
+    getList()
+  }
+
   // 提交评论
   const onConfirmComment = async (value: { info: string }) => {
     await addAffairsComment({
@@ -175,47 +154,29 @@ const AffairsInfo = (props: Props) => {
     )
     commentDom.current.cancel()
   }
+
   // 计算滚动选中tab
   const handleScroll = (e: any) => {
-    setIsScroll(!(e.target.scrollTop < 60))
+    const parentElement: any = document.querySelector('#contentDom')
+    const infoItemTabs = parentElement?.querySelectorAll('.info_item_tab')
     // 滚动容器
-    if (!document.querySelector('.sprintDetail_dom')) {
+    if (!document.querySelector('#contentDom')) {
       return
     }
-    const { scrollTop } = document.querySelector(
-      '.sprintDetail_dom',
-    ) as HTMLElement
+    const { scrollTop } = parentElement as HTMLElement
     // 所有标题节点
-    let sprintAttachment: any =
-      document.getElementById('sprint-attachment')?.offsetTop
-    let sprintTag: any = document.getElementById('sprint-tag')?.offsetTop
-    let sprintLinkSprint: any =
-      document.getElementById('sprint-linkSprint')?.offsetTop
-    let sprintActivity: any =
-      document.getElementById('sprint-activity')?.offsetTop
-    let sprintChildSprint: any =
-      document.getElementById('sprint-childSprint')?.offsetTop
-    if (sprintTag + 80 >= Math.floor(scrollTop)) {
-      setTabActive('sprint-tag')
-    } else if (sprintAttachment + 80 >= Math.floor(scrollTop)) {
-      setTabActive('sprint-attachment')
-    } else if (sprintChildSprint + 80 >= Math.floor(scrollTop)) {
-      setTabActive('sprint-childSprint')
-    } else if (sprintLinkSprint + 80 >= Math.floor(scrollTop)) {
-      setTabActive('sprint-linkSprint')
-    } else if (sprintActivity + 80 >= Math.floor(scrollTop)) {
-      setTabActive('sprint-activity')
-    }
+    const titleItems: any = infoItemTabs
+    let arr: any = []
+    titleItems.forEach((element: any) => {
+      const { offsetTop, id } = element as HTMLElement
+      if (offsetTop - 110 <= scrollTop) {
+        const keys = [...arr, ...[id]]
+        arr = [...new Set(keys)]
+      }
+    })
+    setTabActive(arr[arr.length - 1])
   }
-  const onClickItem = (el: any) => {
-    if (el.key === 'sprint-childSprint') {
-      childRef && childRef.current.onCreateChild()
-    } else if (el.key === 'sprint-linkSprint') {
-      linkSprint.current.onClickOpen()
-    } else if (el.key === 'sprint-attachment') {
-      uploadFile.current.handleUpload()
-    }
-  }
+
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
     setTabActive(value)
@@ -224,6 +185,7 @@ const AffairsInfo = (props: Props) => {
       behavior: 'smooth',
     })
   }
+
   useImperativeHandle(props.onRef, () => {
     return {
       changeTabs: onChangeTabs,
@@ -231,11 +193,11 @@ const AffairsInfo = (props: Props) => {
   })
 
   useEffect(() => {
-    LeftDomC?.addEventListener('scroll', handleScroll, true)
+    window?.addEventListener('scroll', handleScroll, true)
     return () => {
-      LeftDomC?.removeEventListener('scroll', handleScroll, false)
+      window?.removeEventListener('scroll', handleScroll, false)
     }
-  }, [LeftDomC])
+  }, [affairsInfo])
 
   useEffect(() => {
     // 判断从消息跳转到详情定位评论  只有全屏及弹窗会触发
@@ -262,6 +224,7 @@ const AffairsInfo = (props: Props) => {
   // 少了64事务出不来评论
   const a1 = aa ? a2 : a3
   const a6 = aa ? a2 - 76 : a3 - 76
+
   return (
     <InfoWrap
       height={`calc(${startHeight}vh - ${
@@ -269,36 +232,21 @@ const AffairsInfo = (props: Props) => {
         (document.getElementById('DetailText')?.clientHeight || 25)
       }px)`}
     >
-      {(isScroll || props?.employeeCurrentId) && (
-        <TabsWrap1 style={{ paddingBottom: '0px' }}>
-          <Tabs
-            className="tabs"
-            activeKey={tabActive}
-            items={
-              // 子任务不存在子事务模块
-              affairsInfo.work_type === 6
-                ? items.filter((i: any) => i.key !== 'sprint-childSprint')
-                : items
-            }
-            onChange={onChangeTabs}
-          />
-        </TabsWrap1>
-      )}
-      {/* 子任务不存在子事务模块 */}
-      {!isScroll && !props?.employeeCurrentId && (
-        <ButtonGroup
-          state={affairsInfo.work_type === 6}
-          onClickItem={onClickItem}
-          affairsInfo={affairsInfo}
-          isInfoPage
+      <TabsWrap1 style={{ paddingBottom: '0px' }}>
+        <Tabs
+          className="tabs"
+          activeKey={tabActive}
+          items={
+            // 子任务不存在子事务模块
+            affairsInfo.work_type === 6
+              ? items.filter((i: any) => i.key !== 'sprint-childSprint')
+              : items
+          }
+          onChange={onChangeTabs}
         />
-      )}
+      </TabsWrap1>
 
-      <DetailInfoWrap
-        ref={LeftDomDetailInfo}
-        className="sprintDetail_dom"
-        isScroll={isScroll}
-      >
+      <DetailInfoWrap id="contentDom">
         <AffairsDetail
           onRef={uploadFile}
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
@@ -329,7 +277,60 @@ const AffairsInfo = (props: Props) => {
             isInfoPage
             isPreview={(props?.employeeCurrentId || 0) > 0}
           />
-          <ActivitySprint />
+          <div
+            style={{
+              backgroundColor: 'white',
+              padding: '16px 24px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Label id="changeRecord" className="info_item_tab">
+                {t('changeRecord')}
+              </Label>
+              <ScreenMinHover
+                label={t('common.search')}
+                icon="filter"
+                isActive={filter}
+                onClick={() => setFilter(!filter)}
+              />
+            </div>
+            <ChangeRecord filter={filter} detail={affairsInfo} />
+          </div>
+          <div
+            style={{
+              backgroundColor: 'white',
+              padding: '16px 24px',
+            }}
+          >
+            <Label id="transferRecords" className="info_item_tab">
+              {t('transferRecords')}
+            </Label>
+            <Circulation
+              onUpdateCount={setTransferRecordsCount}
+              detail={affairsInfo}
+            />
+          </div>
+          <div
+            style={{
+              backgroundColor: 'white',
+              padding: '16px 24px',
+            }}
+          >
+            <Label id="sprint-activity" className="info_item_tab">
+              {t('comment1')}
+            </Label>
+            <CommonComment
+              data={affairsCommentList}
+              onDeleteConfirm={onDeleteCommentConfirm}
+              onEditComment={onEditComment}
+            />
+          </div>
         </div>
 
         {affairsInfo?.isExamine && (

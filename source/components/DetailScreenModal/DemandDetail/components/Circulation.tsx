@@ -116,8 +116,9 @@ const ContentWrap = styled.div`
 `
 
 interface Props {
-  activeKey: string
+  detail: any
   employeeCurrentId?: boolean
+  onUpdateCount(num: number): void
 }
 
 const Circulation = (props: Props) => {
@@ -133,39 +134,32 @@ const Circulation = (props: Props) => {
   const { isUpdateChangeLog } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { demandInfo } = useSelector(store => store.demand)
 
   const getLogs = async (state: boolean) => {
     if (state) {
       setIsSpin(true)
-      const result = await getStoryStatusLog({
-        projectId: id ?? projectInfo.id,
-        demandId: demandInfo.id,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
+    }
+    const result = await getStoryStatusLog({
+      projectId: id ?? projectInfo.id,
+      demandId: props?.detail?.id,
+      all: true,
+    })
+    setStatusLogs({
+      list: result,
+    })
+    if (state) {
       dispatch(setIsRefresh(false))
       setIsSpin(false)
-    } else {
-      const result = await getStoryStatusLog({
-        projectId: id,
-        demandId: demandInfo.id,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
     }
+    props?.onUpdateCount(result?.length)
     dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {
-    if (props.activeKey === '5') {
+    if (props?.detail?.id) {
       getLogs(true)
     }
-  }, [props.activeKey])
+  }, [props?.detail])
 
   useEffect(() => {
     if (isRefresh) {
@@ -202,7 +196,7 @@ const Circulation = (props: Props) => {
     : 210
 
   return (
-    <ComputedWrap style={{ height: `calc(${aa} - ${a1}px)`, overflow: 'auto' }}>
+    <ComputedWrap>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
         {!!statusLogs?.list && (
           <>

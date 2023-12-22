@@ -45,8 +45,6 @@ import {
 import { getWorkflowList } from '@/services/project'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import LongStroyBread from '@/components/LongStroyBread'
-import CommonButton from '@/components/CommonButton'
-import CommonIconFont from '@/components/CommonIconFont'
 import { copyLink, getIsPermission } from '@/tools'
 import { setActiveCategory } from '@store/category'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -234,11 +232,6 @@ const AffairsDetail = () => {
     navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${resultParams}`)
   }
 
-  // 标签滚动
-  const onChangeTabsScroll = (value: string) => {
-    sprintDetailInfoDom.current.changeTabs(value)
-  }
-
   // 确认删除
   const onDeleteConfirm = async () => {
     await deleteAffairs({
@@ -403,10 +396,7 @@ const AffairsDetail = () => {
 
   // 点击查看流转记录
   const onCheckRecord = () => {
-    sprintDetailInfoDom.current.changeTabs('sprint-activity')
-    setTimeout(() => {
-      dispatch(setAffairsActivity('3'))
-    }, 100)
+    sprintDetailInfoDom.current.changeTabs('transferRecords')
   }
 
   // 更新方法

@@ -427,10 +427,10 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
                 text?.is_start === 1 && text?.is_end === 2
                   ? 1
                   : text?.is_end === 1 && text?.is_start === 2
-                  ? 2
-                  : text?.is_start === 2 && text?.is_end === 2
-                  ? 3
-                  : 0
+                    ? 2
+                    : text?.is_start === 2 && text?.is_end === 2
+                      ? 3
+                      : 0
               }
             />
           </ChangeStatusPopover>
@@ -610,10 +610,10 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
               text?.is_start === 1 && text?.is_end === 2
                 ? 1
                 : text?.is_end === 1 && text?.is_start === 2
-                ? 2
-                : text?.is_start === 2 && text?.is_end === 2
-                ? 3
-                : 0
+                  ? 2
+                  : text?.is_start === 2 && text?.is_end === 2
+                    ? 3
+                    : 0
             }
           />
         )
@@ -700,15 +700,14 @@ const RelationStories = (props: RelationStoriesProps, ref: any) => {
   return (
     <RelationWrap
       style={{
-        padding: '12px 24px 0 24px',
+        // padding: props.isDrawer ? '16px 24px' : '16px 24px',
         backgroundColor: 'white',
-        height: `calc(100% - ${
-          props?.isPreview
+        height: `calc(100% - ${props?.isPreview
             ? 94
             : userPreferenceConfig.previewModel === 3
-            ? 0
-            : 50
-        }px)`,
+              ? 0
+              : 50
+          }px)`,
       }}
       id="tab_associatedWorkItems"
       className="info_item_tab"

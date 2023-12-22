@@ -180,10 +180,10 @@ export const ComputedWrap = styled.div<{
   isPreview?: boolean
 }>`
   padding: 0px 24px;
-  height: calc(
+  /* height: calc(
     ${props => (props.all ? '80vh' : '100vh')} -
       ${props => (props.all ? (props?.isPreview ? '124px' : '154px') : '210px')}
-  );
+  ); */
 `
 
 //  需求详情-详细信息

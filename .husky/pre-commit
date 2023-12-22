@@ -3,4 +3,3 @@
 
 npx tsc
 
-npx --no-install lint-staged

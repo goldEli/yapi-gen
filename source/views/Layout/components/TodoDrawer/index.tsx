@@ -47,9 +47,11 @@ const TodoDrawer = (props: any) => {
       onClick={() => {
         onCancel()
         if (active === 2) {
+          onCancel()
           navigate('Mine/Carbon')
         }
         if (active === 3) {
+          onCancel()
           navigate('Mine/Examine')
         }
       }}

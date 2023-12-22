@@ -2719,6 +2719,8 @@
   "cancelFollow": "取消星标",
   "followProjects": "星标",
   "numberOfTasks": "任务数",
+  "changeRecord": "变更记录",
+  "transferRecords": "流转记录",
   "cancelText": "该页面有编辑内容取消后不能保存，是否取消？",
   "qr": "确认",
   "qrE": "确认编辑该项目",
@@ -2726,5 +2728,7 @@
   "qrAt": "确认新建",
   "qrEt": "确认编辑",
   "Msg1": "适用于复杂程度高、要求新颖的紧急项目",
-  "Msg2": "适用于稳定的低风险、需求明确不参与过程的项目"
+  "Msg2": "适用于稳定的低风险、需求明确不参与过程的项目",
+  "downloadImages": "下载图片",
+  "exitPreview": "退出预览"
 }

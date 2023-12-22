@@ -60,8 +60,8 @@ const NewSort = (sortProps: any) => {
 }
 
 interface Props {
-  activeKey: string
   filter?: boolean
+  detail?: any
 }
 
 const ChangeRecord = (props: Props) => {
@@ -80,13 +80,11 @@ const ChangeRecord = (props: Props) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { affairsInfo } = useSelector(store => store.affairs)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
-    console.log('projectInfo', projectInfo.id)
     const result = await getAffairsChangeLog({
-      sprintId: affairsInfo.id || 0,
+      sprintId: props?.detail.id || 0,
       projectId: id ?? projectInfo.id,
       page: item ? item.page ?? 1 : 1,
       pageSize: item ? item.size ?? 10 : 10,
@@ -103,10 +101,10 @@ const ChangeRecord = (props: Props) => {
     dispatch(setIsUpdateChangeLog(false))
   }
   useEffect(() => {
-    if (props.activeKey === '2') {
+    if (props?.detail.id) {
       getList(pageObj, order)
     }
-  }, [props.activeKey])
+  }, [props?.detail])
   useEffect(() => {
     if (isRefresh) {
       getList({ page: 1, size: pageObj.size }, order)
