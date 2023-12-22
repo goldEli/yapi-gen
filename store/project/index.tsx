@@ -7,6 +7,7 @@ import {
   getProjectInfoStore,
   getProjectInfoValuesStore,
   getWarningConfigInfo,
+  getProjectCatrgory,
 } from './project.thunk'
 export interface CounterState {
   projectInfo: any
@@ -59,6 +60,8 @@ export interface CounterState {
     id?: number
   }
   statistiDepartment?: any
+  // 项目分类
+  projectCategory?: any
 }
 
 const initialState: CounterState = {
@@ -117,6 +120,7 @@ const initialState: CounterState = {
     checkedKeys: [],
     list: [],
   },
+  projectCategory: [],
 }
 
 export const projectSlice = createSlice({
@@ -265,6 +269,9 @@ export const projectSlice = createSlice({
           day: is_holiday === 1 ? [...day, -1] : [...day],
         },
       }
+    })
+    builder.addCase(getProjectCatrgory.fulfilled, (state, action) => {
+      state.projectCategory = action.payload
     })
   },
 })

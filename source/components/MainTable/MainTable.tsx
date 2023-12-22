@@ -25,6 +25,7 @@ import CommonButton from '../CommonButton'
 import { Tags } from '../ProjectCard/style'
 import DragTable from '../DragTable'
 import MultipleAvatar from '../MultipleAvatar'
+import ProjectClasss from './ProjectClass'
 import CommonIconFont from '../CommonIconFont'
 
 interface Props {
@@ -38,6 +39,8 @@ interface Props {
   hasFilter?: boolean
   onChangeProjectList(value: any, idx?: number): void
   filterParams?: any
+  // 关注与取消关注
+  onChangeStar(type: number, row: any): void
 }
 const DropdownWrap = styled(Dropdown)({
   cursor: 'pointer',
@@ -84,6 +87,7 @@ const ImgWrap = styled.div<{ url?: string }>(
 )
 
 const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
+  margin-top: 16px;
   height: ${props => props.height};
   overflow-x: ${props => (props.srcollState ? 'hidden' : 'auto')};
   overflow: ${props => (props.srcollState ? 'hidden' : 'auto')};
@@ -93,10 +97,36 @@ const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
       border-bottom: 1px solid transparent;
       max-width: 386px;
     }
+    .stared {
+      svg {
+        color: var(--function-warning);
+      }
+    }
+
+    td.ant-table-cell:first-child {
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+      text-align: center;
+    }
+
+    .hasStart {
+      visibility: hidden;
+      svg {
+        color: var(--neutral-n3);
+      }
+      &:hover {
+        svg {
+          color: var(--function-warning) !important;
+        }
+      }
+    }
     &:hover {
       .controlMaxWidth {
         border-bottom: 1px solid var(--primary-d1);
         color: var(--primary-d1);
+      }
+      .hasStart {
+        visibility: visible;
       }
     }
   }
@@ -135,7 +165,46 @@ const MainTable = (props: Props) => {
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation({ page, size })
   }
-  let columns: any = [
+
+  const columns: any = [
+    {
+      width: 40,
+      render: (text: any, record: any) => {
+        return (
+          <Tooltip
+            title={
+              record?.list_category === -1
+                ? t('cancelFollow')
+                : t('followProjects')
+            }
+          >
+            {/* 没有关注过的 */}
+            {record?.list_category !== -1 && (
+              <div
+                className="hasStart"
+                onClick={e => {
+                  e.stopPropagation()
+                  props?.onChangeStar(1, record)
+                }}
+              >
+                <CommonIconFont size={20} type="star-adipf4l8" />
+              </div>
+            )}
+            {record?.list_category === -1 && (
+              <div
+                className="stared"
+                onClick={e => {
+                  e.stopPropagation()
+                  props?.onChangeStar(0, record)
+                }}
+              >
+                <CommonIconFont size={20} type="star" />
+              </div>
+            )}
+          </Tooltip>
+        )
+      },
+    },
     {
       dataIndex: 'name',
       title: (
@@ -148,7 +217,7 @@ const MainTable = (props: Props) => {
           {t('common.projectName')}
         </NewSort>
       ),
-      width: 480,
+      width: 400,
       render: (text: string, record: any) => {
         return (
           <div
@@ -156,6 +225,7 @@ const MainTable = (props: Props) => {
               display: 'flex',
               alignItems: 'center',
             }}
+            className="td"
           >
             <ImgWrap url={record.cover} />
             {record.project_type === 1 ? (
@@ -184,7 +254,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'progress',
-      width: 120,
+      width: 200,
       render: (text: string) => {
         return (
           <Progress
@@ -220,6 +290,23 @@ const MainTable = (props: Props) => {
     {
       title: (
         <NewSort
+          fixedKey="story_count"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('numberOfTasks')}
+        </NewSort>
+      ),
+      dataIndex: 'story_count',
+      width: 110,
+      render: (text: string, record: any) => {
+        return <span>{text}</span>
+      },
+    },
+    {
+      title: (
+        <NewSort
           fixedKey="expected_start_at"
           nowKey={props.order.key}
           order={props.order.value}
@@ -229,7 +316,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'expected_start_at',
-      width: 120,
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -246,11 +333,32 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'expected_end_at',
-      width: 120,
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
+    // {
+    //   title: (
+    //     <NewSort
+    //       fixedKey="projectCategory"
+    //       nowKey={props.order.key}
+    //       order={props.order.value}
+    //       onUpdateOrderKey={onUpdateOrderKey}
+    //     >
+    //       项目分类
+    //     </NewSort>
+    //   ),
+    //   dataIndex: 'projectCategory',
+    //   width: 120,
+    //   render: (text: string) => {
+    //     return (
+    //       <ProjectClasss category={text} callBack={(data) => {
+    //         console.log('data', data)
+    //       }}></ProjectClasss>
+    //     )
+    //   },
+    // },
     {
       title: (
         <NewSort
@@ -329,13 +437,25 @@ const MainTable = (props: Props) => {
 
   const onTableRow = useCallback((row: any) => {
     return {
-      onClick: () => {
+      onClick: (event: any) => {
+        const { target } = event
+        const columnIndex = Array.from(target.parentNode.children).indexOf(
+          target,
+        )
+        const column = columns[columnIndex]
+        if (
+          column?.dataIndex === 'projectCategory' ||
+          target.className.includes('project_category') ||
+          target.className.includes('project_category_activity')
+        ) {
+          return
+        }
+        console.log('Clicked column:', column, target.className)
         const params = encryptPhp(
           JSON.stringify({
             id: row.id,
           }),
         )
-
         navigate(
           `${
             row.defaultHomeMenu
@@ -353,7 +473,7 @@ const MainTable = (props: Props) => {
         (props.projectList?.list?.length > 0 ? (
           <DataWrap
             srcollState={false}
-            height="calc(100% - 56px)"
+            height="calc(100% - 28px - 16px)"
             ref={dataWrapRef}
           >
             <DragTable

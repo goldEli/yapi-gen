@@ -22,7 +22,7 @@ import moment from 'moment'
 import { getRecentStory } from '@/services/project'
 import { setIsUpdateAddWorkItem } from '@store/project'
 const GroupItems = (props: any) => {
-  const { row, onOpenExamine, onClickItem, tabActive } = props
+  const { row, onOpenExamine, onClickItem, tabActive, onCancel } = props
   const [page, setPage] = useState(1)
   const navigate = useNavigate()
   // 加载更多的loading
@@ -37,6 +37,7 @@ const GroupItems = (props: any) => {
   }
   // 任务-点击跳转详情
   const onClickTask = async (row: any) => {
+    onCancel()
     // props.onClose()
     // dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
@@ -127,7 +128,7 @@ const GroupItems = (props: any) => {
   )
 }
 
-const ReviewTask = () => {
+const ReviewTask = (props: { onCancel(): void }) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -173,6 +174,7 @@ const ReviewTask = () => {
   }
   // 点击跳转详情
   const onClickItem = async (row: any) => {
+    props.onCancel()
     dispatch(setIsUpdateAddWorkItem(0))
     const params = encryptPhp(
       JSON.stringify({
@@ -256,6 +258,7 @@ const ReviewTask = () => {
                       onOpenExamine={onOpenExamine}
                       onClickItem={onClickItem}
                       tabActive={1}
+                      onCancel={props.onCancel}
                     />
                   </ItemWrap>
                 ))

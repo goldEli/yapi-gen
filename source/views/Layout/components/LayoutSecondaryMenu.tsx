@@ -86,7 +86,7 @@ const LayoutSecondaryMenu = () => {
       }
       const params = encryptPhp(JSON.stringify(newParamsData))
       dispatch(getProjectInfoStore({ projectId: paramsData?.id }))
-      dispatch(getProjectInfoValuesStore({ projectId: paramsData?.id }))
+      dispatch(getProjectInfoValuesStore({ projectId: paramsData?.id, all: 1 }))
       resultUrl = `${url}?data=${params}`
     } else {
       // 特殊处理下后台管理跳转地址

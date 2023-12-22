@@ -98,7 +98,7 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
     >
       <ModalHeader>
         <Title>
-          {props.hasIcon && (
+          {!props.hasIcon && (
             <IconFont
               style={{ fontSize: 24, color: 'var(--function-warning)' }}
               type="Warning"
@@ -112,7 +112,7 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
-              marginLeft: props?.hasIcon ? 12 : 0,
+              marginLeft: props?.hasIcon ? 0 : 12,
             }}
           >
             {props.title ? props.title : t('confirmationOfDeletion')}
@@ -132,7 +132,7 @@ const DeleteConfirm = (props: DeleteConfirmProps) => {
           </CloseWrap>
         )}
       </ModalHeader>
-      <ModalContent style={{ paddingLeft: props?.hasIcon ? 60 : 24 }}>
+      <ModalContent style={{ paddingLeft: props?.hasIcon ? 24 : 60 }}>
         {props.children ?? props.text}
       </ModalContent>
       <ModalFooter size={16}>

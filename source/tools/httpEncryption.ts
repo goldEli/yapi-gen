@@ -12,6 +12,7 @@ import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
 import { decrypt, encrypt } from './crypto'
+import { decryptPhp, encryptPhp } from './cryptoPhp'
 
 const { userAgent } = window.navigator
 const getSystem = () => {
@@ -92,11 +93,7 @@ client.config({
             '[object FormData]'
           ) {
             if (JSON.stringify(options.search) !== '{}') {
-              // 加解密格式不一样
-              options.search =
-                import.meta.env.MODE === 'development'
-                  ? { p: JSON.stringify(options.search) }
-                  : JSON.parse(JSON.stringify(options.search))
+              options.search = { p: encryptPhp(JSON.stringify(options.search)) }
             } else if (
               options.payload !== 'null' &&
               options.payload !== null &&
@@ -104,12 +101,9 @@ client.config({
               options.payload !== undefined &&
               options.payload !== '{}'
             ) {
-              options.payload =
-                import.meta.env.MODE === 'development'
-                  ? JSON.stringify({
-                      p: options.payload as string,
-                    })
-                  : options.payload
+              options.payload = JSON.stringify({
+                p: encryptPhp(options.payload as string),
+              })
             }
           }
         }
@@ -131,10 +125,9 @@ client.config({
         if (options.responseType === 'blob') {
           return response
         }
-        // 加解密格式不一样
-        return import.meta.env.MODE === 'development'
-          ? JSON.parse((response as { body: string }).body).p
-          : JSON.parse((response as { body: string }).body)
+        return JSON.parse(
+          decryptPhp(JSON.parse((response as { body: string }).body).p),
+        )
       }
       return options.responseType === 'blob'
         ? response

@@ -63,19 +63,19 @@ export const counterSlice = createSlice({
       state.loginInfo = action.payload.loginInfo
       state.userInfo = action.payload.userInfo
       const menu = [
-        {
-          id: 642,
-          name: 'container.members',
-          url: '/EmployeeProfile',
-          isRegular: true,
-        },
+        { name: 'container.dynamics', url: '/Trends', id: 1, isRegular: true },
         {
           name: 'container.statistics',
           url: '/Statistics',
           id: 991,
           isRegular: true,
         },
-        { name: 'container.dynamics', url: '/Trends', id: 1, isRegular: true },
+        {
+          id: 642,
+          name: 'container.members',
+          url: '/EmployeeProfile',
+          isRegular: true,
+        },
         { name: 'container.mine', url: '/Mine', id: 2, isRegular: true },
       ]
       const menuPermission = JSON.parse(
