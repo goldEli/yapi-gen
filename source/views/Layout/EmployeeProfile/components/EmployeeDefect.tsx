@@ -34,6 +34,7 @@ import {
   getProjectInfoValuesStore,
 } from '@store/project/project.thunk'
 import NoData from '@/components/NoData'
+import BasicDemand from '@/components/FlawDetailDrawer/component/BasicDemand'
 
 interface EmployeeDefectProps {
   id: number
@@ -330,7 +331,7 @@ const EmployeeDefect = (props: EmployeeDefectProps) => {
                     ref={relationStoriesRef}
                     isPreview
                   />
-                  <FlawBasic
+                  <BasicDemand
                     detail={drawerInfo}
                     onUpdate={() => {
                       //

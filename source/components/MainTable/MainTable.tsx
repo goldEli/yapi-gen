@@ -79,6 +79,7 @@ const ImgWrap = styled.div<{ url?: string }>(
 )
 
 const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
+  margin-top: 16px;
   height: ${props => props.height};
   overflow-x: ${props => (props.srcollState ? 'hidden' : 'auto')};
   overflow: ${props => (props.srcollState ? 'hidden' : 'auto')};
@@ -89,14 +90,19 @@ const DataWrap = styled.div<{ height?: any; srcollState: boolean }>`
       max-width: 386px;
     }
     .stared {
-      width: max-content;
       svg {
         color: var(--function-warning);
       }
     }
+
+    td.ant-table-cell:first-child {
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+      text-align: center;
+    }
+
     .hasStart {
       visibility: hidden;
-      width: max-content;
       svg {
         color: var(--neutral-n3);
       }
@@ -152,7 +158,7 @@ const MainTable = (props: Props) => {
     props.onChangePageNavigation({ page, size })
   }
 
-  let columns: any = [
+  const columns: any = [
     {
       width: 40,
       render: (text: any, record: any) => {
@@ -203,7 +209,7 @@ const MainTable = (props: Props) => {
           {t('common.projectName')}
         </NewSort>
       ),
-      width: 480,
+      width: 400,
       render: (text: string, record: any) => {
         return (
           <div
@@ -240,7 +246,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'progress',
-      width: 120,
+      width: 200,
       render: (text: string) => {
         return (
           <Progress
@@ -302,7 +308,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'expected_start_at',
-      width: 120,
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -319,7 +325,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'expected_end_at',
-      width: 120,
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -459,7 +465,7 @@ const MainTable = (props: Props) => {
         (props.projectList?.list?.length > 0 ? (
           <DataWrap
             srcollState={false}
-            height="calc(100% - 28px)"
+            height="calc(100% - 28px - 16px)"
             ref={dataWrapRef}
           >
             <DragTable

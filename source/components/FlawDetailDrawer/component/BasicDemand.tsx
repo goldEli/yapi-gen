@@ -9,34 +9,24 @@ import { useDispatch, useSelector } from '@store/index'
 import { message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  ContentWrap,
-  InfoItem,
-  Label,
-  LabelItem,
-  MaxLabel,
-  ShowLabel,
-} from '../style'
+import { ContentWrap, InfoItem, LabelItem, MaxLabel, ShowLabel } from '../style'
 import { getMessage } from '@/components/Message'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import {
   CanOperation,
   IconFontWrapEdit,
   SeverityWrap,
-  SliderWrap,
 } from '@/components/StyleCommon'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import IconFont from '@/components/IconFont'
-import {
-  updateAffairsPriority,
-  updateAffairsTableParams,
-} from '@/services/affairs'
-import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
 import DetailParent from '@/components/DetailParent'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { setIsRefresh } from '@store/user'
 import { setDrawerCanOperation } from '@store/project'
+import { updateFlawPriority, updateFlawTableParams } from '@/services/flaw'
+import { getFlawInfo } from '@store/flaw/flaw.thunk'
+import { Label } from '@/components/DetailScreenModal/FlawDetail/style'
 
 interface Props {
   detail?: any
@@ -74,18 +64,22 @@ const BasicDemand = (props: Props) => {
   const { userInfo, isRefresh } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
-  const { affairsDetailDrawer } = useSelector(store => store.affairs)
+  const { flawDetailDrawer } = useSelector(store => store.flaw)
   const { userId } = useSelector(store => store.employeeProfile)
+
+  useEffect(() => {
+    setSchedule(props.detail?.schedule)
+  }, [props.detail?.schedule])
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/transaction/update',
+      (i: any) => i.identity === 'b/flaw/update',
     )?.length > 0
 
   const onChangeState = async (item: any) => {
     try {
-      await updateAffairsPriority({
+      await updateFlawPriority({
         id: props.detail.id,
         priorityId: item.priorityId,
         projectId: props.detail.projectId,
@@ -93,9 +87,9 @@ const BasicDemand = (props: Props) => {
       getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
       if (props.isInfoPage) {
         dispatch(
-          getAffairsInfo({
+          getFlawInfo({
             projectId: props.detail.projectId,
-            sprintId: props.detail?.id,
+            id: props.detail.id,
           }),
         )
       } else {
@@ -106,6 +100,7 @@ const BasicDemand = (props: Props) => {
     }
   }
 
+  // 提交参数需改变的 key
   const onChangeBasicKey = (key: any) => {
     const needChangeList: any = {
       class: 'class_id',
@@ -118,7 +113,7 @@ const BasicDemand = (props: Props) => {
 
   // 修改严重程度
   const onChangeSeverity = async (item: any) => {
-    await updateAffairsTableParams({
+    await updateFlawTableParams({
       id: item.id,
       projectId: props.detail.projectId,
       otherParams: {
@@ -128,9 +123,9 @@ const BasicDemand = (props: Props) => {
     getMessage({ msg: t('successfullyModified'), type: 'success' })
     if (props.isInfoPage) {
       dispatch(
-        getAffairsInfo({
+        getFlawInfo({
           projectId: props.detail.projectId,
-          sprintId: props.detail?.id,
+          id: props.detail.id,
         }),
       )
     } else {
@@ -289,7 +284,7 @@ const BasicDemand = (props: Props) => {
           defaultText={defaultValues?.defaultText}
           value={defaultValues?.valueType || null}
           onUpdate={props.onUpdate}
-          isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
+          isMineOrHis={flawDetailDrawer.params?.isMineOrHis}
           isInfoPage={props.isInfoPage}
           isPreview={props.isPreview}
         >
@@ -420,7 +415,7 @@ const BasicDemand = (props: Props) => {
         isCustom
         remarks={item?.remarks}
         onUpdate={props.onUpdate}
-        isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
+        isMineOrHis={flawDetailDrawer.params?.isMineOrHis}
         isInfoPage={props.isInfoPage}
         isPreview={props.isPreview}
       >
@@ -450,12 +445,11 @@ const BasicDemand = (props: Props) => {
     <div
       style={{
         width: '100%',
-        paddingLeft: props.hasPadding ? '24px' : 24,
+        paddingLeft: props.hasPadding ? '24px' : 0,
         backgroundColor: 'white',
-        paddingBottom: '24px',
         borderRadius: props?.isInfoPage ? 6 : 0,
       }}
-      id="sprint-basicInfo"
+      id="tab_info"
       className="info_item_tab"
     >
       <Label style={{ marginTop: props.isInfoPage ? '0' : '16px' }}>
@@ -465,18 +459,28 @@ const BasicDemand = (props: Props) => {
         ?.filter((i: any) => i.content !== 'schedule')
         ?.map((i: any) => {
           return (
-            <div
-              key={i.content}
-              style={{
-                // 冲刺项目下-长故事和子任务不显示冲刺
-                display:
-                  [3, 6].includes(props.detail.work_type) &&
-                  i.content === 'iterate_name'
-                    ? 'none'
-                    : 'block',
-              }}
-            >
-              <InfoItem>
+            <InfoItem key={i.content}>
+              <LimitLabel label={i.title} width={90} />
+              <ContentWrap
+                style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
+              >
+                {i.isCustomize === 1
+                  ? getCustomComponent(i)
+                  : getBasicTypeComponent(i)}
+              </ContentWrap>
+            </InfoItem>
+          )
+        })}
+      {!isShowFields && foldList?.length > 0 && (
+        <ShowLabel onClick={() => setIsShowFields(true)}>
+          {t('newlyAdd.open')}
+        </ShowLabel>
+      )}
+      {isShowFields
+        ? foldList
+            ?.filter((i: any) => i.content !== 'schedule')
+            ?.map((i: any) => (
+              <InfoItem key={i.content}>
                 <LimitLabel label={i.title} width={90} />
                 <ContentWrap
                   style={{
@@ -488,34 +492,13 @@ const BasicDemand = (props: Props) => {
                     : getBasicTypeComponent(i)}
                 </ContentWrap>
               </InfoItem>
-            </div>
-          )
-        })}
-      {!isShowFields && foldList?.length > 0 && (
-        <ShowLabel onClick={() => setIsShowFields(true)}>
-          {t('newlyAdd.open')}
-        </ShowLabel>
-      )}
-      {isShowFields &&
-        foldList
-          ?.filter((i: any) => i.content !== 'schedule')
-          ?.map((i: any) => (
-            <InfoItem key={i.content}>
-              <LimitLabel label={i.title} width={90} />
-              <ContentWrap
-                style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
-              >
-                {i.isCustomize === 1
-                  ? getCustomComponent(i)
-                  : getBasicTypeComponent(i)}
-              </ContentWrap>
-            </InfoItem>
-          ))}
-      {isShowFields && foldList?.length > 0 && (
+            ))
+        : null}
+      {isShowFields && foldList?.length > 0 ? (
         <ShowLabel onClick={() => setIsShowFields(false)}>
           {t('newlyAdd.close')}
         </ShowLabel>
-      )}
+      ) : null}
     </div>
   )
 }

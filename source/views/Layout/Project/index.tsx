@@ -1,5 +1,5 @@
 /* eslint-disable no-undefined */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import HeaderFilter from './components/HeaderFilter'
 import { ProjectWrap, ProjectIndexWrap } from './style'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
@@ -77,9 +77,11 @@ const ProjectIndex = () => {
   const onChangeParamsUpdate = (params: any, notSpin?: boolean) => {
     if (params?.isGrid !== filterParams?.isGrid) {
       setDataList({
+        ...dataList,
         list: undefined,
       })
     }
+
     getList(params, notSpin)
     setFilterParams(params)
   }
@@ -188,9 +190,6 @@ const ProjectIndex = () => {
   useEffect(() => {
     dispatch(getProjectCatrgory({}))
   }, [])
-  const onChangeTabs = (key: number) => {
-    setActiveKey(key)
-  }
 
   // 关注与取消关注 type：1 是关注，0是取消关注
   const onChangeStar = async (type: number, row: any) => {

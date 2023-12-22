@@ -77,7 +77,6 @@ const AffairsBasic = (props: Props) => {
         <BasicDemand
           onUpdate={onUpdate}
           detail={affairsInfo}
-          isOpen
           hasPadding
           isInfoPage
           isPreview={(props?.employeeCurrentId || 0) > 0}

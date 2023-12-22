@@ -22,6 +22,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import moment from 'moment'
 import { setIsUpdateAddWorkItem } from '@store/project'
 import NewNoData from '@/components/NewNoData'
+import { getMessage } from '@/components/Message'
 const GroupItems = (props: any) => {
   const { row, onOpenExamine, onClickItem, tabActive } = props
   const [page, setPage] = useState(1)
@@ -39,7 +40,21 @@ const GroupItems = (props: any) => {
     <>
       {row?.map((i: any) => (
         <TaskItem key={i.id}>
-          <div className="left" onClick={() => onClickItem(i)}>
+          <div
+            className="left"
+            onClick={() => {
+              if (i.is_member > 0) {
+                onClickItem(i)
+              } else {
+                getMessage({
+                  type: 'warning',
+                  msg: t(
+                    'youAreNotAMemberOfTheCurrentProjectAndDoNotHavePermissionToView',
+                  ),
+                })
+              }
+            }}
+          >
             <img className="icon" src={i?.project_category?.attachment?.path} />
             <div className="info">
               <span className="name">{i?.name}</span>

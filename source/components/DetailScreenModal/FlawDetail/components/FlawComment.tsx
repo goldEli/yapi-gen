@@ -170,7 +170,7 @@ const FlawComment = (props: Props) => {
   }
 
   return (
-    <div className={props.isOpenInfo ? haveAuto : ''}>
+    <div>
       <DeleteConfirmModal />
       <div>
         <CommentTitle>

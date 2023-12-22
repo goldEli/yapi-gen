@@ -232,11 +232,6 @@ const AffairsDetail = () => {
     navigate(`/ProjectDetail/Setting/TypeConfiguration?data=${resultParams}`)
   }
 
-  // 标签滚动
-  const onChangeTabsScroll = (value: string) => {
-    sprintDetailInfoDom.current.changeTabs(value)
-  }
-
   // 确认删除
   const onDeleteConfirm = async () => {
     await deleteAffairs({
@@ -401,10 +396,7 @@ const AffairsDetail = () => {
 
   // 点击查看流转记录
   const onCheckRecord = () => {
-    sprintDetailInfoDom.current.changeTabs('sprint-activity')
-    setTimeout(() => {
-      dispatch(setAffairsActivity('3'))
-    }, 100)
+    sprintDetailInfoDom.current.changeTabs('transferRecords')
   }
 
   // 更新方法

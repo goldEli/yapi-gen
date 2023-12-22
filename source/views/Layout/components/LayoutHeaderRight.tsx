@@ -51,6 +51,7 @@ import { setLayoutSecondaryMenuRightWidth } from '@store/global'
 import TodoDrawer from './TodoDrawer'
 import RecomendDrawer from './RecomendDrawer'
 import { setIsNewMsg } from '@store/mine'
+import classNames from 'classnames'
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
   const { language } = useSelector(store => store.global)
@@ -136,11 +137,13 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   const todoDrawerRef = useRef<any>()
   // 待办
   const [todoDrawerOpen, setTodoDrawerOpen] = useState(false)
   // 为你推荐
   const [recomendDrawerOpen, setRecomendDrawerOpen] = useState(false)
+  const [tabActive, setTabActive] = useState('todo')
   const { userInfo, isRefresh } = useSelector(store => store.user)
   const { msgStatics, isNewMsg } = useSelector(store => store.mine)
   const { todoStatistics } = msgStatics ?? {}
@@ -481,11 +484,15 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
     setRecomendDrawerOpen(true)
   }
   useEffect(() => {
-    window.addEventListener('click', (e: any) => {})
-    return () => {
-      window.removeEventListener('click', () => {})
+    // window.addEventListener('click', (e: any) => { })
+    // return () => {
+    //   window.removeEventListener('click', () => { })
+    // }
+    if (!todoDrawerOpen && !recomendDrawerOpen) {
+      console.log(11111)
+      setTabActive('')
     }
-  }, [])
+  }, [todoDrawerOpen, recomendDrawerOpen])
   return (
     <LayoutHeaderRightWrap id="LayoutHeaderRightWrap">
       <KeyBoardDrawer />
@@ -579,8 +586,10 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
       {/* 待办 */}
       <PopOverBox
         onClick={(e: any) => {
+          setTabActive('todo')
           e.stopPropagation()
         }}
+        className={classNames({ todoActive: tabActive === 'todo' })}
       >
         <Popover
           placement="bottomLeft"
@@ -605,8 +614,10 @@ const LayoutHeaderRight = (props: LayoutHeaderRightProps) => {
       {/* 为你推荐 */}
       <PopOverBox
         onClick={(e: any) => {
+          setTabActive('recomend')
           e.stopPropagation()
         }}
+        className={classNames({ todoActive: tabActive === 'recomend' })}
       >
         <Popover
           placement="bottomLeft"

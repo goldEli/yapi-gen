@@ -179,13 +179,11 @@ const AffairsInfo = (props: Props) => {
 
   // 监听左侧信息滚动
   const onChangeTabs = (value: string) => {
-    setTimeout(() => {
-      setTabActive(value)
-      const dom = document.getElementById(value)
-      dom?.scrollIntoView({
-        behavior: 'smooth',
-      })
-    }, 10)
+    setTabActive(value)
+    const dom = document.getElementById(value)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
   }
 
   useImperativeHandle(props.onRef, () => {
@@ -302,7 +300,7 @@ const AffairsInfo = (props: Props) => {
                 onClick={() => setFilter(!filter)}
               />
             </div>
-            <ChangeRecord filter={filter} />
+            <ChangeRecord filter={filter} detail={affairsInfo} />
           </div>
           <div
             style={{
@@ -313,7 +311,10 @@ const AffairsInfo = (props: Props) => {
             <Label id="transferRecords" className="info_item_tab">
               {t('transferRecords')}
             </Label>
-            <Circulation onUpdateCount={setTransferRecordsCount} />
+            <Circulation
+              onUpdateCount={setTransferRecordsCount}
+              detail={affairsInfo}
+            />
           </div>
           <div
             style={{
@@ -349,7 +350,7 @@ const AffairsInfo = (props: Props) => {
         )}
         padding="no"
         onConfirm={onConfirmComment}
-        style={{ marginLeft: 15, padding: '0', width: 'calc(100% - 36px)' }}
+        style={{ padding: '0 16px', width: '100%' }}
         maxHeight="60vh"
         hasAvatar
         isEmployee={(props?.employeeCurrentId || 0) > 0}

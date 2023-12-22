@@ -122,8 +122,9 @@ const ContentWrap = styled.div`
 `
 
 interface Props {
-  activeKey: string
   isPreview?: boolean
+  onUpdateCount(num: number): void
+  detail?: any
 }
 
 const Circulation = (props: Props) => {
@@ -139,40 +140,32 @@ const Circulation = (props: Props) => {
 
   const dispatch = useDispatch()
   const { isRefresh, userPreferenceConfig } = useSelector(store => store.user)
-  const { flawInfo } = useSelector(store => store.flaw)
-  const { language } = useSelector(store => store.global)
 
   const getLogs = async (state: boolean) => {
     if (state) {
       setIsSpin(true)
-      const result = await getFlawStatusLog({
-        projectId: id ?? projectInfo.id,
-        id: flawInfo.id || 0,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
+    }
+    const result = await getFlawStatusLog({
+      projectId: id ?? projectInfo.id,
+      id: props?.detail?.id || 0,
+      all: true,
+    })
+    setStatusLogs({
+      list: result,
+    })
+    if (state) {
       dispatch(setIsRefresh(false))
       setIsSpin(false)
-    } else {
-      const result = await getFlawStatusLog({
-        projectId: id,
-        id: flawInfo.id || 0,
-        all: true,
-      })
-      setStatusLogs({
-        list: result,
-      })
     }
+    props?.onUpdateCount(result?.length)
     dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {
-    if (props.activeKey === '4') {
+    if (props.detail?.id) {
       getLogs(true)
     }
-  }, [props.activeKey])
+  }, [props.detail])
 
   useEffect(() => {
     if (isRefresh) {

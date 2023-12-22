@@ -61,9 +61,9 @@ const NewSort = (sortProps: any) => {
 }
 
 interface Props {
-  activeKey: string
   filter: boolean
   isPreview?: boolean
+  detail?: any
 }
 
 const ChangeRecord = (props: Props) => {
@@ -83,12 +83,10 @@ const ChangeRecord = (props: Props) => {
   const dispatch = useDispatch()
   const { isRefresh, userPreferenceConfig } = useSelector(store => store.user)
 
-  const { flawInfo } = useSelector(store => store.flaw)
-
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
     const result = await getFlawChangeLog({
-      id: flawInfo.id || 0,
+      id: props?.detail?.id || 0,
       projectId: id ?? projectInfo.id,
       page: item ? item.page ?? 1 : 1,
       pageSize: item ? item.size ?? 10 : 10,
@@ -106,10 +104,10 @@ const ChangeRecord = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.activeKey === '3') {
+    if (props.detail?.id) {
       getList(pageObj, order)
     }
-  }, [props.activeKey])
+  }, [props.detail])
 
   useEffect(() => {
     if (isRefresh) {
