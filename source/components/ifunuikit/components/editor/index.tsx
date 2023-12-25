@@ -20,7 +20,7 @@ import {
 } from 'react'
 import Viewer from 'react-viewer'
 import { type Editor as EditorCore } from '@tiptap/core'
-import { useEditor, type EditorEvents } from '@tiptap/react'
+import { useEditor, BubbleMenu, type EditorEvents } from '@tiptap/react'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
@@ -38,6 +38,7 @@ import OrderedList from '@tiptap/extension-ordered-list'
 import ListItem from '@tiptap/extension-list-item'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
+// import BubbleMenu from '@tiptap/extension-bubble-menu'
 import Color from '@tiptap/extension-color'
 import Table from '@tiptap/extension-table'
 import TableCell from '@tiptap/extension-table-cell'
@@ -67,13 +68,31 @@ import { Context } from '../config-provider'
 import CharacterCount from '@tiptap/extension-character-count'
 import { createPortal } from 'react-dom'
 import { create } from 'zustand'
+import BubbleMenuContent from './BubbleMenuContent'
 
 const extensions = [
   Link,
   Document,
   Paragraph,
   Heading,
-  BulletList,
+  // BubbleMenu,
+  BulletList.extend({
+    addKeyboardShortcuts() {
+      return {
+        Tab: editor => {
+          this.editor
+            .chain()
+            .sinkListItem('listItem')
+            .command(({ tr }) => {
+              tr.insertText('  ')
+              return true
+            })
+            .run()
+          return true
+        },
+      }
+    },
+  }),
   OrderedList,
   ListItem,
   TaskList,
@@ -427,6 +446,20 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
           upload={onUpload}
           editorViewRef={editorViewRef}
         />
+      )}
+      {!props.readonly && editor && (
+        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
+          <BubbleMenuContent>
+            <ActionBar
+              // changeFull={e => {
+              //   setIsFullscreen(e)
+              // }}
+              editor={editor}
+              upload={onUpload}
+              editorViewRef={editorViewRef}
+            />
+          </BubbleMenuContent>
+        </BubbleMenu>
       )}
       <StyledEditorContent
         maxHeight={isFullscreen ? '' : props.maxHeight}

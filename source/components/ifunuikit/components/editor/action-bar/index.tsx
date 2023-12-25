@@ -4,7 +4,6 @@
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable consistent-return */
 /* eslint-disable complexity */
-// @ts-nocheck
 import { type Editor } from '@tiptap/react'
 import { useFullscreen } from 'ahooks'
 import { Dropdown, Menu, Popover, Tooltip } from 'antd'
@@ -46,6 +45,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { createPortal } from 'react-dom'
 import { useEditorStore } from '..'
+import { ActionData, mapActionToNode } from './mapActionToNode'
 
 const emojis = [
   '😃',
@@ -76,177 +76,6 @@ const emojis = [
 
 const getPopupContainer = (triggerNode: HTMLElement) =>
   (triggerNode.closest('[data-action-bar]') || document.body) as HTMLElement
-
-type ActionData = {
-  tip?: string
-  key: string
-  type?: 'button' | 'select' | 'mixin' | 'separator' | 'dropdown'
-  title?: string | ((editor?: Editor | null) => string)
-  icon?: string | ((editor?: Editor | null) => string)
-  iconNode?: ReactNode
-  active?: boolean | ((editor?: Editor | null) => boolean | void)
-  disabled?: boolean | ((editor?: Editor | null) => boolean | void)
-  selectWidth?: number
-  value?: string | ((editor?: Editor | null) => string | void)
-  forceValue?: ReactNode
-  defaultValue?: any
-  options?:
-    | { key: string; label: ReactNode }[]
-    | ((editor?: Editor | null) => { key: string; label: ReactNode }[])
-  overlay?: ReactNode
-}
-
-const mapActionToNode = (
-  action: ActionData,
-  extra?: {
-    editor?: Editor | null
-    hiddenKeys?: string[]
-    dispatch?(key: string, data?: unknown): void
-  },
-) => {
-  const isActive =
-    typeof action.active === 'function'
-      ? action.active(extra?.editor)
-      : action.active
-
-  const icon =
-    typeof action.icon === 'function' ? action.icon(extra?.editor) : action.icon
-
-  switch (action.type) {
-    case 'select':
-      const options =
-        typeof action.options === 'function'
-          ? action.options(extra?.editor)
-          : action.options
-      const value =
-        typeof action.value === 'function'
-          ? action.value(extra?.editor)
-          : action.value
-      return (
-        <div>
-          <Tooltip title={action.tip}>
-            <Action
-              key={action.key}
-              data-key={action.key}
-              isHidden={extra?.hiddenKeys?.includes(action.key)}
-            >
-              <Dropdown
-                overlay={
-                  <Menu
-                    items={options}
-                    onClick={data => extra?.dispatch?.(action.key, data.key)}
-                  />
-                }
-                trigger={['click']}
-                getPopupContainer={getPopupContainer}
-              >
-                <Button
-                  onClick={() => extra?.editor?.commands.focus()}
-                  style={{ width: action.selectWidth }}
-                >
-                  <ButtonText>
-                    {action.forceValue || (
-                      <span>
-                        {options?.find(i => i.key === String(value))?.label ||
-                          action.defaultValue}
-                      </span>
-                    )}
-
-                    <Icon type="arrow-down" data-options-arrow />
-                  </ButtonText>
-                </Button>
-              </Dropdown>
-            </Action>
-          </Tooltip>
-        </div>
-      )
-    case 'separator':
-      return (
-        <Tooltip title={action.tip}>
-          {' '}
-          <Separator
-            key={action.key}
-            data-key={action.key}
-            isHidden={extra?.hiddenKeys?.includes(action.type)}
-          />
-        </Tooltip>
-      )
-    case 'dropdown':
-      return (
-        <Tooltip title={action.tip}>
-          <Action
-            key={action.key}
-            data-key={action.key}
-            isHidden={extra?.hiddenKeys?.includes(action.key)}
-          >
-            <Dropdown
-              placement="bottomRight"
-              overlay={
-                <DropdownOverlay items={[{ key: '', label: action.overlay }]} />
-              }
-              trigger={['click']}
-              getPopupContainer={getPopupContainer}
-            >
-              <Button data-active={isActive}>
-                <Icon type={icon!} />
-              </Button>
-            </Dropdown>
-          </Action>
-        </Tooltip>
-      )
-    case 'mixin':
-      return (
-        <Tooltip title={action.tip}>
-          <Action
-            key={action.key}
-            data-key={action.key}
-            isHidden={extra?.hiddenKeys?.includes(action.key)}
-          >
-            <Button data-no-background>
-              <MixinButton
-                data-active={isActive}
-                onClick={() => extra?.dispatch?.(action.key)}
-              >
-                {action.iconNode}
-              </MixinButton>
-              <Dropdown
-                placement="bottomLeft"
-                overlay={
-                  <DropdownOverlay
-                    items={[{ key: '', label: action.overlay }]}
-                  />
-                }
-                trigger={['click']}
-                getPopupContainer={getPopupContainer}
-              >
-                <DropdownIconButton>
-                  <Icon type="arrow-down" />
-                </DropdownIconButton>
-              </Dropdown>
-            </Button>
-          </Action>
-        </Tooltip>
-      )
-    case 'button':
-    default:
-      return (
-        <Tooltip title={action.tip}>
-          <Action
-            key={action.key}
-            data-key={action.key}
-            isHidden={extra?.hiddenKeys?.includes(action.key)}
-          >
-            <Button
-              data-active={isActive}
-              onClick={() => extra?.dispatch?.(action.key)}
-            >
-              <Icon type={icon!} />
-            </Button>
-          </Action>
-        </Tooltip>
-      )
-  }
-}
 
 type Props = {
   editor?: Editor | null
@@ -304,7 +133,7 @@ const ActionBar = (props: Props) => {
   //   props.editorViewRef,
   // )
   // const [isFullscreen, setIsFullscreen] = useState(false)
-  const {isFullscreen, setIsFullscreen} = useEditorStore()
+  const { isFullscreen, setIsFullscreen } = useEditorStore()
   const toggleFullscreen = () => {
     const current = !isFullscreen
     setIsFullscreen(current)
@@ -321,31 +150,31 @@ const ActionBar = (props: Props) => {
       options: [
         {
           key: '0',
-          label: t('i_want_to'),
+          label: t('text'),
         },
         {
           key: '1',
-          label: t('heading_1'),
+          label: t('firstLevelTitle'),
         },
         {
           key: '2',
-          label: t('heading_2'),
+          label: t('secondaryTitle'),
         },
         {
           key: '3',
-          label: t('heading_3'),
+          label: t('thirdLevelTitle'),
         },
         {
           key: '4',
-          label: t('heading_4'),
+          label: t('fourthLevelTitle'),
         },
         {
           key: '5',
-          label: t('heading_5'),
+          label: t('level5Title'),
         },
         {
           key: '6',
-          label: t('heading_6'),
+          label: t('level6Title'),
         },
       ],
     },
@@ -405,7 +234,7 @@ const ActionBar = (props: Props) => {
       active: myEditor => myEditor?.isActive('underline'),
     },
     {
-      tip: t('strikethrough'),
+      tip: t('deleteLine'),
       key: 'strike',
       icon: 'strike',
       active: myEditor => myEditor?.isActive('strike'),
@@ -421,7 +250,7 @@ const ActionBar = (props: Props) => {
     //   type: 'separator',
     // },
     {
-      tip: t('text_color'),
+      tip: t('textColor'),
       key: 'text_color',
       iconNode: <Icon type="font-color" style={{ color: storedTextColor }} />,
       type: 'mixin',
@@ -435,7 +264,7 @@ const ActionBar = (props: Props) => {
       ),
     },
     {
-      tip: t('background_color'),
+      tip: t('backgroundColor'),
       key: 'text_background',
       iconNode: <Icon type="fill" style={{ color: storedTextBackground }} />,
       type: 'mixin',
@@ -448,19 +277,19 @@ const ActionBar = (props: Props) => {
         />
       ),
     },
-    { tip: t('clear'), key: 'clear', icon: 'clear' },
+    { tip: t('cleanUp'), key: 'clear', icon: 'clear' },
     // {
     //   key: 'separator-3',
     //   type: 'separator',
     // },
     {
-      tip: t('unordered_list'),
+      tip: t('unorderedList'),
       key: 'list',
       icon: 'list',
       active: myEditor => myEditor?.isActive('bulletList'),
     },
     {
-      tip: t('ordered_list'),
+      tip: t('orderedList'),
       key: 'ordered_list',
       icon: 'order-list',
       active: myEditor => myEditor?.isActive('orderedList'),
@@ -470,7 +299,7 @@ const ActionBar = (props: Props) => {
     //   type: 'separator',
     // },
     {
-      tip: t('align'),
+      tip: t('alignment'),
       key: 'text_align',
       type: 'select',
       selectWidth: 50,
@@ -493,17 +322,17 @@ const ActionBar = (props: Props) => {
       ],
     },
     {
-      tip: t('indent_right'),
+      tip: t('right'),
       key: 'indent',
       icon: 'indent',
     },
     {
-      tip: t('indent_left'),
+      tip: t('left'),
       key: 'outdent',
       icon: 'outdent',
     },
     {
-      tip: t('line_height'),
+      tip: t('rowHeight'),
       key: 'line_height',
       type: 'select',
       forceValue: <Icon type="line-height" style={{ fontSize: 20 }} />,
@@ -541,17 +370,17 @@ const ActionBar = (props: Props) => {
     //   type: 'separator',
     // },
     {
-      tip: t('upload_image'),
+      tip: t('uploadImages'),
       key: 'image',
       icon: 'image',
     },
     {
-      tip: t('upload_video'),
+      tip: t('uploadVideo'),
       key: 'video',
       icon: 'video',
     },
     {
-      tip: t('table'),
+      tip: t('form'),
       key: 'table',
       icon: 'table',
       type: 'dropdown',
@@ -585,7 +414,7 @@ const ActionBar = (props: Props) => {
       type: 'dropdown',
       overlay: (
         <span onClick={() => editLinkDialogRef.current?.show()}>
-          {t('insert_link')}
+          {t('insertLink')}
         </span>
       ),
     },
@@ -600,7 +429,7 @@ const ActionBar = (props: Props) => {
     //   type: 'separator',
     // },
     {
-      tip: isFullscreen ? t('exit_full_screen') : t('enter_full_screen'),
+      tip: isFullscreen ? t('cancelFullScreen') : t('fullScreen'),
       key: 'fullscreen',
       icon: isFullscreen ? 'shrink' : 'grow',
       active: isFullscreen,
@@ -737,7 +566,7 @@ const ActionBar = (props: Props) => {
   return (
     <Wrap data-action-bar>
       <EditLinkDialog
-        title={t('insert_link')}
+        title={t('insertLink')}
         ref={editLinkDialogRef}
         onSubmit={onInsertLink}
       />
