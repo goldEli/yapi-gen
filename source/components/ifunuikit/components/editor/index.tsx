@@ -426,7 +426,7 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
         borderRadius: '0px',
       }
     : {}
-  console.log(isFullscreen)
+    
   const ele = (
     <Wrap
       height={props.height}
