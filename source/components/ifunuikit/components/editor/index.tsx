@@ -63,7 +63,7 @@ import LinkHoverMenu from '../link-hover-menu'
 import WordTableContextMenu from '../word-table-context-menu'
 import Placeholder from '@tiptap/extension-placeholder'
 import { useContextMenu } from 'react-contexify'
-import { changeLanguage } from '../../locals'
+// import { changeLanguage } from '../../locals'
 import { Context } from '../config-provider'
 import CharacterCount from '@tiptap/extension-character-count'
 import { createPortal } from 'react-dom'
@@ -364,9 +364,9 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
     setIsVisible(true)
     setPictureList(params)
   }
-  useEffect(() => {
-    changeLanguage(value?.language ? 'en' : 'zh')
-  }, [value?.language])
+  // useEffect(() => {
+  //   changeLanguage(value?.language ? 'en' : 'zh')
+  // }, [value?.language])
   useEffect(() => {
     if (editor) {
       editor.on('double_click_image' as any, onDoubleClickImage)
