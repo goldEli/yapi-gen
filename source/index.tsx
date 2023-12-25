@@ -26,14 +26,14 @@ import ImageViewer from './components/ImageViewer'
 log.init({ isDEV: import.meta.env.DEV })
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename={import.meta.env.__URL_HASH__}>
-    <ErrorBoundary>
+    {/* <ErrorBoundary> */}
       <Provider store={store}>
         <WaterMarkContent>
           <ImageViewer />
           <Routes />
         </WaterMarkContent>
       </Provider>
-    </ErrorBoundary>
+    {/* </ErrorBoundary> */}
   </BrowserRouter>,
 )
 

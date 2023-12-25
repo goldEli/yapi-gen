@@ -44,6 +44,8 @@ import {
   Wrap,
 } from './style'
 import { useTranslation } from 'react-i18next'
+import { createPortal } from 'react-dom'
+import { useEditorStore } from '..'
 
 const emojis = [
   '😃',
@@ -250,7 +252,7 @@ type Props = {
   editor?: Editor | null
   upload?(file: File): Promise<string> | string | undefined
   editorViewRef: RefObject<HTMLElement>
-  changeFull(isFull: boolean): void
+  // changeFull(isFull: boolean): void
 }
 
 const ActionBar = (props: Props) => {
@@ -298,9 +300,15 @@ const ActionBar = (props: Props) => {
 
     actions.insertUploadingVideos(tasks)
   }
-  const [isFullscreen, { toggleFullscreen }] = useFullscreen(
-    props.editorViewRef,
-  )
+  // const [isFullscreen, { toggleFullscreen }] = useFullscreen(
+  //   props.editorViewRef,
+  // )
+  // const [isFullscreen, setIsFullscreen] = useState(false)
+  const {isFullscreen, setIsFullscreen} = useEditorStore()
+  const toggleFullscreen = () => {
+    const current = !isFullscreen
+    setIsFullscreen(current)
+  }
 
   const actionList: ActionData[] = [
     {
@@ -722,9 +730,9 @@ const ActionBar = (props: Props) => {
         break
     }
   }
-  useEffect(() => {
-    props.changeFull(isFullscreen)
-  }, [isFullscreen])
+  // useEffect(() => {
+  //   props.changeFull(isFullscreen)
+  // }, [isFullscreen])
 
   return (
     <Wrap data-action-bar>

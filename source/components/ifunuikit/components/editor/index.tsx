@@ -7,7 +7,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { MutableRefObject, useContext } from 'react'
+import { CSSProperties, MutableRefObject, useContext } from 'react'
 import { useState } from 'react'
 import {
   forwardRef,
@@ -65,6 +65,8 @@ import { useContextMenu } from 'react-contexify'
 import { changeLanguage } from '../../locals'
 import { Context } from '../config-provider'
 import CharacterCount from '@tiptap/extension-character-count'
+import { createPortal } from 'react-dom'
+import { create } from 'zustand'
 
 const extensions = [
   Link,
@@ -162,6 +164,18 @@ interface Props {
       }[]
 }
 
+export const useEditorStore = create<{
+  isFullscreen: boolean
+  setIsFullscreen(isFullscreen: boolean): void
+}>(set => {
+  return {
+    isFullscreen: false,
+    setIsFullscreen(isFullscreen) {
+      set({ isFullscreen })
+    },
+  }
+})
+
 const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
   const value = useContext(Context)
   const editorViewRef = useRef<any>()
@@ -175,7 +189,8 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
     index: 0,
   })
   const [focus, setFocus] = useState(false)
-  const [isFullscreen, setIsFullscreen] = useState(false)
+  // const [isFullscreen, setIsFullscreen] = useState(false)
+  const { isFullscreen, setIsFullscreen } = useEditorStore()
   const valueRef = useRef(props.value || '')
 
   const editor = useEditor({
@@ -381,10 +396,22 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
       props.onPressEnter?.()
     }
   }
-
-  return (
+  const style: CSSProperties = isFullscreen
+    ? {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 9999,
+        borderRadius: '0px',
+      }
+    : {}
+  console.log(isFullscreen)
+  const ele = (
     <Wrap
       height={props.height}
+      style={style}
       color={isFullscreen ? '' : props?.color}
       focus={focus}
       read={props.readonly}
@@ -393,9 +420,9 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
     >
       {!props.readonly && (
         <ActionBar
-          changeFull={e => {
-            setIsFullscreen(e)
-          }}
+          // changeFull={e => {
+          //   setIsFullscreen(e)
+          // }}
           editor={editor}
           upload={onUpload}
           editorViewRef={editorViewRef}
@@ -434,6 +461,8 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
       ) : null}
     </Wrap>
   )
+
+  return <>{isFullscreen ? createPortal(ele, document.body) : ele}</>
 }
 
 export default forwardRef(Editor)
