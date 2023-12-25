@@ -6,9 +6,10 @@ export interface Callable {
   [key: string]: (...args: any[]) => void
 }
 
-export interface Subscriber {
-  [key: string]: (...args: any[]) => void
-}
+// export interface Subscriber {
+//   [key: string]: (...args: any[]) => void
+// }
+export type Subscriber = Map<string, (...args: any[]) => void>
 
 export interface IEventBus {
   dispatch<T>(event: string, arg?: T): void
@@ -22,7 +23,7 @@ export class EventBusSingle implements IEventBus {
   private static instance?: EventBusSingle = void 0
 
   constructor() {
-    this.subscribers = {}
+    this.subscribers = new Map()
   }
 
   // The Singleton Pattern
@@ -35,7 +36,7 @@ export class EventBusSingle implements IEventBus {
   }
 
   public dispatch<T>(event: string, arg?: T): any {
-    const subscriber = this.subscribers[event]
+    const subscriber = this.subscribers.get(event)
 
     if (subscriber === void 0) {
       return
@@ -51,14 +52,13 @@ export class EventBusSingle implements IEventBus {
     //   this.subscribers[event] = {}
     // }
 
-    this.subscribers[event] = callback
+    // this.subscribers[event] = callback
+    this.subscribers.set(event, callback)
 
     return {
       unregister: () => {
-        delete this.subscribers[event]
-        if (Object.keys(this.subscribers[event]).length === 0) {
-          delete this.subscribers[event]
-        }
+        // delete this.subscribers[event]
+        this.subscribers.delete(event)
       },
     }
   }
