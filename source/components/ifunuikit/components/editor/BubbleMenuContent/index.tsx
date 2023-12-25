@@ -12,6 +12,7 @@ const BubbleMenuContentBox = styled.div`
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
+  padding: 0 8px;
   border: 1px solid #ebeced;
   transform: translateX(80px);
 `
