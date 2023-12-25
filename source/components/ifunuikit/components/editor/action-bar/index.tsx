@@ -5,45 +5,22 @@
 /* eslint-disable consistent-return */
 /* eslint-disable complexity */
 import { type Editor } from '@tiptap/react'
-import { useFullscreen } from 'ahooks'
-import { Dropdown, Menu, Popover, Tooltip } from 'antd'
-import { size } from 'lodash'
-import {
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useLayoutEffect,
-  useReducer,
-  useRef,
-  useState,
-  type RefObject,
-} from 'react'
+import { Dropdown } from 'antd'
+import { useLayoutEffect, useRef, useState, type RefObject } from 'react'
 import Icon from '../../../assets/icons'
-import getImageSize from '../../../utils/get-image-size'
-import getVideoSize from '../../../utils/get-video-size'
-import pickFiles from '../../../utils/pick-files'
-import SelectColorTool from '../../select-color-tool'
-import SelectTableTool from '../../select-table-tool'
 import EditLinkDialog from '../components/edit-link-dialog'
 import {
   Action,
   Actions,
   Button,
-  Buttons,
-  ButtonText,
-  DropdownIconButton,
   DropdownOverlay,
-  EmojiItem,
-  EmojiList,
-  MixinButton,
   MoreAction,
   MoreButtons,
   Separator,
   Wrap,
 } from './style'
 import { useTranslation } from 'react-i18next'
-import { useEditorStore } from '..'
-import { ActionData, mapActionToNode } from './mapActionToNode'
+import { mapActionToNode } from './mapActionToNode'
 import { useActionList } from './useActionList'
 
 const getPopupContainer = (triggerNode: HTMLElement) =>

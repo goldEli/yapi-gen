@@ -12,9 +12,33 @@ import {
 } from './style'
 import Icon from '../../../assets/icons'
 
+type ActionKeys =
+  | 'content_level'
+  | 'font_size'
+  | 'bold'
+  | 'underline'
+  | 'strike'
+  | 'italic'
+  | 'text_color'
+  | 'text_background'
+  | 'clear'
+  | 'list'
+  | 'ordered_list'
+  | 'text_align'
+  | 'indent'
+  | 'outdent'
+  | 'line_height'
+  | 'image'
+  | 'video'
+  | 'table'
+  | 'emoji'
+  | 'link'
+  | 'quote'
+  | 'fullscreen'
+
 export type ActionData = {
   tip?: any
-  key: string
+  key: ActionKeys
   type?: 'button' | 'select' | 'mixin' | 'separator' | 'dropdown'
   title?: string | ((editor?: Editor | null) => string)
   icon?: string | ((editor?: Editor | null) => string)

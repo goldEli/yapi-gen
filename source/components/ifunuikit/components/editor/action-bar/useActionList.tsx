@@ -7,23 +7,7 @@ import getVideoSize from '../../../utils/get-video-size'
 import pickFiles from '../../../utils/pick-files'
 import SelectColorTool from '../../select-color-tool'
 import SelectTableTool from '../../select-table-tool'
-import EditLinkDialog from '../components/edit-link-dialog'
-import {
-  Action,
-  Actions,
-  Button,
-  Buttons,
-  ButtonText,
-  DropdownIconButton,
-  DropdownOverlay,
-  EmojiItem,
-  EmojiList,
-  MixinButton,
-  MoreAction,
-  MoreButtons,
-  Separator,
-  Wrap,
-} from './style'
+import { EmojiItem, EmojiList } from './style'
 import { emojis } from './config'
 import { type Editor } from '@tiptap/react'
 import useActions from '../use-actions'
