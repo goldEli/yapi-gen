@@ -457,6 +457,15 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
               editor={editor}
               upload={onUpload}
               editorViewRef={editorViewRef}
+              include={[
+                'content_level',
+                'bold',
+                'underline',
+                'text_color',
+                'text_background',
+                'list',
+                'clear',
+              ]}
             />
           </BubbleMenuContent>
         </BubbleMenu>

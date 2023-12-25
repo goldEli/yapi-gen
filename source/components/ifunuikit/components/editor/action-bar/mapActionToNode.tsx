@@ -12,7 +12,7 @@ import {
 } from './style'
 import Icon from '../../../assets/icons'
 
-type ActionKeys =
+export type ActionKeys =
   | 'content_level'
   | 'font_size'
   | 'bold'

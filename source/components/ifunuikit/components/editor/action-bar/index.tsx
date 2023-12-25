@@ -20,7 +20,7 @@ import {
   Wrap,
 } from './style'
 import { useTranslation } from 'react-i18next'
-import { mapActionToNode } from './mapActionToNode'
+import { ActionKeys, mapActionToNode } from './mapActionToNode'
 import { useActionList } from './useActionList'
 
 const getPopupContainer = (triggerNode: HTMLElement) =>
@@ -30,6 +30,7 @@ type Props = {
   editor?: Editor | null
   upload?(file: File): Promise<string> | string | undefined
   editorViewRef: RefObject<HTMLElement>
+  include?: ActionKeys[]
 }
 
 const ActionBar = (props: Props) => {
@@ -38,6 +39,7 @@ const ActionBar = (props: Props) => {
   const { editor } = props
 
   const { actionList, onDoAction } = useActionList({
+    include: props.include,
     editor: props.editor,
     insertLink: () => {
       editLinkDialogRef.current?.show()

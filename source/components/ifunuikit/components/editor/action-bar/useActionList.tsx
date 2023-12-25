@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ActionData } from './mapActionToNode'
+import { ActionData, ActionKeys } from './mapActionToNode'
 import Icon from '../../../assets/icons'
 import getImageSize from '../../../utils/get-image-size'
 import getVideoSize from '../../../utils/get-video-size'
@@ -17,6 +17,7 @@ interface Props {
   editor?: Editor | null
   insertLink(): void
   upload?(file: File): Promise<string> | string | undefined
+  include?: ActionKeys[]
 }
 
 export const useActionList = (props: Props) => {
@@ -443,8 +444,15 @@ export const useActionList = (props: Props) => {
         break
     }
   }
+
+  const l = !props.include?.length
+    ? actionList
+    : props.include?.map(item => {
+        return actionList.find(i => i.key === item) as ActionData
+      }) ?? []
+
   return {
-    actionList,
+    actionList: l,
     onDoAction,
   }
 }

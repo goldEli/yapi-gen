@@ -1,3 +1,4 @@
+// 选中文字后展示的菜单
 import React from 'react'
 import styled from '@emotion/styled'
 
@@ -6,7 +7,6 @@ interface BubbleMenuContentProps {
 }
 
 const BubbleMenuContentBox = styled.div`
-  width: 463px;
   height: 44px;
   background: #ffffff;
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
