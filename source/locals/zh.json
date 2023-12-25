@@ -2759,5 +2759,6 @@
   "icon": "图标",
   "form": "表格",
   "uploadVideo": "上传视频",
-  "uploadImages": "上传图片"
+  "uploadImages": "上传图片",
+  "collapseFullScreen": "收起全屏"
 }

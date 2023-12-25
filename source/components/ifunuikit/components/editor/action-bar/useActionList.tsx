@@ -332,7 +332,7 @@ export const useActionList = (props: Props) => {
     //   type: 'separator',
     // },
     {
-      tip: isFullscreen ? t('cancelFullScreen') : t('fullScreen'),
+      tip: isFullscreen ? t('collapseFullScreen') : t('fullScreen'),
       key: 'fullscreen',
       icon: isFullscreen ? 'shrink' : 'grow',
       active: isFullscreen,

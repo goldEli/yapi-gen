@@ -2759,5 +2759,6 @@
   "icon": "Icon",
   "form": "Form",
   "uploadVideo": "Upload video",
-  "uploadImages": "Upload images"
+  "uploadImages": "Upload images",
+  "collapseFullScreen": "Collapse full screen"
 }

@@ -422,7 +422,7 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
         left: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: 9999,
+        zIndex: 200,
         borderRadius: '0px',
       }
     : {}
