@@ -457,6 +457,7 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
               editor={editor}
               upload={onUpload}
               editorViewRef={editorViewRef}
+              isHiddenMoreBtn
               include={[
                 'content_level',
                 'bold',

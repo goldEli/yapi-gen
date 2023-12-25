@@ -31,6 +31,7 @@ type Props = {
   upload?(file: File): Promise<string> | string | undefined
   editorViewRef: RefObject<HTMLElement>
   include?: ActionKeys[]
+  isHiddenMoreBtn?: boolean
 }
 
 const ActionBar = (props: Props) => {
@@ -104,6 +105,42 @@ const ActionBar = (props: Props) => {
     }
   }, [])
 
+  const moreBtn = !props.isHiddenMoreBtn && hiddenKeys.length > 0 && (
+    <Dropdown
+      overlay={
+        <DropdownOverlay
+          items={[
+            {
+              key: '',
+              label: (
+                <MoreButtons>
+                  {actionList
+                    .filter(i => hiddenKeys.includes(i.key))
+                    .map(i =>
+                      mapActionToNode(i, {
+                        editor,
+                        dispatch: onDoAction,
+                        hiddenKeys,
+                      }),
+                    )}
+                </MoreButtons>
+              ),
+            },
+          ]}
+        />
+      }
+      placement="bottomLeft"
+      trigger={['click']}
+      getPopupContainer={getPopupContainer}
+    >
+      <MoreAction>
+        <Button>
+          <Icon type="more" />
+        </Button>
+      </MoreAction>
+    </Dropdown>
+  )
+
   return (
     <Wrap data-action-bar>
       <EditLinkDialog
@@ -111,7 +148,7 @@ const ActionBar = (props: Props) => {
         ref={editLinkDialogRef}
         onSubmit={onInsertLink}
       />
-      <Actions ref={actionsRef}>
+      <Actions isHiddenMoreBtn={props.isHiddenMoreBtn} ref={actionsRef}>
         {actionList.map(i =>
           mapActionToNode(i, {
             editor,
@@ -119,41 +156,7 @@ const ActionBar = (props: Props) => {
             hiddenKeys,
           }),
         )}
-        {hiddenKeys.length > 0 && (
-          <Dropdown
-            overlay={
-              <DropdownOverlay
-                items={[
-                  {
-                    key: '',
-                    label: (
-                      <MoreButtons>
-                        {actionList
-                          .filter(i => hiddenKeys.includes(i.key))
-                          .map(i =>
-                            mapActionToNode(i, {
-                              editor,
-                              dispatch: onDoAction,
-                              hiddenKeys,
-                            }),
-                          )}
-                      </MoreButtons>
-                    ),
-                  },
-                ]}
-              />
-            }
-            placement="bottomLeft"
-            trigger={['click']}
-            getPopupContainer={getPopupContainer}
-          >
-            <MoreAction>
-              <Button>
-                <Icon type="more" />
-              </Button>
-            </MoreAction>
-          </Dropdown>
-        )}
+        {moreBtn}
       </Actions>
     </Wrap>
   )

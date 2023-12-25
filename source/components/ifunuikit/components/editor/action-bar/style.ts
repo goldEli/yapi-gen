@@ -5,13 +5,13 @@ export const Wrap = styled.div`
   flex: 0 0 auto;
 `
 
-export const Actions = styled.div`
+export const Actions = styled.div<{isHiddenMoreBtn?: boolean}>`
   position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   border-bottom: 1px solid #ecedef;
-  padding: 8px 0px 8px 0;
+  padding: ${props => props.isHiddenMoreBtn ? '8px 0px 8px 0' : '8px 30px 8px 0'};
   box-sizing: border-box;
   height: 46px;
   overflow: hidden;
