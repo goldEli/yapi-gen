@@ -1,24 +1,16 @@
 import React, { ReactNode } from 'react'
 import { type Editor } from '@tiptap/react'
-import { Dropdown, Menu, Popover, Tooltip } from 'antd'
+import { Dropdown, Menu, Tooltip } from 'antd'
 import {
-    Action,
-    Actions,
-    Button,
-    Buttons,
-    ButtonText,
-    DropdownIconButton,
-    DropdownOverlay,
-    EmojiItem,
-    EmojiList,
-    MixinButton,
-    MoreAction,
-    MoreButtons,
-    Separator,
-    Wrap,
-  } from './style'
-  import Icon from '../../../assets/icons'
-  
+  Action,
+  Button,
+  ButtonText,
+  DropdownIconButton,
+  DropdownOverlay,
+  MixinButton,
+  Separator,
+} from './style'
+import Icon from '../../../assets/icons'
 
 export type ActionData = {
   tip?: any
@@ -60,7 +52,6 @@ export const mapActionToNode = (
 
   switch (action.type) {
     case 'select':
-        
       const options =
         typeof action.options === 'function'
           ? action.options(extra?.editor)
