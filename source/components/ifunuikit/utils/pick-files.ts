@@ -7,11 +7,11 @@ const pickFiles = (options?: {
   input.accept = options?.accept || ''
   input.multiple = options?.multiple || false
   return new Promise((resolve, reject) => {
-    const onWindowFocus = () => {
-      window.removeEventListener('focus', onWindowFocus)
-      setTimeout(() => reject('Cancel Pick'), 300)
-    }
-    window.addEventListener('focus', onWindowFocus)
+    // const onWindowFocus = () => {
+    //   window.removeEventListener('focus', onWindowFocus)
+    //   setTimeout(() => reject('Cancel Pick'), 300)
+    // }
+    // window.addEventListener('focus', onWindowFocus)
     input.onchange = () => resolve(Array.from(input.files || []))
     input.click()
   })

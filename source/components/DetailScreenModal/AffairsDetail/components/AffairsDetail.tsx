@@ -181,6 +181,7 @@ const AffairsDetail = (props: AffairsDetailProps) => {
                 color="transparent"
                 value={editInfo}
                 getSuggestions={() => []}
+                hiddenBubbleMenu
                 readonly={props.isPreview ? true : !isEditInfo}
                 ref={editorRef}
                 onReadonlyClick={() => {

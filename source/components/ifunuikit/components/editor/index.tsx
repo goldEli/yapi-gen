@@ -69,6 +69,7 @@ import CharacterCount from '@tiptap/extension-character-count'
 import { createPortal } from 'react-dom'
 import { create } from 'zustand'
 import BubbleMenuContent from './BubbleMenuContent'
+import BubbleBar from './action-bar'
 
 const extensions = [
   Link,
@@ -163,6 +164,7 @@ interface Props {
   placeholder?: string
   readonly?: boolean
   value?: string
+  hiddenBubbleMenu?: boolean
   onChange?(value?: string): void
   upload?(
     file: File,
@@ -426,7 +428,7 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
         borderRadius: '0px',
       }
     : {}
-    
+
   const ele = (
     <Wrap
       height={props.height}
@@ -437,23 +439,25 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
       id="myEditor"
       ref={editorViewRef}
     >
-      {!props.readonly && (
-        <ActionBar
-          // changeFull={e => {
-          //   setIsFullscreen(e)
-          // }}
+      <ActionBar
+        // changeFull={e => {
+        //   setIsFullscreen(e)
+        // }}
+        readonly={props.readonly}
+        editor={editor}
+        upload={onUpload}
+        editorViewRef={editorViewRef}
+      />
+      {!props.hiddenBubbleMenu && (
+        <BubbleMenu
           editor={editor}
-          upload={onUpload}
-          editorViewRef={editorViewRef}
-        />
-      )}
-      {!props.readonly && editor && (
-        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
+          tippyOptions={{ duration: 100 }}
+          // shouldShow={() => {
+          //   return false
+          // }}
+        >
           <BubbleMenuContent>
-            <ActionBar
-              // changeFull={e => {
-              //   setIsFullscreen(e)
-              // }}
+            <BubbleBar
               editor={editor}
               upload={onUpload}
               editorViewRef={editorViewRef}
@@ -508,4 +512,5 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
   return <>{isFullscreen ? createPortal(ele, document.body) : ele}</>
 }
 
-export default forwardRef(Editor)
+const E = forwardRef(Editor)
+export default E

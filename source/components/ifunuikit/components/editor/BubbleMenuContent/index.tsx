@@ -1,9 +1,11 @@
 // 选中文字后展示的菜单
 import React from 'react'
 import styled from '@emotion/styled'
+import { type Editor } from '@tiptap/react'
 
 interface BubbleMenuContentProps {
   children: React.ReactNode
+  editor?: Editor | null
 }
 
 const BubbleMenuContentBox = styled.div`

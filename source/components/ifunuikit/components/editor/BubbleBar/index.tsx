@@ -35,7 +35,7 @@ type Props = {
   readonly?: boolean
 }
 
-const BubbleBar = (props: Props) => {
+const ActionBar = (props: Props) => {
   const [t] = useTranslation()
   const editLinkDialogRef = useRef<any>()
   const { editor } = props
@@ -167,4 +167,4 @@ const BubbleBar = (props: Props) => {
   )
 }
 
-export default BubbleBar
+export default ActionBar
