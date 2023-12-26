@@ -16,6 +16,7 @@ import moment from 'moment'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
 import { store } from '@store/index'
+import { Cache } from './cache'
 
 // 格式化日对象
 function getNowDate() {
@@ -483,9 +484,15 @@ function getIdsForAt(htmlString: string) {
   const htmlDoc = parser.parseFromString(htmlString, 'text/html')
   // 获取具有data-id属性的元素，并获取它们的值
   const dataIdElements = htmlDoc.querySelectorAll('[data-id]')
-  const dataIdValues = Array.from(dataIdElements).map(el =>
+  let dataIdValues = Array.from(dataIdElements).map(el =>
     el.getAttribute('data-id'),
   )
+
+  const itemAllKey = dataIdValues?.find(item => item?.startsWith('all'))
+
+  if (itemAllKey) {
+    dataIdValues = Cache.getInstance().getValue(itemAllKey)?.split(',')
+  }
 
   return Array.from(new Set(dataIdValues))
 }

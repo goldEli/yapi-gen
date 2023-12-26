@@ -515,5 +515,5 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
   return <>{isFullscreen ? createPortal(ele, document.body) : ele}</>
 }
 
-const E = forwardRef(Editor)
-export default E
+const EditorF = forwardRef(Editor)
+export default EditorF

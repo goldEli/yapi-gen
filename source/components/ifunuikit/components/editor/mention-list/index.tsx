@@ -12,6 +12,7 @@ import {
   type ForwardRefRenderFunction,
 } from 'react'
 import { Wrap, Item, Loading, Empty } from './style'
+import { Cache } from '@/tools/cache'
 
 type Props = {
   loading?: boolean
@@ -37,10 +38,9 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
     if (!props.options?.length) {
       return []
     }
-    return [
-      { id: 'all', label: `所有人（${props?.options?.length}）` },
-      ...props?.options,
-    ]
+    const allId = 'all_' + Math.random()
+    Cache.getInstance().setValue(allId, props?.options?.map(item => item.id)?.join(','))
+    return [{ id: allId, label: `所有人` }, ...props?.options]
   }, [props.options])
 
   const selectItem = (index: number) => {
@@ -79,13 +79,17 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
     handleUpAndDown(idx, true)
   }
 
-  const onEnter = () => selectItem(selectedIndex)
+  const onEnter = () => {
+    selectItem(selectedIndex)
+  }
 
   useEffect(() => setSelectedIndex(0), [list])
 
-  useEffect(() => {
-    inputRef?.current?.focus?.()
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     inputRef?.current?.focus?.()
+  //   })
+  // }, [])
 
   useImperativeHandle(ref, () => ({
     onKeyDown({ event }) {
@@ -150,6 +154,10 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
           <Empty hidden={props.loading}>没有数据</Empty>
         ) : (
           newArr?.map((i, index) => {
+            let label = i.label
+            if (i.id?.startsWith?.('all')) {
+              label = label + `（${props?.options?.length}）`
+            }
             return (
               <Item
                 id={key + i.id}
@@ -157,7 +165,7 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
                 key={i.id}
                 onClick={() => props.onSelect?.(i)}
               >
-                {i.label}
+                {label}
               </Item>
             )
           })
@@ -168,4 +176,5 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
   )
 }
 
-export default forwardRef(MentionList)
+const MentionListF = forwardRef(MentionList)
+export default MentionListF
