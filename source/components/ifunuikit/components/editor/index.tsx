@@ -70,6 +70,7 @@ import { createPortal } from 'react-dom'
 import { create } from 'zustand'
 import BubbleMenuContent from './BubbleMenuContent'
 import BubbleBar from './action-bar'
+import { ActionKeys } from './action-bar/mapActionToNode'
 
 const extensions = [
   Link,
@@ -165,6 +166,7 @@ interface Props {
   readonly?: boolean
   value?: string
   hiddenBubbleMenu?: boolean
+  include?: ActionKeys[]
   onChange?(value?: string): void
   upload?(
     file: File,
@@ -447,6 +449,7 @@ const Editor = (props: Props, ref: React.ForwardedRef<EditorRef>) => {
         editor={editor}
         upload={onUpload}
         editorViewRef={editorViewRef}
+        include={props.include}
       />
       {!props.hiddenBubbleMenu && (
         <BubbleMenu

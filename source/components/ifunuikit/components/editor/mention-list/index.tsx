@@ -26,29 +26,62 @@ type Ref = {
   onKeyDown(event: { event: KeyboardEvent }): boolean
 }
 
+const key = `scrollItem+${Math.random()}_`
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [searchValue, setSearchValue] = useState('')
   const inputRef = useRef<any>(null)
 
+  const list = useMemo(() => {
+    if (!props.options?.length) {
+      return []
+    }
+    return [
+      { id: 'all', label: `所有人（${props?.options?.length}）` },
+      ...props?.options,
+    ]
+  }, [props.options])
+
   const selectItem = (index: number) => {
-    const item = props.options?.[index]
+    const item = list?.[index]
 
     if (item) {
       props.onSelect?.(item)
     }
   }
+  const handleUpAndDown = (idx: number, isDown: boolean) => {
+    const currentId = list?.[idx]?.id ?? ''
+    const id = key + currentId
+    const dom = document.getElementById(id)
+    const parentRect = dom?.parentElement?.getBoundingClientRect()
+    const elementRect = dom?.getBoundingClientRect()
+    setSelectedIndex(idx)
+    // 元素位于父元素的上面
+    if ((elementRect?.bottom ?? 0) <= (parentRect?.top ?? 0)) {
+      console.log('above')
+      dom?.scrollIntoView()
+      return
+    }
+    // 元素位于父元素的下面
+    if ((elementRect?.top ?? 0) >= (parentRect?.bottom ?? 0)) {
+      console.log('below')
+      dom?.scrollIntoView(false)
+    }
+  }
 
-  const onUp = () =>
-    setSelectedIndex(
-      (selectedIndex + props.options!.length - 1) % props.options!.length,
-    )
-  const onDown = () =>
-    setSelectedIndex((selectedIndex + 1) % props.options!.length)
+  const onUp = () => {
+    const idx = (selectedIndex + list!.length - 1) % list!.length
+    handleUpAndDown(idx, false)
+  }
+  const onDown = () => {
+    const idx = (selectedIndex + 1) % list!.length
+    handleUpAndDown(idx, true)
+  }
+
   const onEnter = () => selectItem(selectedIndex)
 
-  useEffect(() => setSelectedIndex(0), [props.options])
+  useEffect(() => setSelectedIndex(0), [list])
 
   useEffect(() => {
     inputRef?.current?.focus?.()
@@ -56,10 +89,9 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onKeyDown({ event }) {
-      if (!props.options) {
+      if (!list) {
         return false
       }
-
       switch (event.key) {
         case 'ArrowUp':
           onUp()
@@ -82,7 +114,7 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
   const newArr = useMemo(() => {
     if (searchValue) {
       const reg = new RegExp('[\\u4E00-\\u9FFF]+', 'g')
-      const arr = props?.options.filter(
+      const arr = list.filter(
         (i: any) =>
           reg.test(i.label)
             ? i.label.includes(searchValue)
@@ -91,9 +123,12 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
       )
       return arr
     }
+    // if (props?.options?.length > 1) {
+    //   return [{ id: 'all', label: '所有人' }, ...props?.options]
+    // }
 
-    return props?.options
-  }, [searchValue, props.options])
+    return list
+  }, [searchValue, list])
 
   return (
     <div
@@ -114,11 +149,18 @@ const MentionList: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
         {newArr?.length === 0 ? (
           <Empty hidden={props.loading}>没有数据</Empty>
         ) : (
-          newArr?.map((i, index) => (
-            <Item key={i.id} onClick={() => props.onSelect?.(i)}>
-              {i.label}
-            </Item>
-          ))
+          newArr?.map((i, index) => {
+            return (
+              <Item
+                id={key + i.id}
+                data-active={index === selectedIndex}
+                key={i.id}
+                onClick={() => props.onSelect?.(i)}
+              >
+                {i.label}
+              </Item>
+            )
+          })
         )}
         {props.loading && <Loading />}
       </Wrap>
