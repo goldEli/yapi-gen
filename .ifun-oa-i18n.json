@@ -1,0 +1,8 @@
+{
+  "ifun-oa-i18n.url": {
+    "enPath": "./source/locals/en.json",
+    "zhPath": "./source/locals/zh.json"
+  },
+  "ifun-oa-i18n.tranSource": "google"
+}
+
