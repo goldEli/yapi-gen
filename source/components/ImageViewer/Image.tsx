@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useRef } from 'react'
+import React, { CSSProperties, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useImageViewerStore } from './useImageViewerStore'
 import { Rnd } from 'react-rnd'
@@ -27,9 +27,11 @@ const Image: React.FC<ImageProps> = props => {
   } = useImageViewerStore()
 
   const imageRef = useRef<HTMLImageElement | null>(null)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     if (open) {
+      setVisible(false)
       const dom = imageRef.current as HTMLImageElement
       dom.onload = () => {
         const rect = dom.getBoundingClientRect()
@@ -53,6 +55,9 @@ const Image: React.FC<ImageProps> = props => {
           }
           console.log(scale)
           setScale(scale)
+          setTimeout(() => {
+            setVisible(true)
+          })
         })
       }
     }
@@ -104,6 +109,7 @@ const Image: React.FC<ImageProps> = props => {
     cursor: isDrag ? 'move' : 'zoom-out',
     transform: `scale(${scale}) rotate(${rotate}deg)`,
     transformOrigin: 'center center',
+    visibility: visible ? 'visible' : 'hidden',
   }
   return (
     <ImageBox
