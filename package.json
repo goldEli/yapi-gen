@@ -3,6 +3,8 @@
   "displayName": "yapi-gen",
   "description": "yapi to api code",
   "version": "0.0.1",
+  "publisher": "miaoyu",
+  "icon": "logo.png",
   "engines": {
     "vscode": "^1.85.0"
   },
