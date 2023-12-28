@@ -1,8 +1,8 @@
-import * as ejs from 'ejs';
-import * as fse from 'fs-extra';
-import * as path from 'path';
-import * as glob from 'glob';
-import * as prettier from 'prettier';
+import * as ejs from "ejs";
+import * as fse from "fs-extra";
+import * as path from "path";
+import * as glob from "glob";
+import * as prettier from "prettier";
 
 export type YapiInfo = {
   query_path: { path: string };
@@ -14,8 +14,8 @@ export type YapiInfo = {
     desc: string;
   }[];
   _id: number;
-  req_query: { required: '0' | '1'; name: string }[];
-  res_body_type: 'raw' | 'json';
+  req_query: { required: "0" | "1"; name: string }[];
+  res_body_type: "raw" | "json";
   res_body: string;
   username: string;
 };
@@ -39,6 +39,10 @@ export type Model = {
 
 export const compile = (templateString: string, model: Model) =>
   ejs.render(templateString, model);
+
+export const compileEjsFile = (fileName: string, model?: ejs.Data) => {
+  return ejs.renderFile(fileName, model);
+};
 
 // export async function renderEjsTemplates(
 //   templateData: object,
@@ -85,20 +89,20 @@ export const compile = (templateString: string, model: Model) =>
 //   });
 // }
 
-async function renderFile(templateFilepath: string, data: ejs.Data) {
-  let content = await ejs.renderFile(templateFilepath, data);
-  const targetFilePath = templateFilepath
-    .replace(/\.ejs$/, '')
-    .replace(
-      /\$\{.+?\}/gi,
-      (match) => data[match.replace(/\$|\{|\}/g, '')] || '',
-    );
-  try {
-    content = await prettier.format(content, {
-      singleQuote: true,
-      filepath: targetFilePath,
-    });
-  } catch {}
-  await fse.rename(templateFilepath, targetFilePath);
-  await fse.writeFile(targetFilePath, content);
-}
+// async function renderFile(templateFilepath: string, data: ejs.Data) {
+//   let content = await ejs.renderFile(templateFilepath, data);
+//   const targetFilePath = templateFilepath
+//     .replace(/\.ejs$/, '')
+//     .replace(
+//       /\$\{.+?\}/gi,
+//       (match) => data[match.replace(/\$|\{|\}/g, '')] || '',
+//     );
+//   try {
+//     content = await prettier.format(content, {
+//       singleQuote: true,
+//       filepath: targetFilePath,
+//     });
+//   } catch {}
+//   await fse.rename(templateFilepath, targetFilePath);
+//   await fse.writeFile(targetFilePath, content);
+// }
