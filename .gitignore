@@ -25,3 +25,5 @@ dist-ssr
 
 i18n.txt
 /temp
+/yapi-gen
+.lowcoderc
