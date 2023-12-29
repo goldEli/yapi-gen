@@ -3,9 +3,9 @@
       "domain": "https://ops-yapi.staryuntech.com",
       "projects": [
         {
-          "name": "资产管理",
-          "basePath": "/api/assets",
-          "token": "69f477b003f1d8669d4304ddf86a46e159ef2709cf28c0b6e62e59c33e0eab68",
+          "name": "2.7.1.4",
+          "basePath": "",
+          "token": "865ecdf13c1b2a875832d6942662d9be144e2c33198932687cf3a06d2cb60eb6",
           "domain": "https://ops-yapi.staryuntech.com"
         }
       ]
