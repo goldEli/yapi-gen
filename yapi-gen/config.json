@@ -1,0 +1,23 @@
+{
+    "yapi": {
+      "domain": "https://ops-yapi.staryuntech.com",
+      "projects": [
+        {
+          "name": "资产管理",
+          "basePath": "/api/assets",
+          "token": "69f477b003f1d8669d4304ddf86a46e159ef2709cf28c0b6e62e59c33e0eab68",
+          "domain": "https://ops-yapi.staryuntech.com"
+        }
+      ]
+    },
+    "mock": {
+      "mockNumber": "Random.natural(1000,1000)",
+      "mockBoolean": "false",
+      "mockString": "Random.cword(5, 7)",
+      "mockKeyWordEqual": [],
+      "mockKeyWordLike": []
+    },
+    "commonlyUsedBlock": [],
+    "syncFolder": ""
+  }
+  
