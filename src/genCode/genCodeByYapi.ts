@@ -9,7 +9,7 @@ import {
   replaceToEditor,
 } from "../utils/editor";
 import { mockFromSchema } from "../utils/json";
-import { getConfig } from "../utils/config";
+import { configDir, getConfig } from "../utils/config";
 import * as path from "path";
 import { rootPath } from "../utils/vscodeEnv";
 import { copyFolderToWorkspace } from "../utils/copyFolderToWorkspace";
@@ -73,7 +73,7 @@ export const genCodeByYapi = async (
     model.rawClipboardText = rawClipboardText;
     model.basePath = project?.basePath ?? ''
     const sourceFolder = "./src/yapi-gen"; // 替换为实际插件中的文件夹相对路径
-    const targetFolder = path.resolve(rootPath, "./yapi-gen"); // 工作目录的根路径
+    const targetFolder = configDir; // 工作目录的根路径
 
     await copyFolderToWorkspace(sourceFolder, targetFolder);
     // const code = compileEjs(template!.template, model);

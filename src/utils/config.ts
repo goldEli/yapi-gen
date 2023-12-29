@@ -38,6 +38,10 @@ export type Config = {
   commonlyUsedBlock?: string[];
 };
 
+export const configFilePath = path.join(rootPath, "./yapi-gen/config.json");
+export const ejsTemplatePath = path.join(rootPath, "./yapi-gen/template.ejs");
+export const configDir = path.join(rootPath, "./yapi-gen");
+
 const defaultConfig: Config = {
   yapi: { projects: [] },
   mock: { mockKeyWordEqual: [], mockKeyWordLike: [] },
@@ -46,14 +50,14 @@ const defaultConfig: Config = {
 
 export const getConfig: () => Config = () => {
   let config: Config = {};
-  if (fs.existsSync(path.join(rootPath, ".lowcoderc"))) {
-    config = JSON.parse(getFileContent(".lowcoderc") || "{}");
+  if (fs.existsSync(configFilePath)) {
+    config = JSON.parse(getFileContent(configFilePath, true) || "{}");
     config.yapi?.projects?.forEach((s) => {
       s.domain = s.domain || config.yapi?.domain || "";
     });
   } else {
     // config = getAllConfig();
-    showErrorMessage(".lowcoderc不存在");
+    showErrorMessage("./yapi-gen/config.json不存在");
   }
   return { ...defaultConfig, ...config };
 };
