@@ -35,6 +35,7 @@ export type Model = {
   rawClipboardText: string; // 系统剪切板中的原始文本
   activeTextEditorFilePath?: string; // 当前打开文件地址
   createBlockPath?: string; // 创建区块的目录
+  basePath?: string; // 项目根目录
 };
 
 export const compile = (templateString: string, model: Model) =>

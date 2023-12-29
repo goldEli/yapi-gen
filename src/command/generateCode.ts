@@ -26,7 +26,6 @@ export const generateCode = (context: vscode.ExtensionContext) => {
       // const valid = validYapiId;
       // if (valid) {
       if (validYapiId) {
-        console.log('genCodeByYapi', validYapiId)
         await genCodeByYapi(clipboardText, clipboardText);
       } else {
         // await genCodeByJson(clipboardText, rawClipboardText);

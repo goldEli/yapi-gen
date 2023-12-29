@@ -71,8 +71,9 @@ export const genCodeByYapi = async (
     model.inputValues = selectInfo.inputValues;
     model.rawSelectedText = selectInfo.rawSelectedText;
     model.rawClipboardText = rawClipboardText;
+    model.basePath = project?.basePath ?? ''
     const sourceFolder = "./src/yapi-gen"; // 替换为实际插件中的文件夹相对路径
-    const targetFolder = path.resolve(rootPath, './yapi-gen'); // 工作目录的根路径
+    const targetFolder = path.resolve(rootPath, "./yapi-gen"); // 工作目录的根路径
 
     await copyFolderToWorkspace(sourceFolder, targetFolder);
     // const code = compileEjs(template!.template, model);

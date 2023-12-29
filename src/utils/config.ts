@@ -10,7 +10,7 @@ import { showErrorMessage } from ".";
  *
  * @returns
  */
-export const getTemplateFilePath = () => 'codeTemplate';
+export const getTemplateFilePath = () => "codeTemplate";
 
 export type Config = {
   yapi?: {
@@ -19,6 +19,7 @@ export type Config = {
       name: string;
       token: string;
       domain: string;
+      basePath?: string;
     }[];
   };
   mock?: {
@@ -43,7 +44,6 @@ const defaultConfig: Config = {
   commonlyUsedBlock: [],
 };
 
-
 export const getConfig: () => Config = () => {
   let config: Config = {};
   if (fs.existsSync(path.join(rootPath, ".lowcoderc"))) {
@@ -53,7 +53,7 @@ export const getConfig: () => Config = () => {
     });
   } else {
     // config = getAllConfig();
-    showErrorMessage('.lowcoderc不存在')
+    showErrorMessage(".lowcoderc不存在");
   }
   return { ...defaultConfig, ...config };
 };
