@@ -1,3 +1,4 @@
+import * as http from '@/tools/http'
 <%= type %>  
 <% if (api.req_query.length > 0 || api.req_params.length > 0 || api.query_path.params.length > 0) { %>
 export interface I<%= rawSelectedText.slice(0, 1).toUpperCase() + rawSelectedText.slice(1) %>Params {
@@ -19,7 +20,7 @@ export interface I<%= rawSelectedText.slice(0, 1).toUpperCase() + rawSelectedTex
 <% if (requestBodyType && api.req_body_other.indexOf('{}')<0) { -%>* @param {I<%= rawSelectedText.slice(0, 1).toUpperCase() + rawSelectedText.slice(1) %>Data} data<%- "\n" %><% } _%>
 * @returns
 */
-export function <%= rawSelectedText %> (
+export async function <%= rawSelectedText %> (
 <% if (api.req_query.length>0 || api.req_params.length > 0 || api.query_path.params.length > 0) { %>
 params: I<%= rawSelectedText.slice(0, 1).toUpperCase() + rawSelectedText.slice(1) %>Params,
 <% } _%>
@@ -27,10 +28,11 @@ params: I<%= rawSelectedText.slice(0, 1).toUpperCase() + rawSelectedText.slice(1
 data: I<%= rawSelectedText.slice(0, 1).toUpperCase() + rawSelectedText.slice(1) %>Data
 <% } %> 
 ) {
-return request<I<%= rawSelectedText.slice(0, 1).toUpperCase() + rawSelectedText.slice(1) %>Result>({
-        url: `<%= api.query_path.path.replace(/\{/g,"${params.") %>`, 
-        method: '<%= api.method %>',
-        <% if(api.req_query.length>0 || api.req_params.length > 0) { %>params,<% } _%>
-<% if (requestBodyType && api.req_body_other.indexOf('{}')<0) {%>data,<% } %> 
-    })
+const res = await http.<%= api.method.toLowerCase() %><any,I<%= rawSelectedText.slice(0, 1).toUpperCase() + rawSelectedText.slice(1) %>Result>(
+    '<%= api.query_path.path.replace(/\{/g,"${params.") %>',
+    <% if(api.req_query.length>0 || api.req_params.length > 0) { %>params,<% } _%>
+    <% if (requestBodyType && api.req_body_other.indexOf('{}')<0) {%>data,<% } %>
+    )
+
+return res
 }
